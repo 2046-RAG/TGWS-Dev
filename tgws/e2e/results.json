@@ -1,0 +1,80 @@
+{
+  "config": {
+    "argv": [
+      "D:\\软件集\\Node.js\\主程序\\node.exe",
+      "D:\\软件集\\Mimo\\WorkSpace\\TGWS\\tgws\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "-g",
+      "EN Help Desk",
+      "--config=playwright.prod.config.ts"
+    ],
+    "configFile": "D:\\软件集\\Mimo\\WorkSpace\\TGWS\\tgws\\playwright.prod.config.ts",
+    "rootDir": "D:/软件集/Mimo/WorkSpace/TGWS/tgws/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/软件集/Mimo/WorkSpace/TGWS/tgws/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {},
+        "id": "edge",
+        "name": "edge",
+        "testDir": "D:/软件集/Mimo/WorkSpace/TGWS/tgws/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "e2e/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.61.1",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [],
+  "errors": [
+    {
+      "message": "Error: No tests found",
+      "stack": "Error: No tests found"
+    }
+  ],
+  "stats": {
+    "startTime": "2026-07-01T19:09:11.938Z",
+    "duration": 71.28100000000006,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

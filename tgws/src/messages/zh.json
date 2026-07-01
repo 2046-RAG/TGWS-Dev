@@ -1,0 +1,853 @@
+{
+  "nav": {
+    "home": "首頁",
+    "products": "產品服務",
+    "solutions": "行業解決方案",
+    "caseStudies": "案例展示",
+    "blog": "新聞博客",
+    "about": "關於我們",
+    "support": "客戶支持",
+    "contact": "聯絡我們"
+  },
+  "hero": {
+    "company": "泰谷網數科技",
+    "tagline": "您在亞洲值得信賴的IT合作夥伴。我們能為您解決什麼挑戰？",
+    "heroLabel": {
+      "line1": "您好，認識TechGuru，",
+      "line2": "構建·承載·保護 您的IT基礎設施合作夥伴"
+    },
+    "cta": {
+      "solutions": "瀏覽解決方案",
+      "cases": "查看案例",
+      "demo": "預約演示",
+      "vmware": "VMware遷移"
+    }
+  },
+  "home": {
+    "build": "構建",
+    "run": "承載",
+    "protect": "保護",
+    "buildDesc": "構建通用業務負載和面向未來的人工智慧負載",
+    "runDesc": "極致性能、極致可靠的基礎架構",
+    "protectDesc": "全方位多維度保護負載和數據安全",
+    "journeyLabel": "您的IT旅程，全面覆蓋",
+    "journeyDesc": "從構建工作負載到運行基礎設施再到保護一切——我們涵蓋您IT生命週期的每個階段。",
+    "buildShort": "創建負載",
+    "runShort": "運行基礎設施",
+    "protectShort": "守護一切",
+    "products": "個產品",
+    "aigcT2V": "文字轉視頻",
+    "aigcI2V": "圖片轉視頻",
+    "aigcCoding": "AI編程",
+    "aiAgent": "AI代理開發",
+    "legacyAI": "傳統系統改造",
+    "vmPlatform": "虛擬化平台",
+    "hci": "超融合架構",
+    "cloudPlatform": "雲平台",
+    "hardware": "硬件",
+    "hosting": "託管服務",
+    "bcdr": "業務連續性",
+    "ngfw": "下一代防火牆",
+    "waf": "Web應用防護",
+    "edr": "端點檢測",
+    "ndr": "網絡檢測",
+    "cloudSecurity": "雲安全",
+    "sdwan": "SD-WAN",
+    "mdr": "託管檢測響應",
+    "incidentResponse": "應急響應",
+    "buildTitle": "構建",
+    "runTitle": "承載",
+    "protectTitle": "保護",
+    "exploreProducts": "探索產品",
+    "vmwareLabel": "VMware替代方案",
+    "vmwareTitle": "無縫VMware遷移",
+    "vmwareDesc": "想要擺脫VMware？我們提供成熟的遷移方案，轉向開源和高性價比替代方案，最大限度減少停機時間，確保順利過渡。",
+    "vmwareFeature1": "Proxmox VE 和 KVM 解決方案",
+    "vmwareFeature2": "Sangfor aSV 和 HCI 平台",
+    "vmwareFeature3": "Nutanix 和 Arcfra 選項",
+    "vmwareFeature4": "H3C 超融合基礎架構",
+    "vmwareCta": "探索VMware替代方案",
+    "industriesTitle": "行業解決方案",
+    "industriesDesc": "為每個行業量身定制的技術方案，以專業經驗解決獨特挑戰。",
+    "industries": {
+      "healthcare": {
+        "name": "醫療健康",
+        "description": "為醫療機構提供數位轉型方案，透過安全合規的技術基礎設施提升患者護理品質。"
+      },
+      "finance": {
+        "name": "金融服務",
+        "description": "為金融機構提供穩健安全的基礎設施，實現即時處理與法規合規。"
+      },
+      "retail": {
+        "name": "零售業",
+        "description": "全通路零售技術，優化客戶體驗並提升供應鏈運營效率。"
+      }
+    },
+    "viewAllSolutions": "查看所有方案",
+    "stats": {
+      "clients": "企業客戶",
+      "uptime": "可用性保障",
+      "years": "行業經驗",
+      "partners": "技術合作夥伴"
+    },
+    "partnersLabel": "值得領先企業信賴",
+    "ctaTitle": "準備好轉型了嗎？",
+    "ctaDesc": "讓我們討論Build、Run、Protect如何為您的組織服務。",
+    "ctaPrimary": "立即開始",
+    "ctaSecondary": "聯繫支持"
+  },
+  "solutions": {
+    "title": "行業解決方案",
+    "subtitle": "為每個行業量身定制的技術方案，以專業經驗解決獨特挑戰。",
+    "painPoints": "痛點分析",
+    "ourSolutions": "解決方案",
+    "featuredProducts": "推薦產品",
+    "cta": "探索此行業的產品方案",
+    "industries": {
+      "healthcare": {
+        "name": "醫療健康",
+        "description": "為醫療機構提供數位轉型方案，透過安全合規的技術基礎設施提升患者護理品質。",
+        "painPoints": [
+          "嚴格的法規合規要求（HIPAA、本地數據保護法）",
+          "傳統系統阻礙數位化患者護理",
+          "針對敏感健康記錄的網路安全威脅"
+        ],
+        "solutions": [
+          "HIPAA合規雲端遷移與混合基礎設施",
+          "統一患者數據平台與即時分析",
+          "零信任安全框架保護健康數據"
+        ],
+        "products": [
+          "SecureCloud 醫療版",
+          "DataVault 醫療級",
+          "NetGuard 健康防護"
+        ]
+      },
+      "finance": {
+        "name": "金融服務",
+        "description": "為金融機構提供穩健安全的基礎設施，實現即時處理與法規合規。",
+        "painPoints": [
+          "高頻交易處理瓶頸",
+          "不斷演變的金融法規要求",
+          "大規模詐欺偵測與防範"
+        ],
+        "solutions": [
+          "低延遲交易基礎設施優化",
+          "自動化合規監控與報告",
+          "AI驅動的詐欺偵測與風險管理"
+        ],
+        "products": [
+          "FinCloud 金融雲",
+          "ComplianceOS 合規系統",
+          "RiskShield AI 風控"
+        ]
+      },
+      "retail": {
+        "name": "零售業",
+        "description": "全通路零售技術，優化客戶體驗並提升供應鏈運營效率。",
+        "painPoints": [
+          "碎片化的全通路客戶體驗",
+          "多渠道庫存可視性不足",
+          "高峰購物季節的擴展能力"
+        ],
+        "solutions": [
+          "統一商務平台與即時庫存同步",
+          "AI驅動的需求預測與個人化",
+          "自動擴展雲端基礎設施應對流量高峰"
+        ],
+        "products": [
+          "RetailCloud 零售雲",
+          "DemandSense AI 需求預測",
+          "ScaleFlex 零售擴展"
+        ]
+      },
+      "logistics": {
+        "name": "物流供應鏈",
+        "description": "端到端物流技術方案，提升供應鏈可視性、優化與韌性。",
+        "painPoints": [
+          "即時供應鏈可視性不足",
+          "路線優化與配送效率",
+          "跨境數據傳輸與合規"
+        ],
+        "solutions": [
+          "IoT即時追蹤與監控",
+          "AI優化路線與車隊管理",
+          "安全跨境數據基礎設施"
+        ],
+        "products": [
+          "LogiTrack Pro 追蹤系統",
+          "RouteAI 路線優化",
+          "BorderLink 跨境安全"
+        ]
+      },
+      "education": {
+        "name": "教育機構",
+        "description": "為現代教育機構與線上學習平台提供可擴展、易存取的技術基礎設施。",
+        "painPoints": [
+          "支援大規模遠距學習平台",
+          "保護學生數據與隱私",
+          "管理混合本地與雲端環境"
+        ],
+        "solutions": [
+          "可擴展線上學習平台基礎設施",
+          "學生數據保護與FERPA合規",
+          "混合校園IT現代化"
+        ],
+        "products": [
+          "EduCloud 教育雲",
+          "StudentShield 學生防護",
+          "CampusNet 混合架構"
+        ]
+      },
+      "government": {
+        "name": "政府機構",
+        "description": "為政府機關提供安全、主權級技術方案，滿足嚴格的合規與可用性要求。",
+        "painPoints": [
+          "嚴格的安全與數據主權要求",
+          "零停機時間的傳統系統現代化",
+          "大規模面向市民服務的可靠性"
+        ],
+        "solutions": [
+          "主權雲端與氣隙基礎設施",
+          "持續可用性的分階段現代化",
+          "高可用市民服務平台"
+        ],
+        "products": [
+          "GovCloud 主權雲",
+          "LegacyBridge 舊系統橋接",
+          "CitizenHub 市民服務"
+        ]
+      }
+    }
+  },
+  "blog": {
+    "title": "新聞與洞察",
+    "subtitle": "掌握最新技術趨勢、解決方案與行業見解。",
+    "readMore": "閱讀更多",
+    "categories": {
+      "all": "所有文章",
+      "news": "新聞",
+      "technical": "技術",
+      "case-study": "案例",
+      "industry": "行業"
+    },
+    "articles": {
+      "1": {
+        "title": "建構彈性混合雲架構",
+        "excerpt": "了解如何設計兼顧性能、成本與合規的混合雲環境，滿足企業工作負載需求。"
+      },
+      "2": {
+        "title": "零信任安全：完整實作指南",
+        "excerpt": "深入了解如何在組織網路與應用中實施零信任架構。"
+      },
+      "3": {
+        "title": "2025年AI驅動的基礎設施監控",
+        "excerpt": "機器學習如何透過預測分析與自動化事件回應革新IT運維。"
+      },
+      "4": {
+        "title": "SD-WAN vs SASE：選擇正確的網路策略",
+        "excerpt": "實用比較指南，幫助您為組織網路需求選擇SD-WAN或SASE。"
+      },
+      "5": {
+        "title": "雲端成本優化：10個實證策略",
+        "excerpt": "發現可操作的技術，在維持性能與可靠性的同時降低雲端支出。"
+      },
+      "6": {
+        "title": "勒索軟體防護：企業防禦手册",
+        "excerpt": "全面策略保護您的組織免受持續演變的勒索軟體威脅。"
+      }
+    },
+    "detail": {
+      "backToBlog": "返回部落格",
+      "readTime": "{min} 分鐘閱讀",
+      "share": "分享此文章",
+      "relatedPosts": "相關文章",
+      "cta": "需要此主題的協助？",
+      "ctaDesc": "我們的專家可協助您為組織實施正確的解決方案。",
+      "ctaBtn": "聯絡我們",
+      "articles": {
+        "1": {
+          "title": "建構彈性混合雲架構",
+          "subtitle": "設計兼顧性能、成本與合規的混合雲環境完整指南。",
+          "readTime": 8,
+          "sections": [
+            {
+              "heading": "為何選擇混合雲？",
+              "body": "企業工作負載多樣化。部分需要公有雲的彈性，部分需要私有基礎設施的掌控力。混合雲架構連接兩者，讓您將每個工作負載放置在最佳執行位置。"
+            },
+            {
+              "heading": "關鍵設計原則",
+              "body": "從工作負載分類開始：依據延遲敏感度、數據主權和突發需求對每個應用進行分類。為故障而設計——假設每個元件都會故障，建立自動容錯機制。自動化一切，從配置到擴展到恢復。"
+            },
+            {
+              "heading": "實施路線圖",
+              "body": "階段一：評估現有基礎設施，識別遷移候選者。階段二：設計目標架構，包含網路、安全和治理。階段三：分波次遷移，從非關鍵工作負載開始。階段四：持續優化成本和性能。"
+            },
+            {
+              "heading": "常見陷阱",
+              "body": "避免供應商鎖定，使用 Kubernetes 實現可攜性。不要忽視網路——跨雲連接是最困難的部分。考慮數據重力：大型數據集移動成本高昂。始終制定回滾計畫。"
+            }
+          ]
+        },
+        "2": {
+          "title": "零信任安全：完整實作指南",
+          "subtitle": "如何在組織網路與應用中實施零信任架構。",
+          "readTime": 12,
+          "sections": [
+            {
+              "heading": "什麼是零信任？",
+              "body": "零信任是一種安全模型，要求對每個嘗試存取資源的人員和設備進行嚴格的身份驗證，不受位置影響。核心原則：永不信任，始終驗證。"
+            },
+            {
+              "heading": "實施支柱",
+              "body": "身份：全面多因素驗證、條件存取策略。設備：端點偵測、合規檢查。網路：微分段、加密隧道。應用：逐應用存取、API 閘道。數據：分類、DLP、靜態加密。"
+            },
+            {
+              "heading": "遷移策略",
+              "body": "從最敏感的資產開始。先部署身份提供者，再網路分段，最後端點保護。採用分階段方法，避免影響現有工作流程。"
+            },
+            {
+              "heading": "衡量成功",
+              "body": "追蹤平均偵測時間（MTTD）、平均回應時間（MTTR）和攻擊面縮減程度。定期滲透測試驗證零信任實施效果。"
+            }
+          ]
+        },
+        "3": {
+          "title": "2025年AI驅動的基礎設施監控",
+          "subtitle": "機器學習如何透過預測分析與自動化事件回應革新IT運維。",
+          "readTime": 10,
+          "sections": [
+            {
+              "heading": "向AIOps轉型",
+              "body": "傳統監控產生告警。AI驅動的監控產生洞察。透過分析數百萬數據點的模式，AIOps 平台可在故障發生前預測。"
+            },
+            {
+              "heading": "關鍵能力",
+              "body": "異常偵測：無需手動閾值即可識別異常模式。根因分析：自動關聯跨服務事件。容量預測：提前數週預測資源需求。自動修復：無需人工介入即可修復常見問題。"
+            },
+            {
+              "heading": "實施指南",
+              "body": "從全面的可觀測性開始：指標、日誌和追蹤。將數據匯入集中平台。基於歷史事件數據訓練模型。從低風險自動修復開始，隨著信心增長逐步擴展。"
+            },
+            {
+              "heading": "ROI與業務影響",
+              "body": "實施 AIOps 的組織報告 MTTR 減少 50%、誤報減少 30%、容量利用率提升 25%。投資在 6 個月內即可回本。"
+            }
+          ]
+        },
+        "4": {
+          "title": "SD-WAN vs SASE：選擇正確的網路策略",
+          "subtitle": "實用比較指南，幫助您為組織網路需求選擇SD-WAN或SASE。",
+          "readTime": 7,
+          "sections": [
+            {
+              "heading": "了解SD-WAN",
+              "body": "SD-WAN 透過跨多種連接類型動態選擇最佳路徑來優化廣域網路。適用於分佈式分支辦公室需要可靠連接的組織。"
+            },
+            {
+              "heading": "了解SASE",
+              "body": "SASE 將 SD-WAN 與雲端原生安全服務（FWaaS、SWG、CASB、ZTNA）整合為單一平台。為採用雲端優先和遠端優先策略的組織設計。"
+            },
+            {
+              "heading": "決策框架",
+              "body": "選擇 SD-WAN：主要需求是分支連接優化、現有安全堆疊成熟、雲端安全獨立處理。選擇 SASE：工作人員分佈式/遠端、希望整合供應商、安全和網路需要統一管理。"
+            },
+            {
+              "heading": "混合方法",
+              "body": "許多組織先採用 SD-WAN，然後逐步演進到 SASE。這允許立即優化網路，同時制定整合安全的路線圖。"
+            }
+          ]
+        },
+        "5": {
+          "title": "雲端成本優化：10個實證策略",
+          "subtitle": "在維持性能與可靠性的同時降低雲端支出的可操作技術。",
+          "readTime": 9,
+          "sections": [
+            {
+              "heading": "合理配置",
+              "body": "大多數過度配置的實例利用率低於 20%。使用監控數據匹配實際工作負載需求的實例規格。自動化合理配置建議。"
+            },
+            {
+              "heading": "保留實例與儲蓄計畫",
+              "body": "對可預測的工作負載承諾 1-3 年期限。儲存計畫提供跨實例系列的靈活性。結合突發工作負載的按需容量。"
+            },
+            {
+              "heading": "競價實例與搶占式VM",
+              "body": "將競價/搶占式實例用於容錯且靈活的工作負載，如批次處理、CI/CD 和開發環境。相比按需定價節省高達 90%。"
+            },
+            {
+              "heading": "儲存優化",
+              "body": "實施分層儲存：熱、溫冷、冷、歸檔。自動化生命週期策略，隨時間將數據移至更便宜的層級。刪除孤立的卷和快照。"
+            }
+          ]
+        },
+        "6": {
+          "title": "勒索軟體防護：企業防禦手册",
+          "subtitle": "全面策略保護您的組織免受持續演變的勒索軟體威脅。",
+          "readTime": 11,
+          "sections": [
+            {
+              "heading": "勒索軟體態勢",
+              "body": "勒索軟體攻擊已從機會型演變為針對性攻擊。攻擊者現在研究受害者、定制有效載荷，並要求數百萬美元贖金。預防遠比恢復便宜。"
+            },
+            {
+              "heading": "預防層級",
+              "body": "郵件安全：具備沙箱的進階威脅防護。端點保護：具備行為分析的新一代防毒。網路分段：限制橫向移動。存取控制：最小權限、全面多因素驗證。備份策略：3-2-1 規則搭配不可變副本。"
+            },
+            {
+              "heading": "偵測與回應",
+              "body": "部署 EDR/XDR 進行即時威脅偵測。實施網路偵測以識別加密指標。建立具有明確角色的事件回應計畫。定期進行桌上演練。"
+            },
+            {
+              "heading": "恢復規劃",
+              "body": "定期測試備份恢復。維護離線恢復程序。準備法律和公關聯繫人。考慮網路保險。記錄一切以供事後分析。"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "about": {
+    "title": "關於泰谷科技",
+    "intro": "成立於2010年，泰谷網數科技一直處於亞洲IT基礎設施創新的前沿。我們與領先技術供應商合作，提供前沿方案，赋能企業在數位時代蓬勃發展。",
+    "timeline": {
+      "title": "發展歷程",
+      "events": [
+        "泰谷科技在台北成立，專注企業網路解決方案。",
+        "擴展至香港，推出託管安全服務。",
+        "與主要雲端供應商合作，推出混合雲解決方案。",
+        "開設上海辦公室，推出AI基礎設施平台。",
+        "獲得ISO 27001和SOC 2認證，企業客戶突破500家。",
+        "推出VMware遷移計畫，業務拓展至東南亞。"
+      ]
+    },
+    "team": {
+      "title": "領導團隊",
+      "members": {
+        "0": {
+          "name": "陳大衛",
+          "role": "執行長兼創辦人",
+          "bio": "20年以上IT基礎設施經驗。曾任亞太區知名科技公司副總裁。"
+        },
+        "1": {
+          "name": "林莎拉",
+          "role": "技術長",
+          "bio": "雲端架構專家。曾任財富500強科技公司工程主管。"
+        },
+        "2": {
+          "name": "王詹姆斯",
+          "role": "業務副總裁",
+          "bio": "15年以上大中華區及東南亞企業IT解決方案銷售經驗。"
+        },
+        "3": {
+          "name": "張艾蜜莉",
+          "role": "資安主管",
+          "bio": "CISSP與CISM認證。曾任政府機關資安顧問。"
+        }
+      }
+    },
+    "qualifications": {
+      "title": "認證與合作夥伴",
+      "items": {
+        "0": {
+          "title": "ISO 27001 認證",
+          "description": "資訊安全管理系統認證，確保企業級數據保護。"
+        },
+        "1": {
+          "title": "SOC 2 Type II",
+          "description": "獨立審計驗證安全性、可用性與機密性控制。"
+        },
+        "2": {
+          "title": "AWS 高級合作夥伴",
+          "description": "認證AWS諮詢合作夥伴，具備雲端遷移與優化專業能力。"
+        },
+        "3": {
+          "title": "VMware 白金合作夥伴",
+          "description": "白金級合作夥伴，提供虛擬化、雲端管理與遷移服務。"
+        }
+      }
+    }
+  },
+  "caseStudies": {
+    "title": "案例展示",
+    "subtitle": "了解我們如何協助各行各業組織實現IT基礎設施轉型。",
+    "readMore": "查看詳情",
+    "noResults": "目前沒有符合篩選條件的案例。",
+    "filterIndustry": "按行業篩選",
+    "filterProduct": "按產品篩選",
+    "filters": {
+      "industry": {
+        "all": "所有行業",
+        "healthcare": "醫療健康",
+        "finance": "金融服務",
+        "retail": "零售業",
+        "logistics": "物流供應鏈",
+        "education": "教育機構",
+        "government": "政府機構",
+        "manufacturing": "製造業",
+        "other": "其他"
+      },
+      "product": {
+        "all": "所有產品",
+        "hybridCloud": "混合雲",
+        "security": "資安",
+        "ai": "AI與數據",
+        "networking": "網路"
+      }
+    },
+    "cases": {
+      "1": {
+        "title": "區域醫院網路雲端遷移",
+        "summary": "將12家醫院遷移至HIPAA合規混合雲，降低IT成本35%同時提升患者數據可及性。"
+      },
+      "2": {
+        "title": "銀行集團零信任轉型",
+        "summary": "在200+分支機構實施零信任安全，透過即時威脅偵測降低60%入侵風險。"
+      },
+      "3": {
+        "title": "零售連鎖AI需求預測",
+        "summary": "在500+門店部署AI庫存管理，減少40%缺貨率並提升利潤率。"
+      },
+      "4": {
+        "title": "物流企業全球網路升級",
+        "summary": "以SD-WAN重新設計全球網路，實現99.99%可用性與50%更快的跨境數據傳輸。"
+      },
+      "5": {
+        "title": "大學線上學習平台擴展",
+        "summary": "建構可擴展基礎設施，在高峰期支援10萬+並發使用者且零停機。"
+      },
+      "6": {
+        "title": "政府機關舊系統現代化",
+        "summary": "零停機現代化20年舊系統，提升70%市民服務交付效率。"
+      }
+    },
+    "detail": {
+      "backToCases": "返回案例展示",
+      "challenge": "挑戰",
+      "solution": "解決方案",
+      "results": "成果",
+      "technologies": "使用技術",
+      "timeline": "專案時程",
+      "cta": "面臨類似挑戰？",
+      "ctaDesc": "讓我們協助您為組織設計量身定制的解決方案。",
+      "ctaBtn": "取得報價",
+      "cases": {
+        "1": {
+          "title": "區域醫院網路雲端遷移",
+          "industry": "醫療健康",
+          "product": "混合雲",
+          "duration": "6個月",
+          "technologies": ["AWS 混合雲", "Kubernetes", "Terraform", "Splunk"],
+          "challenge": "12家區域醫院面臨IT系統孤島、VMware授權成本上升和HIPAA合規要求。患者數據分散在老舊系統中，難以提供協調護理。",
+          "solution": "設計連接所有12家醫院的HIPAA合規混合雲架構。實施Kubernetes容器編排、Terraform基礎設施即代碼，以及Splunk集中日誌和合規監控。",
+          "results": [
+            "IT基礎設施成本降低35%",
+            "所有醫院達到99.99%可用性",
+            "統一患者數據平台服務50萬+患者",
+            "維持HIPAA合規認證",
+            "新臨床應用部署速度提升60%"
+          ]
+        },
+        "2": {
+          "title": "銀行集團零信任轉型",
+          "industry": "金融服務",
+          "product": "資安",
+          "duration": "9個月",
+          "technologies": ["ZTNA", "EDR", "SIEM", "MFA", "微分段"],
+          "challenge": "一家擁有200+分支機構的銀行集團面臨日益嚴峻的網路威脅，需要現代化安全態勢。傳統基於邊界的安全無法應對複雜攻擊。",
+          "solution": "在所有分支機構和數位渠道實施全面的零信任架構。部署微分段實現網路隔離、ZTNA實現安全存取，以及進階SIEM實現即時威脅偵測。",
+          "results": [
+            "入侵風險降低60%",
+            "200+分支機構即時威脅偵測",
+            "安全營運成本降低30%",
+            "符合MAS TRM指南",
+            "平均偵測時間從4小時縮短至15分鐘"
+          ]
+        },
+        "3": {
+          "title": "零售連鎖AI需求預測",
+          "industry": "零售業",
+          "product": "AI與數據",
+          "duration": "4個月",
+          "technologies": ["TensorFlow", "Apache Kafka", "Snowflake", "Power BI"],
+          "challenge": "一家擁有500+門店的零售連鎖面臨庫存管理困難，頻繁缺貨和過度庫存。人工預測無法應對需求波動。",
+          "solution": "使用TensorFlow模型訓練歷史銷售數據、天氣模式和本地活動，部署AI驅動的需求預測。整合Apache Kafka實現即時數據串流，Snowflake實現分析。",
+          "results": [
+            "缺貨率降低40%",
+            "過剩庫存減少25%",
+            "利潤率提升15%",
+            "所有門店即時庫存可視性",
+            "前200個SKU自動補貨"
+          ]
+        },
+        "4": {
+          "title": "物流企業全球網路升級",
+          "industry": "物流供應鏈",
+          "product": "網路",
+          "duration": "8個月",
+          "technologies": ["SD-WAN", "MPLS", "Cloudflare", "Palo Alto"],
+          "challenge": "一家全球物流公司頻繁遭遇網路中斷和跨境數據傳輸緩慢，影響即時貨物追蹤和客戶服務交付。",
+          "solution": "使用SD-WAN疊加現有MPLS基礎設施重新設計全球網路。實施Cloudflare用於DDoS防護和邊緣快取，Palo Alto用於下一代防火牆功能。",
+          "results": [
+            "達到99.99%網路可用性",
+            "跨境數據傳輸速度提升50%",
+            "網路營運成本降低40%",
+            "50+國家即時追蹤可視性",
+            "客戶滿意度評分提升25%"
+          ]
+        },
+        "5": {
+          "title": "大學線上學習平台擴展",
+          "industry": "教育機構",
+          "product": "混合雲",
+          "duration": "3個月",
+          "technologies": ["AWS Auto Scaling", "CloudFront", "RDS", "Redis"],
+          "challenge": "一所大學的線上學習平台在高峰期考試期間崩潰，10萬+並發使用者。現有本地基礎設施無法擴展滿足需求。",
+          "solution": "使用自動擴展架構將平台遷移至AWS。實施CloudFront CDN用於內容交付、RDS用於資料庫擴展，Redis用於工作階段管理和快取。",
+          "results": [
+            "支援10萬+並發使用者且零停機",
+            "高峰期頁面載入時間低於1秒",
+            "基礎設施成本降低70%",
+            "考試季節99.99%可用性",
+            "與現有LMS系統無縫整合"
+          ]
+        },
+        "6": {
+          "title": "政府機關舊系統現代化",
+          "industry": "政府機構",
+          "product": "資安",
+          "duration": "12個月",
+          "technologies": ["Kubernetes", "Istio", "Keycloak", "Vault"],
+          "challenge": "一個政府機關運營20年老舊系統，維護困難、安全漏洞增加，市民服務交付緩慢且效率低下。",
+          "solution": "分階段現代化方法：使用Kubernetes容器化、Istio服務網格、Keycloak身份管理和Vault機密管理。零停機遷移確保服務持續可用。",
+          "results": [
+            "市民服務交付速度提升70%",
+            "整個現代化過程零停機",
+            "安全漏洞減少90%",
+            "營運成本降低40%",
+            "現代API架構支援未來數位服務"
+          ]
+        }
+      }
+    }
+  },
+  "contact": {
+    "title": "聯絡我們",
+    "subtitle": "有任何問題或需要諮詢嗎？我們期待您的來信。",
+    "name": "姓名",
+    "namePlaceholder": "請輸入您的全名",
+    "email": "電子郵件",
+    "emailPlaceholder": "you@company.com",
+    "company": "公司名稱",
+    "companyPlaceholder": "公司名稱（選填）",
+    "phone": "電話號碼",
+    "phonePlaceholder": "+886 912-345-678",
+    "message": "訊息",
+    "messagePlaceholder": "請告訴我們您的專案或問題...",
+    "submit": "發送訊息",
+    "sending": "發送中...",
+    "success": "感謝您的來信！您的訊息已成功發送，我們將盡快回覆您。",
+    "error": "發生錯誤，請稍後再試。",
+    "required": "此欄位為必填",
+    "invalidEmail": "請輸入有效的電子郵件地址",
+    "offices": "辦公室據點",
+    "taipei": "台北總部",
+    "taipeiAddr": "10101 台北市中正區",
+    "hongKong": "香港",
+    "hongKongAddr": "香港中環",
+    "social": "關注我們",
+    "skipToForm": "跳至聯絡表單"
+  },
+  "products": {
+    "title": "產品與服務",
+    "subtitle": "涵蓋構建、承載、保護的全方位IT解決方案，助力您的業務發展。",
+    "build": "構建",
+    "run": "承載",
+    "protect": "保護",
+    "aigcT2V": "文字轉影片",
+    "aigcT2VDesc": "使用前沿AI模型，從文字描述生成影片內容。",
+    "aigcI2V": "圖片轉影片",
+    "aigcI2VDesc": "利用AI技術將靜態圖片轉化為動態影片。",
+    "aigcCoding": "AI程式開發",
+    "aigcCodingDesc": "AI驅動的開發工具，加速您的程式開發流程。",
+    "aiAgent": "AI Agent開發",
+    "aiAgentDesc": "建構智慧型自主Agent，實現複雜任務自動化。",
+    "legacyAI": "傳統業務智能化改造",
+    "legacyAIDesc": "為傳統系統注入AI能力，實現智慧化升級。",
+    "vmPlatform": "虛擬化平台",
+    "vmPlatformDesc": "VMware替代方案：Proxmox VE、深信服aSV、Nutanix、Arcfra、新華三。",
+    "hci": "超融合基礎架構",
+    "hciDesc": "將運算、儲存和網路整合於單一平台。",
+    "cloudPlatform": "雲平台",
+    "cloudPlatformDesc": "私有雲、公有雲、混合雲解決方案，靈活部署。",
+    "hardware": "硬體設備",
+    "hardwareDesc": "企業級伺服器與儲存解決方案，支撐您的基礎架構。",
+    "hosting": "託管服務",
+    "hostingDesc": "全方位託管基礎設施服務，提供7×24小時支援。",
+    "bcdr": "業務連續性",
+    "bcdrDesc": "災難即服務（DRaaS）與備份即服務（BaaS），保障數據安全。",
+    "ngfw": "下一代防火牆與IPS",
+    "ngfwDesc": "進階邊界防護，深度封包檢測與威脅阻斷。",
+    "waf": "Web應用防火牆",
+    "wafDesc": "防護Web應用免受OWASP十大威脅與複雜攻擊。",
+    "edr": "端點偵測與回應",
+    "edrDesc": "進階端點防護，即時威脅偵測與回應。",
+    "ndr": "網路偵測與回應",
+    "ndrDesc": "監控網路流量異常，即時回應安全威脅。",
+    "cloudSecurity": "雲端安全",
+    "cloudSecurityDesc": "CASB、SASE、ZTNA解決方案，全面保護雲端環境。",
+    "sdwan": "SD-WAN與負載均衡",
+    "sdwanDesc": "智慧流量管理，優化網路效能。",
+    "mdr": "託管偵測與回應",
+    "mdrDesc": "7×24小時安全監控、滲透測試與專家威脅分析。",
+    "incidentResponse": "應急響應",
+    "incidentResponseDesc": "快速回應安全事件，提供專業數位鑑識分析。",
+    "buildTitle": "Build — 構建您的業務負載",
+    "buildStory": "當您需要創建、開發或現代化業務負載時，這些產品幫您從0到1構建智能工作負載。從AIGC視頻生成到AI Agent開發再到傳統系統現代化改造。",
+    "runTitle": "Run — 驅動您的基礎設施",
+    "runStory": "當您需要極致性能和可靠性來運行工作負載時，這些產品提供統一的基礎架構。從虛擬化到超融合再到雲平台和業務連續性保障。",
+    "protectTitle": "Protect — 守護每一個層面",
+    "protectStory": "當您需要全方位安全保障時，這些產品守護您的每一個層面。從邊界防火牆到端點檢測再到雲安全和託管安全檢測與響應。",
+    "features": {
+      "ai-generated-content-aigc": ["文字轉視頻生成", "圖片轉視頻轉換", "多語言支持", "批量處理", "品牌定制"],
+      "ai-assisted-coding": ["代碼生成", "自動化測試", "代碼審查", "文檔生成", "多語言支持"],
+      "ai-agent-development": ["多代理編排", "工具整合", "記憶與上下文管理", "生產環境部署"],
+      "enterprise-legacy-system-ai-augmentation": ["API代理層", "零侵入整合", "模型適配", "漸進式部署", "流程自動化"],
+      "server-virtualization-platform": ["VMware遷移路徑", "Proxmox VE支持", "Sangfor aSV整合", "即時遷移", "高可用性"],
+      "hyper-converged-infrastructure": ["運算+儲存融合", "線性擴展", "單一管理平面", "數據保護", "自動分層"],
+      "cloud-migration": ["評估與規劃", "分階段遷移", "零停機切換", "成本優化", "遷移後支持"],
+      "cloud-repatriation": ["工作負載評估", "數據傳輸規劃", "基礎設施配置", "DNS遷移", "性能驗證"],
+      "enterprise-storage-solutions": ["SAN / NAS / 對象儲存", "全快碟與混合選項", "數據去重", "快照與複製", "可擴展容量"],
+      "managed-hosting-services": ["7×24小時監控", "補丁管理", "備份與恢復", "安全加固", "SLA保障"],
+      "business-continuity-disaster-recovery": ["DRaaS / BaaS方案", "RPO / RTO優化", "自動故障轉移", "定期DR測試", "合規支持"],
+      "next-gen-firewall-ips": ["深度封包檢測", "入侵防禦", "應用控制", "SSL檢測"],
+      "web-application-firewall": ["OWASP十大防護", "機器人管理", "API安全", "虛擬修補"],
+      "endpoint-detection-response": ["即時威脅偵測", "行為分析", "自動回應", "取證調查"],
+      "network-detection-response": ["網路流量分析", "異常偵測", "威脅獵捕", "加密流量檢查"],
+      "cloud-security": ["CASB / SASE / ZTNA", "雲端態勢管理", "數據防洩漏", "身分感知存取"],
+      "sd-wan-load-balancing": ["應用感知路由", "多路徑優化", "集中管理", "WAN優化"],
+      "managed-detection-response": ["7×24 SOC監控", "威脅情報", "事件回應", "漏洞管理"],
+      "incident-response": ["快速回應團隊", "取證分析", "遏制與根除", "恢復支持", "事後複盤"]
+    }
+  },
+  "footer": {
+    "products": "產品服務",
+    "build": "構建",
+    "run": "承載",
+    "protect": "保護",
+    "solutions": "行業解決方案",
+    "healthcare": "醫療健康",
+    "finance": "金融服務",
+    "retail": "零售業",
+    "company": "關於我們",
+    "aboutUs": "關於泰谷",
+    "blog": "新聞博客",
+    "contact": "聯絡我們",
+    "support": "客戶支持",
+    "tickets": "工單系統",
+    "faq": "常見問題",
+    "copyright": "© 2026 泰谷網數科技 版權所有",
+    "privacy": "隱私權政策",
+    "terms": "服務條款"
+  },
+  "privacy": {
+    "title": "隱私權政策",
+    "lastUpdated": "最後更新",
+    "section1Title": "我們收集的資訊",
+    "section1Body": "當您造訪我們的網站、提交聯絡表單或建立支援帳戶時，我們可能會收集您的姓名、電子郵件地址、公司名稱、電話號碼，以及您在訊息或工單中提供的任何資訊。",
+    "section2Title": "我們如何使用您的資訊",
+    "section2Body": "我們使用您的資訊來：",
+    "section2Items": ["回應您的詢問並提供客戶支援", "處理和管理您的支援工單", "發送與您請求相關的交易郵件", "改進我們的網站和服務"],
+    "section3Title": "資料儲存與安全",
+    "section3Body": "您的資料使用業界標準加密和存取控制安全儲存。我們實施適當的技術和組織措施，保護您的個人資訊免受未經授權的存取、變更、揭露或毀損。",
+    "section4Title": "第三方服務",
+    "section4Body": "我們使用值得信賴的第三方服務進行託管、內容管理和郵件傳送。這些供應商受合約約束保護您的資料，僅用於我們指定的目的。",
+    "section5Title": "Cookies",
+    "section5Body": "我們的網站使用必要的Cookie進行身份驗證和工作階段管理。未經您的明確同意，我們不會使用追蹤Cookie。",
+    "section6Title": "您的權利",
+    "section6Body": "您有權存取、更正或刪除您的個人資料。要行使這些權利，請透過以下方式聯繫我們",
+    "section7Title": "聯絡方式",
+    "section7Body": "有關此隱私權政策的問題，請透過以下方式聯繫我們",
+    "backHome": "← 返回首頁"
+  },
+  "terms": {
+    "title": "服務條款",
+    "lastUpdated": "最後更新",
+    "section1Title": "接受條款",
+    "section1Body": "存取和使用泰谷網數科技網站（www.techguru-it.asia）即表示您同意受這些服務條款約束。如果您不同意，請勿使用我們的網站。",
+    "section2Title": "服務",
+    "section2Body": "TechGuru提供IT基礎設施諮詢、實施和託管服務。本網站上的資訊僅供一般參考，不構成具有約束力的要約。",
+    "section3Title": "智慧財產權",
+    "section3Body": "本網站上的所有內容，包括文字、圖形、標誌和軟體，均為泰谷網數科技的財產，受適用的智慧財產權法律保護。",
+    "section4Title": "責任限制",
+    "section4Body": "TechGuru不對因您使用本網站或依賴其中提供的任何資訊而產生的任何間接、附帶或後續損害承擔責任。",
+    "section5Title": "第三方網站連結",
+    "section5Body": "我們的網站可能包含第三方網站的連結。我們不對這些外部網站的內容或隱私實踐負責。",
+    "section6Title": "條款變更",
+    "section6Body": "我們保留隨時修改這些條款的權利。變更將發佈在此頁面上，並附上更新的修訂日期。",
+    "section7Title": "聯絡方式",
+    "section7Body": "有關這些條款的問題，請透過以下方式聯繫我們",
+    "backHome": "← 返回首頁"
+  },
+  "error": {
+    "title": "發生錯誤",
+    "description": "發生非預期的錯誤，請重新嘗試。",
+    "retry": "重試",
+    "goHome": "返回首頁",
+    "notFound": "找不到頁面",
+    "notFoundDesc": "您尋找的頁面不存在或已被移動。",
+    "backHome": "返回首頁"
+  },
+  "auth": {
+    "signIn": "登入",
+    "signInSubtitle": "歡迎回來！請登入您的帳戶。",
+    "signingIn": "登入中...",
+    "signInWithGoogle": "使用 Google 登入",
+    "or": "或",
+    "createAccount": "建立帳戶",
+    "registerSubtitle": "加入我們，存取支援並提交工單。",
+    "creatingAccount": "建立帳戶中...",
+    "fullName": "全名",
+    "fullNamePlaceholder": "陳大衛",
+    "email": "電子郵件",
+    "emailPlaceholder": "you@company.com",
+    "password": "密碼",
+    "passwordPlaceholder": "至少8字元，含大寫、小寫、數字",
+    "confirmPassword": "確認密碼",
+    "confirmPasswordPlaceholder": "請再次輸入密碼",
+    "passwordMismatch": "密碼不一致",
+    "passwordMinLength": "密碼至少需要8個字元",
+    "passwordRequirements": "密碼必須包含大寫字母、小寫字母和數字",
+    "noAccount": "還沒有帳戶？",
+    "hasAccount": "已有帳戶？",
+    "forgotPassword": "忘記密碼？",
+    "resetPassword": "重設密碼",
+    "resetSent": "密碼重設郵件已發送，請檢查您的收件匣。",
+    "supportTitle": "客戶支援中心",
+    "supportSubtitle": "提交並追蹤您的支援工單",
+    "newTicket": "新工單",
+    "myTickets": "我的工單",
+    "category": "類別",
+    "selectCategory": "選擇類別",
+    "productService": "產品/服務",
+    "subject": "主旨",
+    "description": "描述",
+    "attachments": "附件（最多10MB）",
+    "submitTicket": "提交工單",
+    "submitting": "提交中...",
+    "ticketSubmitted": "工單已提交！",
+    "ticketSubmittedDesc": "您將收到確認郵件。",
+    "ticketNumber": "工單編號",
+    "status": "狀態",
+    "createdAt": "建立時間",
+    "noTickets": "尚無工單",
+    "ticketOpen": "開啟",
+    "ticketInProgress": "處理中",
+    "ticketResolved": "已解決",
+    "ticketClosed": "已關閉",
+    "resetEmailSent": "密碼重設郵件已發送，請檢查您的收件箱。",
+    "backToLogin": "返回登入",
+    "sendResetLink": "發送重設連結",
+    "sending": "發送中..."
+  }
+}
