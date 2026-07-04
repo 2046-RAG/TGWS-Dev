@@ -234,6 +234,9 @@
     "title": "新聞與洞察",
     "subtitle": "掌握最新技術趨勢、解決方案與行業見解。",
     "readMore": "閱讀更多",
+    "readingTime": "分鐘閱讀",
+    "author": "作者",
+    "featured": "精選",
     "categories": {
       "all": "所有文章",
       "news": "新聞",
@@ -485,6 +488,11 @@
     "noResults": "目前沒有符合篩選條件的案例。",
     "filterIndustry": "按行業篩選",
     "filterProduct": "按產品篩選",
+    "metrics": {
+      "team": "團隊規模",
+      "results": "關鍵成果",
+      "duration": "專案時長"
+    },
     "filters": {
       "industry": {
         "all": "所有行業",

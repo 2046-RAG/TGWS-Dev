@@ -234,6 +234,9 @@
     "title": "News & Insights",
     "subtitle": "Stay updated with the latest technology trends, solutions, and industry insights from TechGuru.",
     "readMore": "Read More",
+    "readingTime": "min read",
+    "author": "Author",
+    "featured": "Featured",
     "categories": {
       "all": "All Posts",
       "news": "News",
@@ -485,6 +488,11 @@
     "noResults": "No case studies match the selected filters.",
     "filterIndustry": "Filter by Industry",
     "filterProduct": "Filter by Product",
+    "metrics": {
+      "team": "Team Size",
+      "results": "Key Results",
+      "duration": "Project Duration"
+    },
     "filters": {
       "industry": {
         "all": "All Industries",
