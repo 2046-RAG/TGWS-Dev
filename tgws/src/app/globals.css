@@ -183,13 +183,20 @@ body {
   }
 }
 
-/* Scroll Reveal Animation */
+/* Scroll Reveal Animation - Progressive Enhancement */
+/* Default: content visible (no JavaScript dependency) */
 .scroll-reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* When JavaScript loads, enable animation */
+.js-loaded .scroll-reveal {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
-.scroll-reveal.revealed {
+.js-loaded .scroll-reveal.revealed {
   opacity: 1;
   transform: translateY(0);
 }
