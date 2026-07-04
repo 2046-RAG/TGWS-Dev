@@ -281,7 +281,6 @@ export default function HeroSection() {
           {/* 下箭头 */}
           <svg
             className="w-4 h-4 sm:w-5 sm:h-5 text-white/60 group-hover:text-white/90 transition-colors duration-300"
-            style={{ animation: 'scrollBounce 2s ease-in-out infinite' }}
             viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
           >
             <path d="M12 5v14M19 12l-7 7-7-7"/>

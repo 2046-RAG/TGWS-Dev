@@ -59,42 +59,9 @@ body {
   }
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(8px); }
-}
-
 @keyframes fadeOut {
   from { opacity: 1; }
   to { opacity: 0; pointer-events: none; }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px var(--pulse-color, #00D4FF), 0 0 40px rgba(0, 212, 255, 0.25); }
-  50% { box-shadow: 0 0 30px var(--pulse-color, #00D4FF), 0 0 60px rgba(0, 212, 255, 0.35); }
-}
-
-@keyframes ripple {
-  0% { transform: scale(1); opacity: 0.6; }
-  100% { transform: scale(2.5); opacity: 0; }
-}
-
-.pulse-card-active {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-.ripple-effect {
-  animation: ripple 1s ease-out forwards;
-}
-
-@keyframes scrollBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(4px); }
-}
-
-@keyframes scrollFadeIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .card {
@@ -312,32 +279,21 @@ body {
 
 /* ═══ Home page animations ═══ */
 
-/* 入场动画 */
+/* Simplified animations - removed per-card staggered fade-ups */
 .anim-fade-up {
-  opacity: 0;
-  transform: translateY(24px);
-  animation: fadeUp 0.6s ease-out forwards;
-}
-.anim-node {
-  opacity: 0;
-  transform: scale(0.5);
-  animation: nodePop 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  opacity: 1;
+  transform: translateY(0);
 }
 .anim-card {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 0.5s ease-out forwards;
+  opacity: 1;
+  transform: translateY(0);
+}
+.anim-node {
+  opacity: 1;
+  transform: scale(1);
 }
 .anim-line-grow {
   animation: lineGrow 1s 0.3s ease-out both;
-}
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes nodePop {
-  from { opacity: 0; transform: scale(0.5); }
-  to { opacity: 1; transform: scale(1); }
 }
 @keyframes lineGrow {
   from { clip-path: inset(0 100% 0 0); }
