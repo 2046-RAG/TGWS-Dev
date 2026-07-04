@@ -31,33 +31,33 @@ const tabColors: Record<TabKey, string> = {
 };
 
 const slugToI18n: Record<string, string> = {
-  'ai-generated-content-aigc': 'ai-generated-content-aigc',
-  'ai-assisted-coding': 'ai-assisted-coding',
-  'ai-agent-development': 'ai-agent-development',
-  'enterprise-legacy-system-ai-augmentation': 'enterprise-legacy-system-ai-augmentation',
-  'server-virtualization-platform': 'server-virtualization-platform',
-  'hyper-converged-infrastructure': 'hyper-converged-infrastructure',
-  'cloud-migration': 'cloud-migration',
-  'cloud-repatriation': 'cloud-repatriation',
-  'enterprise-storage-solutions': 'enterprise-storage-solutions',
-  'managed-hosting-services': 'managed-hosting-services',
-  'business-continuity-disaster-recovery': 'business-continuity-disaster-recovery',
-  'enterprise-routers': 'enterprise-routers',
-  'core-switches': 'core-switches',
-  'access-switches': 'access-switches',
-  'aggregation-switches': 'aggregation-switches',
-  'enterprise-wireless-ap': 'enterprise-wireless-ap',
-  'wireless-controllers': 'wireless-controllers',
-  'outdoor-wireless-ap': 'outdoor-wireless-ap',
-  'wifi-6-7-ap': 'wifi-6-7-ap',
-  'next-gen-firewall-ips': 'next-gen-firewall-ips',
-  'web-application-firewall': 'web-application-firewall',
-  'endpoint-detection-response': 'endpoint-detection-response',
-  'network-detection-response': 'network-detection-response',
-  'cloud-security': 'cloud-security',
-  'sd-wan-load-balancing': 'sd-wan-load-balancing',
-  'managed-detection-response': 'managed-detection-response',
-  'incident-response': 'incident-response',
+  'ai-generated-content-aigc': 'aigcT2V',
+  'ai-assisted-coding': 'aigcCoding',
+  'ai-agent-development': 'aiAgent',
+  'enterprise-legacy-system-ai-augmentation': 'legacyAI',
+  'server-virtualization-platform': 'vmPlatform',
+  'hyper-converged-infrastructure': 'hci',
+  'cloud-migration': 'cloudPlatform',
+  'cloud-repatriation': 'cloudRepatriation',
+  'enterprise-storage-solutions': 'hardware',
+  'managed-hosting-services': 'hosting',
+  'business-continuity-disaster-recovery': 'bcdr',
+  'enterprise-routers': 'enterpriseRouters',
+  'core-switches': 'coreSwitches',
+  'access-switches': 'accessSwitches',
+  'aggregation-switches': 'aggregationSwitches',
+  'enterprise-wireless-ap': 'enterpriseWirelessAP',
+  'wireless-controllers': 'wirelessControllers',
+  'outdoor-wireless-ap': 'outdoorWirelessAP',
+  'wifi-6-7-ap': 'wifi67AP',
+  'next-gen-firewall-ips': 'ngfw',
+  'web-application-firewall': 'waf',
+  'endpoint-detection-response': 'edr',
+  'network-detection-response': 'ndr',
+  'cloud-security': 'cloudSecurity',
+  'sd-wan-load-balancing': 'sdwan',
+  'managed-detection-response': 'mdr',
+  'incident-response': 'incidentResponse',
 };
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -122,7 +122,7 @@ export default function ProductsList({ products }: { products: Product[] }) {
   const renderProductCard = (product: Product, index: number) => {
     const slug = product.slug?.current || '';
     const i18nKey = slugToI18n[slug] || '';
-    const features = i18nKey ? t.raw('features.' + i18nKey) : null;
+    const features = slug ? t.raw('features.' + slug) : null;
 
     return (
       <motion.div
