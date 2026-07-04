@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import CaseStudyDetail from './CaseStudyDetail';
 import type { Metadata } from 'next';
 
+export const revalidate = 3600;
+
 async function getCaseStudy(slug: string) {
   try {
     const query = `*[_type == "caseStudy" && slug.current == $slug][0] {

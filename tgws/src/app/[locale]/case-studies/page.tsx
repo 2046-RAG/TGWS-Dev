@@ -1,6 +1,8 @@
 import { client } from '@/lib/sanity';
 import CaseStudiesList from './CaseStudiesList';
 
+export const revalidate = 3600;
+
 async function getCaseStudies() {
   try {
     const query = `*[_type == "caseStudy"] | order(industry asc) {

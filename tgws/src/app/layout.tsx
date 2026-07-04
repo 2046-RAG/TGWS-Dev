@@ -25,6 +25,10 @@ export default function RootLayout({
       className="h-full antialiased"
     >
       <head>
+        <link rel="preload" href="https://db.onlinewebfonts.com/c/5ac3fe7c6abd2f62067f266d89671492?family=HelveticaNowDisplay-Medium" as="style" crossOrigin="anonymous" />
+        <link rel="preload" href="https://db.onlinewebfonts.com/c/1aa3377e489837a26d019bba501e779d?family=HelveticaNowDisplayW01-Rg" as="style" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="https://db.onlinewebfonts.com/c/5ac3fe7c6abd2f62067f266d89671492?family=HelveticaNowDisplay-Medium" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="https://db.onlinewebfonts.com/c/1aa3377e489837a26d019bba501e779d?family=HelveticaNowDisplayW01-Rg" crossOrigin="anonymous" />
         <script dangerouslySetInnerHTML={{ __html: `
           // Scroll Reveal
           if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {

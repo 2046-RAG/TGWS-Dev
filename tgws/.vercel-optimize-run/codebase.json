@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "1.0",
+  "scannedAt": "2026-07-04T16:48:44.324Z",
+  "rootDir": "D:\\软件集\\Mimo\\WorkSpace\\TGWS\\tgws",
+  "monorepoRoot": null,
+  "workspacePackages": [],
+  "stack": {
+    "framework": "next",
+    "frameworkVersion": "16.2.9",
+    "hasAppRouter": true,
+    "hasPagesRouter": false,
+    "cacheComponents": null,
+    "typescript": true,
+    "orm": "none",
+    "isMonorepo": false,
+    "rootDirectory": null,
+    "hasVercelFlagsPackage": false,
+    "vercelFlagsPackages": [],
+    "hasWorkflowPackage": false,
+    "workflowPackages": []
+  },
+  "routes": [],
+  "findings": [
+    {
+      "pattern": "region-pin-in-config",
+      "file": "vercel.json",
+      "line": 6,
+      "evidence": "vercel.json regions: [hkg1]",
+      "trafficIndependent": true,
+      "subtype": "vercel-json-single",
+      "regions": [
+        "hkg1"
+      ],
+      "route": null
+    }
+  ],
+  "scannerMetadata": [
+    {
+      "id": "unoptimized-image",
+      "title": "Image optimization gap (raw <img>, global flag, missing sizes, or SVG mis-routed)",
+      "severity": "high",
+      "billingDimension": "image-optimization",
+      "trafficIndependent": false
+    },
+    {
+      "id": "force-dynamic",
+      "title": "export const dynamic = 'force-dynamic'",
+      "severity": "medium",
+      "billingDimension": "function-duration",
+      "trafficIndependent": false
+    },
+    {
+      "id": "middleware-broad-matcher",
+      "title": "Middleware matcher missing or too broad",
+      "severity": "high",
+      "billingDimension": "edge-requests",
+      "trafficIndependent": true
+    },
+    {
+      "id": "missing-cache-headers",
+      "title": "Cacheable route or fetch with no caching (Cache-Control absent or no-store)",
+      "severity": "medium",
+      "billingDimension": "edge-requests",
+      "trafficIndependent": false
+    },
+    {
+      "id": "max-age-without-s-maxage",
+      "title": "Cache-Control: max-age without s-maxage",
+      "severity": "medium",
+      "billingDimension": "edge-requests",
+      "trafficIndependent": false
+    },
+    {
+      "id": "headers-in-page",
+      "title": "Dynamic API call forcing dynamic rendering",
+      "severity": "medium",
+      "billingDimension": "function-duration",
+      "trafficIndependent": false
+    },
+    {
+      "id": "source-maps-production",
+      "title": "Source maps enabled in production",
+      "severity": "low",
+      "billingDimension": "edge-requests",
+      "trafficIndependent": true
+    },
+    {
+      "id": "prisma-include-tree-bloat",
+      "title": "Deep Prisma include tree (3+ levels)",
+      "severity": "high",
+      "billingDimension": "function-duration",
+      "trafficIndependent": false
+    },
+    {
+      "id": "sveltekit-prerender-missing",
+      "title": "SvelteKit page without explicit prerender / ISR config",
+      "severity": "low",
+      "billingDimension": "function-duration",
+      "trafficIndependent": false
+    },
+    {
+      "id": "large-static-asset",
+      "title": "Large file in public/",
+      "severity": "medium",
+      "billingDimension": "bandwidth",
+      "trafficIndependent": true
+    },
+    {
+      "id": "edge-heavy-import",
+      "title": "Heavy / node-only import inside edge-runtime file",
+      "severity": "high",
+      "billingDimension": "function-duration",
+      "trafficIndependent": true
+    },
+    {
+      "id": "use-cache-date-stamp",
+      "title": "new Date() / Date.now() / Math.random() inside a 'use cache' file",
+      "severity": "high",
+      "billingDimension": "isr",
+      "trafficIndependent": false
+    },
+    {
+      "id": "cache-components-suspense-dedupe",
+      "title": "'use cache' with multiple Suspense boundaries on the same data",
+      "severity": "medium",
+      "billingDimension": "function-duration",
+      "trafficIndependent": false
+    },
+    {
+      "id": "turbo-force-bypass",
+      "title": "Turborepo cache bypass on a monorepo",
+      "severity": "high",
+      "billingDimension": "build",
+      "trafficIndependent": true
+    },
+    {
+      "id": "region-pin-in-config",
+      "title": "Function region pinned in config",
+      "severity": "low",
+      "billingDimension": "function-duration",
+      "trafficIndependent": true
+    }
+  ]
+}

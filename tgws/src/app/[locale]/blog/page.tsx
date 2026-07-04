@@ -1,6 +1,8 @@
 import { client } from '@/lib/sanity';
 import BlogList from './BlogList';
 
+export const revalidate = 3600;
+
 async function getPosts() {
   try {
     const query = `*[_type == "post"] | order(publishedAt desc) {

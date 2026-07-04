@@ -1,0 +1,442 @@
+{
+  "schemaVersion": "1.2",
+  "collectedAt": "2026-07-04T16:48:25.641Z",
+  "timeWindow": "14d",
+  "projectId": "prj_LHKlb8B4Q7eUtBri3zkeSz3vK9Mu",
+  "orgId": "team_KpyeqKrqbCtSyZjb2D5LEbSN",
+  "projectIdSource": "project.json",
+  "commandScope": {
+    "ok": true,
+    "cliScope": "glaywang2046-1050s-projects",
+    "source": "whoami-current-team",
+    "required": true,
+    "teamId": "team_KpyeqKrqbCtSyZjb2D5LEbSN",
+    "detail": "Resolved linked team ID to the current CLI team slug."
+  },
+  "observabilityPlus": false,
+  "observabilityPlusPreflight": {
+    "ok": true,
+    "source": "observability-configuration-api",
+    "access": false,
+    "blocker": "no_oplus_probe",
+    "detail": "Route-level metrics are unavailable because Observability Plus is not enabled for this team."
+  },
+  "observabilityPlusUsable": false,
+  "observabilityPlusBlocker": "no_oplus_probe",
+  "observabilityPlusBlockerDetail": "Route-level metrics are unavailable because Observability Plus is not enabled for this team.",
+  "frameworkSupport": {
+    "ok": true,
+    "status": "supported",
+    "blocker": null,
+    "framework": "next",
+    "label": "Next.js",
+    "supportedFrameworks": [
+      "Next.js",
+      "SvelteKit",
+      "Nuxt"
+    ],
+    "limitedFrameworks": [
+      "Astro"
+    ],
+    "detail": "Next.js is supported for metric-backed route-to-file investigations."
+  },
+  "frameworkSupportBlocker": null,
+  "frameworkSupportDetail": "Next.js is supported for metric-backed route-to-file investigations.",
+  "plan": {
+    "plan": "hobby",
+    "reason": "team.billing.plan=hobby"
+  },
+  "project": {
+    "accountId": "team_KpyeqKrqbCtSyZjb2D5LEbSN",
+    "alias": [],
+    "speedInsights": {
+      "id": "hikvmvWTWzdprJ15wNfsLrZZqGK",
+      "hasData": false
+    },
+    "autoExposeSystemEnvs": true,
+    "autoAssignCustomDomains": true,
+    "autoAssignCustomDomainsUpdatedBy": "system",
+    "buildCommand": "npx next build --webpack",
+    "commandForIgnoringBuildStep": null,
+    "createdAt": 1782704917698,
+    "crons": {
+      "enabledAt": 1782705007658,
+      "disabledAt": null,
+      "updatedAt": 1783183303990,
+      "deploymentId": "dpl_3uZRTmXQ32M5fZ5Sw72GdGt3bYBc",
+      "definitions": []
+    },
+    "deploymentExpiration": {
+      "expirationDays": 30,
+      "expirationDaysProduction": 30,
+      "expirationDaysCanceled": 30,
+      "expirationDaysErrored": 30,
+      "deploymentsToKeep": 10
+    },
+    "devCommand": null,
+    "directoryListing": false,
+    "env": [
+      {
+        "type": "sensitive",
+        "value": "",
+        "target": [
+          "production"
+        ],
+        "configurationId": null,
+        "id": "mWuTB6CIOR1b2Zk4",
+        "key": "NEXT_PUBLIC_SUPABASE_URL",
+        "createdAt": 1782705827629,
+        "updatedAt": 1782705827629,
+        "createdBy": "smMcJi9gED9OULYR81uwaKKE",
+        "updatedBy": null
+      },
+      {
+        "type": "sensitive",
+        "value": "",
+        "target": [
+          "production"
+        ],
+        "configurationId": null,
+        "id": "XpJ2GkcUHWz6CTkj",
+        "key": "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        "createdAt": 1782705837337,
+        "updatedAt": 1782705837337,
+        "createdBy": "smMcJi9gED9OULYR81uwaKKE",
+        "updatedBy": null
+      },
+      {
+        "type": "sensitive",
+        "value": "",
+        "target": [
+          "production"
+        ],
+        "configurationId": null,
+        "id": "Xy2uVjhdwHoq9eJ1",
+        "key": "SUPABASE_SERVICE_ROLE_KEY",
+        "createdAt": 1782705846741,
+        "updatedAt": 1782705846741,
+        "createdBy": "smMcJi9gED9OULYR81uwaKKE",
+        "updatedBy": null
+      },
+      {
+        "type": "sensitive",
+        "value": "",
+        "target": [
+          "production"
+        ],
+        "configurationId": null,
+        "id": "wsKJFsZyxZu4cI1c",
+        "key": "NEXT_PUBLIC_SANITY_PROJECT_ID",
+        "createdAt": 1782705857223,
+        "updatedAt": 1782705857223,
+        "createdBy": "smMcJi9gED9OULYR81uwaKKE",
+        "updatedBy": null
+      },
+      {
+        "type": "sensitive",
+        "value": "",
+        "target": [
+          "production"
+        ],
+        "configurationId": null,
+        "id": "FbNQKJ4aJEyXqWBe",
+        "key": "SANITY_API_TOKEN",
+        "createdAt": 1782705869322,
+        "updatedAt": 1782705869322,
+        "createdBy": "smMcJi9gED9OULYR81uwaKKE",
+        "updatedBy": null
+      },
+      {
+        "type": "sensitive",
+        "value": "",
+        "target": [
+          "production"
+        ],
+        "configurationId": null,
+        "id": "9hNUqT3iJpgjpr6s",
+        "key": "REVALIDATE_SECRET",
+        "createdAt": 1782705879649,
+        "updatedAt": 1782705879649,
+        "createdBy": "smMcJi9gED9OULYR81uwaKKE",
+        "updatedBy": null
+      },
+      {
+        "type": "sensitive",
+        "value": "",
+        "target": [
+          "production"
+        ],
+        "configurationId": null,
+        "id": "ODu8w4QWqJt9tT0k",
+        "key": "NEXT_PUBLIC_SITE_URL",
+        "createdAt": 1782705889212,
+        "updatedAt": 1782705889212,
+        "createdBy": "smMcJi9gED9OULYR81uwaKKE",
+        "updatedBy": null
+      }
+    ],
+    "framework": "nextjs",
+    "gitForkProtection": true,
+    "gitLFS": false,
+    "id": "prj_LHKlb8B4Q7eUtBri3zkeSz3vK9Mu",
+    "installCommand": "npm install --registry https://registry.npmmirror.com",
+    "lastRollbackTarget": null,
+    "lastAliasRequest": null,
+    "name": "tgws",
+    "nodeVersion": "24.x",
+    "outputDirectory": ".next",
+    "productionDeploymentsFastLane": true,
+    "defaultResourceConfig": {
+      "fluid": true,
+      "functionDefaultRegions": [
+        "iad1"
+      ],
+      "functionDefaultTimeout": 300,
+      "functionDefaultMemoryType": "standard",
+      "functionZeroConfigFailover": false,
+      "elasticConcurrencyEnabled": false
+    },
+    "resourceConfig": {
+      "fluid": true,
+      "functionDefaultRegions": [
+        "iad1"
+      ]
+    },
+    "rootDirectory": null,
+    "serverlessFunctionRegion": "iad1",
+    "sourceFilesOutsideRootDirectory": true,
+    "ssoProtection": {
+      "deploymentType": "all_except_custom_domains"
+    },
+    "updatedAt": 1783183303990,
+    "live": false,
+    "enableExternalRewriteCaching": true,
+    "gitComments": {
+      "onCommit": false,
+      "onPullRequest": true
+    },
+    "gitProviderOptions": {
+      "createDeployments": "enabled"
+    },
+    "webAnalytics": {
+      "id": "h6g4wZJPtpgZB5bYUimUl0mt9",
+      "enabledAt": 1783015847606
+    },
+    "oidcTokenConfig": {
+      "enabled": true,
+      "issuerMode": "team"
+    },
+    "hasDeployments": true,
+    "latestDeployments": [
+      {
+        "alias": [
+          "www.techguru-it.asia",
+          "techguru-it.asia",
+          "tgws-glaywang2046-1050s-projects.vercel.app",
+          "tgws-glaywang2046-1050-glaywang2046-1050s-projects.vercel.app"
+        ],
+        "aliasAssigned": 1783183304195,
+        "aliasError": null,
+        "automaticAliases": [
+          "tgws-glaywang2046-1050s-projects.vercel.app",
+          "tgws-glaywang2046-1050-glaywang2046-1050s-projects.vercel.app"
+        ],
+        "builds": [],
+        "createdAt": 1783183255625,
+        "createdIn": "sfo1",
+        "creator": {
+          "uid": "smMcJi9gED9OULYR81uwaKKE",
+          "email": "glaywang.2046@gmail.com",
+          "username": "glaywang2046-1050"
+        },
+        "deploymentHostname": "tgws-d81p9npq0-glaywang2046-1050s-projects",
+        "forced": false,
+        "id": "dpl_3uZRTmXQ32M5fZ5Sw72GdGt3bYBc",
+        "meta": {
+          "gitCommitAuthorName": "TechGuru Dev",
+          "gitCommitAuthorEmail": "dev@techguru-it.asia",
+          "gitCommitMessage": "perf: Vercel React Best Practices修复18个违规",
+          "gitCommitRef": "Trunk",
+          "gitCommitSha": "03e3b90f09480862ec9b0f1aad42e626020ba5d4",
+          "lambdaRuntimeStats": "{\"nodejs\":2}"
+        },
+        "name": "tgws",
+        "plan": "hobby",
+        "private": true,
+        "readyState": "READY",
+        "readySubstate": "PROMOTED",
+        "target": "production",
+        "teamId": "team_KpyeqKrqbCtSyZjb2D5LEbSN",
+        "type": "LAMBDAS",
+        "url": "tgws-d81p9npq0-glaywang2046-1050s-projects.vercel.app",
+        "userId": "smMcJi9gED9OULYR81uwaKKE",
+        "withCache": false,
+        "buildingAt": 1783183256970,
+        "readyAt": 1783183303507,
+        "previewCommentsEnabled": true,
+        "oidcTokenClaims": {
+          "sub": "owner:glaywang2046-1050s-projects:project:tgws:environment:production",
+          "iss": "https://oidc.vercel.com/glaywang2046-1050s-projects",
+          "scope": "owner:glaywang2046-1050s-projects:project:tgws:environment:production",
+          "aud": "https://vercel.com/glaywang2046-1050s-projects",
+          "owner": "glaywang2046-1050s-projects",
+          "owner_id": "team_KpyeqKrqbCtSyZjb2D5LEbSN",
+          "project": "tgws",
+          "project_id": "prj_LHKlb8B4Q7eUtBri3zkeSz3vK9Mu",
+          "environment": "production",
+          "plan": "hobby"
+        }
+      },
+      {
+        "alias": [
+          "www.techguru-it.asia",
+          "techguru-it.asia",
+          "tgws-glaywang2046-1050s-projects.vercel.app",
+          "tgws-glaywang2046-1050-glaywang2046-1050s-projects.vercel.app"
+        ],
+        "aliasAssigned": 1783183225828,
+        "aliasError": null,
+        "automaticAliases": [
+          "tgws-glaywang2046-1050s-projects.vercel.app",
+          "tgws-glaywang2046-1050-glaywang2046-1050s-projects.vercel.app"
+        ],
+        "builds": [],
+        "createdAt": 1783183178747,
+        "createdIn": "sfo1",
+        "creator": {
+          "uid": "smMcJi9gED9OULYR81uwaKKE",
+          "email": "glaywang.2046@gmail.com",
+          "username": "glaywang2046-1050"
+        },
+        "deploymentHostname": "tgws-45tnmck64-glaywang2046-1050s-projects",
+        "forced": false,
+        "id": "dpl_2oxS7PYWGZwN6VochFCiBKFNSMb5",
+        "meta": {
+          "gitCommitAuthorName": "TechGuru Dev",
+          "gitCommitAuthorEmail": "dev@techguru-it.asia",
+          "gitCommitMessage": "perf: Vercel React Best Practices修复18个违规",
+          "gitCommitRef": "Trunk",
+          "gitCommitSha": "03e3b90f09480862ec9b0f1aad42e626020ba5d4",
+          "lambdaRuntimeStats": "{\"nodejs\":2}"
+        },
+        "name": "tgws",
+        "plan": "hobby",
+        "private": true,
+        "readyState": "READY",
+        "readySubstate": "PROMOTED",
+        "target": "production",
+        "teamId": "team_KpyeqKrqbCtSyZjb2D5LEbSN",
+        "type": "LAMBDAS",
+        "url": "tgws-45tnmck64-glaywang2046-1050s-projects.vercel.app",
+        "userId": "smMcJi9gED9OULYR81uwaKKE",
+        "withCache": false,
+        "buildingAt": 1783183179627,
+        "readyAt": 1783183225250,
+        "previewCommentsEnabled": true,
+        "oidcTokenClaims": {
+          "sub": "owner:glaywang2046-1050s-projects:project:tgws:environment:production",
+          "iss": "https://oidc.vercel.com/glaywang2046-1050s-projects",
+          "scope": "owner:glaywang2046-1050s-projects:project:tgws:environment:production",
+          "aud": "https://vercel.com/glaywang2046-1050s-projects",
+          "owner": "glaywang2046-1050s-projects",
+          "owner_id": "team_KpyeqKrqbCtSyZjb2D5LEbSN",
+          "project": "tgws",
+          "project_id": "prj_LHKlb8B4Q7eUtBri3zkeSz3vK9Mu",
+          "environment": "production",
+          "plan": "hobby"
+        }
+      }
+    ],
+    "targets": {
+      "production": {
+        "alias": [
+          "www.techguru-it.asia",
+          "techguru-it.asia",
+          "tgws-glaywang2046-1050s-projects.vercel.app",
+          "tgws-glaywang2046-1050-glaywang2046-1050s-projects.vercel.app"
+        ],
+        "aliasAssigned": 1783183304195,
+        "aliasError": null,
+        "automaticAliases": [
+          "tgws-glaywang2046-1050s-projects.vercel.app",
+          "tgws-glaywang2046-1050-glaywang2046-1050s-projects.vercel.app"
+        ],
+        "builds": [],
+        "createdAt": 1783183255625,
+        "createdIn": "sfo1",
+        "creator": {
+          "uid": "smMcJi9gED9OULYR81uwaKKE",
+          "email": "glaywang.2046@gmail.com",
+          "username": "glaywang2046-1050"
+        },
+        "deploymentHostname": "tgws-d81p9npq0-glaywang2046-1050s-projects",
+        "forced": false,
+        "id": "dpl_3uZRTmXQ32M5fZ5Sw72GdGt3bYBc",
+        "meta": {
+          "gitCommitAuthorName": "TechGuru Dev",
+          "gitCommitAuthorEmail": "dev@techguru-it.asia",
+          "gitCommitMessage": "perf: Vercel React Best Practices修复18个违规",
+          "gitCommitRef": "Trunk",
+          "gitCommitSha": "03e3b90f09480862ec9b0f1aad42e626020ba5d4",
+          "lambdaRuntimeStats": "{\"nodejs\":2}"
+        },
+        "name": "tgws",
+        "plan": "hobby",
+        "private": true,
+        "readyState": "READY",
+        "readySubstate": "PROMOTED",
+        "target": "production",
+        "teamId": "team_KpyeqKrqbCtSyZjb2D5LEbSN",
+        "type": "LAMBDAS",
+        "url": "tgws-d81p9npq0-glaywang2046-1050s-projects.vercel.app",
+        "userId": "smMcJi9gED9OULYR81uwaKKE",
+        "withCache": false,
+        "buildingAt": 1783183256970,
+        "readyAt": 1783183303507,
+        "previewCommentsEnabled": true,
+        "oidcTokenClaims": {
+          "sub": "owner:glaywang2046-1050s-projects:project:tgws:environment:production",
+          "iss": "https://oidc.vercel.com/glaywang2046-1050s-projects",
+          "scope": "owner:glaywang2046-1050s-projects:project:tgws:environment:production",
+          "aud": "https://vercel.com/glaywang2046-1050s-projects",
+          "owner": "glaywang2046-1050s-projects",
+          "owner_id": "team_KpyeqKrqbCtSyZjb2D5LEbSN",
+          "project": "tgws",
+          "project_id": "prj_LHKlb8B4Q7eUtBri3zkeSz3vK9Mu",
+          "environment": "production",
+          "plan": "hobby"
+        }
+      }
+    },
+    "features": {
+      "webAnalytics": true
+    },
+    "protectedSourcemaps": true
+  },
+  "contract": {
+    "context": "glaywang2046-1050s-projects",
+    "commitments": [],
+    "totalCommitments": 0
+  },
+  "usage": null,
+  "usageScope": "team",
+  "usageTeamTotal": null,
+  "usageError": "USAGE_UNAVAILABLE",
+  "stack": {
+    "framework": "next",
+    "frameworkVersion": "16.2.9",
+    "hasAppRouter": true,
+    "hasPagesRouter": false,
+    "cacheComponents": null,
+    "typescript": true,
+    "orm": "none",
+    "isMonorepo": false,
+    "rootDirectory": null,
+    "hasVercelFlagsPackage": false,
+    "vercelFlagsPackages": [],
+    "hasWorkflowPackage": false,
+    "workflowPackages": []
+  },
+  "metrics": {},
+  "metricsSchema": null
+}

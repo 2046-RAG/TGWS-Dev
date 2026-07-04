@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import BlogDetail from './BlogDetail';
 import type { Metadata } from 'next';
 
+export const revalidate = 3600;
+
 async function getPost(slug: string) {
   try {
     const query = `*[_type == "post" && slug.current == $slug][0] {
