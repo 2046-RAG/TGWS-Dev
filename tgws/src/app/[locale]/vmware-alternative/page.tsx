@@ -1,11 +1,11 @@
 'use client';
 
-import { useTranslations } from 'use-intl';
+
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import {
-  ArrowRight, Check, Shield, DollarSign, Zap, Clock,
-  Server, Cloud, RefreshCw, ChevronRight, Phone, Mail
+  ArrowRight, Shield, DollarSign, Zap, Clock,
+  Server, Cloud, RefreshCw, Phone
 } from 'lucide-react';
 
 export default function VMwareAlternativePage() {
@@ -178,7 +178,7 @@ export default function VMwareAlternativePage() {
             <p className="text-gray-500 max-w-2xl mx-auto">{t('whySubtitle')}</p>
           </div>
           <div className="grid sm:grid-cols-2 gap-6">
-            {reasons.map((r, i) => {
+            {reasons.map((r) => {
               const Icon = r.icon;
               return (
                 <div
@@ -210,7 +210,7 @@ export default function VMwareAlternativePage() {
             <p className="text-gray-500 max-w-2xl mx-auto">{t('solutionsSubtitle')}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {solutions.map((s, i) => {
+            {solutions.map((s) => {
               const Icon = s.icon;
               return (
                 <div

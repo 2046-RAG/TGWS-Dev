@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, Building2, Users, TrendingUp } from 'lucide-react';
+import Image from 'next/image';
 import { urlFor } from '@/lib/sanity.image';
 
 const industries = ['all', 'healthcare', 'finance', 'retail', 'logistics', 'education', 'government', 'manufacturing', 'other'];
@@ -69,12 +70,14 @@ export default function CaseStudiesList({ cases }: { cases: CaseStudy[] }) {
                 {/* Image Section */}
                 <div className="relative h-64 md:h-full min-h-[300px]">
                   {featuredCase.coverImage ? (
-                    <img
+                    <Image
                       src={typeof featuredCase.coverImage === 'string' && featuredCase.coverImage.startsWith('http')
                         ? featuredCase.coverImage
                         : urlFor(featuredCase.coverImage).width(800).height(600).url()}
                       alt={featuredCase.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-[#00D4FF]/20 to-[#7B61FF]/20 flex items-center justify-center">
@@ -146,12 +149,14 @@ export default function CaseStudiesList({ cases }: { cases: CaseStudy[] }) {
                   {/* Compact Image */}
                   <div className="relative h-40">
                     {cs.coverImage ? (
-                      <img
+                      <Image
                         src={typeof cs.coverImage === 'string' && cs.coverImage.startsWith('http')
                           ? cs.coverImage
                           : urlFor(cs.coverImage).width(400).height(200).url()}
                         alt={cs.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-[#00D4FF]/10 to-[#7B61FF]/10 flex items-center justify-center">

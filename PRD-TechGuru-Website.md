@@ -55,7 +55,6 @@
 | **文件存储** | Supabase Storage | 工单附件上传 |
 | **邮件服务** | Resend | 通知邮件发送 |
 | **UI框架** | Tailwind CSS + shadcn/ui | 样式+组件库 |
-| **动画** | Framer Motion | 页面过渡、微交互 |
 | **部署** | Vercel | 托管+CDN |
 | **语言** | TypeScript | 类型安全 |
 

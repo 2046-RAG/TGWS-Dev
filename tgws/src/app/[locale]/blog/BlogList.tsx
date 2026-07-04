@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, ArrowRight, Star, Clock, User } from 'lucide-react';
+import Image from 'next/image';
 import { urlFor } from '@/lib/sanity.image';
 
 const categories = ['all', 'news', 'technical', 'case-study', 'industry'];
@@ -88,12 +89,14 @@ export default function BlogList({ posts }: { posts: Post[] }) {
                 {/* Image Section - 3 columns */}
                 <div className="md:col-span-3 relative h-64 md:h-[400px]">
                   {featuredPost.mainImage ? (
-                    <img
+                    <Image
                       src={typeof featuredPost.mainImage === 'string' && featuredPost.mainImage.startsWith('http')
                         ? featuredPost.mainImage
                         : urlFor(featuredPost.mainImage).width(800).height(500).url()}
                       alt={featuredPost.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 60vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-[#00D4FF]/20 to-[#7B61FF]/20 flex items-center justify-center">
@@ -178,12 +181,14 @@ export default function BlogList({ posts }: { posts: Post[] }) {
                   {/* Image */}
                   <div className="relative h-48">
                     {post.mainImage ? (
-                      <img
+                      <Image
                         src={typeof post.mainImage === 'string' && post.mainImage.startsWith('http')
                           ? post.mainImage
                           : urlFor(post.mainImage).width(400).height(200).url()}
                         alt={post.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-[#00D4FF]/10 to-[#7B61FF]/10 flex items-center justify-center">

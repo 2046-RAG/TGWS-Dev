@@ -54,7 +54,6 @@ This project follows **Specs-driven Development**. The PRD is the canonical sour
 | Storage | Supabase Storage | Ticket attachments |
 | Email | Resend | Notification emails |
 | UI | Tailwind CSS + shadcn/ui | Styling + components |
-| Animation | Framer Motion | Page transitions, micro-interactions |
 | Deployment | Vercel | Hosting + CDN |
 | Language | TypeScript | Type safety |
 
@@ -166,6 +165,8 @@ These constraints are enforced during development:
 25. **skill工具失败时换方案** - skill工具底层依赖ripgrep，项目路径含中文字符会导致加载失败。如果skill工具报错，不要重试，改用 `read` 工具直接读取skill文件（路径在系统提示的available_skills中），或用 `bash` + `node -e` 实现相同功能。
 26. **文件搜索替代方案** - 需要搜索文件内容时，使用 `bash` + `node -e` 或 `Get-ChildItem` 命令，而非 `grep` 或 `glob` 工具（同样受中文路径影响）。
 27. **Playwright只允许Edge浏览器** - 所有Playwright测试和配置禁止使用Chrome/Chromium，只允许使用Microsoft Edge。配置路径: `executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'`。禁止安装Chromium。
+28. **重复检测处理规则** - 系统提示"repetition detected"时，禁止用不同措辞重复相同内容。正确做法：直接跳过该部分，继续下一个话题，或等待用户指示。"重新组织输出"会陷入循环，不是解决方案。
+29. **行动前必须查阅约束** - 每次执行任何操作前，必须先查阅AGENTS.md中的约束条件（第25-28条），确保不违反项目规则。违反约束将导致严重错误。
 
 ## Open Items (PRD [S22])
 

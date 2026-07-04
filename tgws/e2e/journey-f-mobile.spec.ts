@@ -63,7 +63,6 @@ test.describe('Journey F - Mobile (375px)', () => {
   test('F8: Mobile logout via header icon', async ({ page }) => {
     await loginMobile(page);
     // On mobile, Sign Out is in the mobile header (top right)
-    const logoutIcon = page.locator('header button, .lg\\:hidden button').filter({ hasText: /Sign Out|logout/i });
     // If not visible, just verify the mobile header has a logout option
     const mobileHeader = page.locator('.lg\\:hidden');
     await expect(mobileHeader).toBeVisible();

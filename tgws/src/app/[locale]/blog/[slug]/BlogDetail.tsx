@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Share2, Clock, HelpCircle, Star } from 'lucide-react';
+import Image from 'next/image';
 import { urlFor } from '@/lib/sanity.image';
 
 interface PortableTextBlock {
@@ -77,12 +78,14 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
         </Link>
 
         {post.mainImage && (
-          <img 
-            src={typeof post.mainImage === 'string' && post.mainImage.startsWith('http') 
-              ? post.mainImage 
-              : urlFor(post.mainImage).width(1200).height(600).url()} 
-            alt={post.title} 
-            className="w-full h-64 sm:h-96 object-cover rounded-2xl mb-8" 
+          <Image
+            src={typeof post.mainImage === 'string' && post.mainImage.startsWith('http')
+              ? post.mainImage
+              : urlFor(post.mainImage).width(1200).height(600).url()}
+            alt={post.title}
+            width={1200}
+            height={600}
+            className="w-full h-64 sm:h-96 object-cover rounded-2xl mb-8"
           />
         )}
 

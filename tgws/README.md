@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TechGuru Website - TGWS
+
+TechGuru Network & Data Solutions 官方网站 - Next.js 应用
+
+## Tech Stack
+
+| Component | Version |
+|-----------|---------|
+| Next.js | 16.x |
+| React | 19.x |
+| TypeScript | 5.x |
+| Tailwind CSS | 4.x |
+| Sanity | v3 |
+| Supabase | Latest |
+| Vitest | Latest |
+| Playwright | Latest |
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Development Commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run dev          # Start dev server
+npm run build        # Production build
+npm run lint         # ESLint check
+npm run typecheck    # TypeScript check
+npm run test         # Unit tests (Vitest) - 49/49 passing
+npm run test:e2e     # E2E tests (Playwright) - 47/47 passing
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+tgws/
+├── src/
+│   ├── app/                    # Next.js App Router pages
+│   │   ├── [locale]/           # i18n routing (en/zh)
+│   │   │   ├── page.tsx        # Home
+│   │   │   ├── products/       # Products
+│   │   │   ├── solutions/      # Industry solutions
+│   │   │   ├── case-studies/   # Case studies
+│   │   │   ├── blog/           # Blog
+│   │   │   ├── about/          # About us
+│   │   │   ├── support/        # Support/tickets
+│   │   │   └── contact/        # Contact
+│   │   └── api/                # API routes
+│   ├── components/             # Reusable components
+│   ├── lib/                    # Utilities, clients
+│   └── types/                  # TypeScript types
+├── tests/
+│   ├── vitest/                 # Unit tests (49 tests)
+│   └── playwright/             # E2E tests (47 tests)
+└── ...
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Multi-Language
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- English: `/en/...`
+- Traditional Chinese: `/zh/...`
+- Default `/` redirects to `/en`
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Live**: https://www.techguru-it.asia
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deployed on Vercel with automatic deployments on push to main.

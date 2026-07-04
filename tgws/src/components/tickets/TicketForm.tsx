@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useAutoSave } from '@/hooks/useAutoSave';
 import { useTranslations } from 'next-intl';
 import { Loader2, CheckCircle, Upload, X, Image as ImageIcon } from 'lucide-react';
+import Image from 'next/image';
 
 interface UploadedFile {
   name: string;
@@ -344,7 +345,7 @@ export default function TicketForm() {
           <div className="flex flex-wrap gap-3 mt-3">
             {pastedImages.map((img, i) => (
               <div key={i} className="relative group">
-                <img src={img.preview} alt={`Screenshot ${i + 1}`} className="w-20 h-20 object-cover rounded-lg border border-gray-200" />
+                <Image src={img.preview} alt={`Screenshot ${i + 1}`} width={80} height={80} unoptimized className="object-cover rounded-lg border border-gray-200" />
                 <button
                   type="button"
                   onClick={(e) => { e.stopPropagation(); removePastedImage(i); }}

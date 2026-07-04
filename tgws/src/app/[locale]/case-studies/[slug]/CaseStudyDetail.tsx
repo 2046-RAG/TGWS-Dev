@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Lightbulb, CheckCircle, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 import { urlFor } from '@/lib/sanity.image';
 
 interface PortableTextBlock {
@@ -53,12 +54,14 @@ export default function CaseStudyDetail({ caseStudy, locale }: { caseStudy: Case
         </Link>
 
         {caseStudy.coverImage && (
-          <img 
-            src={typeof caseStudy.coverImage === 'string' && caseStudy.coverImage.startsWith('http') 
-              ? caseStudy.coverImage 
-              : urlFor(caseStudy.coverImage).width(1200).height(600).url()} 
-            alt={caseStudy.title} 
-            className="w-full h-64 sm:h-96 object-cover rounded-2xl mb-8" 
+          <Image
+            src={typeof caseStudy.coverImage === 'string' && caseStudy.coverImage.startsWith('http')
+              ? caseStudy.coverImage
+              : urlFor(caseStudy.coverImage).width(1200).height(600).url()}
+            alt={caseStudy.title}
+            width={1200}
+            height={600}
+            className="w-full h-64 sm:h-96 object-cover rounded-2xl mb-8"
           />
         )}
 

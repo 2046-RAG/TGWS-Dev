@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useLocale } from 'next-intl';
 import { useState, useRef, useCallback } from 'react';
 
 interface MegaMenuProps {
@@ -16,7 +15,6 @@ interface MegaMenuItem {
 }
 
 export default function MegaMenu({ items }: MegaMenuProps) {
-  const locale = useLocale();
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 

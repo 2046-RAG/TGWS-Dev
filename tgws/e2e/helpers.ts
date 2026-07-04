@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { Page } from '@playwright/test';
 
 const BASE_URL = 'https://tgws.vercel.app';
 const TEST_EMAIL = 'test@163.com';

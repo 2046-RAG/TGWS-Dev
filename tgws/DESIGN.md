@@ -48,7 +48,7 @@ Dark mode: bg `#09090B`, surface `#18181B`, text `#FAFAFA`
 - Used for navigation overlay
 
 ### Buttons
-- Primary: gradient `linear-gradient(135deg, #00D4FF, #7B61FF)`, white text
+- Primary: solid `#00D4FF`, hover `#00B8DB`, white text
 - Secondary: transparent, border `1px solid rgba(0,0,0,0.2)`, black text
 
 ### Glow
@@ -56,11 +56,10 @@ Dark mode: bg `#09090B`, surface `#18181B`, text `#FAFAFA`
 
 ## Animation
 
-- reveal: fadeUp 0.6s ease
-- scroll-reveal: fadeUp 0.6s ease (JS triggered)
-- card hover: translateY(-4px) 0.3s
+- scroll-reveal: progressive enhancement (default visible, JS adds animation)
+- lineGrow: clip-path reveal for timeline connector
 - Reduced motion: all animations disabled via `prefers-reduced-motion`
-- Keyframes defined: fadeInUp, glow, slideIn, bounce, pulse-glow, ripple, scrollBounce
+- Keyframes defined: fadeInUp, glow, slideIn, lineGrow
 
 ## Layout Patterns
 

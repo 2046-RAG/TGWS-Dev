@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 const HeroSection = dynamic(() => import('@/components/hero/HeroSection'), { ssr: false });
 import { Code2, Server, Shield, ArrowRight, Check, Zap, Users, Building2, Heart, ShoppingCart } from 'lucide-react';
 
@@ -191,7 +192,7 @@ export default function HomePage() {
                     { name: 'KVM', src: '/logos/kvm.svg' },
                   ].map((brand) => (
                     <div key={brand.name} className="flex items-center justify-center bg-white rounded-xl border border-gray-200 px-4 py-3">
-                      <img src={brand.src} alt={brand.name} className="h-6 w-auto object-contain" />
+                      <Image src={brand.src} alt={brand.name} width={24} height={24} className="h-6 w-auto object-contain" />
                     </div>
                   ))}
                 </div>
@@ -279,7 +280,7 @@ export default function HomePage() {
                 className="partner-logo flex items-center justify-center bg-white rounded-xl border border-gray-200/60 px-5 py-3 cursor-default transition-all duration-300 hover:border-gray-300 hover:shadow-md hover:scale-105"
                 style={{ animationDelay: p.delay }}
               >
-                <img src={p.src} alt={p.name} className="h-7 w-auto max-w-[100px] object-contain" />
+                <Image src={p.src} alt={p.name} width={28} height={28} className="h-7 w-auto max-w-[100px] object-contain" />
               </div>
             ))}
           </div>

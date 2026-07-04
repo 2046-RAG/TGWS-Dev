@@ -17,7 +17,6 @@ import {
   Clock,
   TrendingUp,
   Users,
-  Server,
   Lock,
 } from 'lucide-react';
 
