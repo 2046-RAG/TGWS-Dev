@@ -65,9 +65,9 @@ export default function HomePage() {
       <HeroSection />
 
       {/* ═══ 区块2: Build. Run. Protect. 常驻时间轴 ═══ */}
-      <section className="py-24 sm:py-32 px-5 sm:px-8 max-w-6xl mx-auto scroll-reveal">
+      <section className="py-16 sm:py-24 px-5 sm:px-8 max-w-6xl mx-auto scroll-reveal">
         {/* 标题 */}
-        <div className="text-center mb-20 anim-fade-up">
+        <div className="text-center mb-12 sm:mb-16 anim-fade-up">
           <h2 className="section-title">Build. Run. Protect.</h2>
           <p className="section-subtitle mx-auto">{t('journeyDesc')}</p>
         </div>
@@ -155,7 +155,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 区块3: VMware替代方案 ═══ */}
-      <section className="py-20 sm:py-28 px-5 sm:px-8 bg-white/50 scroll-reveal">
+      <section className="py-14 sm:py-24 px-5 sm:px-8 bg-white/50 scroll-reveal">
         <div className="max-w-6xl mx-auto">
           <div className="card overflow-hidden anim-fade-up" style={{ padding: 0 }}>
             <div className="flex flex-col md:flex-row">
@@ -201,7 +201,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 区块4: 行业解决方案精选 ═══ */}
-      <section className="py-20 sm:py-28 px-5 sm:px-8 scroll-reveal">
+      <section className="py-14 sm:py-24 px-5 sm:px-8 scroll-reveal">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 anim-fade-up">
             <h2 className="section-title">{t('industriesTitle')}</h2>
@@ -234,7 +234,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 区块5: 数据统计 ═══ */}
-      <section className="py-20 sm:py-28 px-5 sm:px-8 bg-white/50 scroll-reveal">
+      <section className="py-14 sm:py-24 px-5 sm:px-8 bg-white/50 scroll-reveal">
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, i) => {
@@ -254,7 +254,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 区块6: 合作伙伴Logo墙 ═══ */}
-      <section className="py-20 sm:py-24 px-5 sm:px-8">
+      <section className="py-12 sm:py-20 px-5 sm:px-8">
         <div className="max-w-6xl mx-auto text-center">
           <p className="text-sm text-gray-400 uppercase tracking-widest mb-10">{t('partnersLabel')}</p>
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
@@ -275,7 +275,7 @@ export default function HomePage() {
                 className="partner-logo flex items-center justify-center bg-white rounded-xl border border-gray-200/60 px-5 py-3 cursor-default transition-all duration-300 hover:border-gray-300 hover:shadow-md hover:scale-105"
                 style={{ animationDelay: p.delay }}
               >
-                <img src={p.src} alt={p.name} className="h-7 w-auto object-contain" />
+                <img src={p.src} alt={p.name} className="h-7 w-auto max-w-[100px] object-contain" />
               </div>
             ))}
           </div>
@@ -283,7 +283,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 区块7: CTA区域 ═══ */}
-      <section className="py-20 sm:py-28 px-5 sm:px-8 scroll-reveal">
+      <section className="py-14 sm:py-24 px-5 sm:px-8 scroll-reveal">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 anim-fade-up" style={{ fontFamily: 'var(--font-heading)' }}>
             {t('ctaTitle')}

@@ -204,6 +204,8 @@ export default function HeroSection() {
         preload="auto"
       />
 
+      {/* 深色遮罩 - 移动端增强文字可读性 */}
+      <div className="absolute inset-0 bg-black/30 md:bg-transparent z-[1]" />
       {/* 内容层 - z-10 确保在视频上方 */}
       <div className="relative z-10 h-full flex flex-col justify-center px-5 sm:px-8 md:px-10 pb-6 md:pb-0">
         <div className="max-w-xl">
@@ -241,7 +243,7 @@ export default function HeroSection() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="inline-flex items-center justify-center bg-white text-black border border-black/10 rounded-full text-[12px] sm:text-[15px] px-3 sm:px-5 py-[0.3em] mx-[0.2em] mb-[0.4em] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
+                className="inline-flex items-center justify-center bg-white text-black border border-black/10 rounded-full text-[13px] sm:text-[15px] px-4 sm:px-5 py-3 sm:py-[0.3em] mx-[0.2em] mb-[0.4em] min-h-[44px] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
               >
                 {link.label}
               </Link>
@@ -249,7 +251,7 @@ export default function HeroSection() {
             {/* 邮箱复制按钮 - 透明底+黑色边框 */}
             <button
               onClick={handleCopyEmail}
-              className="inline-flex items-center gap-1.5 sm:gap-3 text-black bg-transparent border border-black rounded-full text-[11px] sm:text-[15px] px-3 sm:px-5 py-[0.3em] mx-[0.2em] mb-[0.4em] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
+              className="inline-flex items-center gap-1.5 sm:gap-3 text-black bg-transparent border border-black rounded-full text-[12px] sm:text-[15px] px-4 sm:px-5 py-3 sm:py-[0.3em] mx-[0.2em] mb-[0.4em] min-h-[44px] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
             >
               <span>📧 {EMAIL}</span>
               {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
@@ -262,7 +264,7 @@ export default function HeroSection() {
       <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3">
         {/* 提示文字 */}
         <span
-          className="text-[10px] sm:text-xs text-white/40 tracking-[0.3em] uppercase"
+          className="text-[11px] sm:text-xs text-white/60 tracking-[0.3em] uppercase"
           style={{ fontFamily: 'var(--font-body)', animation: 'scrollFadeIn 0.8s 1.5s ease both' }}
         >
           {t('scrollHint')}

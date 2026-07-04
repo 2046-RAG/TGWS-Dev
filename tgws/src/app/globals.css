@@ -207,6 +207,17 @@ body {
   }
 }
 
+/* Mobile Touch Target Minimum */
+@media (max-width: 767px) {
+  nav a, footer a, button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  nav li, footer li {
+    padding: 4px 0;
+  }
+}
+
 /* Scroll Reveal Animation */
 .scroll-reveal {
   opacity: 0;
