@@ -5,9 +5,9 @@
 @theme inline {
   --color-primary: #00D4FF;
   --color-accent: #7B61FF;
-  --color-surface: #F5F5F0;
-  --color-background: #E0E0DB;
-  --color-foreground: #000000;
+  --color-surface: #FAFAFA;
+  --color-background: #F4F4F5;
+  --color-foreground: #18181B;
   --font-sans: 'HelveticaNowDisplayW01-Rg', 'Inter', sans-serif;
   --font-heading: 'HelveticaNowDisplay-Medium', 'Helvetica Neue', Arial, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -19,7 +19,7 @@
 }
 
 body {
-  background: #E0E0DB;
+  background: #F4F4F5;
   color: #000000;
   font-family: var(--font-body);
   -webkit-tap-highlight-color: transparent;
@@ -100,7 +100,7 @@ body {
 }
 
 .card {
-  background: #F5F5F0;
+  background: #FAFAFA;
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 16px;
   padding: 24px;
@@ -204,5 +204,99 @@ body {
 
   .btn-primary:hover {
     transform: none;
+  }
+}
+
+/* Scroll Reveal Animation */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Back to Top Button */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 40;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.back-to-top:hover {
+  background: rgba(255,255,255,1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+}
+
+/* Glassmorphism Nav */
+.glass-nav {
+  background: rgba(244,244,245,0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #09090B;
+    --color-surface: #18181B;
+    --color-foreground: #FAFAFA;
+  }
+  body {
+    background: #09090B;
+    color: #FAFAFA;
+  }
+  .card {
+    background: #18181B;
+    border-color: rgba(255,255,255,0.08);
+  }
+  .glass-nav {
+    background: rgba(9,9,11,0.75);
+  }
+  .back-to-top {
+    background: rgba(24,24,27,0.8);
+    border-color: rgba(255,255,255,0.1);
+  }
+  .back-to-top:hover {
+    background: rgba(39,39,42,0.9);
+  }
+}
+
+/* Reduced Motion - disable all animations for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .anim-fade-up, .anim-node, .anim-card, .anim-line-grow {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .partner-logo {
+    animation: none !important;
   }
 }

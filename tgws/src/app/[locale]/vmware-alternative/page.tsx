@@ -151,7 +151,7 @@ export default function VMwareAlternativePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#E0E0DB]">
+    <div className="min-h-screen bg-[#F4F4F5]">
       {/* Hero Section */}
       <section className="relative py-20 sm:py-32 px-5 sm:px-8 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#7B61FF]/5 to-[#00D4FF]/5" />

@@ -64,7 +64,7 @@ export default function SupportPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#E0E0DB] flex items-center justify-center">
+      <div className="min-h-screen bg-[#F4F4F5] flex items-center justify-center">
         <div className="inline-block w-10 h-10 border-3 border-gray-300 border-t-[#00D4FF] rounded-full animate-spin" />
       </div>
     );
@@ -111,7 +111,7 @@ export default function SupportPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#E0E0DB] flex">
+    <div className="min-h-screen bg-[#F4F4F5] flex">
       {/* Sidebar */}
       <aside className="hidden lg:flex w-64 bg-white border-r border-gray-200 flex-col">
         {/* Logo */}

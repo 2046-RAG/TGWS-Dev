@@ -60,14 +60,14 @@ export async function sendTicketCreatedEmail(
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #00D4FF;">Ticket Submitted Successfully</h2>
         <p>Your support ticket has been created and our team will review it shortly.</p>
-        <div style="background: #f5f5f0; border-radius: 12px; padding: 20px; margin: 20px 0;">
+        <div style="background: #FAFAFA; border-radius: 12px; padding: 20px; margin: 20px 0;">
           <p><strong>Ticket Number:</strong> ${ticketNumber}</p>
           <p><strong>Category:</strong> ${categoryLabel}</p>
           <p><strong>Subject:</strong> ${subject}</p>
         </div>
         <p>You can track your ticket status at:</p>
         <a href="${SITE_URL}/en/support" style="color: #00D4FF;">View Ticket</a>
-        <hr style="border: none; border-top: 1px solid #e0e0db; margin: 20px 0;">
+        <hr style="border: none; border-top: 1px solid #F4F4F5; margin: 20px 0;">
         <p style="color: #888; font-size: 12px;">TechGuru Network & Data Solutions</p>
       </div>
     `,
@@ -95,13 +95,13 @@ export async function sendTicketStatusEmail(
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #00D4FF;">Ticket Status Updated</h2>
         <p>Your ticket status has been changed.</p>
-        <div style="background: #f5f5f0; border-radius: 12px; padding: 20px; margin: 20px 0;">
+        <div style="background: #FAFAFA; border-radius: 12px; padding: 20px; margin: 20px 0;">
           <p><strong>Ticket Number:</strong> ${ticketNumber}</p>
           <p><strong>Previous Status:</strong> ${statusLabels[oldStatus] || oldStatus}</p>
           <p><strong>New Status:</strong> ${statusLabels[newStatus] || newStatus}</p>
         </div>
         <a href="${SITE_URL}/en/support" style="color: #00D4FF;">View Ticket</a>
-        <hr style="border: none; border-top: 1px solid #e0e0db; margin: 20px 0;">
+        <hr style="border: none; border-top: 1px solid #F4F4F5; margin: 20px 0;">
         <p style="color: #888; font-size: 12px;">TechGuru Network & Data Solutions</p>
       </div>
     `,
@@ -121,7 +121,7 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string) {
           <a href="${resetUrl}" style="background: linear-gradient(135deg, #00D4FF, #7B61FF); color: white; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Reset Password</a>
         </div>
         <p style="color: #888; font-size: 12px;">If you didn't request this, please ignore this email. The link expires in 1 hour.</p>
-        <hr style="border: none; border-top: 1px solid #e0e0db; margin: 20px 0;">
+        <hr style="border: none; border-top: 1px solid #F4F4F5; margin: 20px 0;">
         <p style="color: #888; font-size: 12px;">TechGuru Network & Data Solutions</p>
       </div>
     `,

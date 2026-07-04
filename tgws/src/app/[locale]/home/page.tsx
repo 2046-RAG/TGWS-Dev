@@ -65,12 +65,9 @@ export default function HomePage() {
       <HeroSection />
 
       {/* ═══ 区块2: Build. Run. Protect. 常驻时间轴 ═══ */}
-      <section className="py-24 sm:py-32 px-5 sm:px-8 max-w-6xl mx-auto">
+      <section className="py-24 sm:py-32 px-5 sm:px-8 max-w-6xl mx-auto scroll-reveal">
         {/* 标题 */}
         <div className="text-center mb-20 anim-fade-up">
-          <p className="text-sm font-medium text-[#00D4FF] uppercase tracking-widest mb-4">
-            {t('journeyLabel')}
-          </p>
           <h2 className="section-title">Build. Run. Protect.</h2>
           <p className="section-subtitle mx-auto">{t('journeyDesc')}</p>
         </div>
@@ -158,7 +155,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 区块3: VMware替代方案 ═══ */}
-      <section className="py-20 sm:py-28 px-5 sm:px-8 bg-white/50">
+      <section className="py-20 sm:py-28 px-5 sm:px-8 bg-white/50 scroll-reveal">
         <div className="max-w-6xl mx-auto">
           <div className="card overflow-hidden anim-fade-up" style={{ padding: 0 }}>
             <div className="flex flex-col md:flex-row">
@@ -192,9 +189,8 @@ export default function HomePage() {
                     { name: 'H3C', src: '/logos/h3c.png' },
                     { name: 'KVM', src: '/logos/kvm.svg' },
                   ].map((brand) => (
-                    <div key={brand.name} className="flex items-center justify-center gap-2 bg-white rounded-xl border border-gray-200 px-4 py-3">
-                      <img src={brand.src} alt={brand.name} className="w-6 h-6 object-contain shrink-0" />
-                      <span className="text-sm font-semibold text-gray-700">{brand.name}</span>
+                    <div key={brand.name} className="flex items-center justify-center bg-white rounded-xl border border-gray-200 px-4 py-3">
+                      <img src={brand.src} alt={brand.name} className="h-6 w-auto object-contain" />
                     </div>
                   ))}
                 </div>
@@ -205,7 +201,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 区块4: 行业解决方案精选 ═══ */}
-      <section className="py-20 sm:py-28 px-5 sm:px-8">
+      <section className="py-20 sm:py-28 px-5 sm:px-8 scroll-reveal">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 anim-fade-up">
             <h2 className="section-title">{t('industriesTitle')}</h2>
@@ -238,7 +234,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 区块5: 数据统计 ═══ */}
-      <section className="py-20 sm:py-28 px-5 sm:px-8 bg-white/50">
+      <section className="py-20 sm:py-28 px-5 sm:px-8 bg-white/50 scroll-reveal">
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, i) => {
@@ -276,11 +272,10 @@ export default function HomePage() {
             ].map((p) => (
               <div
                 key={p.name}
-                className="partner-logo flex items-center gap-2 bg-white rounded-xl border border-gray-200/60 px-4 py-3 cursor-default transition-all duration-300 hover:border-gray-300 hover:shadow-md hover:scale-105"
+                className="partner-logo flex items-center justify-center bg-white rounded-xl border border-gray-200/60 px-5 py-3 cursor-default transition-all duration-300 hover:border-gray-300 hover:shadow-md hover:scale-105"
                 style={{ animationDelay: p.delay }}
               >
-                <img src={p.src} alt={p.name} className="w-6 h-6 object-contain shrink-0" />
-                <span className="text-xs sm:text-sm font-semibold text-gray-600">{p.name}</span>
+                <img src={p.src} alt={p.name} className="h-7 w-auto object-contain" />
               </div>
             ))}
           </div>
@@ -288,7 +283,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 区块7: CTA区域 ═══ */}
-      <section className="py-20 sm:py-28 px-5 sm:px-8">
+      <section className="py-20 sm:py-28 px-5 sm:px-8 scroll-reveal">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 anim-fade-up" style={{ fontFamily: 'var(--font-heading)' }}>
             {t('ctaTitle')}

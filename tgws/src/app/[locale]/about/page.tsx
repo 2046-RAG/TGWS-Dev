@@ -54,7 +54,7 @@ export default function AboutPage() {
                     <p className="text-gray-600 text-sm mt-2">{t(`timeline.events.${i}`)}</p>
                   </div>
                 </div>
-                <div className="w-4 h-4 rounded-full bg-[#00D4FF] border-4 border-[#E0E0DB] shrink-0 my-4 md:my-0 z-10" />
+                <div className="w-4 h-4 rounded-full bg-[#00D4FF] border-4 border-[#F4F4F5] shrink-0 my-4 md:my-0 z-10" />
                 <div className="flex-1" />
               </motion.div>
             ))}

@@ -185,10 +185,8 @@ export default function HeroSection() {
     }
   }, []);
 
-  // CTA按钮配置
+  // CTA按钮配置 — 精简为2个（skill规则：最多2个CTA）
   const ctaLinks = [
-    { href: `/${locale}/solutions`, label: t('cta.solutions') },
-    { href: `/${locale}/case-studies`, label: t('cta.cases') },
     { href: `/${locale}/contact`, label: t('cta.demo') },
     { href: `/${locale}/vmware-alternative`, label: t('cta.vmware') },
   ];

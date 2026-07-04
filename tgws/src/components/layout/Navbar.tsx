@@ -80,7 +80,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#E0E0DB]/80 backdrop-blur-xl border-b border-black/5">
+    <nav className="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-black/5">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-4 sm:py-5 flex items-center justify-between">
         <Link href={`/${locale}`} className="flex items-center gap-3">
           <span className="text-[21px] sm:text-[26px] font-bold tracking-tight text-black" style={{ fontFamily: 'var(--font-heading)' }}>
@@ -134,7 +134,7 @@ export default function Navbar() {
       </div>
 
       <div
-        className={`md:hidden fixed inset-0 top-[73px] bg-[#E0E0DB]/95 backdrop-blur-sm z-40 transition-opacity duration-300 ${
+        className={`md:hidden fixed inset-0 top-[73px] glass-nav z-40 transition-opacity duration-300 ${
           mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
