@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { sendTicketStatusEmail } from '@/lib/resend';
 
 export async function GET(
   request: Request,
@@ -114,6 +115,18 @@ export async function PATCH(
     new_value: JSON.stringify({ status: body.status }),
     performed_by: user.id,
   });
+
+  // Send status change email to ticket owner (non-blocking)
+  if (body.status && body.status !== current?.status) {
+    const { data: owner } = await supabase
+      .from('users')
+      .select('email')
+      .eq('id', current.user_id)
+      .single();
+    if (owner?.email) {
+      sendTicketStatusEmail(owner.email, current.ticket_number, current.status, body.status).catch(() => {});
+    }
+  }
 
   return NextResponse.json({ success: true, data });
 }

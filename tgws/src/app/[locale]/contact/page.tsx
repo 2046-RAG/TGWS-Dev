@@ -241,9 +241,9 @@ export default function ContactPage() {
           <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('social')}</h2>
             <div className="space-y-3">
-              <a href="mailto:info@techguru.com" className="flex items-center gap-3 text-gray-600 hover:text-gray-900 transition-colors">
+              <a href="mailto:info@techguru-it.asia" className="flex items-center gap-3 text-gray-600 hover:text-gray-900 transition-colors">
                 <Mail size={18} className="text-[#00D4FF]" />
-                <span className="text-sm">info@techguru.com</span>
+                <span className="text-sm">info@techguru-it.asia</span>
               </a>
               <a href="tel:+886223456789" className="flex items-center gap-3 text-gray-600 hover:text-gray-900 transition-colors">
                 <Phone size={18} className="text-[#7B61FF]" />

@@ -72,7 +72,7 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.1 }}
-              className="bg-white border border-gray-200 rounded-2xl p-6 text-center shadow-sm"
+              className="relative z-10 bg-white border border-gray-200 rounded-2xl p-6 text-center shadow-sm"
             >
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#00D4FF]/20 to-[#7B61FF]/20 mx-auto mb-4 flex items-center justify-center">
                 <Users size={28} className="text-gray-400" />

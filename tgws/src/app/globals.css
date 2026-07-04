@@ -89,6 +89,16 @@ body {
   animation: ripple 1s ease-out forwards;
 }
 
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+@keyframes scrollFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .card {
   background: #F5F5F0;
   border: 1px solid rgba(0, 0, 0, 0.06);

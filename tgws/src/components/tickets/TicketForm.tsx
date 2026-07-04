@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useAutoSave } from '@/hooks/useAutoSave';
 import { useTranslations } from 'next-intl';
-import { Loader2, CheckCircle, Upload } from 'lucide-react';
+import { Loader2, CheckCircle, Upload, X, Image as ImageIcon } from 'lucide-react';
 
 interface UploadedFile {
   name: string;
@@ -11,6 +11,19 @@ interface UploadedFile {
   size: number;
   type: string;
 }
+
+interface SanityProduct {
+  _id: string;
+  title: string;
+  category: string;
+}
+
+interface PastedImage {
+  file: File;
+  preview: string;
+}
+
+const DESCRIPTION_MAX = 800;
 
 export default function TicketForm() {
   const t = useTranslations('auth');
@@ -21,22 +34,74 @@ export default function TicketForm() {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const pasteAreaRef = useRef<HTMLDivElement>(null);
+  const [products, setProducts] = useState<SanityProduct[]>([]);
+  const [pastedImages, setPastedImages] = useState<PastedImage[]>([]);
+
   const [formData, setFormData] = useState({
     category: '',
     product: '',
+    productOther: '',
+    occurredAt: new Date().toISOString().slice(0, 16),
     subject: '',
     description: '',
   });
 
   const { clear } = useAutoSave('ticket-form-draft', formData);
 
+  // Fetch products from Sanity on mount
+  useEffect(() => {
+    fetch('/api/products')
+      .then((r) => r.json())
+      .then((d) => { if (d.success) setProducts(d.data); })
+      .catch(() => {});
+  }, []);
+
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const uploadFiles = async (ticketId: string, files: FileList) => {
+  const handlePaste = useCallback((e: React.ClipboardEvent) => {
+    const items = Array.from(e.clipboardData.items);
+    const imageItems = items.filter((item) => item.type.startsWith('image/'));
+    if (imageItems.length === 0) return;
+
+    e.preventDefault();
+    const newImages: PastedImage[] = imageItems.map((item) => {
+      const file = item.getAsFile()!;
+      return { file, preview: URL.createObjectURL(file) };
+    });
+    setPastedImages((prev) => [...prev, ...newImages]);
+  }, []);
+
+  const removePastedImage = (index: number) => {
+    setPastedImages((prev) => {
+      URL.revokeObjectURL(prev[index].preview);
+      return prev.filter((_, i) => i !== index);
+    });
+  };
+
+  const handlePasteAreaClick = () => {
+    // Create a hidden file input for images
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.multiple = true;
+    input.onchange = (e) => {
+      const files = (e.target as HTMLInputElement).files;
+      if (!files) return;
+      const newImages: PastedImage[] = Array.from(files).map((file) => ({
+        file,
+        preview: URL.createObjectURL(file),
+      }));
+      setPastedImages((prev) => [...prev, ...newImages]);
+    };
+    input.click();
+  };
+
+  const uploadFiles = async (ticketId: string, files: File[]) => {
     const results: UploadedFile[] = [];
-    for (const file of Array.from(files)) {
+    for (const file of files) {
       const form = new FormData();
       form.append('file', file);
       form.append('ticketId', ticketId);
@@ -49,6 +114,11 @@ export default function TicketForm() {
     return results;
   };
 
+  const getProductValue = () => {
+    if (formData.product === '__other__') return formData.productOther;
+    return formData.product;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -59,9 +129,10 @@ export default function TicketForm() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         category: formData.category,
-        productService: formData.product,
+        productService: getProductValue(),
         subject: formData.subject,
         description: formData.description,
+        occurredAt: formData.occurredAt ? new Date(formData.occurredAt).toISOString() : null,
       }),
     });
 
@@ -76,10 +147,17 @@ export default function TicketForm() {
     const newTicketId = data.data?.id;
     setTicketId(newTicketId);
 
-    const files = fileInputRef.current?.files;
-    if (files && files.length > 0 && newTicketId) {
+    // Collect all files: file input + pasted images
+    const allFiles: File[] = [];
+    const fileInputFiles = fileInputRef.current?.files;
+    if (fileInputFiles) {
+      allFiles.push(...Array.from(fileInputFiles));
+    }
+    pastedImages.forEach((img) => allFiles.push(img.file));
+
+    if (allFiles.length > 0 && newTicketId) {
       setUploading(true);
-      const uploaded = await uploadFiles(newTicketId, files);
+      const uploaded = await uploadFiles(newTicketId, allFiles);
       setUploadedFiles(uploaded);
       setUploading(false);
     }
@@ -115,6 +193,17 @@ export default function TicketForm() {
     );
   }
 
+  // Group products by category for grouped select
+  const groupedProducts = products.reduce((acc, p) => {
+    const cat = p.category || 'other';
+    if (!acc[cat]) acc[cat] = [];
+    acc[cat].push(p);
+    return acc;
+  }, {} as Record<string, SanityProduct[]>);
+
+  const charCount = formData.description.length;
+  const charColor = charCount >= DESCRIPTION_MAX ? 'text-red-500' : charCount >= 750 ? 'text-orange-500' : 'text-gray-400';
+
   return (
     <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-2xl p-8 space-y-6 shadow-sm">
       {error && (
@@ -123,6 +212,7 @@ export default function TicketForm() {
         </div>
       )}
 
+      {/* 1. Category */}
       <div>
         <label htmlFor="ticket-category" className="block text-sm text-gray-700 mb-2">
           {t('category')} *
@@ -142,22 +232,59 @@ export default function TicketForm() {
         </select>
       </div>
 
+      {/* 2. Product/Service — dropdown from Sanity + "Other" */}
       <div>
         <label htmlFor="ticket-product" className="block text-sm text-gray-700 mb-2">
           {t('productService')} *
         </label>
-        <input
+        <select
           id="ticket-product"
-          type="text"
           name="product"
           required
           value={formData.product}
           onChange={(e) => handleChange('product', e.target.value)}
-          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-colors"
-          placeholder="e.g. Proxmox VE, NGFW, Cloud Platform"
+          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-colors"
+        >
+          <option value="">{t('selectCategory')}</option>
+          {Object.entries(groupedProducts).map(([cat, items]) => (
+            <optgroup key={cat} label={cat.charAt(0).toUpperCase() + cat.slice(1)}>
+              {items.map((p) => (
+                <option key={p._id} value={p.title}>{p.title}</option>
+              ))}
+            </optgroup>
+          ))}
+          <option value="__other__">{t('otherSpecify')}</option>
+        </select>
+        {formData.product === '__other__' && (
+          <input
+            type="text"
+            required
+            value={formData.productOther}
+            onChange={(e) => handleChange('productOther', e.target.value)}
+            className="mt-2 w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-colors"
+            placeholder="Please specify the product or service"
+          />
+        )}
+      </div>
+
+      {/* 3. Problem Occurrence Time */}
+      <div>
+        <label htmlFor="ticket-occurred-at" className="block text-sm text-gray-700 mb-2">
+          {t('occurredAt')} *
+        </label>
+        <input
+          id="ticket-occurred-at"
+          type="datetime-local"
+          name="occurredAt"
+          required
+          value={formData.occurredAt}
+          max={new Date().toISOString().slice(0, 16)}
+          onChange={(e) => handleChange('occurredAt', e.target.value)}
+          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-colors"
         />
       </div>
 
+      {/* 4. Subject */}
       <div>
         <label htmlFor="ticket-subject" className="block text-sm text-gray-700 mb-2">
           {t('subject')} *
@@ -167,6 +294,7 @@ export default function TicketForm() {
           type="text"
           name="subject"
           required
+          maxLength={200}
           value={formData.subject}
           onChange={(e) => handleChange('subject', e.target.value)}
           className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-colors"
@@ -174,6 +302,7 @@ export default function TicketForm() {
         />
       </div>
 
+      {/* 5. Description with 800 char limit + counter */}
       <div>
         <label htmlFor="ticket-description" className="block text-sm text-gray-700 mb-2">
           {t('description')} *
@@ -183,13 +312,51 @@ export default function TicketForm() {
           name="description"
           required
           rows={6}
+          maxLength={DESCRIPTION_MAX}
           value={formData.description}
           onChange={(e) => handleChange('description', e.target.value)}
           className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-colors resize-none"
           placeholder="Detailed description of your issue..."
         />
+        <p className={`text-xs mt-1 text-right ${charColor}`}>
+          {charCount}/{DESCRIPTION_MAX}
+        </p>
       </div>
 
+      {/* 6. Paste Screenshot area */}
+      <div>
+        <label className="block text-sm text-gray-700 mb-2">
+          {t('screenshots')}
+        </label>
+        <div
+          ref={pasteAreaRef}
+          onPaste={handlePaste}
+          onClick={handlePasteAreaClick}
+          className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-[#00D4FF] hover:bg-gray-50 transition-colors"
+        >
+          <ImageIcon size={24} className="mx-auto text-gray-400 mb-2" />
+          <p className="text-sm text-gray-500">{t('pasteScreenshot')}</p>
+          <p className="text-xs text-gray-400 mt-1">{t('orClickToUpload')}</p>
+        </div>
+        {pastedImages.length > 0 && (
+          <div className="flex flex-wrap gap-3 mt-3">
+            {pastedImages.map((img, i) => (
+              <div key={i} className="relative group">
+                <img src={img.preview} alt={`Screenshot ${i + 1}`} className="w-20 h-20 object-cover rounded-lg border border-gray-200" />
+                <button
+                  type="button"
+                  onClick={(e) => { e.stopPropagation(); removePastedImage(i); }}
+                  className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <X size={12} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* 7. File Attachments — any format, max 50MB */}
       <div>
         <label htmlFor="ticket-attachments" className="block text-sm text-gray-700 mb-2">
           {t('attachments')}
@@ -199,10 +366,9 @@ export default function TicketForm() {
           id="ticket-attachments"
           type="file"
           multiple
-          accept="image/*,.pdf,.doc,.docx"
           className="w-full text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gray-100 file:text-gray-700 file:hover:bg-gray-200 file:cursor-pointer"
         />
-        <p className="text-xs text-gray-400 mt-1">Max 10MB per file. Supported: images, PDF, Word</p>
+        <p className="text-xs text-gray-400 mt-1">{t('maxFileSize')}</p>
       </div>
 
       <button

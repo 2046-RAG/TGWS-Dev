@@ -1,16 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
-const MAX_SIZE = 10 * 1024 * 1024;
-const ALLOWED_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/gif',
-  'image/webp',
-  'application/pdf',
-  'application/msword',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-];
+const MAX_SIZE = 50 * 1024 * 1024;
 
 export async function POST(request: Request) {
   const supabase = await createClient();
@@ -31,11 +22,7 @@ export async function POST(request: Request) {
   }
 
   if (file.size > MAX_SIZE) {
-    return NextResponse.json({ error: 'File too large (max 10MB)' }, { status: 400 });
-  }
-
-  if (!ALLOWED_TYPES.includes(file.type)) {
-    return NextResponse.json({ error: 'File type not allowed' }, { status: 400 });
+    return NextResponse.json({ error: 'File too large (max 50MB)' }, { status: 400 });
   }
 
   const filePath = `${user.id}/${Date.now()}-${file.name}`;

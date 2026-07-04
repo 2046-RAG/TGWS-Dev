@@ -27,6 +27,23 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'subcategory',
+      type: 'string',
+      title: 'Sub-Category',
+      options: {
+        list: [
+          { title: 'Virtualization', value: 'virtualization' },
+          { title: 'HCI', value: 'hci' },
+          { title: 'Cloud Platform', value: 'cloud_platform' },
+          { title: 'Hardware', value: 'hardware' },
+          { title: 'Managed Hosting', value: 'hosting' },
+          { title: 'Business Continuity', value: 'bcdr' },
+          { title: 'Routing & Switching', value: 'routing_switching' },
+          { title: 'Wireless', value: 'wireless' },
+        ],
+      },
+    }),
+    defineField({
       name: 'description',
       type: 'text',
     }),

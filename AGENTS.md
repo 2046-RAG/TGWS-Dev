@@ -165,6 +165,7 @@ These constraints are enforced during development:
 
 25. **skill工具失败时换方案** - skill工具底层依赖ripgrep，项目路径含中文字符会导致加载失败。如果skill工具报错，不要重试，改用 `read` 工具直接读取skill文件（路径在系统提示的available_skills中），或用 `bash` + `node -e` 实现相同功能。
 26. **文件搜索替代方案** - 需要搜索文件内容时，使用 `bash` + `node -e` 或 `Get-ChildItem` 命令，而非 `grep` 或 `glob` 工具（同样受中文路径影响）。
+27. **Playwright只允许Edge浏览器** - 所有Playwright测试和配置禁止使用Chrome/Chromium，只允许使用Microsoft Edge。配置路径: `executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'`。禁止安装Chromium。
 
 ## Open Items (PRD [S22])
 

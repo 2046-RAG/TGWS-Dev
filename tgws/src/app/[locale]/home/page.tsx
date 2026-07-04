@@ -22,8 +22,8 @@ const stages = [
     key: 'run',
     icon: Server,
     color: '#7B61FF',
-    count: 6,
-    features: ['vmPlatform', 'hci', 'cloudPlatform', 'hardware', 'hosting', 'bcdr'],
+    count: 8,
+    features: ['vmPlatform', 'hci', 'cloudPlatform', 'hardware', 'hosting', 'bcdr', 'routing_switching', 'wireless'],
   },
   {
     key: 'protect',
@@ -178,17 +178,23 @@ export default function HomePage() {
                     </div>
                   ))}
                 </div>
-                <Link href={`/${locale}/products`} className="btn-primary inline-flex items-center gap-2 text-sm">
+                <Link href={`/${locale}/vmware-alternative`} className="btn-primary inline-flex items-center gap-2 text-sm">
                   {t('vmwareCta')} <ArrowRight size={16} />
                 </Link>
               </div>
               <div className="flex-1 bg-gray-50 p-8 sm:p-12 flex items-center justify-center">
-                <div className="grid grid-cols-3 gap-6 opacity-40">
-                  {['Proxmox', 'Sangfor', 'Nutanix', 'Arcfra', 'H3C', 'KVM'].map((brand) => (
-                    <div key={brand} className="text-center">
-                      <div className="w-16 h-16 mx-auto bg-white rounded-xl border border-gray-200 flex items-center justify-center mb-2">
-                        <span className="text-xs font-bold text-gray-400">{brand}</span>
-                      </div>
+                <div className="grid grid-cols-3 gap-4 opacity-70">
+                  {[
+                    { name: 'Proxmox', src: '/logos/proxmox.svg' },
+                    { name: 'Sangfor', src: '/logos/sangfor.png' },
+                    { name: 'Nutanix', src: '/logos/nutanix.svg' },
+                    { name: 'Arcfra', src: '/logos/arcfra.png' },
+                    { name: 'H3C', src: '/logos/h3c.png' },
+                    { name: 'KVM', src: '/logos/kvm.svg' },
+                  ].map((brand) => (
+                    <div key={brand.name} className="flex items-center justify-center gap-2 bg-white rounded-xl border border-gray-200 px-4 py-3">
+                      <img src={brand.src} alt={brand.name} className="w-6 h-6 object-contain shrink-0" />
+                      <span className="text-sm font-semibold text-gray-700">{brand.name}</span>
                     </div>
                   ))}
                 </div>
@@ -253,12 +259,28 @@ export default function HomePage() {
 
       {/* ═══ 区块6: 合作伙伴Logo墙 ═══ */}
       <section className="py-20 sm:py-24 px-5 sm:px-8">
-        <div className="max-w-5xl mx-auto text-center">
+        <div className="max-w-6xl mx-auto text-center">
           <p className="text-sm text-gray-400 uppercase tracking-widest mb-10">{t('partnersLabel')}</p>
-          <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 opacity-30">
-            {['Proxmox', 'Sangfor', 'Nutanix', 'H3C', 'Sophos', 'Fortinet'].map((p) => (
-              <div key={p} className="w-28 h-14 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
-                <span className="text-xs font-bold text-gray-400">{p}</span>
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+            {[
+              { name: 'Proxmox', src: '/logos/proxmox.svg', delay: '0s' },
+              { name: 'Sangfor', src: '/logos/sangfor.png', delay: '0.1s' },
+              { name: 'Nutanix', src: '/logos/nutanix.svg', delay: '0.2s' },
+              { name: 'H3C', src: '/logos/h3c.png', delay: '0.3s' },
+              { name: 'Sophos', src: '/logos/sophos.png', delay: '0.4s' },
+              { name: 'Fortinet', src: '/logos/fortinet.svg', delay: '0.5s' },
+              { name: 'Huawei', src: '/logos/huawei.svg', delay: '0.6s' },
+              { name: 'Cisco', src: '/logos/cisco.svg', delay: '0.7s' },
+              { name: 'Ruijie', src: '/logos/ruijie.svg', delay: '0.8s' },
+              { name: 'Sundray', src: '/logos/sundray.png', delay: '0.9s' },
+            ].map((p) => (
+              <div
+                key={p.name}
+                className="partner-logo flex items-center gap-2 bg-white rounded-xl border border-gray-200/60 px-4 py-3 cursor-default transition-all duration-300 hover:border-gray-300 hover:shadow-md hover:scale-105"
+                style={{ animationDelay: p.delay }}
+              >
+                <img src={p.src} alt={p.name} className="w-6 h-6 object-contain shrink-0" />
+                <span className="text-xs sm:text-sm font-semibold text-gray-600">{p.name}</span>
               </div>
             ))}
           </div>

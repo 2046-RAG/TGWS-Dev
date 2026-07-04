@@ -21,7 +21,9 @@
       "cases": "View Case Studies",
       "demo": "Schedule a Demo",
       "vmware": "VMware Migration"
-    }
+    },
+    "scrollHint": "Scroll",
+    "scrubHint": "Scrub with mouse"
   },
   "home": {
     "build": "Build",
@@ -94,7 +96,15 @@
     "ctaTitle": "Ready to Transform Your IT?",
     "ctaDesc": "Let's discuss how Build, Run, and Protect can work for your organization.",
     "ctaPrimary": "Get Started",
-    "ctaSecondary": "Contact Support"
+    "ctaSecondary": "Contact Support",
+    "routing_switching": "Routing & Switching",
+    "routing_switchingDesc": "Enterprise routers, managed switches, and network infrastructure for reliable connectivity.",
+    "wireless": "Wireless",
+    "wirelessDesc": "Enterprise WiFi access points, controllers, and wireless solutions for seamless connectivity.",
+    "routing_switchingTitle": "Routing & Switching",
+    "routing_switchingStory": "Build a robust network foundation with enterprise-grade routers and switches from H3C, Huawei, Cisco, Ruijie, and Sundray.",
+    "wirelessTitle": "Wireless",
+    "wirelessStory": "Deploy high-performance wireless infrastructure with enterprise APs, controllers, and WiFi 6/7 solutions."
   },
   "solutions": {
     "title": "Industry Solutions",
@@ -537,7 +547,12 @@
           "industry": "Healthcare",
           "product": "Hybrid Cloud",
           "duration": "6 months",
-          "technologies": ["AWS Hybrid Cloud", "Kubernetes", "Terraform", "Splunk"],
+          "technologies": [
+            "AWS Hybrid Cloud",
+            "Kubernetes",
+            "Terraform",
+            "Splunk"
+          ],
           "challenge": "12 regional hospitals struggled with siloed IT systems, rising VMware licensing costs, and HIPAA compliance requirements. Patient data was fragmented across legacy systems, making it difficult to provide coordinated care.",
           "solution": "Designed a HIPAA-compliant hybrid cloud architecture connecting all 12 hospitals. Implemented Kubernetes for container orchestration, Terraform for infrastructure-as-code, and Splunk for centralized logging and compliance monitoring.",
           "results": [
@@ -553,7 +568,13 @@
           "industry": "Finance",
           "product": "Security",
           "duration": "9 months",
-          "technologies": ["ZTNA", "EDR", "SIEM", "MFA", "Micro-segmentation"],
+          "technologies": [
+            "ZTNA",
+            "EDR",
+            "SIEM",
+            "MFA",
+            "Micro-segmentation"
+          ],
           "challenge": "A major banking group with 200+ branches faced increasing cyber threats and needed to modernize its security posture. Traditional perimeter-based security was insufficient against sophisticated attacks.",
           "solution": "Implemented a comprehensive zero trust architecture across all branches and digital channels. Deployed micro-segmentation for network isolation, ZTNA for secure access, and advanced SIEM for real-time threat detection.",
           "results": [
@@ -569,7 +590,12 @@
           "industry": "Retail",
           "product": "AI & Data",
           "duration": "4 months",
-          "technologies": ["TensorFlow", "Apache Kafka", "Snowflake", "Power BI"],
+          "technologies": [
+            "TensorFlow",
+            "Apache Kafka",
+            "Snowflake",
+            "Power BI"
+          ],
           "challenge": "A retail chain with 500+ stores struggled with inventory management, leading to frequent stockouts and overstock situations. Manual forecasting couldn't keep up with demand fluctuations.",
           "solution": "Deployed AI-driven demand forecasting using TensorFlow models trained on historical sales data, weather patterns, and local events. Integrated with Apache Kafka for real-time data streaming and Snowflake for analytics.",
           "results": [
@@ -585,7 +611,12 @@
           "industry": "Logistics",
           "product": "Networking",
           "duration": "8 months",
-          "technologies": ["SD-WAN", "MPLS", "Cloudflare", "Palo Alto"],
+          "technologies": [
+            "SD-WAN",
+            "MPLS",
+            "Cloudflare",
+            "Palo Alto"
+          ],
           "challenge": "A global logistics firm experienced frequent network outages and slow cross-border data transfer, impacting real-time shipment tracking and customer service delivery.",
           "solution": "Redesigned the global network with SD-WAN overlay on existing MPLS infrastructure. Implemented Cloudflare for DDoS protection and edge caching, and Palo Alto for next-gen firewall capabilities.",
           "results": [
@@ -601,7 +632,12 @@
           "industry": "Education",
           "product": "Hybrid Cloud",
           "duration": "3 months",
-          "technologies": ["AWS Auto Scaling", "CloudFront", "RDS", "Redis"],
+          "technologies": [
+            "AWS Auto Scaling",
+            "CloudFront",
+            "RDS",
+            "Redis"
+          ],
           "challenge": "A major university's e-learning platform crashed during peak exam periods with 100K+ concurrent users. The existing on-premise infrastructure couldn't scale to meet demand.",
           "solution": "Migrated the platform to AWS with auto-scaling architecture. Implemented CloudFront CDN for content delivery, RDS for database scaling, and Redis for session management and caching.",
           "results": [
@@ -617,7 +653,12 @@
           "industry": "Government",
           "product": "Security",
           "duration": "12 months",
-          "technologies": ["Kubernetes", "Istio", "Keycloak", "Vault"],
+          "technologies": [
+            "Kubernetes",
+            "Istio",
+            "Keycloak",
+            "Vault"
+          ],
           "challenge": "A government agency operated 20-year-old legacy systems that were difficult to maintain, security vulnerabilities were mounting, and citizen service delivery was slow and inefficient.",
           "solution": "Phased modernization approach using Kubernetes for containerization, Istio for service mesh, Keycloak for identity management, and Vault for secrets management. Zero-downtime migration ensured continuous service availability.",
           "results": [
@@ -709,26 +750,146 @@
     "protectTitle": "Protect — Secure Every Layer",
     "protectStory": "When you need comprehensive security across your entire stack, these products protect every layer. From perimeter firewalls to endpoint detection to cloud security to managed detection and response.",
     "features": {
-      "ai-generated-content-aigc": ["Text-to-video generation", "Image-to-video conversion", "Multi-language support", "Batch processing", "Brand customization"],
-      "ai-assisted-coding": ["Code generation", "Automated testing", "Code review", "Documentation generation", "Multi-language support"],
-      "ai-agent-development": ["Multi-agent orchestration", "Tool integration", "Memory & context management", "Production deployment"],
-      "enterprise-legacy-system-ai-augmentation": ["API proxy layer", "Zero-intrusion integration", "Model adaptation", "Gradual deployment", "Process automation"],
-      "server-virtualization-platform": ["VMware migration paths", "Proxmox VE support", "Sangfor aSV integration", "Live migration", "High availability"],
-      "hyper-converged-infrastructure": ["Compute + storage convergence", "Linear scalability", "Single management plane", "Data protection", "Automated tiering"],
-      "cloud-migration": ["Assessment & planning", "Phased migration", "Zero-downtime cutover", "Cost optimization", "Post-migration support"],
-      "cloud-repatriation": ["Workload assessment", "Data transfer planning", "Infrastructure provisioning", "DNS migration", "Performance validation"],
-      "enterprise-storage-solutions": ["SAN / NAS / object storage", "All-flash & hybrid options", "Data deduplication", "Snapshot & replication", "Scalable capacity"],
-      "managed-hosting-services": ["24/7 monitoring", "Patch management", "Backup & recovery", "Security hardening", "SLA guarantees"],
-      "business-continuity-disaster-recovery": ["DRaaS / BaaS solutions", "RPO / RTO optimization", "Automated failover", "Regular DR testing", "Compliance support"],
-      "next-gen-firewall-ips": ["Deep packet inspection", "Intrusion prevention", "Application control", "SSL inspection"],
-      "web-application-firewall": ["OWASP Top 10 protection", "Bot management", "API security", "Virtual patching"],
-      "endpoint-detection-response": ["Real-time threat detection", "Behavioral analysis", "Automated response", "Forensic investigation"],
-      "network-detection-response": ["Network traffic analysis", "Anomaly detection", "Threat hunting", "Encrypted traffic inspection"],
-      "cloud-security": ["CASB / SASE / ZTNA", "Cloud posture management", "Data loss prevention", "Identity-aware access"],
-      "sd-wan-load-balancing": ["Application-aware routing", "Multi-path optimization", "Centralized management", "WAN optimization"],
-      "managed-detection-response": ["24/7 SOC monitoring", "Threat intelligence", "Incident response", "Vulnerability management"],
-      "incident-response": ["Rapid response team", "Forensic analysis", "Containment & eradication", "Recovery support", "Post-incident review"]
-    }
+      "ai-generated-content-aigc": [
+        "Text-to-video generation",
+        "Image-to-video conversion",
+        "Multi-language support",
+        "Batch processing",
+        "Brand customization"
+      ],
+      "ai-assisted-coding": [
+        "Code generation",
+        "Automated testing",
+        "Code review",
+        "Documentation generation",
+        "Multi-language support"
+      ],
+      "ai-agent-development": [
+        "Multi-agent orchestration",
+        "Tool integration",
+        "Memory & context management",
+        "Production deployment"
+      ],
+      "enterprise-legacy-system-ai-augmentation": [
+        "API proxy layer",
+        "Zero-intrusion integration",
+        "Model adaptation",
+        "Gradual deployment",
+        "Process automation"
+      ],
+      "server-virtualization-platform": [
+        "VMware migration paths",
+        "Proxmox VE support",
+        "Sangfor aSV integration",
+        "Live migration",
+        "High availability"
+      ],
+      "hyper-converged-infrastructure": [
+        "Compute + storage convergence",
+        "Linear scalability",
+        "Single management plane",
+        "Data protection",
+        "Automated tiering"
+      ],
+      "cloud-migration": [
+        "Assessment & planning",
+        "Phased migration",
+        "Zero-downtime cutover",
+        "Cost optimization",
+        "Post-migration support"
+      ],
+      "cloud-repatriation": [
+        "Workload assessment",
+        "Data transfer planning",
+        "Infrastructure provisioning",
+        "DNS migration",
+        "Performance validation"
+      ],
+      "enterprise-storage-solutions": [
+        "SAN / NAS / object storage",
+        "All-flash & hybrid options",
+        "Data deduplication",
+        "Snapshot & replication",
+        "Scalable capacity"
+      ],
+      "managed-hosting-services": [
+        "24/7 monitoring",
+        "Patch management",
+        "Backup & recovery",
+        "Security hardening",
+        "SLA guarantees"
+      ],
+      "business-continuity-disaster-recovery": [
+        "DRaaS / BaaS solutions",
+        "RPO / RTO optimization",
+        "Automated failover",
+        "Regular DR testing",
+        "Compliance support"
+      ],
+      "next-gen-firewall-ips": [
+        "Deep packet inspection",
+        "Intrusion prevention",
+        "Application control",
+        "SSL inspection"
+      ],
+      "web-application-firewall": [
+        "OWASP Top 10 protection",
+        "Bot management",
+        "API security",
+        "Virtual patching"
+      ],
+      "endpoint-detection-response": [
+        "Real-time threat detection",
+        "Behavioral analysis",
+        "Automated response",
+        "Forensic investigation"
+      ],
+      "network-detection-response": [
+        "Network traffic analysis",
+        "Anomaly detection",
+        "Threat hunting",
+        "Encrypted traffic inspection"
+      ],
+      "cloud-security": [
+        "CASB / SASE / ZTNA",
+        "Cloud posture management",
+        "Data loss prevention",
+        "Identity-aware access"
+      ],
+      "sd-wan-load-balancing": [
+        "Application-aware routing",
+        "Multi-path optimization",
+        "Centralized management",
+        "WAN optimization"
+      ],
+      "managed-detection-response": [
+        "24/7 SOC monitoring",
+        "Threat intelligence",
+        "Incident response",
+        "Vulnerability management"
+      ],
+      "incident-response": [
+        "Rapid response team",
+        "Forensic analysis",
+        "Containment & eradication",
+        "Recovery support",
+        "Post-incident review"
+      ]
+    },
+    "routing_switching": "Routing & Switching",
+    "routing_switchingDesc": "Enterprise routers and switches for reliable network connectivity.",
+    "wireless": "Wireless",
+    "wirelessDesc": "Enterprise WiFi access points and wireless controllers.",
+    "enterpriseRouters": "Enterprise Routers",
+    "coreSwitches": "Core Switches",
+    "accessSwitches": "Access Switches",
+    "aggregationSwitches": "Aggregation Switches",
+    "enterpriseWirelessAP": "Enterprise Wireless AP",
+    "wirelessControllers": "Wireless Controllers",
+    "outdoorWirelessAP": "Outdoor Wireless AP",
+    "wifi67AP": "WiFi 6/6E/7 AP",
+    "compute": "Infrastructure",
+    "cloudRepatriation": "Cloud Repatriation"
   },
   "footer": {
     "products": "Products",
@@ -757,7 +918,12 @@
     "section1Body": "When you visit our website, submit a contact form, or create a support account, we may collect personal information including your name, email address, company name, phone number, and any information you provide in messages or support tickets.",
     "section2Title": "How We Use Your Information",
     "section2Body": "We use your information to:",
-    "section2Items": ["Respond to your inquiries and provide customer support", "Process and manage your support tickets", "Send transactional emails related to your requests", "Improve our website and services"],
+    "section2Items": [
+      "Respond to your inquiries and provide customer support",
+      "Process and manage your support tickets",
+      "Send transactional emails related to your requests",
+      "Improve our website and services"
+    ],
     "section3Title": "Data Storage & Security",
     "section3Body": "Your data is stored securely using industry-standard encryption and access controls. We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.",
     "section4Title": "Third-Party Services",
@@ -848,6 +1014,14 @@
     "resetEmailSent": "Password reset email sent. Check your inbox.",
     "backToLogin": "Back to Sign In",
     "sendResetLink": "Send Reset Link",
-    "sending": "Sending..."
+    "sending": "Sending...",
+    "occurredAt": "Problem Occurrence Time",
+    "occurredAtPlaceholder": "When did the problem occur?",
+    "screenshots": "Screenshots",
+    "pasteScreenshot": "Paste screenshot here (Ctrl+V)",
+    "orClickToUpload": "or click to upload",
+    "charCount": "{count}/800",
+    "otherSpecify": "Other (please specify)",
+    "maxFileSize": "Max 50MB per file. Any format accepted."
   }
 }

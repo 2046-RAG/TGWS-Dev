@@ -3,22 +3,80 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
+import MegaMenu from './MegaMenu';
 
 export default function Navbar() {
   const t = useTranslations('nav');
+  const auth = useTranslations('auth');
+  const home = useTranslations('home');
   const locale = useLocale();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const links = [
+  const megaMenuItems = [
+    {
+      key: 'products',
+      label: t('products'),
+      href: `/${locale}/products`,
+      children: [
+        { label: 'Build', href: `/${locale}/products#build`, desc: home('buildDesc') },
+        { label: 'Run', href: `/${locale}/products#run`, desc: home('runDesc') },
+        { label: 'Protect', href: `/${locale}/products#protect`, desc: home('protectDesc') },
+      ],
+    },
+    {
+      key: 'solutions',
+      label: t('solutions'),
+      href: `/${locale}/solutions`,
+      children: [
+        { label: 'Healthcare', href: `/${locale}/solutions`, desc: '' },
+        { label: 'Finance', href: `/${locale}/solutions`, desc: '' },
+        { label: 'Retail', href: `/${locale}/solutions`, desc: '' },
+        { label: 'Logistics', href: `/${locale}/solutions`, desc: '' },
+        { label: 'Education', href: `/${locale}/solutions`, desc: '' },
+        { label: 'Government', href: `/${locale}/solutions`, desc: '' },
+      ],
+    },
+    {
+      key: 'caseStudies',
+      label: t('caseStudies'),
+      href: `/${locale}/case-studies`,
+      children: [
+        { label: 'All Industries', href: `/${locale}/case-studies`, desc: '' },
+        { label: 'Healthcare', href: `/${locale}/case-studies`, desc: '' },
+        { label: 'Finance', href: `/${locale}/case-studies`, desc: '' },
+        { label: 'Retail', href: `/${locale}/case-studies`, desc: '' },
+      ],
+    },
+    {
+      key: 'blog',
+      label: t('blog'),
+      href: `/${locale}/blog`,
+      children: [
+        { label: 'All Posts', href: `/${locale}/blog`, desc: '' },
+        { label: 'Technical', href: `/${locale}/blog`, desc: '' },
+        { label: 'Industry', href: `/${locale}/blog`, desc: '' },
+        { label: 'Case Study', href: `/${locale}/blog`, desc: '' },
+      ],
+    },
+    {
+      key: 'about',
+      label: t('about'),
+      href: `/${locale}/about`,
+    },
+    {
+      key: 'support',
+      label: t('support'),
+      href: `/${locale}/support`,
+      children: [
+        { label: auth('signIn'), href: `/${locale}/support/login`, desc: '' },
+        { label: auth('createAccount'), href: `/${locale}/support/register`, desc: '' },
+      ],
+    },
+  ];
+
+  const simpleLinks = [
     { href: `/${locale}/home`, label: t('home') },
-    { href: `/${locale}/products`, label: t('products') },
-    { href: `/${locale}/solutions`, label: t('solutions') },
-    { href: `/${locale}/case-studies`, label: t('caseStudies') },
-    { href: `/${locale}/blog`, label: t('blog') },
-    { href: `/${locale}/about`, label: t('about') },
-    { href: `/${locale}/support`, label: t('support') }
   ];
 
   return (
@@ -33,15 +91,13 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-[23px] text-black hover:opacity-60 transition-opacity duration-200"
-            >
-              {link.label}
-            </Link>
-          ))}
+          <Link
+            href={`/${locale}/home`}
+            className="text-[23px] text-black hover:opacity-60 transition-opacity duration-200"
+          >
+            {t('home')}
+          </Link>
+          <MegaMenu items={megaMenuItems} />
         </div>
 
         <div className="hidden md:flex items-center gap-4">
@@ -83,15 +139,37 @@ export default function Navbar() {
         }`}
       >
         <div className="flex flex-col items-start px-8 py-8 gap-8">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-[32px] font-medium text-black hover:opacity-60 transition-opacity"
-              onClick={() => setMobileOpen(false)}
-            >
-              {link.label}
-            </Link>
+          <Link
+            href={`/${locale}/home`}
+            className="text-[32px] font-medium text-black hover:opacity-60 transition-opacity"
+            onClick={() => setMobileOpen(false)}
+          >
+            {t('home')}
+          </Link>
+          {megaMenuItems.map((item) => (
+            <div key={item.key}>
+              <Link
+                href={item.href}
+                className="text-[32px] font-medium text-black hover:opacity-60 transition-opacity"
+                onClick={() => setMobileOpen(false)}
+              >
+                {item.label}
+              </Link>
+              {item.children && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {item.children.map((child) => (
+                    <Link
+                      key={child.href}
+                      href={child.href}
+                      className="text-sm text-gray-500 hover:text-[#00D4FF] transition-colors"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
           <Link
             href={`/${locale}/contact`}

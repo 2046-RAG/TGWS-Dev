@@ -6,7 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Video, Code2, Bot, BrainCircuit, Server, Cloud, HardDrive,
   Shield, Lock, MonitorCheck, Network, CloudCog, Bug,
-  AlertTriangle, Settings, Database, RefreshCw, Globe, ShieldCheck
+  AlertTriangle, Settings, Database, RefreshCw, Globe, ShieldCheck,
+  Wifi, Cable, Route, Unplug, Radio, Router, NetworkIcon
 } from 'lucide-react';
 
 type TabKey = 'build' | 'run' | 'protect';
@@ -16,6 +17,7 @@ interface Product {
   title: string;
   slug: { current: string };
   category: string;
+  subcategory?: string;
   order: number;
   description: string;
   descriptionZh: string;
@@ -26,6 +28,36 @@ const tabColors: Record<TabKey, string> = {
   build: '#00D4FF',
   run: '#7B61FF',
   protect: '#22C55E',
+};
+
+const slugToI18n: Record<string, string> = {
+  'ai-generated-content-aigc': 'aigcT2V',
+  'ai-assisted-coding': 'aigcCoding',
+  'ai-agent-development': 'aiAgent',
+  'enterprise-legacy-system-ai-augmentation': 'legacyAI',
+  'server-virtualization-platform': 'vmPlatform',
+  'hyper-converged-infrastructure': 'hci',
+  'cloud-migration': 'cloudPlatform',
+  'cloud-repatriation': 'cloudRepatriation',
+  'enterprise-storage-solutions': 'hardware',
+  'managed-hosting-services': 'hosting',
+  'business-continuity-disaster-recovery': 'bcdr',
+  'enterprise-routers': 'enterpriseRouters',
+  'core-switches': 'coreSwitches',
+  'access-switches': 'accessSwitches',
+  'aggregation-switches': 'aggregationSwitches',
+  'enterprise-wireless-ap': 'enterpriseWirelessAP',
+  'wireless-controllers': 'wirelessControllers',
+  'outdoor-wireless-ap': 'outdoorWirelessAP',
+  'wifi-6-7-ap': 'wifi67AP',
+  'next-gen-firewall-ips': 'ngfw',
+  'web-application-firewall': 'waf',
+  'endpoint-detection-response': 'edr',
+  'network-detection-response': 'ndr',
+  'cloud-security': 'cloudSecurity',
+  'sd-wan-load-balancing': 'sdwan',
+  'managed-detection-response': 'mdr',
+  'incident-response': 'incidentResponse',
 };
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -40,6 +72,14 @@ const iconMap: Record<string, React.ReactNode> = {
   'enterprise-storage-solutions': <HardDrive size={28} />,
   'managed-hosting-services': <Settings size={28} />,
   'business-continuity-disaster-recovery': <Shield size={28} />,
+  'enterprise-routers': <Route size={28} />,
+  'core-switches': <Cable size={28} />,
+  'access-switches': <Network size={28} />,
+  'aggregation-switches': <Unplug size={28} />,
+  'enterprise-wireless-ap': <Wifi size={28} />,
+  'wireless-controllers': <Radio size={28} />,
+  'outdoor-wireless-ap': <Router size={28} />,
+  'wifi-6-7-ap': <NetworkIcon size={28} />,
   'next-gen-firewall-ips': <ShieldCheck size={28} />,
   'web-application-firewall': <Lock size={28} />,
   'endpoint-detection-response': <MonitorCheck size={28} />,
@@ -49,6 +89,13 @@ const iconMap: Record<string, React.ReactNode> = {
   'managed-detection-response': <Bug size={28} />,
   'incident-response': <AlertTriangle size={28} />,
 };
+
+// Run tab subcategory groups
+const runSubgroups = [
+  { key: 'infrastructure', i18nKey: 'compute', slugs: ['server-virtualization-platform', 'hyper-converged-infrastructure', 'cloud-migration', 'cloud-repatriation', 'enterprise-storage-solutions', 'managed-hosting-services', 'business-continuity-disaster-recovery'] },
+  { key: 'routing_switching', i18nKey: 'routing_switching', slugs: ['enterprise-routers', 'core-switches', 'access-switches', 'aggregation-switches'] },
+  { key: 'wireless', i18nKey: 'wireless', slugs: ['enterprise-wireless-ap', 'wireless-controllers', 'outdoor-wireless-ap', 'wifi-6-7-ap'] },
+];
 
 const tabs: { key: TabKey; label: string }[] = [
   { key: 'build', label: 'Build' },
@@ -61,6 +108,43 @@ export default function ProductsList({ products }: { products: Product[] }) {
   const [activeTab, setActiveTab] = useState<TabKey>('build');
 
   const filtered = products.filter(p => p.category === activeTab);
+
+  // Group products by subcategory for Run tab
+  const groupedRun = runSubgroups.map(group => ({
+    ...group,
+    products: filtered.filter(p => group.slugs.includes(p.slug?.current)),
+  })).filter(g => g.products.length > 0);
+
+  const renderProductCard = (product: Product, index: number) => (
+    <motion.div
+      key={product._id}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
+      className="group bg-white border border-gray-200 rounded-2xl p-6 hover:border-gray-300 transition-all duration-300 hover:shadow-lg"
+    >
+      <div
+        className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
+        style={{
+          backgroundColor: tabColors[activeTab] + '15',
+          color: tabColors[activeTab],
+        }}
+      >
+        {iconMap[product.slug?.current] || <Server size={28} />}
+      </div>
+      <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-[#00D4FF] transition-colors">
+        {t(slugToI18n[product.slug?.current || ''] || product.title)}
+      </h3>
+      <p className="text-sm text-gray-500 leading-relaxed">
+        {(() => {
+          const i18nKey = slugToI18n[product.slug?.current || ''];
+          const features = i18nKey ? t.raw('features.' + i18nKey) : null;
+          if (Array.isArray(features)) return features.join(' • ');
+          return product.features?.join(' • ') || '';
+        })()}
+      </p>
+    </motion.div>
+  );
 
   return (
     <section className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
@@ -130,37 +214,36 @@ export default function ProductsList({ products }: { products: Product[] }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {filtered.map((product, index) => (
-            <motion.div
-              key={product._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              className="group bg-white border border-gray-200 rounded-2xl p-6 hover:border-gray-300 transition-all duration-300 hover:shadow-lg"
-            >
-              <div
-                className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
-                style={{
-                  backgroundColor: tabColors[activeTab] + '15',
-                  color: tabColors[activeTab],
-                }}
-              >
-                {iconMap[product.slug?.current] || <Server size={28} />}
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-[#00D4FF] transition-colors">
-                {t(product.slug?.current || product.title)}
-              </h3>
-              <p className="text-sm text-gray-500 leading-relaxed">
-                {(() => {
-                  const features = t.raw('features.' + (product.slug?.current || ''));
-                  if (Array.isArray(features)) return features.join(' • ');
-                  return product.features?.join(' • ') || '';
-                })()}
-              </p>
-            </motion.div>
-          ))}
+          {activeTab === 'run' ? (
+            // Run tab: group by subcategory
+            <div className="space-y-10">
+              {groupedRun.map((group) => (
+                <div key={group.key}>
+                  <div className="flex items-center gap-3 mb-5">
+                    <div
+                      className="w-2 h-8 rounded-full"
+                      style={{ backgroundColor: tabColors.run }}
+                    />
+                    <h2 className="text-xl font-bold text-gray-900">
+                      {t(group.i18nKey)}
+                    </h2>
+                    <span className="text-sm text-gray-400">
+                      ({group.products.length})
+                    </span>
+                  </div>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {group.products.map((product, i) => renderProductCard(product, i))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            // Build/Protect: flat grid
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filtered.map((product, i) => renderProductCard(product, i))}
+            </div>
+          )}
         </motion.div>
       </AnimatePresence>
     </section>

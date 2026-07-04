@@ -190,7 +190,7 @@ export default function HeroSection() {
     { href: `/${locale}/solutions`, label: t('cta.solutions') },
     { href: `/${locale}/case-studies`, label: t('cta.cases') },
     { href: `/${locale}/contact`, label: t('cta.demo') },
-    { href: `/${locale}/products`, label: t('cta.vmware') },
+    { href: `/${locale}/vmware-alternative`, label: t('cta.vmware') },
   ];
 
   return (
@@ -260,19 +260,41 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* 滚动提示箭头 - 手机端显示，提示用户下方有内容 */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 md:hidden">
-        <div style={{ animation: 'bounce 1.5s infinite' }}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+      {/* 滚动下滑按钮 - 全端可见，带脉冲+弹跳动效 */}
+      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3">
+        {/* 提示文字 */}
+        <span
+          className="text-[10px] sm:text-xs text-white/40 tracking-[0.3em] uppercase"
+          style={{ fontFamily: 'var(--font-body)', animation: 'scrollFadeIn 0.8s 1.5s ease both' }}
+        >
+          {t('scrollHint')}
+        </span>
+        {/* 下滑圆圈按钮 */}
+        <button
+          onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+          className="group relative w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/25 bg-white/5 backdrop-blur-sm flex items-center justify-center cursor-pointer hover:bg-white/15 hover:border-white/40 transition-all duration-300"
+          style={{ animation: 'fadeInUp 0.8s 2s ease both' }}
+          aria-label="Scroll down"
+        >
+          {/* 脉冲光环 */}
+          <span className="absolute inset-0 rounded-full border border-white/20 animate-ping" style={{ animationDuration: '2s' }} />
+          {/* 下箭头 */}
+          <svg
+            className="w-4 h-4 sm:w-5 sm:h-5 text-white/60 group-hover:text-white/90 transition-colors duration-300"
+            style={{ animation: 'scrollBounce 2s ease-in-out infinite' }}
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+          >
+            <path d="M12 5v14M19 12l-7 7-7-7"/>
           </svg>
-        </div>
+        </button>
       </div>
 
       {/* 视频跟随提示 - 桌面端显示3秒后淡出 */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden md:block" style={{ animation: 'fadeOut 1s 3s forwards' }}>
-        <p className="text-xs text-white/50 tracking-widest uppercase" style={{ fontFamily: 'var(--font-body)' }}>
-          ← Move mouse to control video →
+      <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-10 hidden md:block" style={{ animation: 'fadeOut 1s 3s forwards' }}>
+        <p className="text-xs text-white/30 tracking-widest uppercase flex items-center gap-2" style={{ fontFamily: 'var(--font-body)' }}>
+          <span className="inline-block w-6 h-px bg-white/20" />
+          {t('scrubHint')}
+          <svg className="w-3 h-3 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
         </p>
       </div>
     </section>

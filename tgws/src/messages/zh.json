@@ -21,7 +21,9 @@
       "cases": "查看案例",
       "demo": "預約演示",
       "vmware": "VMware遷移"
-    }
+    },
+    "scrollHint": "向下滑動",
+    "scrubHint": "滑動鼠標探索"
   },
   "home": {
     "build": "構建",
@@ -94,7 +96,15 @@
     "ctaTitle": "準備好轉型了嗎？",
     "ctaDesc": "讓我們討論Build、Run、Protect如何為您的組織服務。",
     "ctaPrimary": "立即開始",
-    "ctaSecondary": "聯繫支持"
+    "ctaSecondary": "聯繫支持",
+    "routing_switching": "路由交换",
+    "routing_switchingDesc": "企業級路由器和交換機，提供可靠的網絡連接基礎設施。",
+    "wireless": "無線網絡",
+    "wirelessDesc": "企業級WiFi接入點、無線控制器和WiFi 6/7解決方案。",
+    "routing_switchingTitle": "路由交換",
+    "routing_switchingStory": "與H3C、Huawei、Cisco、Ruijie和Sundray合作，構建穩固的網絡基礎設施。",
+    "wirelessTitle": "無線網絡",
+    "wirelessStory": "部署高性能無線基礎設施，包括企業級AP、控制器和WiFi 6/7解決方案。"
   },
   "solutions": {
     "title": "行業解決方案",
@@ -537,7 +547,12 @@
           "industry": "醫療健康",
           "product": "混合雲",
           "duration": "6個月",
-          "technologies": ["AWS 混合雲", "Kubernetes", "Terraform", "Splunk"],
+          "technologies": [
+            "AWS 混合雲",
+            "Kubernetes",
+            "Terraform",
+            "Splunk"
+          ],
           "challenge": "12家區域醫院面臨IT系統孤島、VMware授權成本上升和HIPAA合規要求。患者數據分散在老舊系統中，難以提供協調護理。",
           "solution": "設計連接所有12家醫院的HIPAA合規混合雲架構。實施Kubernetes容器編排、Terraform基礎設施即代碼，以及Splunk集中日誌和合規監控。",
           "results": [
@@ -553,7 +568,13 @@
           "industry": "金融服務",
           "product": "資安",
           "duration": "9個月",
-          "technologies": ["ZTNA", "EDR", "SIEM", "MFA", "微分段"],
+          "technologies": [
+            "ZTNA",
+            "EDR",
+            "SIEM",
+            "MFA",
+            "微分段"
+          ],
           "challenge": "一家擁有200+分支機構的銀行集團面臨日益嚴峻的網路威脅，需要現代化安全態勢。傳統基於邊界的安全無法應對複雜攻擊。",
           "solution": "在所有分支機構和數位渠道實施全面的零信任架構。部署微分段實現網路隔離、ZTNA實現安全存取，以及進階SIEM實現即時威脅偵測。",
           "results": [
@@ -569,7 +590,12 @@
           "industry": "零售業",
           "product": "AI與數據",
           "duration": "4個月",
-          "technologies": ["TensorFlow", "Apache Kafka", "Snowflake", "Power BI"],
+          "technologies": [
+            "TensorFlow",
+            "Apache Kafka",
+            "Snowflake",
+            "Power BI"
+          ],
           "challenge": "一家擁有500+門店的零售連鎖面臨庫存管理困難，頻繁缺貨和過度庫存。人工預測無法應對需求波動。",
           "solution": "使用TensorFlow模型訓練歷史銷售數據、天氣模式和本地活動，部署AI驅動的需求預測。整合Apache Kafka實現即時數據串流，Snowflake實現分析。",
           "results": [
@@ -585,7 +611,12 @@
           "industry": "物流供應鏈",
           "product": "網路",
           "duration": "8個月",
-          "technologies": ["SD-WAN", "MPLS", "Cloudflare", "Palo Alto"],
+          "technologies": [
+            "SD-WAN",
+            "MPLS",
+            "Cloudflare",
+            "Palo Alto"
+          ],
           "challenge": "一家全球物流公司頻繁遭遇網路中斷和跨境數據傳輸緩慢，影響即時貨物追蹤和客戶服務交付。",
           "solution": "使用SD-WAN疊加現有MPLS基礎設施重新設計全球網路。實施Cloudflare用於DDoS防護和邊緣快取，Palo Alto用於下一代防火牆功能。",
           "results": [
@@ -601,7 +632,12 @@
           "industry": "教育機構",
           "product": "混合雲",
           "duration": "3個月",
-          "technologies": ["AWS Auto Scaling", "CloudFront", "RDS", "Redis"],
+          "technologies": [
+            "AWS Auto Scaling",
+            "CloudFront",
+            "RDS",
+            "Redis"
+          ],
           "challenge": "一所大學的線上學習平台在高峰期考試期間崩潰，10萬+並發使用者。現有本地基礎設施無法擴展滿足需求。",
           "solution": "使用自動擴展架構將平台遷移至AWS。實施CloudFront CDN用於內容交付、RDS用於資料庫擴展，Redis用於工作階段管理和快取。",
           "results": [
@@ -617,7 +653,12 @@
           "industry": "政府機構",
           "product": "資安",
           "duration": "12個月",
-          "technologies": ["Kubernetes", "Istio", "Keycloak", "Vault"],
+          "technologies": [
+            "Kubernetes",
+            "Istio",
+            "Keycloak",
+            "Vault"
+          ],
           "challenge": "一個政府機關運營20年老舊系統，維護困難、安全漏洞增加，市民服務交付緩慢且效率低下。",
           "solution": "分階段現代化方法：使用Kubernetes容器化、Istio服務網格、Keycloak身份管理和Vault機密管理。零停機遷移確保服務持續可用。",
           "results": [
@@ -709,26 +750,146 @@
     "protectTitle": "Protect — 守護每一個層面",
     "protectStory": "當您需要全方位安全保障時，這些產品守護您的每一個層面。從邊界防火牆到端點檢測再到雲安全和託管安全檢測與響應。",
     "features": {
-      "ai-generated-content-aigc": ["文字轉視頻生成", "圖片轉視頻轉換", "多語言支持", "批量處理", "品牌定制"],
-      "ai-assisted-coding": ["代碼生成", "自動化測試", "代碼審查", "文檔生成", "多語言支持"],
-      "ai-agent-development": ["多代理編排", "工具整合", "記憶與上下文管理", "生產環境部署"],
-      "enterprise-legacy-system-ai-augmentation": ["API代理層", "零侵入整合", "模型適配", "漸進式部署", "流程自動化"],
-      "server-virtualization-platform": ["VMware遷移路徑", "Proxmox VE支持", "Sangfor aSV整合", "即時遷移", "高可用性"],
-      "hyper-converged-infrastructure": ["運算+儲存融合", "線性擴展", "單一管理平面", "數據保護", "自動分層"],
-      "cloud-migration": ["評估與規劃", "分階段遷移", "零停機切換", "成本優化", "遷移後支持"],
-      "cloud-repatriation": ["工作負載評估", "數據傳輸規劃", "基礎設施配置", "DNS遷移", "性能驗證"],
-      "enterprise-storage-solutions": ["SAN / NAS / 對象儲存", "全快碟與混合選項", "數據去重", "快照與複製", "可擴展容量"],
-      "managed-hosting-services": ["7×24小時監控", "補丁管理", "備份與恢復", "安全加固", "SLA保障"],
-      "business-continuity-disaster-recovery": ["DRaaS / BaaS方案", "RPO / RTO優化", "自動故障轉移", "定期DR測試", "合規支持"],
-      "next-gen-firewall-ips": ["深度封包檢測", "入侵防禦", "應用控制", "SSL檢測"],
-      "web-application-firewall": ["OWASP十大防護", "機器人管理", "API安全", "虛擬修補"],
-      "endpoint-detection-response": ["即時威脅偵測", "行為分析", "自動回應", "取證調查"],
-      "network-detection-response": ["網路流量分析", "異常偵測", "威脅獵捕", "加密流量檢查"],
-      "cloud-security": ["CASB / SASE / ZTNA", "雲端態勢管理", "數據防洩漏", "身分感知存取"],
-      "sd-wan-load-balancing": ["應用感知路由", "多路徑優化", "集中管理", "WAN優化"],
-      "managed-detection-response": ["7×24 SOC監控", "威脅情報", "事件回應", "漏洞管理"],
-      "incident-response": ["快速回應團隊", "取證分析", "遏制與根除", "恢復支持", "事後複盤"]
-    }
+      "ai-generated-content-aigc": [
+        "文字轉視頻生成",
+        "圖片轉視頻轉換",
+        "多語言支持",
+        "批量處理",
+        "品牌定制"
+      ],
+      "ai-assisted-coding": [
+        "代碼生成",
+        "自動化測試",
+        "代碼審查",
+        "文檔生成",
+        "多語言支持"
+      ],
+      "ai-agent-development": [
+        "多代理編排",
+        "工具整合",
+        "記憶與上下文管理",
+        "生產環境部署"
+      ],
+      "enterprise-legacy-system-ai-augmentation": [
+        "API代理層",
+        "零侵入整合",
+        "模型適配",
+        "漸進式部署",
+        "流程自動化"
+      ],
+      "server-virtualization-platform": [
+        "VMware遷移路徑",
+        "Proxmox VE支持",
+        "Sangfor aSV整合",
+        "即時遷移",
+        "高可用性"
+      ],
+      "hyper-converged-infrastructure": [
+        "運算+儲存融合",
+        "線性擴展",
+        "單一管理平面",
+        "數據保護",
+        "自動分層"
+      ],
+      "cloud-migration": [
+        "評估與規劃",
+        "分階段遷移",
+        "零停機切換",
+        "成本優化",
+        "遷移後支持"
+      ],
+      "cloud-repatriation": [
+        "工作負載評估",
+        "數據傳輸規劃",
+        "基礎設施配置",
+        "DNS遷移",
+        "性能驗證"
+      ],
+      "enterprise-storage-solutions": [
+        "SAN / NAS / 對象儲存",
+        "全快碟與混合選項",
+        "數據去重",
+        "快照與複製",
+        "可擴展容量"
+      ],
+      "managed-hosting-services": [
+        "7×24小時監控",
+        "補丁管理",
+        "備份與恢復",
+        "安全加固",
+        "SLA保障"
+      ],
+      "business-continuity-disaster-recovery": [
+        "DRaaS / BaaS方案",
+        "RPO / RTO優化",
+        "自動故障轉移",
+        "定期DR測試",
+        "合規支持"
+      ],
+      "next-gen-firewall-ips": [
+        "深度封包檢測",
+        "入侵防禦",
+        "應用控制",
+        "SSL檢測"
+      ],
+      "web-application-firewall": [
+        "OWASP十大防護",
+        "機器人管理",
+        "API安全",
+        "虛擬修補"
+      ],
+      "endpoint-detection-response": [
+        "即時威脅偵測",
+        "行為分析",
+        "自動回應",
+        "取證調查"
+      ],
+      "network-detection-response": [
+        "網路流量分析",
+        "異常偵測",
+        "威脅獵捕",
+        "加密流量檢查"
+      ],
+      "cloud-security": [
+        "CASB / SASE / ZTNA",
+        "雲端態勢管理",
+        "數據防洩漏",
+        "身分感知存取"
+      ],
+      "sd-wan-load-balancing": [
+        "應用感知路由",
+        "多路徑優化",
+        "集中管理",
+        "WAN優化"
+      ],
+      "managed-detection-response": [
+        "7×24 SOC監控",
+        "威脅情報",
+        "事件回應",
+        "漏洞管理"
+      ],
+      "incident-response": [
+        "快速回應團隊",
+        "取證分析",
+        "遏制與根除",
+        "恢復支持",
+        "事後複盤"
+      ]
+    },
+    "routing_switching": "路由交換",
+    "routing_switchingDesc": "企業級路由器和交換機，提供可靠的網絡連接。",
+    "wireless": "無線網絡",
+    "wirelessDesc": "企業級WiFi接入點和無線控制器。",
+    "enterpriseRouters": "企業路由器",
+    "coreSwitches": "核心交換機",
+    "accessSwitches": "接入交換機",
+    "aggregationSwitches": "匯聚交換機",
+    "enterpriseWirelessAP": "企業級無線AP",
+    "wirelessControllers": "無線控制器",
+    "outdoorWirelessAP": "戶外無線AP",
+    "wifi67AP": "WiFi 6/6E/7 AP",
+    "compute": "基礎設施",
+    "cloudRepatriation": "雲端回遷"
   },
   "footer": {
     "products": "產品服務",
@@ -757,7 +918,12 @@
     "section1Body": "當您造訪我們的網站、提交聯絡表單或建立支援帳戶時，我們可能會收集您的姓名、電子郵件地址、公司名稱、電話號碼，以及您在訊息或工單中提供的任何資訊。",
     "section2Title": "我們如何使用您的資訊",
     "section2Body": "我們使用您的資訊來：",
-    "section2Items": ["回應您的詢問並提供客戶支援", "處理和管理您的支援工單", "發送與您請求相關的交易郵件", "改進我們的網站和服務"],
+    "section2Items": [
+      "回應您的詢問並提供客戶支援",
+      "處理和管理您的支援工單",
+      "發送與您請求相關的交易郵件",
+      "改進我們的網站和服務"
+    ],
     "section3Title": "資料儲存與安全",
     "section3Body": "您的資料使用業界標準加密和存取控制安全儲存。我們實施適當的技術和組織措施，保護您的個人資訊免受未經授權的存取、變更、揭露或毀損。",
     "section4Title": "第三方服務",
@@ -848,6 +1014,14 @@
     "resetEmailSent": "密碼重設郵件已發送，請檢查您的收件箱。",
     "backToLogin": "返回登入",
     "sendResetLink": "發送重設連結",
-    "sending": "發送中..."
+    "sending": "發送中...",
+    "occurredAt": "問題發生時間",
+    "occurredAtPlaceholder": "問題是什麼時候發生的？",
+    "screenshots": "截圖",
+    "pasteScreenshot": "在此貼上截圖 (Ctrl+V)",
+    "orClickToUpload": "或點擊上傳",
+    "charCount": "{count}/800",
+    "otherSpecify": "其他（請說明）",
+    "maxFileSize": "每檔案最大 50MB。接受任何格式。"
   }
 }

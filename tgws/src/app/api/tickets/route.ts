@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { sendTicketCreatedEmail } from '@/lib/resend';
 
 export async function POST(request: Request) {
   const supabase = await createClient();
@@ -12,7 +13,7 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { category, productService, subject, description } = body;
+  const { category, productService, subject, description, occurredAt } = body;
 
   if (!category || !productService || !subject || !description) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -29,6 +30,7 @@ export async function POST(request: Request) {
       product_service: productService,
       subject,
       description,
+      occurred_at: occurredAt || null,
     })
     .select()
     .single();
@@ -43,6 +45,11 @@ export async function POST(request: Request) {
     new_value: JSON.stringify({ status: 'open' }),
     performed_by: user.id,
   });
+
+  // Send confirmation email (non-blocking)
+  if (user.email) {
+    sendTicketCreatedEmail(user.email, ticketNumber, subject, category).catch(() => {});
+  }
 
   return NextResponse.json({ success: true, data });
 }
