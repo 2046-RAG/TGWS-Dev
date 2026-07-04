@@ -265,16 +265,14 @@ export default function HomePage() {
           <p className="text-sm text-gray-600 mb-10">{t('partnersLabel')}</p>
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
             {[
-              { name: 'Proxmox', src: '/logos/proxmox.svg', delay: '0s' },
-              { name: 'Sangfor', src: '/logos/sangfor.png', delay: '0.1s' },
-              { name: 'Nutanix', src: '/logos/nutanix.svg', delay: '0.2s' },
-              { name: 'H3C', src: '/logos/h3c.png', delay: '0.3s' },
-              { name: 'Sophos', src: '/logos/sophos.png', delay: '0.4s' },
-              { name: 'Fortinet', src: '/logos/fortinet.svg', delay: '0.5s' },
-              { name: 'Huawei', src: '/logos/huawei.svg', delay: '0.6s' },
-              { name: 'Cisco', src: '/logos/cisco.svg', delay: '0.7s' },
-              { name: 'Ruijie', src: '/logos/ruijie.svg', delay: '0.8s' },
-              { name: 'Sundray', src: '/logos/sundray.png', delay: '0.9s' },
+              { name: 'H3C', src: '/logos/h3c.png', delay: '0s' },
+              { name: 'Sophos', src: '/logos/sophos.png', delay: '0.1s' },
+              { name: 'Fortinet', src: '/logos/fortinet.svg', delay: '0.2s' },
+              { name: 'Huawei', src: '/logos/huawei.svg', delay: '0.3s' },
+              { name: 'Cisco', src: '/logos/cisco.svg', delay: '0.4s' },
+              { name: 'Ruijie', src: '/logos/ruijie.svg', delay: '0.5s' },
+              { name: 'Arcfra', src: '/logos/arcfra.png', delay: '0.6s' },
+              { name: 'KVM', src: '/logos/kvm.svg', delay: '0.7s' },
             ].map((p) => (
               <div
                 key={p.name}
