@@ -289,14 +289,6 @@ export default function HeroSection() {
         </button>
       </div>
 
-      {/* 视频跟随提示 - 桌面端显示3秒后淡出 */}
-      <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-10 hidden md:block" style={{ animation: 'fadeOut 1s 3s forwards' }}>
-        <p className="text-xs text-white/30 flex items-center gap-2" style={{ fontFamily: 'var(--font-body)' }}>
-          <span className="inline-block w-6 h-px bg-white/20" />
-          {t('scrubHint')}
-          <svg className="w-3 h-3 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
-        </p>
-      </div>
     </section>
   );
 }
