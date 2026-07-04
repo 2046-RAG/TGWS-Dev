@@ -109,42 +109,47 @@ export default function ProductsList({ products }: { products: Product[] }) {
 
   const filtered = products.filter(p => p.category === activeTab);
 
-  // Group products by subcategory for Run tab
-  const groupedRun = runSubgroups.map(group => ({
-    ...group,
-    products: filtered.filter(p => group.slugs.includes(p.slug?.current)),
-  })).filter(g => g.products.length > 0);
+  // Group products by subcategory for Run tab (single pass with Set lookup)
+  const groupedRun: { key: string; i18nKey: string; slugs: string[]; products: Product[] }[] = [];
+  for (const group of runSubgroups) {
+    const slugSet = new Set(group.slugs);
+    const products = filtered.filter(p => slugSet.has(p.slug?.current));
+    if (products.length > 0) {
+      groupedRun.push({ ...group, products });
+    }
+  }
 
-  const renderProductCard = (product: Product, index: number) => (
-    <motion.div
-      key={product._id}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: index * 0.05 }}
-      className="group bg-white border border-gray-200 rounded-2xl p-6 hover:border-gray-300 transition-all duration-300 hover:shadow-lg"
-    >
-      <div
-        className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
-        style={{
-          backgroundColor: tabColors[activeTab] + '15',
-          color: tabColors[activeTab],
-        }}
+  const renderProductCard = (product: Product, index: number) => {
+    const slug = product.slug?.current || '';
+    const i18nKey = slugToI18n[slug] || '';
+    const features = i18nKey ? t.raw('features.' + i18nKey) : null;
+
+    return (
+      <motion.div
+        key={product._id}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: index * 0.05 }}
+        className="group bg-white border border-gray-200 rounded-2xl p-6 hover:border-gray-300 transition-all duration-300 hover:shadow-lg"
       >
-        {iconMap[product.slug?.current] || <Server size={28} />}
-      </div>
-      <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-[#00D4FF] transition-colors">
-        {t(slugToI18n[product.slug?.current || ''] || product.title)}
-      </h3>
-      <p className="text-sm text-gray-500 leading-relaxed">
-        {(() => {
-          const i18nKey = slugToI18n[product.slug?.current || ''];
-          const features = i18nKey ? t.raw('features.' + i18nKey) : null;
-          if (Array.isArray(features)) return features.join(' • ');
-          return product.features?.join(' • ') || '';
-        })()}
-      </p>
-    </motion.div>
-  );
+        <div
+          className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
+          style={{
+            backgroundColor: tabColors[activeTab] + '15',
+            color: tabColors[activeTab],
+          }}
+        >
+          {iconMap[slug] || <Server size={28} />}
+        </div>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-[#00D4FF] transition-colors">
+          {t(i18nKey || product.title)}
+        </h3>
+        <p className="text-sm text-gray-500 leading-relaxed">
+          {Array.isArray(features) ? features.join(' • ') : (product.features?.join(' • ') || '')}
+        </p>
+      </motion.div>
+    );
+  };
 
   return (
     <section className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">

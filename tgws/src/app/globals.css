@@ -311,3 +311,37 @@ body {
     animation: none !important;
   }
 }
+
+/* ═══ Home page animations ═══ */
+
+/* 入场动画 */
+.anim-fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: fadeUp 0.6s ease-out forwards;
+}
+.anim-node {
+  opacity: 0;
+  transform: scale(0.5);
+  animation: nodePop 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+.anim-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.5s ease-out forwards;
+}
+.anim-line-grow {
+  animation: lineGrow 1s 0.3s ease-out both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes nodePop {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes lineGrow {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}

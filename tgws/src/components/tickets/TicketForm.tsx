@@ -100,18 +100,20 @@ export default function TicketForm() {
   };
 
   const uploadFiles = async (ticketId: string, files: File[]) => {
-    const results: UploadedFile[] = [];
-    for (const file of files) {
-      const form = new FormData();
-      form.append('file', file);
-      form.append('ticketId', ticketId);
-      const res = await fetch('/api/upload', { method: 'POST', body: form });
-      if (res.ok) {
-        const data = await res.json();
-        results.push(data.data);
-      }
-    }
-    return results;
+    const results = await Promise.all(
+      files.map(async (file) => {
+        const form = new FormData();
+        form.append('file', file);
+        form.append('ticketId', ticketId);
+        const res = await fetch('/api/upload', { method: 'POST', body: form });
+        if (res.ok) {
+          const data = await res.json();
+          return data.data as UploadedFile;
+        }
+        return null;
+      })
+    );
+    return results.filter((r): r is UploadedFile => r !== null);
   };
 
   const getProductValue = () => {

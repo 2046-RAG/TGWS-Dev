@@ -3,24 +3,10 @@
 import { useTranslations } from 'use-intl';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import {
   ArrowRight, Check, Shield, DollarSign, Zap, Clock,
   Server, Cloud, RefreshCw, ChevronRight, Phone, Mail
 } from 'lucide-react';
-
-const fadeUp = {
-  initial: { opacity: 0, y: 30 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.5 },
-};
-
-const stagger = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-};
 
 export default function VMwareAlternativePage() {
   const params = useParams();
@@ -156,7 +142,7 @@ export default function VMwareAlternativePage() {
       <section className="relative py-20 sm:py-32 px-5 sm:px-8 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#7B61FF]/5 to-[#00D4FF]/5" />
         <div className="max-w-5xl mx-auto text-center relative z-10">
-          <motion.div {...fadeUp}>
+          <div className="scroll-reveal">
             <span className="inline-block px-4 py-1.5 rounded-full bg-[#7B61FF]/10 text-[#7B61FF] text-sm font-medium mb-6">
               {t('heroTag')}
             </span>
@@ -180,26 +166,24 @@ export default function VMwareAlternativePage() {
                 <Phone size={16} /> {t('ctaPhone')}
               </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Why Migrate Section */}
       <section className="py-20 sm:py-28 px-5 sm:px-8">
         <div className="max-w-6xl mx-auto">
-          <motion.div className="text-center mb-16" {...fadeUp}>
+          <div className="text-center mb-16 scroll-reveal">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">{t('whyTitle')}</h2>
             <p className="text-gray-500 max-w-2xl mx-auto">{t('whySubtitle')}</p>
-          </motion.div>
+          </div>
           <div className="grid sm:grid-cols-2 gap-6">
             {reasons.map((r, i) => {
               const Icon = r.icon;
               return (
-                <motion.div
+                <div
                   key={r.key}
-                  {...stagger}
-                  transition={{ duration: 0.4, delay: i * 0.1 }}
-                  className="card p-6 flex items-start gap-4"
+                  className="card p-6 flex items-start gap-4 scroll-reveal"
                 >
                   <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
@@ -211,7 +195,7 @@ export default function VMwareAlternativePage() {
                     <h3 className="font-semibold text-gray-900 mb-1">{t(`${r.key}Title`)}</h3>
                     <p className="text-sm text-gray-500 leading-relaxed">{t(`${r.key}Desc`)}</p>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -221,19 +205,17 @@ export default function VMwareAlternativePage() {
       {/* Solutions Section */}
       <section className="py-20 sm:py-28 px-5 sm:px-8 bg-white/50">
         <div className="max-w-6xl mx-auto">
-          <motion.div className="text-center mb-16" {...fadeUp}>
+          <div className="text-center mb-16 scroll-reveal">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">{t('solutionsTitle')}</h2>
             <p className="text-gray-500 max-w-2xl mx-auto">{t('solutionsSubtitle')}</p>
-          </motion.div>
+          </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {solutions.map((s, i) => {
               const Icon = s.icon;
               return (
-                <motion.div
+                <div
                   key={s.key}
-                  {...stagger}
-                  transition={{ duration: 0.4, delay: i * 0.1 }}
-                  className="card p-6 text-center hover:shadow-lg transition-shadow"
+                  className="card p-6 text-center hover:shadow-lg transition-shadow scroll-reveal"
                 >
                   <div
                     className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4"
@@ -243,28 +225,28 @@ export default function VMwareAlternativePage() {
                   </div>
                   <h3 className="font-semibold text-gray-900 mb-2">{t(`${s.key}Title`)}</h3>
                   <p className="text-sm text-gray-500 leading-relaxed">{t(`${s.key}Desc`)}</p>
-                </motion.div>
+                </div>
               );
             })}
           </div>
-          <motion.div className="text-center mt-12" {...fadeUp}>
+          <div className="text-center mt-12 scroll-reveal">
             <Link
               href={`/${locale}/products`}
               className="btn-secondary inline-flex items-center gap-2 text-sm"
             >
               {locale === 'zh' ? '查看所有產品' : 'View All Products'} <ArrowRight size={16} />
             </Link>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Migration Process Section */}
       <section className="py-20 sm:py-28 px-5 sm:px-8">
         <div className="max-w-5xl mx-auto">
-          <motion.div className="text-center mb-16" {...fadeUp}>
+          <div className="text-center mb-16 scroll-reveal">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">{t('processTitle')}</h2>
             <p className="text-gray-500 max-w-2xl mx-auto">{t('processSubtitle')}</p>
-          </motion.div>
+          </div>
           <div className="relative">
             {/* Connecting line */}
             <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#00D4FF] via-[#7B61FF] to-[#22C55E] hidden sm:block" />
@@ -273,11 +255,9 @@ export default function VMwareAlternativePage() {
                 const Icon = step.icon;
                 const colors = ['#00D4FF', '#7B61FF', '#8B5CF6', '#22C55E'];
                 return (
-                  <motion.div
+                  <div
                     key={step.num}
-                    {...stagger}
-                    transition={{ duration: 0.4, delay: i * 0.15 }}
-                    className="flex items-start gap-6"
+                    className="flex items-start gap-6 scroll-reveal"
                   >
                     <div className="relative z-10 shrink-0">
                       <div
@@ -294,7 +274,7 @@ export default function VMwareAlternativePage() {
                       <h3 className="text-xl font-bold text-gray-900 mt-1 mb-2">{t(`${step.key}`)}</h3>
                       <p className="text-gray-500 text-sm leading-relaxed">{t(`${step.key}Desc`)}</p>
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>
@@ -305,9 +285,9 @@ export default function VMwareAlternativePage() {
       {/* Stats Section */}
       <section className="py-20 sm:py-24 px-5 sm:px-8 bg-white/50">
         <div className="max-w-5xl mx-auto">
-          <motion.div className="text-center mb-12" {...fadeUp}>
+          <div className="text-center mb-12 scroll-reveal">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">{t('statsTitle')}</h2>
-          </motion.div>
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
               { value: t('stat1'), label: t('stat1Label'), color: '#00D4FF' },
@@ -315,17 +295,15 @@ export default function VMwareAlternativePage() {
               { value: t('stat3'), label: t('stat3Label'), color: '#22C55E' },
               { value: t('stat4'), label: t('stat4Label'), color: '#F59E0B' },
             ].map((stat, i) => (
-              <motion.div
+              <div
                 key={i}
-                {...stagger}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="text-center"
+                className="text-center scroll-reveal"
               >
                 <div className="text-4xl sm:text-5xl font-bold mb-2" style={{ color: stat.color }}>
                   {stat.value}
                 </div>
                 <div className="text-sm text-gray-500">{stat.label}</div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -334,7 +312,7 @@ export default function VMwareAlternativePage() {
       {/* CTA Section */}
       <section className="py-20 sm:py-28 px-5 sm:px-8">
         <div className="max-w-3xl mx-auto text-center">
-          <motion.div {...fadeUp}>
+          <div className="scroll-reveal">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">{t('ctaTitle')}</h2>
             <p className="text-gray-500 mb-8 max-w-xl mx-auto">{t('ctaSubtitle')}</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -351,7 +329,7 @@ export default function VMwareAlternativePage() {
                 <Phone size={16} /> {t('ctaPhone')}
               </a>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </div>
