@@ -158,7 +158,7 @@ export default function SupportPage() {
           </div>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-red-700 hover:bg-red-100 rounded-lg transition-colors"
           >
             <LogOut size={16} />
             Sign Out
