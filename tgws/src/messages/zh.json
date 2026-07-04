@@ -533,6 +533,7 @@
     },
     "detail": {
       "backToCases": "返回案例展示",
+      "summary": "概要",
       "challenge": "挑戰",
       "solution": "解決方案",
       "results": "成果",
