@@ -113,6 +113,7 @@
     "ourSolutions": "Our Solutions",
     "featuredProducts": "Featured Products",
     "cta": "Explore Products for This Industry",
+    "ctaDesc": "Ready to transform your IT infrastructure?",
     "industries": {
       "healthcare": {
         "name": "Healthcare",
