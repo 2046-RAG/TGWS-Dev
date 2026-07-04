@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 const HeroSection = dynamic(() => import('@/components/hero/HeroSection'), { ssr: false });
-import { Code2, Server, Shield, ArrowRight, Check, Zap, Users, Building2 } from 'lucide-react';
+import { Code2, Server, Shield, ArrowRight, Check, Zap, Users, Building2, Heart, ShoppingCart } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════
    区块2: Build/Run/Protect 常驻时间轴
@@ -40,9 +40,9 @@ const stages = [
    ═══════════════════════════════════════════════ */
 
 const industries = [
-  { key: 'healthcare', icon: '🏥' },
-  { key: 'finance', icon: '🏦' },
-  { key: 'retail', icon: '🛒' },
+  { key: 'healthcare', icon: Heart, color: '#00D4FF' },
+  { key: 'finance', icon: Building2, color: '#7B61FF' },
+  { key: 'retail', icon: ShoppingCart, color: '#22C55E' },
 ];
 
 /* ═══════════════════════════════════════════════
@@ -209,22 +209,27 @@ export default function HomePage() {
             <p className="section-subtitle mx-auto">{t('industriesDesc')}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {industries.map((ind, i) => (
-              <Link
-                key={ind.key}
-                href={`/${locale}/solutions`}
-                className="card group text-center anim-card"
-                style={{ animationDelay: `${0.1 + i * 0.1}s`, padding: '40px 32px' }}
-              >
-                <div className="text-4xl mb-4">{ind.icon}</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#00D4FF] transition-colors" style={{ fontFamily: 'var(--font-heading)' }}>
-                  {t(`industries.${ind.key}.name`)}
-                </h3>
-                <p className="text-sm text-gray-500 leading-relaxed">
-                  {t(`industries.${ind.key}.description`)}
-                </p>
-              </Link>
-            ))}
+            {industries.map((ind, i) => {
+              const Icon = ind.icon;
+              return (
+                <Link
+                  key={ind.key}
+                  href={`/${locale}/solutions`}
+                  className="card group text-center anim-card"
+                  style={{ animationDelay: `${0.1 + i * 0.1}s`, padding: '40px 32px' }}
+                >
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: `${ind.color}10` }}>
+                    <Icon size={32} style={{ color: ind.color }} />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#00D4FF] transition-colors" style={{ fontFamily: 'var(--font-heading)' }}>
+                    {t(`industries.${ind.key}.name`)}
+                  </h3>
+                  <p className="text-sm text-gray-500 leading-relaxed">
+                    {t(`industries.${ind.key}.description`)}
+                  </p>
+                </Link>
+              );
+            })}
           </div>
           <div className="text-center mt-12 anim-fade-up" style={{ animationDelay: '0.5s' }}>
             <Link href={`/${locale}/solutions`} className="btn-secondary inline-flex items-center gap-2 text-sm">
