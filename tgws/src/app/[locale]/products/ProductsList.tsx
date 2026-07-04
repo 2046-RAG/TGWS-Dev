@@ -97,10 +97,10 @@ const runSubgroups = [
   { key: 'wireless', i18nKey: 'wireless', slugs: ['enterprise-wireless-ap', 'wireless-controllers', 'outdoor-wireless-ap', 'wifi-6-7-ap'] },
 ];
 
-const tabs: { key: TabKey; label: string }[] = [
-  { key: 'build', label: 'Build' },
-  { key: 'run', label: 'Run' },
-  { key: 'protect', label: 'Protect' },
+const tabs: { key: TabKey; i18nKey: string }[] = [
+  { key: 'build', i18nKey: 'build' },
+  { key: 'run', i18nKey: 'run' },
+  { key: 'protect', i18nKey: 'protect' },
 ];
 
 export default function ProductsList({ products }: { products: Product[] }) {
@@ -172,10 +172,10 @@ export default function ProductsList({ products }: { products: Product[] }) {
                   background: `linear-gradient(135deg, ${tabColors[tab.key]}, ${tabColors[tab.key]}CC)`,
                   boxShadow: `0 4px 14px ${tabColors[tab.key]}40`,
                 }}
-                transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                transition={{ type: 'tween', duration: 0.3, ease: [0.25, 1, 0.5, 1] }}
               />
             )}
-            <span className="relative z-10">{tab.label}</span>
+            <span className="relative z-10">{t(tab.i18nKey)}</span>
           </button>
         ))}
       </div>
@@ -246,6 +246,12 @@ export default function ProductsList({ products }: { products: Product[] }) {
           )}
         </motion.div>
       </AnimatePresence>
+
+      {filtered.length === 0 && (
+        <div className="text-center py-20">
+          <p className="text-gray-500 text-lg">No products found in this category.</p>
+        </div>
+      )}
     </section>
   );
 }

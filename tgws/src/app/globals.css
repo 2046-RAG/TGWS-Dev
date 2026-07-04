@@ -134,16 +134,16 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #00D4FF, #7B61FF);
+  background: #00D4FF;
   color: white;
   border-radius: 9999px;
   padding: 12px 24px;
   font-weight: 500;
-  transition: opacity 0.2s, transform 0.2s;
+  transition: background-color 0.2s, transform 0.2s;
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
+  background: #00B8DB;
   transform: scale(1.02);
 }
 
@@ -172,7 +172,7 @@ body {
 
 .section-subtitle {
   font-size: clamp(1rem, 2vw, 1.25rem);
-  color: #6B7280;
+  color: #4B5563;
   line-height: 1.6;
   max-width: 600px;
 }

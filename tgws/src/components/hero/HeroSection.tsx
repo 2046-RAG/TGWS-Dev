@@ -221,7 +221,7 @@ export default function HeroSection() {
           {/* 打字机效果区域 - minHeight:54px 防止文字出现时布局抖动 */}
           <h1
             className="mb-5 sm:mb-6"
-            style={{ fontSize: 'clamp(18px, 4vw, 26px)', lineHeight: 1.35, fontWeight: 400, color: '#fff', minHeight: '54px' }}
+            style={{ fontSize: 'clamp(20px, 4.5vw, 30px)', lineHeight: 1.35, fontWeight: 800, color: '#fff', minHeight: '54px' }}
           >
             {displayed}
             {/* 光标动画 - 打字完成后隐藏 */}
@@ -264,7 +264,7 @@ export default function HeroSection() {
       <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3">
         {/* 提示文字 */}
         <span
-          className="text-[11px] sm:text-xs text-white/60 tracking-[0.3em] uppercase"
+          className="text-[11px] sm:text-xs text-white/60"
           style={{ fontFamily: 'var(--font-body)', animation: 'scrollFadeIn 0.8s 1.5s ease both' }}
         >
           {t('scrollHint')}
@@ -291,7 +291,7 @@ export default function HeroSection() {
 
       {/* 视频跟随提示 - 桌面端显示3秒后淡出 */}
       <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-10 hidden md:block" style={{ animation: 'fadeOut 1s 3s forwards' }}>
-        <p className="text-xs text-white/30 tracking-widest uppercase flex items-center gap-2" style={{ fontFamily: 'var(--font-body)' }}>
+        <p className="text-xs text-white/30 flex items-center gap-2" style={{ fontFamily: 'var(--font-body)' }}>
           <span className="inline-block w-6 h-px bg-white/20" />
           {t('scrubHint')}
           <svg className="w-3 h-3 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>

@@ -123,11 +123,11 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
           </div>
         )}
 
-        <div className="bg-gradient-to-br from-[#00D4FF]/5 to-[#7B61FF]/5 border border-gray-200 rounded-2xl p-8 text-center mt-12">
+        <div className="bg-[#00D4FF]/5 border border-gray-200 rounded-2xl p-8 text-center mt-12">
           <HelpCircle className="mx-auto mb-4 text-[#00D4FF]" size={40} />
           <h3 className="text-xl font-bold text-gray-900 mb-2">{t('cta')}</h3>
           <p className="text-gray-600 mb-6 max-w-md mx-auto">{t('ctaDesc')}</p>
-          <Link href={`/${locale}/contact`} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#00D4FF] to-[#7B61FF] text-white font-medium hover:opacity-90 transition-opacity">
+          <Link href={`/${locale}/contact`} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#00D4FF] text-white font-medium hover:bg-[#00B8DB] transition-colors">
             {t('ctaBtn')}
           </Link>
         </div>

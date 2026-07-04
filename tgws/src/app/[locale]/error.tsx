@@ -26,7 +26,7 @@ export default function ErrorPage({
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={() => reset()}
-            className="px-6 py-3 bg-gradient-to-r from-[#00D4FF] to-[#7B61FF] text-white font-medium rounded-full hover:opacity-90 transition-opacity"
+            className="px-6 py-3 bg-[#00D4FF] text-white font-medium rounded-full hover:bg-[#00B8DB] transition-colors"
           >
             {t('retry')}
           </button>

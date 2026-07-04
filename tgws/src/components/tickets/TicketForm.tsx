@@ -336,7 +336,7 @@ export default function TicketForm() {
         >
           <ImageIcon size={24} className="mx-auto text-gray-400 mb-2" />
           <p className="text-sm text-gray-500">{t('pasteScreenshot')}</p>
-          <p className="text-xs text-gray-400 mt-1">{t('orClickToUpload')}</p>
+            <p className="text-xs text-gray-600 mt-1">{t('orClickToUpload')}</p>
         </div>
         {pastedImages.length > 0 && (
           <div className="flex flex-wrap gap-3 mt-3">
@@ -368,13 +368,13 @@ export default function TicketForm() {
           multiple
           className="w-full text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gray-100 file:text-gray-700 file:hover:bg-gray-200 file:cursor-pointer"
         />
-        <p className="text-xs text-gray-400 mt-1">{t('maxFileSize')}</p>
+          <p className="text-xs text-gray-600 mt-1">{t('maxFileSize')}</p>
       </div>
 
       <button
         type="submit"
         disabled={loading || uploading}
-        className="w-full bg-gradient-to-r from-[#00D4FF] to-[#7B61FF] text-white font-medium py-3 rounded-full hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
+        className="w-full bg-[#00D4FF] text-white font-medium py-3 rounded-full hover:bg-[#00B8DB] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
       >
         {loading || uploading ? (
           <>

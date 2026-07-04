@@ -160,7 +160,7 @@ export default function HomePage() {
           <div className="card overflow-hidden anim-fade-up" style={{ padding: 0 }}>
             <div className="flex flex-col md:flex-row">
               <div className="flex-1 p-8 sm:p-12">
-                <p className="text-sm font-medium text-[#7B61FF] uppercase tracking-widest mb-3">
+                <p className="text-sm font-medium text-[#7B61FF] mb-3">
                   {t('vmwareLabel')}
                 </p>
                 <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'var(--font-heading)' }}>
@@ -256,7 +256,7 @@ export default function HomePage() {
       {/* ═══ 区块6: 合作伙伴Logo墙 ═══ */}
       <section className="py-12 sm:py-20 px-5 sm:px-8">
         <div className="max-w-6xl mx-auto text-center">
-          <p className="text-sm text-gray-400 uppercase tracking-widest mb-10">{t('partnersLabel')}</p>
+          <p className="text-sm text-gray-600 mb-10">{t('partnersLabel')}</p>
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
             {[
               { name: 'Proxmox', src: '/logos/proxmox.svg', delay: '0s' },
@@ -313,7 +313,7 @@ export default function HomePage() {
         .anim-node {
           opacity: 0;
           transform: scale(0.5);
-          animation: nodePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          animation: nodePop 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
         .anim-card {
           opacity: 0;

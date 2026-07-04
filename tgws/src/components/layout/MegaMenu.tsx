@@ -40,7 +40,7 @@ export default function MegaMenu({ items }: MegaMenuProps) {
         >
           <Link
             href={item.href}
-            className="text-[23px] text-black hover:opacity-60 transition-opacity duration-200"
+            className="text-[16px] text-black hover:opacity-60 transition-opacity duration-200"
           >
             {item.label}
           </Link>
@@ -63,7 +63,7 @@ export default function MegaMenu({ items }: MegaMenuProps) {
                         {child.label}
                       </div>
                       {child.desc && (
-                        <div className="text-xs text-gray-400 mt-0.5 line-clamp-1">
+                        <div className="text-xs text-gray-600 mt-0.5 line-clamp-1">
                           {child.desc}
                         </div>
                       )}

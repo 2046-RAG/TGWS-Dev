@@ -62,7 +62,7 @@ export default function CaseStudyDetail({ caseStudy, locale }: { caseStudy: Case
           />
         )}
 
-        <div className="bg-gradient-to-br from-[#00D4FF]/10 to-[#7B61FF]/10 rounded-2xl p-8 mb-8">
+        <div className="bg-[#00D4FF]/10 rounded-2xl p-8 mb-8">
           <div className="flex flex-wrap items-center gap-3 mb-4">
             <span className="px-3 py-0.5 rounded-full text-xs font-medium bg-[#00D4FF]/20 text-[#00D4FF]">
               {caseStudy.industry}
@@ -74,9 +74,6 @@ export default function CaseStudyDetail({ caseStudy, locale }: { caseStudy: Case
 
         <div className="mb-8">
           <h2 className="flex items-center gap-3 text-xl font-bold text-gray-900 mb-4">
-            <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100">
-              <span className="text-sm font-bold text-gray-600">01</span>
-            </span>
             {t('summary')}
           </h2>
           <div className="bg-white border border-gray-200 rounded-2xl p-6">
@@ -132,10 +129,10 @@ export default function CaseStudyDetail({ caseStudy, locale }: { caseStudy: Case
           </div>
         )}
 
-        <div className="bg-gradient-to-br from-[#00D4FF]/5 to-[#7B61FF]/5 border border-gray-200 rounded-2xl p-8 text-center">
+        <div className="bg-[#00D4FF]/5 border border-gray-200 rounded-2xl p-8 text-center">
           <h3 className="text-xl font-bold text-gray-900 mb-2">{t('cta')}</h3>
           <p className="text-gray-600 mb-6 max-w-md mx-auto">{t('ctaDesc')}</p>
-          <Link href={`/${locale}/contact`} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#00D4FF] to-[#7B61FF] text-white font-medium hover:opacity-90 transition-opacity">
+          <Link href={`/${locale}/contact`} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#00D4FF] text-white font-medium hover:bg-[#00B8DB] transition-colors">
             {t('ctaBtn')}
             <ArrowRight size={16} />
           </Link>

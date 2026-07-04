@@ -288,7 +288,7 @@ export default function VMwareAlternativePage() {
                       </div>
                     </div>
                     <div className="pt-2">
-                      <span className="text-sm font-bold uppercase tracking-wider" style={{ color: colors[i] }}>
+                      <span className="text-sm font-bold" style={{ color: colors[i] }}>
                         {locale === 'zh' ? `步驟 ${step.num}` : `Step ${step.num}`}
                       </span>
                       <h3 className="text-xl font-bold text-gray-900 mt-1 mb-2">{t(`${step.key}`)}</h3>

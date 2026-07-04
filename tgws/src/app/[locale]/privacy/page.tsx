@@ -8,7 +8,7 @@ export default async function PrivacyPage() {
   return (
     <section className="py-20 px-5 sm:px-8 max-w-4xl mx-auto">
       <h1 className="section-title text-gray-900 mb-8">{t('title')}</h1>
-      <div className="prose prose-gray max-w-none space-y-6 text-gray-600 leading-relaxed">
+      <div className="prose prose-gray max-w-none space-y-8 text-gray-600 leading-relaxed text-[15px]">
         <p><strong>{t('lastUpdated')}:</strong> June 30, 2026</p>
 
         <h2 className="text-xl font-bold text-gray-900 mt-8">1. {t('section1Title')}</h2>

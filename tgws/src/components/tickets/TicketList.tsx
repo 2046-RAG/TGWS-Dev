@@ -62,7 +62,7 @@ export default function TicketList({ tickets }: { tickets: Ticket[] }) {
           <Clock size={28} className="text-gray-400" />
         </div>
         <p className="text-gray-500 text-lg">{t('noTickets')}</p>
-        <p className="text-gray-400 text-sm mt-2">Submit a ticket to get started</p>
+        <p className="text-gray-600 text-sm mt-2">Submit a ticket to get started</p>
       </div>
     );
   }

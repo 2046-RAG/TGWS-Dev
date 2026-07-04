@@ -73,7 +73,7 @@ export default function SolutionsPage() {
             </h2>
             <p className="text-gray-600 mb-6">{t(`industries.${industry.key}.description`)}</p>
             <div className="mb-6">
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+              <h3 className="text-sm font-semibold text-gray-600 mb-3">
                 {t('painPoints')}
               </h3>
               <ul className="space-y-2">
@@ -86,7 +86,7 @@ export default function SolutionsPage() {
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+              <h3 className="text-sm font-semibold text-gray-600 mb-3">
                 {t('ourSolutions')}
               </h3>
               <ul className="space-y-2">
@@ -102,7 +102,7 @@ export default function SolutionsPage() {
 
           <div className="flex flex-col justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+              <h3 className="text-sm font-semibold text-gray-600 mb-3">
                 {t('featuredProducts')}
               </h3>
               <div className="space-y-3">

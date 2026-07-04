@@ -93,7 +93,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           <Link
             href={`/${locale}/home`}
-            className="text-[23px] text-black hover:opacity-60 transition-opacity duration-200"
+            className="text-[16px] text-black hover:opacity-60 transition-opacity duration-200"
           >
             {t('home')}
           </Link>
@@ -104,7 +104,7 @@ export default function Navbar() {
           <LanguageSwitcher />
           <Link
             href={`/${locale}/contact`}
-            className="text-[23px] text-black underline underline-offset-2 hover:opacity-60 transition-opacity duration-200"
+            className="text-[16px] text-black underline underline-offset-2 hover:opacity-60 transition-opacity duration-200"
           >
             {t('contact')}
           </Link>
@@ -161,7 +161,7 @@ export default function Navbar() {
                     <Link
                       key={child.href}
                       href={child.href}
-                      className="text-sm text-gray-500 hover:text-[#00D4FF] transition-colors"
+                      className="text-sm text-gray-600 hover:text-[#00D4FF] transition-colors"
                       onClick={() => setMobileOpen(false)}
                     >
                       {child.label}

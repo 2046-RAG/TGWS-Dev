@@ -17,7 +17,8 @@ export default async function LoginPage({
         <p className="text-gray-500">{t('signInSubtitle')}</p>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+      <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm overflow-hidden relative">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-[#00D4FF]" />
         <LoginForm />
       </div>
 

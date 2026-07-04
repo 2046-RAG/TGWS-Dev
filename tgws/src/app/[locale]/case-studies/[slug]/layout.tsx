@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 
-const slugToTitle: Record<string, string> = {
-  'hospital-cloud-migration': 'Regional Hospital Network Cloud Migration',
-  'banking-zero-trust': 'Banking Group Zero Trust Transformation',
-  'retail-ai-forecasting': 'Retail Chain AI Demand Forecasting',
-  'logistics-network-upgrade': 'Logistics Firm Global Network Upgrade',
-  'university-elearning': 'University E-Learning Platform Scale-Up',
-  'government-modernization': 'Government Agency Legacy Modernization',
+const slugToI18nKey: Record<string, string> = {
+  'hospital-cloud-migration': '1',
+  'banking-zero-trust': '2',
+  'retail-ai-forecasting': '3',
+  'logistics-network-upgrade': '4',
+  'university-elearning': '5',
+  'government-modernization': '6',
 };
 
 export async function generateMetadata({
@@ -14,21 +15,24 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string; locale: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const title = slugToTitle[slug];
+  const { slug, locale } = await params;
+  const caseKey = slugToI18nKey[slug];
 
-  if (!title) {
+  if (!caseKey) {
     return {
       title: 'Case Study Not Found | TechGuru',
     };
   }
 
+  const t = await getTranslations({ locale, namespace: 'caseStudies.detail' });
+  const title = t(`cases.${caseKey}.title`);
+
   return {
     title: `${title} | TechGuru Case Studies`,
-    description: `Learn how TechGuru helped solve challenges in this ${title} case study.`,
+    description: t('ctaDesc'),
     openGraph: {
       title: `${title} | TechGuru Case Studies`,
-      description: `Learn how TechGuru helped solve challenges in this ${title} case study.`,
+      description: t('ctaDesc'),
       type: 'article',
     },
   };
