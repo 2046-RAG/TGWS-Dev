@@ -267,13 +267,14 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
             {[
               { name: 'H3C', src: '/logos/h3c.png', delay: '0s' },
-              { name: 'Sophos', src: '/logos/sophos.png', delay: '0.1s' },
-              { name: 'Fortinet', src: '/logos/fortinet.svg', delay: '0.2s' },
-              { name: 'Huawei', src: '/logos/huawei.svg', delay: '0.3s' },
-              { name: 'Cisco', src: '/logos/cisco.svg', delay: '0.4s' },
-              { name: 'Ruijie', src: '/logos/ruijie.svg', delay: '0.5s' },
-              { name: 'Arcfra', src: '/logos/arcfra.png', delay: '0.6s' },
-              { name: 'KVM', src: '/logos/kvm.svg', delay: '0.7s' },
+              { name: 'Sangfor', src: '/logos/sangfor.png', delay: '0.1s' },
+              { name: 'Sophos', src: '/logos/sophos.png', delay: '0.2s' },
+              { name: 'Fortinet', src: '/logos/fortinet.svg', delay: '0.3s' },
+              { name: 'Huawei', src: '/logos/huawei.svg', delay: '0.4s' },
+              { name: 'Cisco', src: '/logos/cisco.svg', delay: '0.5s' },
+              { name: 'Ruijie', src: '/logos/ruijie.svg', delay: '0.6s' },
+              { name: 'Arcfra', src: '/logos/arcfra.png', delay: '0.7s' },
+              { name: 'KVM', src: '/logos/kvm.svg', delay: '0.8s' },
             ].map((p) => (
               <div
                 key={p.name}
