@@ -1,6 +1,8 @@
 import { client } from '@/lib/sanity';
 import ProductsList from './ProductsList';
 
+export const revalidate = 3600;
+
 async function getProducts() {
   try {
     const query = `*[_type == "product"] | order(category asc, order asc) {
