@@ -13,7 +13,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           <div>
             <h3 className="text-white font-semibold mb-4">{t('products')}</h3>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <ul className="space-y-2 text-sm text-gray-300">
               <li><Link href={`/${locale}/products#build`} className="hover:text-white transition-colors">{t('build')}</Link></li>
               <li><Link href={`/${locale}/products#run`} className="hover:text-white transition-colors">{t('run')}</Link></li>
               <li><Link href={`/${locale}/products#protect`} className="hover:text-white transition-colors">{t('protect')}</Link></li>
@@ -21,7 +21,7 @@ export default function Footer() {
           </div>
           <div>
             <h3 className="text-white font-semibold mb-4">{t('solutions')}</h3>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <ul className="space-y-2 text-sm text-gray-300">
               <li><Link href={`/${locale}/solutions`} className="hover:text-white transition-colors">{t('healthcare')}</Link></li>
               <li><Link href={`/${locale}/solutions`} className="hover:text-white transition-colors">{t('finance')}</Link></li>
               <li><Link href={`/${locale}/solutions`} className="hover:text-white transition-colors">{t('retail')}</Link></li>
@@ -29,7 +29,7 @@ export default function Footer() {
           </div>
           <div>
             <h3 className="text-white font-semibold mb-4">{t('company')}</h3>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <ul className="space-y-2 text-sm text-gray-300">
               <li><Link href={`/${locale}/about`} className="hover:text-white transition-colors">{t('aboutUs')}</Link></li>
               <li><Link href={`/${locale}/blog`} className="hover:text-white transition-colors">{t('blog')}</Link></li>
               <li><Link href={`/${locale}/contact`} className="hover:text-white transition-colors">{t('contact')}</Link></li>
@@ -37,17 +37,17 @@ export default function Footer() {
           </div>
           <div>
             <h3 className="text-white font-semibold mb-4">{t('support')}</h3>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <ul className="space-y-2 text-sm text-gray-300">
               <li><Link href={`/${locale}/support`} className="hover:text-white transition-colors">{t('tickets')}</Link></li>
               <li><Link href={`/${locale}/support`} className="hover:text-white transition-colors">{t('faq')}</Link></li>
             </ul>
           </div>
         </div>
         <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-400">
             {t('copyright')}
           </p>
-          <div className="flex gap-4 text-sm text-gray-500">
+          <div className="flex gap-4 text-sm text-gray-400">
             <Link href={`/${locale}/privacy`} className="hover:text-white transition-colors">{t('privacy')}</Link>
             <Link href={`/${locale}/terms`} className="hover:text-white transition-colors">{t('terms')}</Link>
           </div>
