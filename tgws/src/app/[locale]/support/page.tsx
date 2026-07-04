@@ -44,6 +44,11 @@ export default function SupportPage() {
       const { data: { user: authUser } } = await supabase.auth.getUser();
       setUser(authUser);
 
+      if (!authUser) {
+        router.push(`/${locale}/support/login`);
+        return;
+      }
+
       if (authUser) {
         const response = await fetch('/api/tickets');
         if (response.ok) {
@@ -55,7 +60,7 @@ export default function SupportPage() {
     };
 
     checkUser();
-  }, [supabase]);
+  }, [supabase, router, locale]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -71,30 +76,7 @@ export default function SupportPage() {
   }
 
   if (!user) {
-    return (
-      <section className="py-20 px-5 sm:px-8 max-w-md mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('signIn')}</h1>
-          <p className="text-gray-500">{t('signInSubtitle')}</p>
-        </div>
-        <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
-          <div className="flex flex-col gap-4">
-            <Link
-              href={`/${locale}/support/login`}
-              className="btn-primary text-center"
-            >
-              {t('signIn')}
-            </Link>
-            <Link
-              href={`/${locale}/support/register`}
-              className="btn-secondary text-center"
-            >
-              {t('createAccount')}
-            </Link>
-          </div>
-        </div>
-      </section>
-    );
+    return null;
   }
 
   const ticketStats = {

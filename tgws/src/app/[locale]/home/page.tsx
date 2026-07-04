@@ -277,10 +277,11 @@ export default function HomePage() {
             ].map((p) => (
               <div
                 key={p.name}
-                className="partner-logo flex items-center justify-center bg-white rounded-xl border border-gray-200/60 px-5 py-3 cursor-default transition-all duration-300 hover:border-gray-300 hover:shadow-md hover:scale-105"
+                className="partner-logo flex items-center gap-2 bg-white rounded-xl border border-gray-200/60 px-4 py-3 cursor-default transition-all duration-300 hover:border-gray-300 hover:shadow-md hover:scale-105"
                 style={{ animationDelay: p.delay }}
               >
-                <Image src={p.src} alt={p.name} width={28} height={28} className="h-7 w-auto max-w-[100px] object-contain" />
+                <Image src={p.src} alt={p.name} width={24} height={24} className="h-6 w-auto object-contain" />
+                <span className="text-sm font-medium text-gray-700">{p.name}</span>
               </div>
             ))}
           </div>
