@@ -62,7 +62,7 @@ describe('LoginForm', () => {
 
   it('renders sign in button', () => {
     render(<LoginForm />);
-    expect(screen.getByRole('button', { name: 'Sign In', exact: true })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Sign In' })).toBeInTheDocument();
   });
 
   it('renders Google sign in button', () => {
@@ -74,7 +74,7 @@ describe('LoginForm', () => {
     render(<LoginForm />);
     fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'test@test.com' } });
     fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: 'password123' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Sign In', exact: true }));
+    fireEvent.click(screen.getByRole('button', { name: 'Sign In',  }));
 
     await waitFor(() => {
       expect(mockSignInWithPassword).toHaveBeenCalledWith({
@@ -103,14 +103,14 @@ describe('LoginForm', () => {
     render(<LoginForm />);
     fireEvent.click(screen.getByText(/Forgot password/i));
     fireEvent.click(screen.getByText(/Back to Sign In/i));
-    expect(screen.getByRole('button', { name: 'Sign In', exact: true })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Sign In',  })).toBeVisible();
   });
 
   it('calls resetPasswordForEmail in reset mode', async () => {
     render(<LoginForm />);
     fireEvent.click(screen.getByText(/Forgot password/i));
     fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'test@test.com' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Send Reset Link', exact: true }));
+    fireEvent.click(screen.getByRole('button', { name: 'Send Reset Link',  }));
 
     await waitFor(() => {
       expect(mockResetPasswordForEmail).toHaveBeenCalled();
@@ -122,7 +122,7 @@ describe('LoginForm', () => {
     render(<LoginForm />);
     fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'test@test.com' } });
     fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: 'wrong' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Sign In', exact: true }));
+    fireEvent.click(screen.getByRole('button', { name: 'Sign In',  }));
 
     await waitFor(() => {
       expect(screen.getByText('Invalid credentials')).toBeInTheDocument();
@@ -136,7 +136,7 @@ describe('LoginForm', () => {
     render(<LoginForm />);
     fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'test@test.com' } });
     fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: 'pass' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Sign In', exact: true }));
+    fireEvent.click(screen.getByRole('button', { name: 'Sign In',  }));
 
     await waitFor(() => {
       expect(screen.getByText('Signing in...')).toBeInTheDocument();
