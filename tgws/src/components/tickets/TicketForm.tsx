@@ -48,7 +48,7 @@ export default function TicketForm() {
     description: '',
   });
 
-  const { clear } = useAutoSave('ticket-form-draft', formData);
+  const { clear, lastSaved } = useAutoSave('ticket-form-draft', formData);
 
   // Fetch products from Sanity on mount
   useEffect(() => {
@@ -209,6 +209,13 @@ export default function TicketForm() {
 
   return (
     <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-2xl p-8 space-y-6 shadow-sm">
+      {/* Auto-save indicator */}
+      {lastSaved && (
+        <div className="flex items-center gap-2 text-xs text-gray-400 -mt-2 mb-2">
+          <CheckCircle size={12} className="text-green-400" />
+          <span>Draft saved at {lastSaved.toLocaleTimeString()}</span>
+        </div>
+      )}
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">
           {error}
@@ -226,7 +233,7 @@ export default function TicketForm() {
           required
           value={formData.category}
           onChange={(e) => handleChange('category', e.target.value)}
-          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-colors"
+          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
         >
           <option value="">{t('selectCategory')}</option>
           <option value="build">{t('build')}</option>
@@ -246,7 +253,7 @@ export default function TicketForm() {
           required
           value={formData.product}
           onChange={(e) => handleChange('product', e.target.value)}
-          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-colors"
+          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
         >
           <option value="">{t('selectCategory')}</option>
           {Object.entries(groupedProducts).map(([cat, items]) => (
@@ -264,8 +271,8 @@ export default function TicketForm() {
             required
             value={formData.productOther}
             onChange={(e) => handleChange('productOther', e.target.value)}
-            className="mt-2 w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-colors"
-            placeholder="Please specify the product or service"
+            className="mt-2 w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
+            placeholder={t('productOtherPlaceholder')}
           />
         )}
       </div>
@@ -283,7 +290,7 @@ export default function TicketForm() {
           value={formData.occurredAt}
           max={new Date().toISOString().slice(0, 16)}
           onChange={(e) => handleChange('occurredAt', e.target.value)}
-          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-colors"
+          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
         />
       </div>
 
@@ -300,8 +307,8 @@ export default function TicketForm() {
           maxLength={200}
           value={formData.subject}
           onChange={(e) => handleChange('subject', e.target.value)}
-          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-colors"
-          placeholder="Brief description of your issue"
+          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
+          placeholder={t('subjectPlaceholder')}
         />
       </div>
 
@@ -318,8 +325,8 @@ export default function TicketForm() {
           maxLength={DESCRIPTION_MAX}
           value={formData.description}
           onChange={(e) => handleChange('description', e.target.value)}
-          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-colors resize-none"
-          placeholder="Detailed description of your issue..."
+          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200 resize-none"
+          placeholder={t('descriptionPlaceholder')}
         />
         <p className={`text-xs mt-1 text-right ${charColor}`}>
           {charCount}/{DESCRIPTION_MAX}
@@ -377,12 +384,12 @@ export default function TicketForm() {
       <button
         type="submit"
         disabled={loading || uploading}
-        className="w-full bg-[#00D4FF] text-white font-medium py-3 rounded-full hover:bg-[#00B8DB] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+        className="w-full bg-[#00D4FF] text-white font-medium py-3 rounded-full hover:bg-[#00B8DB] hover:shadow-lg transition-all duration-200 disabled:opacity-50 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2"
       >
         {loading || uploading ? (
           <>
             <Loader2 size={18} className="animate-spin" />
-            {uploading ? 'Uploading files...' : t('submitting')}
+            {uploading ? t('uploadingFiles') : t('submitting')}
           </>
         ) : (
           t('submitTicket')

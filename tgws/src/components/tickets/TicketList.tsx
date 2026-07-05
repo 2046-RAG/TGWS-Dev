@@ -74,7 +74,7 @@ export default function TicketList({ tickets }: { tickets: Ticket[] }) {
         return (
           <div
             key={ticket.id}
-            className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md transition-all cursor-pointer group"
+            className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-gray-300 transition-all duration-200 cursor-pointer group"
           >
             <div className="flex items-center justify-between gap-4">
               <div className="flex-1 min-w-0">

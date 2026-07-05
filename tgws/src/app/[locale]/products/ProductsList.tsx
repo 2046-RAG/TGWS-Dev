@@ -130,7 +130,7 @@ export default function ProductsList({ products }: { products: Product[] }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: index * 0.05 }}
-        className="group bg-white border border-gray-200 rounded-2xl p-6 hover:border-gray-300 transition-all duration-300 hover:shadow-lg"
+        className="group bg-white border border-gray-200 rounded-2xl p-6 hover:border-[#00D4FF]/30 hover:shadow-lg transition-all duration-200"
       >
         <div
           className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
@@ -141,10 +141,10 @@ export default function ProductsList({ products }: { products: Product[] }) {
         >
           {iconMap[slug] || <Server size={28} />}
         </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-[#00D4FF] transition-colors">
+        <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-[#00D4FF] transition-colors duration-200">
           {t(i18nKey || product.title)}
         </h3>
-        <p className="text-sm text-gray-500 leading-relaxed">
+        <p className="text-sm text-gray-500 leading-relaxed" style={{ lineHeight: '1.7' }}>
           {Array.isArray(features) ? features.join(' • ') : (product.features?.join(' • ') || '')}
         </p>
       </motion.div>
@@ -163,7 +163,7 @@ export default function ProductsList({ products }: { products: Product[] }) {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`relative px-6 sm:px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
+            className={`relative px-6 sm:px-8 py-3 rounded-full text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 ${
               activeTab === tab.key
                 ? 'text-white'
                 : 'text-gray-500 hover:text-gray-700 bg-white border border-gray-200 hover:border-gray-300'

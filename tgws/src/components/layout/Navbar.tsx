@@ -29,12 +29,12 @@ export default function Navbar() {
       label: t('solutions'),
       href: `/${locale}/solutions`,
       children: [
-        { label: 'Healthcare', href: `/${locale}/solutions`, desc: '' },
-        { label: 'Finance', href: `/${locale}/solutions`, desc: '' },
-        { label: 'Retail', href: `/${locale}/solutions`, desc: '' },
-        { label: 'Logistics', href: `/${locale}/solutions`, desc: '' },
-        { label: 'Education', href: `/${locale}/solutions`, desc: '' },
-        { label: 'Government', href: `/${locale}/solutions`, desc: '' },
+        { label: 'Healthcare', href: `/${locale}/solutions?tab=healthcare`, desc: '' },
+        { label: 'Finance', href: `/${locale}/solutions?tab=finance`, desc: '' },
+        { label: 'Retail', href: `/${locale}/solutions?tab=retail`, desc: '' },
+        { label: 'Logistics', href: `/${locale}/solutions?tab=logistics`, desc: '' },
+        { label: 'Education', href: `/${locale}/solutions?tab=education`, desc: '' },
+        { label: 'Government', href: `/${locale}/solutions?tab=government`, desc: '' },
       ],
     },
     {
@@ -42,10 +42,10 @@ export default function Navbar() {
       label: t('caseStudies'),
       href: `/${locale}/case-studies`,
       children: [
-        { label: 'All Industries', href: `/${locale}/case-studies`, desc: '' },
-        { label: 'Healthcare', href: `/${locale}/case-studies`, desc: '' },
-        { label: 'Finance', href: `/${locale}/case-studies`, desc: '' },
-        { label: 'Retail', href: `/${locale}/case-studies`, desc: '' },
+        { label: 'All Industries', href: `/${locale}/case-studies?filter=all`, desc: '' },
+        { label: 'Healthcare', href: `/${locale}/case-studies?filter=healthcare`, desc: '' },
+        { label: 'Finance', href: `/${locale}/case-studies?filter=finance`, desc: '' },
+        { label: 'Retail', href: `/${locale}/case-studies?filter=retail`, desc: '' },
       ],
     },
     {
@@ -78,18 +78,18 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-black/5">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-4 sm:py-5 flex items-center justify-between">
-        <Link href={`/${locale}`} className="flex items-center gap-3">
-          <span className="text-[21px] sm:text-[26px] font-bold tracking-tight text-black" style={{ fontFamily: 'var(--font-heading)' }}>
+        <Link href={`/${locale}`} className="flex items-center gap-3 group">
+          <span className="text-[21px] sm:text-[26px] font-bold tracking-tight text-black group-hover:text-[#00D4FF] transition-colors duration-200" style={{ fontFamily: 'var(--font-heading)' }}>
             TechGuru
           </span>
           <span className="text-[12px] text-black/60 align-super">®</span>
-          <span className="text-[25px] sm:text-[30px] text-black select-none" style={{ letterSpacing: '-0.02em' }}>✳︎</span>
+          <span className="text-[25px] sm:text-[30px] text-black select-none group-hover:text-[#00D4FF] transition-colors duration-200" style={{ letterSpacing: '-0.02em' }}>✳︎</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
           <Link
-            href={`/${locale}/home`}
-            className="text-[16px] text-black hover:opacity-60 transition-opacity duration-200"
+            href={`/${locale}`}
+            className="text-[16px] text-black/80 hover:text-[#00D4FF] transition-colors duration-200"
           >
             {t('home')}
           </Link>
@@ -100,7 +100,7 @@ export default function Navbar() {
           <LanguageSwitcher />
           <Link
             href={`/${locale}/contact`}
-            className="text-[16px] text-black underline underline-offset-2 hover:opacity-60 transition-opacity duration-200"
+            className="text-[16px] text-black/80 hover:text-[#00D4FF] transition-colors duration-200"
           >
             {t('contact')}
           </Link>
@@ -110,6 +110,7 @@ export default function Navbar() {
           className="md:hidden flex flex-col gap-[5px] p-2"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
+          aria-expanded={mobileOpen}
         >
           <span
             className={`w-6 h-[2px] bg-black transition-all duration-300 ${
@@ -136,8 +137,8 @@ export default function Navbar() {
       >
         <div className="flex flex-col items-start px-8 py-8 gap-8">
           <Link
-            href={`/${locale}/home`}
-            className="text-[32px] font-medium text-black hover:opacity-60 transition-opacity"
+            href={`/${locale}`}
+            className="text-[32px] font-medium text-black hover:text-[#00D4FF] transition-colors duration-200"
             onClick={() => setMobileOpen(false)}
           >
             {t('home')}
@@ -146,7 +147,7 @@ export default function Navbar() {
             <div key={item.key}>
               <Link
                 href={item.href}
-                className="text-[32px] font-medium text-black hover:opacity-60 transition-opacity"
+                className="text-[32px] font-medium text-black hover:text-[#00D4FF] transition-colors duration-200"
                 onClick={() => setMobileOpen(false)}
               >
                 {item.label}
@@ -157,7 +158,7 @@ export default function Navbar() {
                     <Link
                       key={child.href}
                       href={child.href}
-                      className="text-sm text-gray-600 hover:text-[#00D4FF] transition-colors"
+                      className="text-sm text-gray-600 hover:text-[#00D4FF] transition-colors duration-200"
                       onClick={() => setMobileOpen(false)}
                     >
                       {child.label}
@@ -169,7 +170,7 @@ export default function Navbar() {
           ))}
           <Link
             href={`/${locale}/contact`}
-            className="text-[32px] font-medium text-black underline underline-offset-2 hover:opacity-60 transition-opacity"
+            className="text-[32px] font-medium text-black hover:text-[#00D4FF] transition-colors duration-200"
             onClick={() => setMobileOpen(false)}
           >
             {t('contact')}

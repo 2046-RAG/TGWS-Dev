@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Calendar, ArrowRight, Star, Clock, User } from 'lucide-react';
 import Image from 'next/image';
 import { urlFor } from '@/lib/sanity.image';
@@ -64,10 +63,10 @@ export default function BlogList({ posts }: { posts: Post[] }) {
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 ${
               activeCategory === cat
-                ? 'bg-[#00D4FF] text-white'
-                : 'bg-white border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300'
+                ? 'bg-[#00D4FF] text-white shadow-sm'
+                : 'bg-white border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300 hover:shadow-sm'
             }`}
           >
             {t(`categories.${cat}`)}
@@ -77,12 +76,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
 
       {/* Featured Post - Magazine Hero Layout */}
       {featuredPost && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="mb-16"
-        >
+        <div className="mb-16 scroll-reveal">
           <Link href={`/${locale}/blog/${featuredPost.slug?.current}`}>
             <article className="bg-white border border-gray-200 rounded-2xl overflow-hidden group hover:shadow-xl transition-all cursor-pointer">
               <div className="grid md:grid-cols-5 gap-0">
@@ -136,11 +130,11 @@ export default function BlogList({ posts }: { posts: Post[] }) {
                     </div>
                   </div>
 
-                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 line-clamp-3 group-hover:text-[#00D4FF] transition-colors">
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 line-clamp-3 group-hover:text-[#00D4FF] transition-colors duration-200">
                     {locale === 'zh' ? (featuredPost.titleZh || featuredPost.title) : featuredPost.title}
                   </h2>
                   
-                  <p className="text-gray-600 mb-6 line-clamp-4 leading-relaxed">
+                  <p className="text-gray-600 mb-6 line-clamp-4 leading-relaxed" style={{ lineHeight: '1.7' }}>
                     {locale === 'zh' ? (featuredPost.excerptZh || featuredPost.excerpt) : featuredPost.excerpt}
                   </p>
 
@@ -163,18 +157,17 @@ export default function BlogList({ posts }: { posts: Post[] }) {
               </div>
             </article>
           </Link>
-        </motion.div>
+        </div>
       )}
 
       {/* Remaining Posts - Editorial Grid */}
       {remainingPosts.length > 0 && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {remainingPosts.map((post, index) => (
-            <motion.div
+            <div
               key={post._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
+              className="scroll-reveal"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               <Link href={`/${locale}/blog/${post.slug?.current}`}>
                 <article className="bg-white border border-gray-200 rounded-xl overflow-hidden group hover:shadow-lg transition-all cursor-pointer h-full flex flex-col">
@@ -225,7 +218,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
                       </div>
                     </div>
                     
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#00D4FF] transition-colors">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#00D4FF] transition-colors duration-200">
                       {locale === 'zh' ? (post.titleZh || post.title) : post.title}
                     </h3>
                     
@@ -243,7 +236,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
                   </div>
                 </article>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
       )}

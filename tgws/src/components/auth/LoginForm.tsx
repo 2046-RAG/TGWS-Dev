@@ -96,7 +96,7 @@ export default function LoginForm() {
             required
             autoComplete="email"
             spellCheck={false}
-            className="w-full bg-gray-50 border border-gray-200 rounded-lg pl-10 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-colors"
+            className="w-full bg-gray-50 border border-gray-200 rounded-lg pl-10 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
             placeholder={t('emailPlaceholder')}
           />
         </div>
@@ -117,7 +117,7 @@ export default function LoginForm() {
             required
             minLength={8}
             autoComplete="current-password"
-            className="w-full bg-gray-50 border border-gray-200 rounded-lg pl-10 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-colors"
+            className="w-full bg-gray-50 border border-gray-200 rounded-lg pl-10 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
             placeholder={t('passwordPlaceholder')}
             />
           </div>
@@ -148,7 +148,7 @@ export default function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-[#00D4FF] text-white font-medium py-3 rounded-full hover:bg-[#00B8DB] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+        className="w-full bg-[#00D4FF] text-white font-medium py-3 rounded-full hover:bg-[#00B8DB] hover:shadow-lg transition-all duration-200 disabled:opacity-50 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2"
       >
         {loading ? (
           <>
@@ -174,7 +174,7 @@ export default function LoginForm() {
           <button
             type="button"
             onClick={handleOAuth}
-            className="w-full bg-white border border-gray-200 text-gray-700 font-medium py-3 rounded-full hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-white border border-gray-200 text-gray-700 font-medium py-3 rounded-full hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />

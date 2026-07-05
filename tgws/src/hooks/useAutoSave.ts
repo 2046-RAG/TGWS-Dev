@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useCallback, useRef } from 'react';
+import { useEffect, useCallback, useRef, useState } from 'react';
 
 export function useAutoSave(
   key: string,
@@ -8,6 +8,7 @@ export function useAutoSave(
   intervalMs = 30000
 ) {
   const dataRef = useRef(data);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
 
   useEffect(() => {
     dataRef.current = data;
@@ -17,6 +18,7 @@ export function useAutoSave(
     const interval = setInterval(() => {
       if (Object.keys(dataRef.current).length > 0) {
         localStorage.setItem(key, JSON.stringify(dataRef.current));
+        setLastSaved(new Date());
       }
     }, intervalMs);
 
@@ -35,5 +37,5 @@ export function useAutoSave(
     }
   }, [key]);
 
-  return { load, clear };
+  return { load, clear, lastSaved };
 }

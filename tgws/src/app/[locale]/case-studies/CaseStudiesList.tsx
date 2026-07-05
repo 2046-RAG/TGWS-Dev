@@ -1,10 +1,9 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useState, useMemo } from 'react';
+import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { ArrowRight, Building2, Users, TrendingUp } from 'lucide-react';
 import Image from 'next/image';
 import { urlFor } from '@/lib/sanity.image';
@@ -26,8 +25,16 @@ interface CaseStudy {
 export default function CaseStudiesList({ cases }: { cases: CaseStudy[] }) {
   const t = useTranslations('caseStudies');
   const params = useParams();
+  const searchParams = useSearchParams();
   const locale = params.locale as string;
-  const [activeIndustry, setActiveIndustry] = useState('all');
+
+  const initialIndustry = useMemo(() => {
+    const filter = searchParams.get('filter');
+    if (filter && industries.includes(filter)) return filter;
+    return 'all';
+  }, [searchParams]);
+
+  const [activeIndustry, setActiveIndustry] = useState(initialIndustry);
 
   const filtered = activeIndustry === 'all' ? cases : cases.filter((c) => c.industry === activeIndustry);
   const featuredCase = filtered[0];
@@ -45,10 +52,10 @@ export default function CaseStudiesList({ cases }: { cases: CaseStudy[] }) {
           <button
             key={ind}
             onClick={() => setActiveIndustry(ind)}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 ${
               activeIndustry === ind
-                ? 'bg-[#00D4FF] text-white'
-                : 'bg-white border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300'
+                ? 'bg-[#00D4FF] text-white shadow-sm'
+                : 'bg-white border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300 hover:shadow-sm'
             }`}
           >
             {t(`filters.industry.${ind}`)}
@@ -58,12 +65,7 @@ export default function CaseStudiesList({ cases }: { cases: CaseStudy[] }) {
 
       {/* Featured Case Study - Large Layout */}
       {featuredCase && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="mb-12"
-        >
+        <div className="mb-12 scroll-reveal">
           <Link href={`/${locale}/case-studies/${featuredCase.slug?.current}`}>
             <article className="bg-white border border-gray-200 rounded-2xl overflow-hidden group hover:shadow-xl transition-all cursor-pointer">
               <div className="grid md:grid-cols-2 gap-0">
@@ -99,11 +101,11 @@ export default function CaseStudiesList({ cases }: { cases: CaseStudy[] }) {
                     <span className="text-sm font-medium text-gray-500">{featuredCase.clientName}</span>
                   </div>
                   
-                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 line-clamp-2 group-hover:text-[#00D4FF] transition-colors">
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 line-clamp-2 group-hover:text-[#00D4FF] transition-colors duration-200">
                     {featuredCase.title}
                   </h2>
                   
-                  <p className="text-gray-600 mb-6 line-clamp-3 leading-relaxed">
+                  <p className="text-gray-600 mb-6 line-clamp-3 leading-relaxed" style={{ lineHeight: '1.7' }}>
                     {locale === 'zh' ? (featuredCase.summaryZh || featuredCase.summary) : featuredCase.summary}
                   </p>
 
@@ -131,18 +133,17 @@ export default function CaseStudiesList({ cases }: { cases: CaseStudy[] }) {
               </div>
             </article>
           </Link>
-        </motion.div>
+        </div>
       )}
 
       {/* Remaining Case Studies - Compact Grid */}
       {remainingCases.length > 0 && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {remainingCases.map((cs, index) => (
-            <motion.div
+            <div
               key={cs._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
+              className="scroll-reveal"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               <Link href={`/${locale}/case-studies/${cs.slug?.current}`}>
                 <article className="bg-white border border-gray-200 rounded-xl overflow-hidden group hover:shadow-lg transition-all cursor-pointer h-full flex flex-col">
@@ -178,7 +179,7 @@ export default function CaseStudiesList({ cases }: { cases: CaseStudy[] }) {
                       <span className="text-xs font-medium text-gray-500">{cs.clientName}</span>
                     </div>
                     
-                    <h3 className="text-base font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#00D4FF] transition-colors">
+                    <h3 className="text-base font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#00D4FF] transition-colors duration-200">
                       {cs.title}
                     </h3>
                     
@@ -195,7 +196,7 @@ export default function CaseStudiesList({ cases }: { cases: CaseStudy[] }) {
                   </div>
                 </article>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
       )}

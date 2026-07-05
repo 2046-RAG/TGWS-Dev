@@ -15,7 +15,7 @@ export default async function NotFoundPage() {
         <p className="text-gray-600 mb-8">{t('notFoundDesc')}</p>
         <Link
           href={`/${locale}/home`}
-          className="inline-block px-6 py-3 bg-[#00D4FF] text-white font-medium rounded-full hover:bg-[#00B8DB] transition-colors"
+          className="inline-block px-6 py-3 bg-[#00D4FF] text-white font-medium rounded-full hover:bg-[#00B8DB] hover:shadow-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2"
         >
           {t('backHome')}
         </Link>

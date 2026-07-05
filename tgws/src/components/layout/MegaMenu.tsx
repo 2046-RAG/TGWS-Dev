@@ -38,7 +38,7 @@ export default function MegaMenu({ items }: MegaMenuProps) {
         >
           <Link
             href={item.href}
-            className="text-[16px] text-black hover:opacity-60 transition-opacity duration-200"
+            className="text-[16px] text-black/80 hover:text-[#00D4FF] transition-colors duration-200"
           >
             {item.label}
           </Link>
@@ -50,18 +50,18 @@ export default function MegaMenu({ items }: MegaMenuProps) {
               onMouseLeave={handleLeave}
             >
               <div className="bg-white border border-gray-200 rounded-2xl shadow-xl p-6 min-w-[320px] max-w-[480px]">
-                <div className="grid gap-1">
+                <div className="grid gap-0.5">
                   {item.children.map((child) => (
                     <Link
                       key={child.href}
                       href={child.href}
-                      className="block px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors group"
+                      className="block px-4 py-3 rounded-xl hover:bg-[#00D4FF]/5 transition-colors duration-150 group"
                     >
-                      <div className="text-sm font-medium text-gray-900 group-hover:text-[#00D4FF] transition-colors">
+                      <div className="text-sm font-medium text-gray-900 group-hover:text-[#00D4FF] transition-colors duration-150">
                         {child.label}
                       </div>
                       {child.desc && (
-                        <div className="text-xs text-gray-600 mt-0.5 line-clamp-1">
+                        <div className="text-xs text-gray-500 mt-0.5 line-clamp-1">
                           {child.desc}
                         </div>
                       )}

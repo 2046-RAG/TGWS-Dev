@@ -165,7 +165,7 @@ export default function HomePage() {
                 <p className="text-sm font-medium text-[#7B61FF] mb-3">
                   {t('vmwareLabel')}
                 </p>
-                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'var(--font-heading)' }}>
+                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>
                   {t('vmwareTitle')}
                 </h2>
                 <p className="text-base text-gray-500 leading-relaxed mb-8">{t('vmwareDesc')}</p>
@@ -182,10 +182,10 @@ export default function HomePage() {
                 </Link>
               </div>
               <div className="flex-1 bg-gray-50 p-8 sm:p-12 flex items-center justify-center">
-                <div className="grid grid-cols-3 gap-4 opacity-70">
+                <div className="grid grid-cols-3 gap-4">
                   {[
                     { name: 'Proxmox', src: '/logos/proxmox.svg' },
-                    { name: 'Sangfor', src: '/logos/sangfor.png' },
+                    { name: 'Sangfor', src: '/logos/sangfor.svg' },
                     { name: 'Nutanix', src: '/logos/nutanix.svg' },
                     { name: 'Arcfra', src: '/logos/arcfra.png' },
                     { name: 'H3C', src: '/logos/h3c.png' },
@@ -215,14 +215,14 @@ export default function HomePage() {
               return (
                 <Link
                   key={ind.key}
-                  href={`/${locale}/solutions`}
+                  href={`/${locale}/solutions?tab=${ind.key}`}
                   className="card group text-center anim-card"
                   style={{ animationDelay: `${0.1 + i * 0.1}s`, padding: '40px 32px' }}
                 >
                   <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: `${ind.color}10` }}>
                     <Icon size={32} style={{ color: ind.color }} />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#00D4FF] transition-colors" style={{ fontFamily: 'var(--font-heading)' }}>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#00D4FF] transition-colors duration-200" style={{ fontFamily: 'var(--font-heading)' }}>
                     {t(`industries.${ind.key}.name`)}
                   </h3>
                   <p className="text-sm text-gray-500 leading-relaxed">
@@ -247,7 +247,7 @@ export default function HomePage() {
             {stats.map((stat, i) => {
               const Icon = stat.icon;
               return (
-                <div key={stat.labelKey} className="text-center anim-card" style={{ animationDelay: `${0.1 + i * 0.1}s` }}>
+                <div key={stat.labelKey} className="text-center anim-stat" style={{ animationDelay: `${0.1 + i * 0.15}s` }}>
                   <div className="w-12 h-12 rounded-2xl bg-[#00D4FF]/10 flex items-center justify-center mx-auto mb-4">
                     <Icon size={22} className="text-[#00D4FF]" />
                   </div>
@@ -267,7 +267,7 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
             {[
               { name: 'H3C', src: '/logos/h3c.png', delay: '0s' },
-              { name: 'Sangfor', src: '/logos/sangfor.png', delay: '0.1s' },
+              { name: 'Sangfor', src: '/logos/sangfor.svg', delay: '0.1s' },
               { name: 'Sophos', src: '/logos/sophos.png', delay: '0.2s' },
               { name: 'Fortinet', src: '/logos/fortinet.svg', delay: '0.3s' },
               { name: 'Huawei', src: '/logos/huawei.svg', delay: '0.4s' },
@@ -292,10 +292,10 @@ export default function HomePage() {
       {/* ═══ 区块7: CTA区域 ═══ */}
       <section className="py-14 sm:py-24 px-5 sm:px-8 scroll-reveal">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 anim-fade-up" style={{ fontFamily: 'var(--font-heading)' }}>
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 anim-fade-up" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>
             {t('ctaTitle')}
           </h2>
-          <p className="text-lg text-gray-500 mb-8 max-w-xl mx-auto anim-fade-up" style={{ animationDelay: '0.1s' }}>
+          <p className="text-lg text-gray-500 mb-8 max-w-xl mx-auto anim-fade-up" style={{ animationDelay: '0.1s', lineHeight: '1.7' }}>
             {t('ctaDesc')}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 anim-fade-up" style={{ animationDelay: '0.2s' }}>

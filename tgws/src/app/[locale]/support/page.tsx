@@ -112,15 +112,15 @@ export default function SupportPage() {
         {/* Navigation */}
         <nav className="flex-1 p-4 space-y-1">
           {sidebarItems.map((item) => (
-            <button
-              key={item.key}
-              onClick={() => setActiveTab(item.key)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                activeTab === item.key
-                  ? 'bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/20'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-              }`}
-            >
+                <button
+                  key={item.key}
+                  onClick={() => setActiveTab(item.key)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 ${
+                    activeTab === item.key
+                      ? 'bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/20'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
               {item.icon}
               {item.label}
             </button>
@@ -140,7 +140,7 @@ export default function SupportPage() {
           </div>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-red-700 hover:bg-red-100 rounded-lg transition-colors"
+            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2"
           >
             <LogOut size={16} />
             Sign Out
@@ -169,21 +169,24 @@ export default function SupportPage() {
           </div>
 
           {/* Mobile Nav */}
-          <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
-            {sidebarItems.map((item) => (
-              <button
-                key={item.key}
-                onClick={() => setActiveTab(item.key)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-200 ${
-                  activeTab === item.key
-                    ? 'bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/20'
-                    : 'text-gray-600 bg-gray-100'
-                }`}
-              >
-                {item.icon}
-                {item.label}
-              </button>
-            ))}
+          <div className="relative mt-4">
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+              {sidebarItems.map((item) => (
+                <button
+                  key={item.key}
+                  onClick={() => setActiveTab(item.key)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 ${
+                    activeTab === item.key
+                      ? 'bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/20'
+                      : 'text-gray-600 bg-gray-100'
+                  }`}
+                >
+                  {item.icon}
+                  {item.label}
+                </button>
+              ))}
+            </div>
+            <div className="absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none" />
           </div>
         </div>
 
@@ -222,27 +225,27 @@ export default function SupportPage() {
               <div className="grid lg:grid-cols-2 gap-6">
                 <button
                   onClick={() => setActiveTab('new-ticket')}
-                  className="bg-white border border-gray-200 p-6 rounded-2xl text-left hover:shadow-lg transition-all duration-300 group shadow-sm"
+                  className="bg-white border border-gray-200 p-6 rounded-2xl text-left hover:shadow-lg hover:border-gray-300 transition-all duration-200 group shadow-sm"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#00D4FF] transition-colors">Submit New Ticket</h3>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#00D4FF] transition-colors duration-200">Submit New Ticket</h3>
                       <p className="text-sm text-gray-500">Get help from our support team</p>
                     </div>
-                    <ChevronRight className="text-gray-400 group-hover:text-[#00D4FF] transition-colors" />
+                    <ChevronRight className="text-gray-400 group-hover:text-[#00D4FF] transition-colors duration-200" />
                   </div>
                 </button>
 
                 <button
                   onClick={() => setActiveTab('my-tickets')}
-                  className="bg-white border border-gray-200 p-6 rounded-2xl text-left hover:shadow-lg transition-all duration-300 group shadow-sm"
+                  className="bg-white border border-gray-200 p-6 rounded-2xl text-left hover:shadow-lg hover:border-gray-300 transition-all duration-200 group shadow-sm"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#00D4FF] transition-colors">View My Tickets</h3>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#00D4FF] transition-colors duration-200">View My Tickets</h3>
                       <p className="text-sm text-gray-500">Track existing ticket status</p>
                     </div>
-                    <ChevronRight className="text-gray-400 group-hover:text-gray-900 transition-colors" />
+                    <ChevronRight className="text-gray-400 group-hover:text-gray-900 transition-colors duration-200" />
                   </div>
                 </button>
               </div>

@@ -2,7 +2,6 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { ArrowLeft, Share2, Clock, HelpCircle, Star } from 'lucide-react';
 import Image from 'next/image';
 import { urlFor } from '@/lib/sanity.image';
@@ -71,7 +70,7 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
 
   return (
     <section className="py-20 px-5 sm:px-8 max-w-4xl mx-auto">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+      <div className="scroll-reveal">
         <Link href={`/${locale}/blog`} className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 transition-colors">
           <ArrowLeft size={16} />
           {t('backToBlog')}
@@ -134,7 +133,7 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
             {t('ctaBtn')}
           </Link>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

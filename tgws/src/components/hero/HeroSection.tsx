@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
-import { Copy, Check } from 'lucide-react';
+import { Copy, Check, Mail } from 'lucide-react';
 
 /**
  * Hero Section 组件
@@ -253,7 +253,7 @@ export default function HeroSection() {
               onClick={handleCopyEmail}
               className="inline-flex items-center gap-1.5 sm:gap-3 text-black bg-transparent border border-black rounded-full text-[12px] sm:text-[15px] px-4 sm:px-5 py-3 sm:py-[0.3em] mx-[0.2em] mb-[0.4em] min-h-[44px] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
             >
-              <span>📧 {EMAIL}</span>
+              <Mail size={14} className="shrink-0" /> <span>{EMAIL}</span>
               {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
             </button>
           </div>
