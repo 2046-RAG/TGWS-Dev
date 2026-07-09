@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
-import { Copy, Check, Mail, Code2, Server, Shield, Sparkles, ArrowRight, Monitor } from 'lucide-react';
+import { Copy, Check, Mail, Code2, Sparkles, ArrowRight, Monitor } from 'lucide-react';
+import ParticleNetwork from './ParticleNetwork';
 
 /**
  * Hero Section 组件
@@ -24,12 +25,6 @@ import { Copy, Check, Mail, Code2, Server, Shield, Sparkles, ArrowRight, Monitor
 
 // 邮箱地址
 const EMAIL = 'Inquiries@techguru-it.asia';
-
-// 视频源（Cloudfront CDN）
-const VIDEO_URL = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260530_042513_df96a13b-6155-4f6e-8b93-c9dee66fba08.mp4';
-
-// 鼠标移动灵敏度（0.5 = 鼠标移动全屏宽度时，视频播放一半时长）
-const SENSITIVITY = 0.5;
 
 // 打字机速度（毫秒/字符）
 const TYPING_SPEED = 38;
@@ -75,90 +70,17 @@ export default function HeroSection() {
   const t = useTranslations('hero');
   const params = useParams();
   const locale = params.locale as string;
-  const [copied, setCopied] = useState(false);        // 邮箱是否已复制
-  const [showButtons, setShowButtons] = useState(false); // CTA按钮是否显示
-  const videoRef = useRef<HTMLVideoElement>(null);      // 视频元素引用
-  const prevXRef = useRef(0);                          // 上一次鼠标X坐标
-  const targetTimeRef = useRef(0);                     // 目标视频时间点
-  const seekingRef = useRef(false);                    // 是否正在seek中（防止堆积）
+  const [copied, setCopied] = useState(false);
+  const [showButtons, setShowButtons] = useState(false);
 
   // 打字机效果
   const fullText = t('tagline');
   const { displayed, done } = useTypewriter(fullText);
 
-  // CTA按钮延迟显示（400ms后淡入）
+  // CTA按钮延迟显示
   useEffect(() => {
     const timer = setTimeout(() => setShowButtons(true), 400);
     return () => clearTimeout(timer);
-  }, []);
-
-  /**
-   * 视频跟随鼠标效果
-   *
-   * 核心逻辑：
-   * 1. 计算鼠标水平位移 delta
-   * 2. 将位移转换为视频时间偏移：delta / 屏幕宽度 * 灵敏度 * 视频总时长
-   * 3. 累加到目标时间点，限制在 [0, 视频时长] 范围内
-   * 4. 如果当前没有seek在执行，则执行seek
-   *
-   * 优化点：
-   * - 使用 fastSeek() 优先（Chrome），跳过精确帧定位，直接跳到最近关键帧
-   * - 通过 seekingRef 确保同一时刻只有一个seek在执行
-   * - 使用 requestAnimationFrame 在下一帧执行seek，避免阻塞当前帧
-   */
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    // 执行seek操作
-    const doSeek = () => {
-      if (!video || seekingRef.current) {
-        // 如果正在seek中，等待下一帧重试
-        requestAnimationFrame(doSeek);
-        return;
-      }
-      seekingRef.current = true;
-      // 优先使用 fastSeek（更快但精度略低），降级为 currentTime
-      if (video.fastSeek) {
-        video.fastSeek(targetTimeRef.current);
-      } else {
-        video.currentTime = targetTimeRef.current;
-      }
-    };
-
-    // seek完成回调，重置seeking标记
-    const handleSeeked = () => {
-      seekingRef.current = false;
-    };
-
-    // 鼠标移动处理
-    const handleMouseMove = (e: MouseEvent) => {
-      // 计算鼠标水平位移
-      const delta = e.clientX - prevXRef.current;
-      prevXRef.current = e.clientX;
-
-      if (!video.duration) return;
-
-      // 将位移转换为视频时间偏移
-      const timeOffset = (delta / window.innerWidth) * SENSITIVITY * video.duration;
-      // 累加到目标时间，限制在有效范围内
-      targetTimeRef.current = Math.max(0, Math.min(targetTimeRef.current + timeOffset, video.duration));
-
-      // 如果当前没有seek在执行，触发seek
-      if (!seekingRef.current) {
-        requestAnimationFrame(doSeek);
-      }
-    };
-
-    // 绑定事件监听
-    video.addEventListener('seeked', handleSeeked);
-    window.addEventListener('mousemove', handleMouseMove);
-
-    // 清理事件监听
-    return () => {
-      video.removeEventListener('seeked', handleSeeked);
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
   }, []);
 
   /**
@@ -185,46 +107,41 @@ export default function HeroSection() {
     }
   }, []);
 
-  // CTA按钮配置 — 精简为2个（skill规则：最多2个CTA）
+  // CTA按钮配置 — 3个：主行动/次行动/联系方式
   const ctaLinks = [
-    { href: `/${locale}/contact`, label: t('cta.demo') },
-    { href: `/${locale}/vmware-alternative`, label: t('cta.vmware') },
+    { href: `/${locale}/products`, label: t('cta.solutions'), primary: true },
+    { href: `/${locale}/contact`, label: t('cta.demo'), primary: false },
+    { href: `/${locale}/vmware-alternative`, label: t('cta.vmware'), primary: false },
   ];
 
   return (
-    <section className="relative w-full h-[100dvh] overflow-hidden">
-      {/* 视频背景 - position:absolute 限制在section内，滚动时不会覆盖下方内容 */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ objectPosition: '70% center' }}
-        src={VIDEO_URL}
-        muted
-        playsInline
-        preload="auto"
-      />
+    <section className="relative w-full h-[100dvh] overflow-hidden flex flex-col bg-[#0a0a0f]">
+      {/* Three.js 粒子网络背景 */}
+      <ParticleNetwork />
 
-      {/* 深色遮罩 - 移动端增强文字可读性 */}
-      <div className="absolute inset-0 bg-black/30 md:bg-transparent z-[1]" />
-      {/* 内容层 - z-10 确保在视频上方 */}
-      <div className="relative z-10 h-full flex flex-col justify-center px-5 sm:px-8 md:px-10 pb-6 md:pb-0">
+      {/* 深色渐变遮罩 — 左深右浅，增强文字对比度 */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/25 to-transparent z-[1]" />
+      {/* 移动端额外遮罩 */}
+      <div className="absolute inset-0 bg-black/20 md:hidden z-[1]" />
+
+      {/* 内容区 — flex-1占据剩余空间，垂直居中 */}
+      <div className="relative z-10 flex-1 flex flex-col justify-center px-5 sm:px-8 md:px-10">
         <div className="max-w-xl">
-          {/* 模糊介绍标签 - filter:blur(4px) 制造品牌身份锚点效果 */}
+          {/* 品牌副标题 — 半透明白色，不再模糊 */}
           <div
             className="pointer-events-none select-none mb-5 sm:mb-6"
-            style={{ fontSize: 'clamp(18px, 4vw, 26px)', lineHeight: 1.3, fontWeight: 400, color: 'rgba(255,255,255,0.8)', filter: 'blur(4px)' }}
+            style={{ fontSize: 'clamp(16px, 3.5vw, 22px)', lineHeight: 1.3, fontWeight: 400, color: 'rgba(255,255,255,0.65)' }}
           >
             <p>{t('heroLabel.line1')}</p>
             <p>{t('heroLabel.line2')}</p>
           </div>
 
-          {/* 打字机效果区域 - minHeight:54px 防止文字出现时布局抖动 */}
+          {/* 打字机主标题 */}
           <h1
             className="mb-5 sm:mb-6"
-            style={{ fontSize: 'clamp(20px, 4.5vw, 30px)', lineHeight: 1.35, fontWeight: 800, color: '#fff', minHeight: '54px' }}
+            style={{ fontSize: 'clamp(22px, 5vw, 34px)', lineHeight: 1.3, fontWeight: 800, color: '#fff', minHeight: '54px' }}
           >
             {displayed}
-            {/* 光标动画 - 打字完成后隐藏 */}
             {!done && (
               <span
                 className="inline-block w-[2px] h-[1.1em] bg-white align-middle ml-[2px]"
@@ -233,25 +150,28 @@ export default function HeroSection() {
             )}
           </h1>
 
-          {/* CTA按钮组 - 400ms后淡入+上移动画 */}
+          {/* CTA按钮组 */}
           <div
-            className={`flex flex-wrap gap-y-1 ${showButtons ? 'opacity-100' : 'opacity-0'}`}
+            className={`flex flex-wrap gap-3 ${showButtons ? 'opacity-100' : 'opacity-0'}`}
             style={{ transform: showButtons ? 'translateY(0)' : 'translateY(8px)', transition: 'opacity 0.4s ease, transform 0.4s ease' }}
           >
-            {/* 白色pill按钮 - hover反转为黑底白字 */}
             {ctaLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="inline-flex items-center justify-center bg-white text-black border border-black/10 rounded-full text-[14px] sm:text-[15px] px-4 sm:px-5 py-3 sm:py-[0.3em] mx-[0.2em] mb-[0.4em] min-h-[44px] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
+                className={`inline-flex items-center justify-center rounded-full text-[14px] sm:text-[15px] px-5 sm:px-6 py-3 min-h-[44px] whitespace-nowrap transition-colors duration-200 ${
+                  link.primary
+                    ? 'bg-[#00D4FF] text-white hover:bg-[#00B8DB]'
+                    : 'bg-white/10 text-white border border-white/25 hover:bg-white/20'
+                }`}
               >
                 {link.label}
               </Link>
             ))}
-            {/* 邮箱复制按钮 - 透明底+黑色边框 */}
+            {/* 邮箱复制按钮 */}
             <button
               onClick={handleCopyEmail}
-              className="inline-flex items-center gap-1.5 sm:gap-3 text-black bg-transparent border border-black rounded-full text-[13px] sm:text-[15px] px-4 sm:px-5 py-3 sm:py-[0.3em] mx-[0.2em] mb-[0.4em] min-h-[44px] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
+              className="inline-flex items-center gap-1.5 sm:gap-3 text-white/80 bg-transparent border border-white/20 rounded-full text-[13px] sm:text-[14px] px-4 sm:px-5 py-3 min-h-[44px] whitespace-nowrap hover:bg-white/10 hover:text-white transition-colors duration-200"
             >
               <Mail size={14} className="shrink-0" /> <span>{EMAIL}</span>
               {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
@@ -260,109 +180,89 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* 滚动下滑按钮 - 全端可见，带脉冲+弹跳动效 */}
-      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3">
-        {/* 提示文字 */}
-        <span
-          className="text-[12px] sm:text-xs text-white/60"
-          style={{ fontFamily: 'var(--font-body)', animation: 'scrollFadeIn 0.8s 1.5s ease both' }}
-        >
-          {t('scrollHint')}
-        </span>
-        {/* 下滑圆圈按钮 */}
+      {/* 滚动提示 */}
+      <div className="relative z-10 flex justify-center pb-4">
         <button
           onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-          className="group relative w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-white/25 bg-white/5 backdrop-blur-sm flex items-center justify-center cursor-pointer hover:bg-white/15 hover:border-white/40 transition-all duration-300"
-          style={{ animation: 'fadeInUp 0.8s 2s ease both' }}
+          className="group relative w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm flex items-center justify-center cursor-pointer hover:bg-white/15 hover:border-white/40 transition-all duration-300"
           aria-label="Scroll down"
         >
-          {/* 脉冲光环 */}
-          <span className="absolute inset-0 rounded-full border border-white/20 animate-ping" style={{ animationDuration: '2s' }} />
-          {/* 下箭头 */}
-          <svg
-            className="w-4 h-4 sm:w-5 sm:h-5 text-white/60 group-hover:text-white/90 transition-colors duration-300"
-            viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-          >
+          <span className="absolute inset-0 rounded-full border border-white/15 animate-ping" style={{ animationDuration: '2s' }} />
+          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white/50 group-hover:text-white/90 transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 5v14M19 12l-7 7-7-7"/>
           </svg>
         </button>
       </div>
 
-      {/* ═══ Three Storylines - Hero底部视觉锚点 ═══ */}
-      <div className="absolute bottom-0 left-0 right-0 z-10 pb-8 px-5 sm:px-8">
+      {/* ═══ Three Storylines — 底部卡片，流式布局不被裁切 ═══ */}
+      <div className="relative z-10 pb-6 px-5 sm:px-8">
         <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             {/* Build.Run.Protect. */}
             <Link
               href={`/${locale}/products`}
-              className="storyline-card group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-5 sm:p-6 hover:bg-white/20 transition-all duration-300"
-              style={{ animationDelay: '0.8s' }}
+              className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 sm:p-5 hover:bg-white/20 transition-all duration-300"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-xl bg-[#00D4FF]/20 flex items-center justify-center">
-                  <Code2 size={20} className="text-[#00D4FF]" />
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-9 h-9 rounded-xl bg-[#00D4FF]/20 flex items-center justify-center shrink-0">
+                  <Code2 size={18} className="text-[#00D4FF]" />
                 </div>
                 <div>
-                  <h3 className="text-white font-bold text-sm">Build. Run. Protect.</h3>
-                  <p className="text-white/60 text-xs">Core Infrastructure</p>
+                  <h3 className="text-white font-bold text-sm leading-tight">Build. Run. Protect.</h3>
+                  <p className="text-white/50 text-xs">Core Infrastructure</p>
                 </div>
               </div>
-              <p className="text-white/70 text-xs leading-relaxed">
+              <p className="text-white/60 text-xs leading-relaxed">
                 End-to-end IT lifecycle. From AI workloads to mission-critical security.
               </p>
               <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                <ArrowRight size={14} className="text-white/60" />
+                <ArrowRight size={14} className="text-white/50" />
               </div>
             </Link>
 
             {/* AI Journey */}
             <Link
               href={`/${locale}/products`}
-              className="storyline-card storyline-ai group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#7B61FF]/20 to-[#00D4FF]/10 backdrop-blur-md border border-[#7B61FF]/30 p-5 sm:p-6 hover:from-[#7B61FF]/30 hover:to-[#00D4FF]/20 transition-all duration-300"
-              style={{ animationDelay: '1s' }}
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#7B61FF]/20 to-[#00D4FF]/10 backdrop-blur-md border border-[#7B61FF]/30 p-4 sm:p-5 hover:from-[#7B61FF]/30 hover:to-[#00D4FF]/20 transition-all duration-300"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-xl bg-[#7B61FF]/20 flex items-center justify-center">
-                  <Sparkles size={20} className="text-[#7B61FF]" />
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-9 h-9 rounded-xl bg-[#7B61FF]/20 flex items-center justify-center shrink-0">
+                  <Sparkles size={18} className="text-[#7B61FF]" />
                 </div>
                 <div>
-                  <h3 className="text-white font-bold text-sm">AI Journey</h3>
-                  <p className="text-white/60 text-xs">Intelligent Transformation</p>
+                  <h3 className="text-white font-bold text-sm leading-tight">AI Journey</h3>
+                  <p className="text-white/50 text-xs">Intelligent Transformation</p>
                 </div>
               </div>
-              <p className="text-white/70 text-xs leading-relaxed">
+              <p className="text-white/60 text-xs leading-relaxed">
                 AI Adoption, AIGC, Coding Assistants, Legacy AI, AI Agents.
               </p>
               <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                <ArrowRight size={14} className="text-white/60" />
+                <ArrowRight size={14} className="text-white/50" />
               </div>
-              {/* AI glow accent */}
               <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-[#7B61FF]/10 rounded-full blur-2xl" />
             </Link>
 
             {/* VMware Alternatives */}
             <Link
               href={`/${locale}/vmware-alternative`}
-              className="storyline-card storyline-vmware group relative overflow-hidden rounded-2xl border border-white/10 p-5 sm:p-6 hover:border-white/20 transition-all duration-300"
-              style={{ animationDelay: '1.2s' }}
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-4 sm:p-5 hover:border-white/25 hover:bg-white/10 transition-all duration-300"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
-                  <Monitor size={20} className="text-white" />
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                  <Monitor size={18} className="text-white" />
                 </div>
                 <div>
-                  <h3 className="text-white font-bold text-sm">VMware Alternatives</h3>
-                  <p className="text-white/60 text-xs">Migration & Freedom</p>
+                  <h3 className="text-white font-bold text-sm leading-tight">VMware Alternatives</h3>
+                  <p className="text-white/50 text-xs">Migration & Freedom</p>
                 </div>
               </div>
-              <p className="text-white/70 text-xs leading-relaxed">
+              <p className="text-white/60 text-xs leading-relaxed">
                 5 proven alternatives. Dual-hypervisor architecture. Zero lock-in.
               </p>
               <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                <ArrowRight size={14} className="text-white/60" />
+                <ArrowRight size={14} className="text-white/50" />
               </div>
-              {/* Shimmer accent */}
-              <div className="storyline-badge absolute inset-0 pointer-events-none" />
             </Link>
           </div>
         </div>
