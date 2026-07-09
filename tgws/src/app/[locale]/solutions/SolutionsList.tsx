@@ -1,7 +1,8 @@
 'use client';
 
-import { useParams, useSearchParams } from 'next/navigation';
-import { useState, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
+import { useState } from 'react';
 import Link from 'next/link';
 import {
   Heart,
@@ -11,77 +12,69 @@ import {
   GraduationCap,
   Landmark,
   ArrowRight,
+  Shield,
+  Clock,
+  TrendingUp,
+  Users,
+  Lock,
 } from 'lucide-react';
+const industryMeta: Record<string, {
+  icon: typeof Heart;
+  color: string;
+  accent: string;
+  metricIcon: typeof Heart;
+}> = {
+  healthcare: { icon: Heart, color: '#00D4FF', accent: 'from-[#00D4FF]/10 to-[#00D4FF]/5', metricIcon: Heart },
+  finance: { icon: Building2, color: '#7B61FF', accent: 'from-[#7B61FF]/10 to-[#7B61FF]/5', metricIcon: Shield },
+  retail: { icon: ShoppingCart, color: '#22C55E', accent: 'from-[#22C55E]/10 to-[#22C55E]/5', metricIcon: TrendingUp },
+  logistics: { icon: Truck, color: '#F59E0B', accent: 'from-[#F59E0B]/10 to-[#F59E0B]/5', metricIcon: Clock },
+  education: { icon: GraduationCap, color: '#EC4899', accent: 'from-[#EC4899]/10 to-[#EC4899]/5', metricIcon: Users },
+  government: { icon: Landmark, color: '#6366F1', accent: 'from-[#6366F1]/10 to-[#6366F1]/5', metricIcon: Lock },
+};
+
+const industryKeys = ['healthcare', 'finance', 'retail', 'logistics', 'education', 'government'];
 
 interface Solution {
   _id: string;
-  title: string;
-  slug: string;
-  industry: string;
-  description: string;
-  descriptionZh: string;
+  title?: string;
+  slug?: string;
+  industry?: string;
+  description?: string;
+  descriptionZh?: string;
   challenges?: string[];
   recommendedProducts?: string[];
   image?: string;
 }
 
-const industryConfig: Record<string, { icon: React.ElementType; color: string; label: string }> = {
-  healthcare: { icon: Heart, color: '#00D4FF', label: 'Healthcare' },
-  finance: { icon: Building2, color: '#7B61FF', label: 'Finance' },
-  retail: { icon: ShoppingCart, color: '#22C55E', label: 'Retail' },
-  logistics: { icon: Truck, color: '#F59E0B', label: 'Logistics' },
-  education: { icon: GraduationCap, color: '#EC4899', label: 'Education' },
-  government: { icon: Landmark, color: '#6366F1', label: 'Government' },
-};
+interface SolutionsListProps {
+  solutions: Solution[];
+}
 
-export default function SolutionsList({ solutions }: { solutions: Solution[] }) {
+export default function SolutionsList({ solutions }: SolutionsListProps) {
+  const t = useTranslations('solutions');
   const params = useParams();
-  const searchParams = useSearchParams();
   const locale = params.locale as string;
+  const [active, setActive] = useState(0);
 
-  const industries = useMemo(() => {
-    const seen = new Set<string>();
-    return solutions
-      .filter((s) => s.industry && !seen.has(s.industry) && seen.add(s.industry))
-      .map((s) => ({
-        key: s.industry,
-        ...industryConfig[s.industry],
-      }));
-  }, [solutions]);
-
-  const initialIndex = useMemo(() => {
-    const tab = searchParams.get('tab');
-    if (tab) {
-      const idx = industries.findIndex((ind) => ind.key === tab);
-      if (idx !== -1) return idx;
-    }
-    return 0;
-  }, [searchParams, industries]);
-
-  const [active, setActive] = useState(initialIndex);
-
-  const activeIndustry = industries[active];
-  const filteredSolutions = solutions.filter((s) => s.industry === activeIndustry?.key);
-
-  const getLocalizedText = (solution: Solution) =>
-    locale === 'zh' ? (solution.descriptionZh || solution.description) : solution.description;
+  const industryKey = industryKeys[active];
+  const meta = industryMeta[industryKey] || industryMeta.healthcare;
+  const MetricIcon = meta.metricIcon;
 
   return (
     <section className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
       <div className="text-center mb-16">
-        <h1 className="section-title text-gray-900">Industry Solutions</h1>
-        <p className="section-subtitle mx-auto">
-          Tailored IT solutions for your industry. From infrastructure to security, we deliver results.
-        </p>
+        <h1 className="section-title text-gray-900">{t('title')}</h1>
+        <p className="section-subtitle mx-auto">{t('subtitle')}</p>
       </div>
 
-      {/* Industry Tabs */}
+      {/* Industry Selector */}
       <div className="flex flex-wrap justify-center gap-2 mb-12">
-        {industries.map((ind, i) => {
-          const Icon = ind.icon;
+        {industryKeys.map((key, i) => {
+          const m = industryMeta[key];
+          const Icon = m.icon;
           return (
             <button
-              key={ind.key}
+              key={key}
               onClick={() => setActive(i)}
               className={`flex items-center gap-2 px-5 py-3 rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 ${
                 active === i
@@ -89,103 +82,108 @@ export default function SolutionsList({ solutions }: { solutions: Solution[] }) 
                   : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-sm'
               }`}
             >
-              <Icon size={18} style={{ color: ind.color }} />
-              <span className="text-sm font-medium text-gray-700">{ind.label}</span>
+              <Icon size={18} style={{ color: m.color }} />
+              <span className="text-sm font-medium text-gray-700">{t(`industries.${key}.name`)}</span>
             </button>
           );
         })}
       </div>
 
-      {/* Solutions Grid */}
+      {/* Industry Content */}
       <div
         key={active}
-        className="animate-fade-up"
+        className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm animate-fade-up"
       >
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredSolutions.map((solution) => (
-            <div
-              key={solution._id}
-              className="bg-white border border-gray-200 rounded-2xl p-6 hover:border-[#00D4FF]/30 hover:shadow-md transition-all duration-200"
-            >
-              <div className="flex items-start gap-3 mb-4">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ backgroundColor: `${activeIndustry.color}15` }}
-                >
-                  {activeIndustry.icon && (
-                    <activeIndustry.icon size={20} style={{ color: activeIndustry.color }} />
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3
-                    className="text-lg font-bold text-gray-900 mb-1 line-clamp-2"
-                    style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.01em' }}
-                  >
-                    {solution.title}
-                  </h3>
-                </div>
-              </div>
-
-              <p className="text-gray-600 text-sm mb-4 line-clamp-3" style={{ lineHeight: '1.6' }}>
-                {getLocalizedText(solution)}
-              </p>
-
-              {solution.recommendedProducts && solution.recommendedProducts.length > 0 && (
-                <div className="mb-4">
-                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">
-                    Products
-                  </h4>
-                  <div className="flex flex-wrap gap-1.5">
-                    {solution.recommendedProducts.slice(0, 3).map((product) => (
-                      <span
-                        key={product}
-                        className="text-xs px-2.5 py-1 rounded-full bg-gray-100 text-gray-600"
-                      >
-                        {product}
-                      </span>
-                    ))}
-                    {solution.recommendedProducts.length > 3 && (
-                      <span className="text-xs px-2.5 py-1 rounded-full bg-gray-100 text-gray-500">
-                        +{solution.recommendedProducts.length - 3}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {solution.challenges && solution.challenges.length > 0 && (
-                <div className="pt-4 border-t border-gray-100">
-                  <div className="flex flex-wrap gap-1.5">
-                    {solution.challenges.slice(0, 2).map((challenge) => (
-                      <span
-                        key={challenge}
-                        className="text-xs px-2.5 py-1 rounded-full bg-red-50 text-red-600"
-                      >
-                        {challenge}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
+        <div className={`bg-gradient-to-r ${meta.accent} p-8 md:p-12`}>
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ backgroundColor: `${meta.color}20` }}>
+              <meta.icon size={32} style={{ color: meta.color }} />
             </div>
-          ))}
+            <div className="flex-1">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>
+                {t(`industries.${industryKey}.name`)}
+              </h2>
+              <p className="text-gray-600 max-w-2xl" style={{ lineHeight: '1.7' }}>{t(`industries.${industryKey}.description`)}</p>
+            </div>
+            <div className="flex items-center gap-3 px-4 py-2 bg-white rounded-xl border border-gray-200">
+              <MetricIcon size={20} style={{ color: meta.color }} />
+              <span className="text-sm font-medium text-gray-700">{t(`metricLabels.${industryKey}`)}</span>
+            </div>
+          </div>
         </div>
 
-        {filteredSolutions.length === 0 && (
-          <div className="text-center py-16 text-gray-500">
-            <p>No solutions available for this industry yet.</p>
-          </div>
-        )}
+        <div className="p-8 md:p-12">
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Pain Points */}
+            <div className="bg-red-50/50 rounded-xl p-5">
+              <h3 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2 uppercase tracking-wide">
+                <span className="w-2.5 h-2.5 rounded-sm rotate-45 bg-red-400 shrink-0" />
+                {t('painPoints')}
+              </h3>
+              <ul className="space-y-3">
+                {['0', '1', '2'].map((idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-gray-600 text-sm">
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-sm rotate-45 bg-red-400 shrink-0" />
+                    {t(`industries.${industryKey}.painPoints.${idx}`)}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-        {/* CTA */}
-        <div className="mt-12 text-center">
-          <Link
-            href={`/${locale}/contact`}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#00D4FF] text-white font-medium rounded-full hover:bg-[#00B8DB] hover:shadow-lg transition-all duration-200 text-sm"
-          >
-            Discuss Your Needs
-            <ArrowRight size={16} />
-          </Link>
+            {/* Solutions */}
+            <div className="bg-green-50/50 rounded-xl p-5">
+              <h3 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2 uppercase tracking-wide">
+                <span className="w-2.5 h-2.5 rounded-full bg-green-400 shrink-0" />
+                {t('ourSolutions')}
+              </h3>
+              <ul className="space-y-3">
+                {['0', '1', '2'].map((idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-gray-600 text-sm">
+                    <span className="mt-0.5 shrink-0 w-4 h-4 rounded-full bg-green-100 flex items-center justify-center">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                    </span>
+                    {t(`industries.${industryKey}.solutions.${idx}`)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Featured Products */}
+            <div className="bg-blue-50/50 rounded-xl p-5">
+              <h3 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2 uppercase tracking-wide">
+                <span className="w-2.5 h-2.5 rounded-sm bg-blue-400 shrink-0" />
+                {t('featuredProducts')}
+              </h3>
+              <div className="space-y-3">
+                {['0', '1', '2'].map((idx) => (
+                  <Link
+                    key={idx}
+                    href={`/${locale}/products`}
+                    className="block bg-white border border-blue-100 rounded-xl px-4 py-3 hover:border-blue-300 hover:shadow-sm transition-all"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-gray-700">{t(`industries.${industryKey}.products.${idx}`)}</span>
+                      <ArrowRight size={16} className="text-blue-400" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="mt-10 pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-gray-500">
+              {t('ctaDesc')}
+            </p>
+            <Link
+              href={`/${locale}/contact`}
+              className="btn-primary inline-flex items-center gap-2 text-sm"
+            >
+              {t('cta')}
+              <ArrowRight size={16} />
+            </Link>
+          </div>
         </div>
       </div>
     </section>

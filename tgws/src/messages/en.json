@@ -165,6 +165,14 @@
     "featuredProducts": "AI Applications",
     "cta": "Explore Products for This Industry",
     "ctaDesc": "Ready to upgrade your IT infrastructure?",
+    "metricLabels": {
+      "healthcare": "Always-On Systems",
+      "finance": "High-Performance Infra",
+      "retail": "Peak-Ready Scaling",
+      "logistics": "Connected Operations",
+      "education": "Campus IT Ready",
+      "government": "Data Sovereignty"
+    },
     "industries": {
       "healthcare": {
         "name": "Healthcare",

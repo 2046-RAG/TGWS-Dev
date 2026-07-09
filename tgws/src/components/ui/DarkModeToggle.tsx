@@ -21,13 +21,12 @@ function applyTheme(theme: Theme) {
 }
 
 export default function DarkModeToggle() {
-  const [theme, setTheme] = useState<Theme>('system');
+  const [theme, setTheme] = useState<Theme>(() => getStoredTheme());
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const stored = getStoredTheme();
-    setTheme(stored);
-    applyTheme(stored);
+    applyTheme(theme);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- SSR hydration guard: safe, no cascade
     setMounted(true);
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -38,7 +37,7 @@ export default function DarkModeToggle() {
     };
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
+  }, [theme]);
 
   const cycleTheme = () => {
     const next: Theme = theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light';

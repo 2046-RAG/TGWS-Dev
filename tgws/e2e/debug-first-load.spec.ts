@@ -28,7 +28,7 @@ test.describe('Debug first load issue', () => {
 
     // Check if the posts array has data
     const postsData = await page.evaluate(() => {
-      // @ts-ignore
+      // @ts-expect-error testing data attribute
       const el = document.querySelector('[data-posts]');
       return el ? el.getAttribute('data-posts') : 'no data-posts attribute';
     });

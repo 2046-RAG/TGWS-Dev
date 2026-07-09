@@ -165,6 +165,14 @@
     "featuredProducts": "AI應用",
     "cta": "探索此行業的產品方案",
     "ctaDesc": "準備好升級您的IT基礎設施了嗎？",
+    "metricLabels": {
+      "healthcare": "全天候系統",
+      "finance": "高效能基礎設施",
+      "retail": "高峰彈性擴展",
+      "logistics": "互聯營運",
+      "education": "校園IT就緒",
+      "government": "數據主權"
+    },
     "industries": {
       "healthcare": {
         "name": "醫療健康",
