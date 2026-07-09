@@ -1,13 +1,22 @@
+import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Industry Solutions',
-  description: 'Tailored IT solutions for healthcare, finance, retail, logistics, education, and government sectors. Address unique industry challenges with TechGuru.',
-  openGraph: {
-    title: 'Industry Solutions | TechGuru',
-    description: 'Tailored IT solutions for healthcare, finance, retail, logistics, education, and government sectors. Address unique industry challenges with TechGuru.',
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'solutions.metadata' });
+  return {
+    title: t('title'),
+    description: t('description'),
+    openGraph: {
+      title: t('title'),
+      description: t('description'),
+    },
+  };
+}
 
 export default function SolutionsLayout({
   children,

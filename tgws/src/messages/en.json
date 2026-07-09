@@ -280,6 +280,10 @@
           "AIGC generates policy summaries, public communication materials, and training content for government staff."
         ]
       }
+    },
+    "metadata": {
+      "title": "Industry Solutions | TechGuru",
+      "description": "Tailored IT solutions for healthcare, finance, retail, logistics, education, and government sectors. Address unique industry challenges with TechGuru."
     }
   },
   "blog": {
@@ -530,6 +534,10 @@
           "description": "Sifang (北京四方继保), power protection and substation automation. Proxmox VE, open-source virtualization."
         }
       }
+    },
+    "metadata": {
+      "title": "About Us | TechGuru",
+      "description": "Learn about TechGuru's mission, team, and journey. Discover our qualifications, partnerships, and commitment to enterprise IT excellence."
     }
   },
   "caseStudies": {
@@ -763,7 +771,11 @@
     "social": "Follow Us",
     "skipToForm": "Skip to contact form",
     "emailAddress": "Inquiries@techguru-it.asia",
-    "phoneNumber": "+63 960 282 5051"
+    "phoneNumber": "+63 960 282 5051",
+    "metadata": {
+      "title": "Contact Us | TechGuru",
+      "description": "Get in touch with TechGuru for enterprise IT solutions. Reach our office in Quezon City, Metro Manila, or send us an inquiry."
+    }
   },
   "products": {
     "title": "Our Products & Services",
@@ -1491,6 +1503,10 @@
           "a": "Yes. We offer a free initial consultation to understand your needs and recommend solutions. Schedule a call or submit a contact form to get started. No commitment required."
         }
       ]
+    },
+    "metadata": {
+      "title": "Help Center | TechGuru",
+      "description": "Find answers to common questions about TechGuru products, technical support, account management, and billing."
     }
   }
 }

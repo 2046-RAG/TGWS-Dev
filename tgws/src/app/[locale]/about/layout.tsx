@@ -1,13 +1,22 @@
+import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'About Us',
-  description: 'Learn about TechGuru\'s mission, team, and journey. Discover our qualifications, partnerships, and commitment to enterprise IT excellence.',
-  openGraph: {
-    title: 'About Us | TechGuru',
-    description: 'Learn about TechGuru\'s mission, team, and journey. Discover our qualifications, partnerships, and commitment to enterprise IT excellence.',
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'about.metadata' });
+  return {
+    title: t('title'),
+    description: t('description'),
+    openGraph: {
+      title: t('title'),
+      description: t('description'),
+    },
+  };
+}
 
 export default function AboutLayout({
   children,

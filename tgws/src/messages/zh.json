@@ -280,6 +280,10 @@
           "AIGC生成政策摘要、公共溝通材料和政府員工培訓內容"
         ]
       }
+    },
+    "metadata": {
+      "title": "行業解決方案 | TechGuru",
+      "description": "為醫療、金融、零售、物流、教育和政府部門量身定制的IT解決方案。與TechGuru一起應對獨特的行業挑戰。"
     }
   },
   "blog": {
@@ -530,6 +534,10 @@
           "description": "四方繼保，電力保護和變電站自動化。Proxmox VE，開源虛擬化。"
         }
       }
+    },
+    "metadata": {
+      "title": "關於我們 | TechGuru",
+      "description": "了解TechGuru的使命、團隊和歷程。探索我們的資質、合作夥伴關係和對企業IT卓越的承諾。"
     }
   },
   "caseStudies": {
@@ -763,7 +771,11 @@
     "social": "關注我們",
     "skipToForm": "跳至聯絡表單",
     "emailAddress": "Inquiries@techguru-it.asia",
-    "phoneNumber": "+63 960 282 5051"
+    "phoneNumber": "+63 960 282 5051",
+    "metadata": {
+      "title": "聯絡我們 | TechGuru",
+      "description": "與TechGuru聯繫，獲取企業IT解決方案。聯繫我們在Quezon City, Metro Manila的辦公室，或發送詢問。"
+    }
   },
   "products": {
     "title": "產品與服務",
@@ -1491,6 +1503,10 @@
           "a": "有的。我們提供免費初始諮詢，了解您的需求並推薦解決方案。預約通話或提交聯絡表單即可開始，無需任何承諾。"
         }
       ]
+    },
+    "metadata": {
+      "title": "幫助中心 | TechGuru",
+      "description": "查找有關TechGuru產品、技術支援、帳單管理的常見問題解答。"
     }
   }
 }

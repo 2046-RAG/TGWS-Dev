@@ -1,13 +1,22 @@
+import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Help Center',
-  description: 'Find answers to common questions about TechGuru products, technical support, account management, and billing.',
-  openGraph: {
-    title: 'Help Center | TechGuru',
-    description: 'Find answers to common questions about TechGuru products, technical support, account management, and billing.',
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'help.metadata' });
+  return {
+    title: t('title'),
+    description: t('description'),
+    openGraph: {
+      title: t('title'),
+      description: t('description'),
+    },
+  };
+}
 
 export default function HelpLayout({
   children,
