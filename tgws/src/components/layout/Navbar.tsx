@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
+import { usePathname } from 'next/navigation';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import DarkModeToggle from '@/components/ui/DarkModeToggle';
 import MegaMenu from './MegaMenu';
@@ -12,6 +13,7 @@ export default function Navbar() {
   const auth = useTranslations('auth');
   const home = useTranslations('home');
   const locale = useLocale();
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const megaMenuItems = [
@@ -76,6 +78,9 @@ export default function Navbar() {
     },
   ];
 
+  // Check if Home link is active
+  const isHomeActive = pathname === `/${locale}` || pathname === `/${locale}/`;
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-black/5">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-4 sm:py-5 flex items-center justify-between">
@@ -87,14 +92,21 @@ export default function Navbar() {
           <span className="text-[25px] sm:text-[30px] text-black select-none group-hover:text-[#00D4FF] transition-colors duration-200" style={{ letterSpacing: '-0.02em' }}>✳︎</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6">
           <Link
             href={`/${locale}`}
-            className="text-[16px] text-black/80 hover:text-[#00D4FF] transition-colors duration-200"
+            className={`nav-link relative text-[14px] font-medium tracking-[-0.01em] py-1 transition-colors duration-200 ${
+              isHomeActive
+                ? 'text-[#00D4FF]'
+                : 'text-black/70 hover:text-[#00D4FF]'
+            }`}
           >
             {t('home')}
+            {isHomeActive && (
+              <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#00D4FF]" />
+            )}
           </Link>
-          <MegaMenu items={megaMenuItems} />
+          <MegaMenu items={megaMenuItems} activePath={pathname} />
         </div>
 
         <div className="hidden md:flex items-center gap-4">
@@ -102,9 +114,16 @@ export default function Navbar() {
           <DarkModeToggle />
           <Link
             href={`/${locale}/contact`}
-            className="text-[16px] text-black/80 hover:text-[#00D4FF] transition-colors duration-200"
+            className={`nav-link relative text-[14px] font-medium tracking-[-0.01em] py-1 transition-colors duration-200 ${
+              pathname?.includes('/contact')
+                ? 'text-[#00D4FF]'
+                : 'text-black/70 hover:text-[#00D4FF]'
+            }`}
           >
             {t('contact')}
+            {pathname?.includes('/contact') && (
+              <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#00D4FF]" />
+            )}
           </Link>
         </div>
 

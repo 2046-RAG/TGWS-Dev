@@ -3,7 +3,7 @@
     "home": "首頁",
     "products": "產品服務",
     "solutions": "行業解決方案",
-    "caseStudies": "架構方案",
+    "caseStudies": "最佳實踐",
     "blog": "新聞博客",
     "about": "關於我們",
     "support": "客戶支持",
@@ -305,7 +305,7 @@
       "all": "所有文章",
       "news": "新聞",
       "technical": "技術",
-      "case-study": "方案架構",
+      "case-study": "最佳實踐",
       "industry": "行業"
     },
     "articles": {
@@ -549,7 +549,7 @@
     }
   },
   "caseStudies": {
-    "title": "方案架構",
+    "title": "行業最佳實踐",
     "subtitle": "了解我們如何協助各行各業組織實現IT基礎設施轉型。",
     "readMore": "查看詳情",
     "noResults": "目前沒有符合篩選條件的案例。",
@@ -748,8 +748,8 @@
       }
     },
     "metadata": {
-      "title": "方案架構 | TechGuru",
-      "description": "TechGuru在醫療、金融、零售、物流、教育和政府領域的技術方案架構與實施場景。"
+      "title": "行業最佳實踐 | TechGuru",
+      "description": "TechGuru在醫療、金融、零售、物流、教育和政府領域的IT基礎設施最佳實踐與參考架構。"
     },
     "loadMore": "載入更多",
     "showing": "顯示",

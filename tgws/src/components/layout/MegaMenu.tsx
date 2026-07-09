@@ -5,6 +5,7 @@ import { useState, useRef, useCallback } from 'react';
 
 interface MegaMenuProps {
   items: MegaMenuItem[];
+  activePath?: string;
 }
 
 interface MegaMenuItem {
@@ -14,7 +15,7 @@ interface MegaMenuItem {
   children?: { label: string; href: string; desc?: string }[];
 }
 
-export default function MegaMenu({ items }: MegaMenuProps) {
+export default function MegaMenu({ items, activePath }: MegaMenuProps) {
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -28,51 +29,65 @@ export default function MegaMenu({ items }: MegaMenuProps) {
   }, []);
 
   return (
-    <div className="hidden md:flex items-center gap-8">
-      {items.map((item) => (
-        <div
-          key={item.key}
-          className="relative"
-          onMouseEnter={() => item.children && handleEnter(item.key)}
-          onMouseLeave={handleLeave}
-        >
-          <Link
-            href={item.href}
-            className="text-[16px] text-black/80 hover:text-[#00D4FF] transition-colors duration-200"
+    <div className="hidden md:flex items-center gap-6">
+      {items.map((item) => {
+        const isActive = activePath === item.href || activePath?.startsWith(item.href + '/');
+        return (
+          <div
+            key={item.key}
+            className="relative"
+            onMouseEnter={() => item.children && handleEnter(item.key)}
+            onMouseLeave={handleLeave}
           >
-            {item.label}
-          </Link>
-
-          {item.children && activeKey === item.key && (
-            <div
-              className="absolute top-full left-1/2 -translate-x-1/2 pt-3 z-50"
-              onMouseEnter={() => handleEnter(item.key)}
-              onMouseLeave={handleLeave}
+            <Link
+              href={item.href}
+              className={`nav-link relative text-[14px] font-medium tracking-[-0.01em] py-1 transition-colors duration-200 ${
+                isActive
+                  ? 'text-[#00D4FF]'
+                  : 'text-black/70 hover:text-[#00D4FF]'
+              }`}
             >
-              <div className="bg-white border border-gray-200 rounded-2xl shadow-xl p-6 min-w-[320px] max-w-[480px]">
-                <div className="grid gap-0.5">
-                  {item.children.map((child) => (
-                    <Link
-                      key={child.href}
-                      href={child.href}
-                      className="block px-4 py-3 rounded-xl hover:bg-[#00D4FF]/5 transition-colors duration-150 group"
-                    >
-                      <div className="text-sm font-medium text-gray-900 group-hover:text-[#00D4FF] transition-colors duration-150">
-                        {child.label}
-                      </div>
-                      {child.desc && (
-                        <div className="text-xs text-gray-500 mt-0.5 line-clamp-1">
-                          {child.desc}
+              {item.label}
+              {/* Active/hover underline */}
+              <span
+                className={`absolute bottom-0 left-0 h-[2px] bg-[#00D4FF] transition-all duration-200 ease-out ${
+                  isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                }`}
+                style={isActive ? {} : { width: undefined }}
+              />
+            </Link>
+
+            {item.children && activeKey === item.key && (
+              <div
+                className="absolute top-full left-1/2 -translate-x-1/2 pt-3 z-50"
+                onMouseEnter={() => handleEnter(item.key)}
+                onMouseLeave={handleLeave}
+              >
+                <div className="bg-white border border-gray-200 rounded-2xl shadow-xl p-6 min-w-[320px] max-w-[480px]">
+                  <div className="grid gap-0.5">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        className="block px-4 py-3 rounded-xl hover:bg-[#00D4FF]/5 transition-colors duration-150 group"
+                      >
+                        <div className="text-sm font-medium text-gray-900 group-hover:text-[#00D4FF] transition-colors duration-150">
+                          {child.label}
                         </div>
-                      )}
-                    </Link>
-                  ))}
+                        {child.desc && (
+                          <div className="text-xs text-gray-500 mt-0.5 line-clamp-1">
+                            {child.desc}
+                          </div>
+                        )}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
-      ))}
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

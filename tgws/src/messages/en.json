@@ -3,7 +3,7 @@
     "home": "Home",
     "products": "Products",
     "solutions": "Solutions",
-    "caseStudies": "Architecture",
+    "caseStudies": "Best Practice",
     "blog": "Blog",
     "about": "About",
     "support": "Tickets",
@@ -305,7 +305,7 @@
       "all": "All Posts",
       "news": "News",
       "technical": "Technical",
-      "case-study": "Case Study",
+      "case-study": "Best Practice",
       "industry": "Industry"
     },
     "articles": {
@@ -549,7 +549,7 @@
     }
   },
   "caseStudies": {
-    "title": "Solution Architecture",
+    "title": "Industry Best Practice",
     "subtitle": "Explore how we've helped organizations across industries transform their IT infrastructure.",
     "readMore": "View Details",
     "noResults": "No case studies match the selected filters.",
@@ -748,8 +748,8 @@
       }
     },
     "metadata": {
-      "title": "Solution Architecture | TechGuru",
-      "description": "Technical solution architectures and implementation scenarios across healthcare, finance, retail, logistics, education, and government sectors."
+      "title": "Industry Best Practice | TechGuru",
+      "description": "IT infrastructure best practices and reference architectures across healthcare, finance, retail, logistics, education, and government sectors."
     },
     "loadMore": "Load More",
     "showing": "showing",

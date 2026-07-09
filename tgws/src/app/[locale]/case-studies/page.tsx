@@ -49,7 +49,7 @@ export default async function CaseStudiesPage() {
   const cases = await getCaseStudies();
   return (
     <>
-      <Breadcrumb items={[{ label: 'Case Studies' }]} />
+      <Breadcrumb items={[{ label: 'Best Practice' }]} />
       <CaseStudiesList cases={cases} />
     </>
   );

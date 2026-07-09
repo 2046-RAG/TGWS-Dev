@@ -319,6 +319,21 @@ textarea:focus-visible,
   -webkit-backdrop-filter: blur(16px);
 }
 
+/* Nav Link Hover Underline Animation */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #00D4FF;
+  transition: width 0.2s ease-out;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
 /* Dark Mode - class-based */
 .dark {
   --color-background: #09090B;
