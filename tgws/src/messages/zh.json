@@ -742,7 +742,10 @@
     "metadata": {
       "title": "案例展示 | TechGuru",
       "description": "TechGuru客戶在醫療、金融、零售、物流、教育和政府领域的真實成功案例。"
-    }
+    },
+    "loadMore": "載入更多",
+    "showing": "顯示",
+    "remaining": "還剩"
   },
   "contact": {
     "title": "聯絡我們",

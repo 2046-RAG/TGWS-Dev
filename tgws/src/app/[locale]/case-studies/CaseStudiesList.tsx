@@ -85,14 +85,12 @@ export default function CaseStudiesList({ cases }: { cases: CaseStudy[] }) {
             <button
               key={ind}
               onClick={() => handleIndustryChange(ind)}
-              className="px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2"
-              style={{
-                backgroundColor: isActive ? color : 'white',
-                color: isActive ? 'white' : '#4B5563',
-                borderWidth: '1px',
-                borderStyle: 'solid',
-                borderColor: isActive ? color : '#E5E7EB',
-              }}
+              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 border ${
+                isActive
+                  ? 'text-white border-transparent'
+                  : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+              }`}
+              style={isActive ? { backgroundColor: color, borderColor: color } : undefined}
             >
               {t(`filters.industry.${ind}`)}
             </button>
@@ -263,10 +261,10 @@ export default function CaseStudiesList({ cases }: { cases: CaseStudy[] }) {
             onClick={() => setShowAll(true)}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-gray-200 text-sm font-medium text-gray-600 hover:text-gray-900 hover:border-gray-300 transition-colors min-h-[44px]"
           >
-            {locale === 'zh' ? '載入更多' : 'Load More'}
+            {t('loadMore')}
             <ChevronDown size={16} />
             <span className="text-xs text-gray-400">
-              ({locale === 'zh' ? '還剩' : 'showing'} {ITEMS_PER_PAGE}/{remainingCases.length})
+              ({t('showing')} {ITEMS_PER_PAGE}/{remainingCases.length})
             </span>
           </button>
         </div>

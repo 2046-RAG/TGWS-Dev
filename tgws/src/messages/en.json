@@ -742,7 +742,10 @@
     "metadata": {
       "title": "Case Studies | TechGuru",
       "description": "Real-world success stories from TechGuru clients across healthcare, finance, retail, logistics, education, and government sectors."
-    }
+    },
+    "loadMore": "Load More",
+    "showing": "showing",
+    "remaining": "remaining"
   },
   "contact": {
     "title": "Get In Touch",
