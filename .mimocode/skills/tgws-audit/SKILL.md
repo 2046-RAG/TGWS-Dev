@@ -366,8 +366,10 @@ npx vercel --prod --yes
 
 - Next.js (App Router) + TypeScript
 - Sanity CMS (内容管理)
-- Supabase (用户/工单)
-- Tailwind CSS + shadcn/ui
+- Supabase Auth (认证，直连无自建API)
+- Supabase (用户/工单/存储)
+- Resend (邮件通知)
+- Tailwind CSS (组件全部手写，未使用 shadcn/ui)
 - 部署: Vercel CLI (`npx vercel --prod --yes`)
 
 ## 内容规模

@@ -1,10 +1,17 @@
 # TechGuru Network & Data Solutions 官网 PRD
 
-**版本：** v1.0  
-**日期：** 2026-06-28  
+**版本：** v1.1  
+**日期：** 2026-07-09  
 **项目名称：** TechGuru Network and Data Solutions 官方网站  
 **域名：** www.techguru-it.asia  
-**部署平台：** Vercel  
+**部署平台：** Vercel
+
+### 版本历史
+
+| 版本 | 日期 | 变更 |
+|------|------|------|
+| v1.0 | 2026-06-28 | 初始版本 |
+| v1.1 | 2026-07-09 | 根据实际实现全面更新：修正设计规范(S9)色彩/字体、更新Hero Section(S5)、工单系统(S6)字段/限制、数据模型(S17)新增字段、API设计(S18)路由修正、开放问题(S22)状态更新 |  
 
 ---
 
@@ -53,8 +60,8 @@
 | **数据库** | Supabase | 用户、工单数据存储 |
 | **认证** | Supabase Auth | Gmail OAuth + 邮箱密码 |
 | **文件存储** | Supabase Storage | 工单附件上传 |
-| **邮件服务** | Resend | 通知邮件发送 |
-| **UI框架** | Tailwind CSS + shadcn/ui | 样式+组件库 |
+| **邮件服务** | Resend | 通知邮件发送（联系邮箱: Inquiries@techguru-it.asia） |
+| **UI框架** | Tailwind CSS | 样式框架（组件全部手写，未使用 shadcn/ui） |
 | **部署** | Vercel | 托管+CDN |
 | **语言** | TypeScript | 类型安全 |
 
@@ -275,11 +282,15 @@ Admin（后台管理）
 
 ## [S5] Hero Section设计
 
+> **注意**: 本节已根据实际实现更新（2026-07-09）。
+
 ### 5.1 全屏视频背景
 
-- **交互方式：** 鼠标左右移动控制视频播放进度
-- **视频内容：** IT基础设施、网络安全防护、数据中心、云服务等科技感画面
-- **视频来源：** 免费视频库（Pexels、Coverr）或自定义视频
+- **交互方式：** 鼠标左右移动控制视频播放进度（scrubbing）
+- **视频来源：** CloudFront CDN 托管的 MP4 视频（已确认）
+- **技术实现：** `muted playsInline preload="auto"`，`fastSeek()` 优先（Chrome支持），降级为 `currentTime`
+- **灵敏度：** `SENSITIVITY = 0.5`（鼠标移动全屏宽度时，视频播放一半时长）
+- **移动端：** 黑色半透明遮罩 (`bg-black/30`) 保证文字可读性
 
 ### 5.2 欢迎语（打字机效果）
 
@@ -288,6 +299,10 @@ Admin（后台管理）
 | 英文 | "Your Trusted IT Partner in Asia. What challenge can we solve for you?" |
 | 繁中 | "您在亞洲值得信賴的IT合作夥伴。我們能為您解決什麼挑戰？" |
 
+- **打字速度：** 38ms/字符
+- **启动延迟：** 600ms
+- **光标：** 打字完成后隐藏
+
 ### 5.3 模糊介绍标签
 
 | 语言 | 内容 |
@@ -295,26 +310,32 @@ Admin（后台管理）
 | 英文 | "TechGuru Network & Data Solutions" |
 | 繁中 | "泰谷網數科技" |
 
+- **模糊效果：** `filter: blur(4px)` 作为品牌身份锚点
+
 ### 5.4 行动按钮
 
-| 按钮文本 | 链接 |
-|----------|------|
-| Explore Solutions | /solutions |
-| View Case Studies | /case-studies |
-| Schedule a Demo | /contact |
-| VMware Migration | /vmware-alternative |
-| Email us: info@techguru-it.asia | 复制邮箱功能 |
+Hero 底部包含三个故事卡片（Storyline Cards）：
 
-### 5.5 双版本设计
+| 卡片 | 内容 | 动画延迟 |
+|------|------|----------|
+| Build. Run. Protect. | 三支柱框架介绍 | 0.8s |
+| AI Journey | AI服务能力 | 1.0s |
+| VMware Alternatives | VMware替代方案 | 1.2s |
 
-| 版本 | 背景 | 文字颜色 | 按钮风格 |
-|------|------|----------|----------|
-| **A: 白色简约** | 白色/浅灰 | 黑色 | 白底黑边框 |
-| **B: 深色科技** | 深色+渐变 | 白色 | 渐变蓝紫 |
+- **CTA按钮组：** 挂载后 400ms 淡入，白色背景 + 黑色文字，悬停反转为黑底白字
+- **邮箱复制按钮：** 透明背景 + 黑色边框，点击复制 `Inquiries@techguru-it.asia`
+- **所有按钮：** `min-h-[44px]` (WCAG 触控目标合规)
+- **滚动指示器：** 底部脉冲动画 + 弹跳效果
+
+### 5.5 设计版本
+
+当前仅实现一种版本：浅色背景 + 自动暗色模式适配。通过 CSS `@media (prefers-color-scheme: dark)` 自动切换，无手动切换按钮。
 
 ---
 
 ## [S6] 客户工单系统
+
+> **注意**: 本节已根据实际实现更新（2026-07-09）。
 
 ### 6.1 功能概述
 
@@ -326,17 +347,26 @@ Admin（后台管理）
 |------|------|
 | 注册方式 | 邮箱+密码、Gmail OAuth单点登录 |
 | 邮箱建议 | 强烈推荐企业邮箱（不禁止@gmail.com） |
-| 认证服务 | Supabase Auth |
+| 认证服务 | Supabase Auth（直连，无自建API中间层） |
 | 密码复杂度 | 最少8位，包含大小写字母+数字 |
 
 ### 6.3 工单提交
 
-| 字段 | 说明 |
-|------|------|
-| 产品/服务 | 下拉菜单选择（对应Build/Run/Protect分类） |
-| 问题描述 | 富文本编辑器 |
-| 附件上传 | 截图、文档等，限制10MB |
-| 提交后 | 自动发送acknowledge邮件给技术人员和客户 |
+| 字段 | 类型 | 说明 | 状态 |
+|------|------|------|------|
+| 分类 (category) | 下拉选择 | build / run / protect | ✅ |
+| 产品/服务 (product) | 下拉选择 | 从 Sanity 动态获取 + "Other" 选项 | ✅ |
+| 其他产品 (productOther) | 文本 | 选择 "Other" 时显示 | ✅ |
+| 发生时间 (occurredAt) | datetime-local | 问题实际发生时间，默认当前时间 | ✅ |
+| 主题 (subject) | 文本 | 最多 200 字符 | ✅ |
+| 问题描述 (description) | textarea | 纯文本，最多 800 字符，实时字数统计 | ✅ |
+| 截图粘贴 | 粘贴区域 | 支持剪贴板粘贴图片 + 点击上传 | ✅ |
+| 附件上传 | 文件上传 | 多文件，任意格式，最大 **50MB** | ✅ |
+
+- **自动保存：** 通过 `useAutoSave` hook 每 30 秒保存到 localStorage
+- **字数统计：** 绿色→橙色(750)→红色(800) 渐变提示
+- **提交后：** 自动发送 acknowledge 邮件给技术人员和客户
+- **上传流程：** FormData → `/api/upload` → Supabase Storage
 
 ### 6.4 邮件通知
 
@@ -357,6 +387,25 @@ Admin（后台管理）
 - 按客户统计工单数量
 - 按产品/服务统计工单数量
 - 按时间维度（周/月/季/年）统计
+
+### 6.7 工单数据字段 (实际实现)
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| id | UUID | 主键，Supabase 自动生成 |
+| user_id | UUID | 外键，关联 users 表 |
+| ticket_number | VARCHAR(20) | 工单编号，自动生成（TG-YYYYMMDD-XXXX） |
+| category | ENUM | build / run / protect |
+| product_service | VARCHAR(100) | 具体产品/服务 |
+| subject | VARCHAR(200) | 工单主题 |
+| description | TEXT | 问题描述 |
+| occurred_at | TIMESTAMP | 问题发生时间（用户报告） |
+| status | ENUM | open / in_progress / resolved / closed |
+| priority | ENUM | low / medium / high / critical |
+| assigned_to | UUID | 外键，分配给的管理员 |
+| created_at | TIMESTAMP | 创建时间 |
+| updated_at | TIMESTAMP | 更新时间 |
+| resolved_at | TIMESTAMP | 解决时间 |
 
 ---
 
@@ -406,40 +455,76 @@ Admin（后台管理）
 
 ## [S9] 设计规范
 
+> **注意**: 本节已根据实际实现更新（2026-07-09）。浅色主题为主，通过 `prefers-color-scheme: dark` 自动适配暗色模式，无手动切换。
+
 ### 9.1 色彩方案
+
+#### 浅色模式 (默认)
+
+| 用途 | Token | 颜色 | 说明 |
+|------|-------|------|------|
+| 主色 | `--color-primary` | `#00D4FF` | 科技蓝，CTA、链接、焦点环、强调 |
+| 辅助色 | `--color-accent` | `#7B61FF` | 紫色，产品支柱(Run)、渐变 |
+| 成功色 | — | `#22C55E` | 产品支柱(Protect)、表单成功状态 |
+| 背景色 | `--color-background` | `#F4F4F5` | 页面背景 |
+| 表面色 | `--color-surface` | `#FAFAFA` | 卡片背景 |
+| 文字主色 | `--color-foreground` | `#18181B` | 主要文字 |
+| 文字次色 | — | `#6B7280` | 副标题、次要文字 |
+| 错误色 | — | `#EF4444` | 表单验证错误 |
+
+#### 暗色模式 (`prefers-color-scheme: dark`)
 
 | 用途 | 颜色 | 说明 |
 |------|------|------|
-| 主色 | `#00D4FF` | 科技蓝，按钮、链接、强调 |
-| 辅助色 | `#7B61FF` | 紫色，渐变、次要强调 |
-| 背景色 | `#0A0A0F` | 深色背景 |
-| 表面色 | `#12121A` | 卡片、导航栏 |
-| 文字主色 | `#FFFFFF` | 主要文字 |
-| 文字次色 | `#94A3B8` | 次要文字 |
+| 背景色 | `#09090B` | 替代 `#F4F4F5` |
+| 表面色 | `#18181B` | 替代 `#FAFAFA` |
+| 文字主色 | `#FAFAFA` | 替代 `#18181B` |
+| 文字次色 | `#A1A1AA` | 暗色模式副标题 |
+| 卡片边框 | `rgba(255,255,255,0.08)` | 暗色模式微妙边框 |
+
+#### 色彩使用规则
+
+- **主色 `#00D4FF`**: CTA按钮、活跃状态、焦点环、链接悬停、产品支柱图标
+- **辅助色 `#7B61FF`**: 产品支柱(Run)、仅用于渐变，不独立使用
+- **成功色 `#22C55E`**: 产品支柱(Protect)、表单成功消息
+- **禁止用主色做大面积背景** — 它是强调色，不是表面色
 
 ### 9.2 字体
 
-| 用途 | 字体 |
-|------|------|
-| 标题 | Inter (Bold) |
-| 正文 | Inter (Regular) |
-| 代码/技术 | JetBrains Mono |
+| 用途 | 字体 | 备用字体 | CSS变量 |
+|------|------|----------|---------|
+| 标题 | `HelveticaNowDisplay-Medium` | `Helvetica Neue, Arial, sans-serif` | `var(--font-heading)` |
+| 正文 | `HelveticaNowDisplayW01-Rg` | `Inter, sans-serif` | `var(--font-body)` |
+| 代码/技术 | `JetBrains Mono` | `monospace` | `var(--font-mono)` |
+
+字体从 `db.onlinewebfonts.com` 加载，`layout.tsx` 中使用 `<link rel="preload">` 预加载。
 
 ### 9.3 设计风格
 
-- **玻璃态效果 (Glassmorphism)**：导航栏、卡片使用半透明背景+模糊效果
-- **渐变光效**：关键按钮和标题使用蓝紫渐变
-- **微交互**：悬停时轻微放大、颜色变化
-- **深色主题为主**，支持亮色模式切换
+- **克制设计**: 浅色调中性色 + 青色强调，强调色占比 ≤10%
+- **玻璃态效果 (Glassmorphism)**：导航栏使用半透明背景+模糊效果 (`.glass-nav`: 85% opacity + blur 16px)
+- **微交互**：悬停时 `translateY(-2px)` 升起 + 青色边框光晕
+- **渐进增强**：内容无需 JS 即可见，动画通过 `.js-loaded` 类增强
+- **无障碍优先**：WCAG 2.1 AA 合规，`prefers-reduced-motion` 禁用所有动画
+- **浅色主题为主**，通过 CSS `@media (prefers-color-scheme: dark)` 自动适配暗色模式（无手动切换）
+- **品牌个性**: 专业的企业IT，非初创风格、非玩具感
 
 ### 9.4 关键页面特效
 
-| 页面 | 特效 |
-|------|------|
-| 公司简介 | 打字机效果 |
-| 发展历程 | 垂直滚动时间线 |
-| 团队介绍 | 3D翻转卡片 |
-| 公司资质 | 网格展示 + 灯箱查看 |
+| 页面 | 特效 | 状态 |
+|------|------|------|
+| 首页 Hero | 鼠标控制视频进度 + 打字机效果 + 三支柱故事卡片 | ✅ 已实现 |
+| 首页 Build/Run/Protect | 三列产品支柱介绍 | ✅ 已实现 |
+| VMware替代方案 | 独立页面 + 对比表格 | ✅ 已实现 |
+| 行业解决方案 | Tab切换6个行业 | ✅ 已实现 |
+| 案例展示 | 列表+详情页，按行业/产品筛选 | ✅ 已实现 |
+| 博客 | 列表+详情页，Markdown渲染 | ✅ 已实现 |
+| 关于我们 | 公司简介页面 | ✅ 已实现 |
+| 联系我们 | 表单 + Odoo CRM同步 | ✅ 已实现 |
+| 工单系统 | 提交+列表+状态管理 | ✅ 已实现 |
+| 发展历程 | 垂直滚动时间线 | 🔲 待实现 |
+| 团队介绍 | 3D翻转卡片 | 🔲 待实现 |
+| 公司资质 | 网格展示 + 灯箱查看 | 🔲 待实现 |
 
 ---
 
@@ -554,6 +639,8 @@ Admin（后台管理）
 
 ## [S17] 数据模型
 
+> **注意**: 本节已根据实际实现更新（2026-07-09）。数据库迁移文件位于 `supabase/migrations/`。
+
 ### 17.1 用户表 (users)
 
 | 字段 | 类型 | 说明 |
@@ -570,21 +657,22 @@ Admin（后台管理）
 
 ### 17.2 工单表 (tickets)
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| id | UUID | 主键 |
-| user_id | UUID | 外键，关联users表 |
-| ticket_number | VARCHAR(20) | 工单编号，自动生成（TG-YYYYMMDD-XXXX） |
-| category | ENUM | build / run / protect |
-| product_service | VARCHAR(100) | 具体产品/服务 |
-| subject | VARCHAR(200) | 工单主题 |
-| description | TEXT | 问题描述 |
-| status | ENUM | open / in_progress / resolved / closed |
-| priority | ENUM | low / medium / high / critical |
-| assigned_to | UUID | 外键，分配给的管理员 |
-| created_at | TIMESTAMP | 创建时间 |
-| updated_at | TIMESTAMP | 更新时间 |
-| resolved_at | TIMESTAMP | 解决时间 |
+| 字段 | 类型 | 说明 | 状态 |
+|------|------|------|------|
+| id | UUID | 主键 | ✅ |
+| user_id | UUID | 外键，关联users表 | ✅ |
+| ticket_number | VARCHAR(20) | 工单编号，自动生成（TG-YYYYMMDD-XXXX） | ✅ |
+| category | ENUM | build / run / protect | ✅ |
+| product_service | VARCHAR(100) | 具体产品/服务 | ✅ |
+| subject | VARCHAR(200) | 工单主题 | ✅ |
+| description | TEXT | 问题描述 | ✅ |
+| occurred_at | TIMESTAMP | 问题发生时间（用户报告） | ✅ 迁移002已添加 |
+| status | ENUM | open / in_progress / resolved / closed | ✅ |
+| priority | ENUM | low / medium / high / critical | ✅ |
+| assigned_to | UUID | 外键，分配给的管理员 | ✅ |
+| created_at | TIMESTAMP | 创建时间 | ✅ |
+| updated_at | TIMESTAMP | 更新时间 | ✅ |
+| resolved_at | TIMESTAMP | 解决时间 | ✅ |
 
 ### 17.3 工单附件表 (ticket_attachments)
 
@@ -622,36 +710,52 @@ Admin（后台管理）
 | odoo_synced | BOOLEAN | 是否已同步到Odoo |
 | created_at | TIMESTAMP | 提交时间 |
 
+### 17.6 数据库迁移文件
+
+| 文件 | 内容 |
+|------|------|
+| `supabase/migrations/001_initial_schema.sql` | 初始表结构（users, tickets, ticket_attachments, ticket_comments, contact_submissions） |
+| `supabase/migrations/002_add_occurred_at.sql` | tickets 表新增 `occurred_at` TIMESTAMP 字段 |
+
 ---
 
 ## [S18] API设计
 
+> **注意**: 本节已根据实际实现更新（2026-07-09）。认证由 Supabase Auth 直连处理，无自建 API 中间层。
+
 ### 18.1 认证接口
 
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| POST | `/api/auth/signup` | 邮箱注册 |
-| POST | `/api/auth/signin` | 邮箱登录 |
-| POST | `/api/auth/signin/oauth` | Gmail OAuth登录 |
-| POST | `/api/auth/signout` | 登出 |
-| POST | `/api/auth/reset-password` | 重置密码 |
+认证由 Supabase Auth 直连处理，前端通过 `@supabase/ssr` 客户端直接调用 Supabase。以下 API 路由仅处理回调和密码重置：
+
+| 方法 | 路径 | 说明 | 状态 |
+|------|------|------|------|
+| GET | `/api/auth/callback` | OAuth 回调处理（Gmail 登录后重定向） | ✅ 已实现 |
+| POST | `/api/auth/reset-password` | 密码重置请求 | ✅ 已实现 |
+
+**Supabase Auth 直连操作（无自建API）：**
+
+| 操作 | Supabase 方法 | 说明 |
+|------|--------------|------|
+| 邮箱注册 | `supabase.auth.signUp()` | 前端直连 |
+| 邮箱登录 | `supabase.auth.signInWithPassword()` | 前端直连 |
+| OAuth登录 | `supabase.auth.signInWithOAuth()` | 前端直连 |
+| 登出 | `supabase.auth.signOut()` | 前端直连 |
 
 ### 18.2 工单接口
 
-| 方法 | 路径 | 权限 | 说明 |
-|------|------|------|------|
-| GET | `/api/tickets` | customer | 获取我的工单列表 |
-| POST | `/api/tickets` | customer | 创建工单 |
-| GET | `/api/tickets/[id]` | customer | 获取工单详情 |
-| PATCH | `/api/tickets/[id]` | admin | 更新工单状态 |
-| POST | `/api/tickets/[id]/assign` | admin | 分配工单 |
-| GET | `/api/tickets/stats` | admin | 获取统计报表 |
+| 方法 | 路径 | 权限 | 说明 | 状态 |
+|------|------|------|------|------|
+| GET | `/api/tickets` | customer | 获取我的工单列表 | ✅ |
+| POST | `/api/tickets` | customer | 创建工单 | ✅ |
+| GET | `/api/tickets/[id]` | customer | 获取工单详情 | ✅ |
+| PATCH | `/api/tickets/[id]` | admin | 更新工单状态 | ✅ |
+| GET | `/api/tickets/stats` | admin | 获取统计报表 | ✅ |
 
 ### 18.3 文件上传接口
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| POST | `/api/upload` | 上传附件（最大10MB） |
+| POST | `/api/upload` | 上传附件（最大 **50MB**，任意格式） |
 
 ### 18.4 联系表单接口
 
@@ -659,7 +763,19 @@ Admin（后台管理）
 |------|------|------|
 | POST | `/api/contact` | 提交联系表单 + 同步Odoo |
 
-### 18.5 API响应格式
+### 18.5 产品接口
+
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| GET | `/api/products` | 从 Sanity 获取产品列表（工单表单产品下拉用） |
+
+### 18.6 ISR 重新验证接口
+
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| POST | `/api/revalidate` | Sanity Webhook 触发的 ISR 重新验证 |
+
+### 18.7 API响应格式
 
 ```json
 // 成功
@@ -677,6 +793,20 @@ Admin（后台管理）
   }
 }
 ```
+
+### 18.8 已实现的 API 路由完整清单
+
+| 路由文件 | 方法 | 用途 |
+|----------|------|------|
+| `src/app/api/auth/callback/route.ts` | GET | OAuth 回调 |
+| `src/app/api/auth/reset-password/route.ts` | POST | 密码重置 |
+| `src/app/api/contact/route.ts` | POST | 联系表单提交 |
+| `src/app/api/products/route.ts` | GET | Sanity 产品列表 |
+| `src/app/api/revalidate/route.ts` | POST | ISR 重新验证 |
+| `src/app/api/tickets/route.ts` | GET/POST | 工单列表/创建 |
+| `src/app/api/tickets/stats/route.ts` | GET | 工单统计 |
+| `src/app/api/tickets/[id]/route.ts` | GET/PATCH | 工单详情/更新 |
+| `src/app/api/upload/route.ts` | POST | 文件上传 |
 
 ---
 
@@ -808,15 +938,17 @@ Admin（后台管理）
 
 ## [S22] 开放问题
 
-以下问题待后续确认：
+> **更新日期**: 2026-07-09
 
-1. **Hero视频素材：** 使用免费库还是自定义录制？
-2. **合作伙伴Logo：** 需要收集现有合作伙伴Logo
-3. **案例数据：** 需要收集真实客户案例
-4. **团队照片：** 需要收集团队成员照片
-5. **办公地点地图：** 确认亚洲各办公室具体地址
-6. **社交媒体账号：** 确认微信、WhatsApp等账号信息
-7. **分析工具：** 是否使用Google Analytics或Umami？
-8. **时区处理：** 工单时间显示使用哪个时区？
-9. **邮件模板：** acknowledge邮件的具体内容模板？
-10. **管理员账号：** 初始超级管理员如何创建？
+| # | 问题 | 状态 | 说明 |
+|---|------|------|------|
+| 1 | Hero视频素材 | ✅ 已解决 | 使用 CloudFront CDN 托管的 MP4 视频 |
+| 2 | 合作伙伴Logo | ✅ 已解决 | 21 个 SVG/PNG 文件已收集在 `public/logos/`（Alibaba Cloud, Arcfra, ByteDance, Cisco, Dell, Fortinet, H3C, Hillstone, HP, Huawei, KVM, Lenovo, Nutanix, Proxmox, Ruijie, Sangfor, Sophos, StarWind, Veeam） |
+| 3 | 案例数据 | ⚠️ 部分解决 | Sanity 中已有案例内容（通过 seed 脚本），但需确认是否为真实数据 |
+| 4 | 团队照片 | 🔲 待确认 | 需要收集团队成员照片 |
+| 5 | 办公地点地图 | 🔲 待确认 | 确认亚洲各办公室具体地址 |
+| 6 | 社交媒体账号 | 🔲 待确认 | 确认微信、WhatsApp等账号信息 |
+| 7 | 分析工具 | 🔲 待确认 | 是否使用Google Analytics或Umami？ |
+| 8 | 时区处理 | 🔲 待确认 | 工单时间显示使用哪个时区？ |
+| 9 | 邮件模板 | 🔲 待确认 | acknowledge邮件的具体内容模板？ |
+| 10 | 管理员账号 | 🔲 待确认 | 初始超级管理员如何创建？ |

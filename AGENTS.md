@@ -53,7 +53,7 @@ This project follows **Specs-driven Development**. The PRD is the canonical sour
 | Auth | Supabase Auth | Gmail OAuth + email/password |
 | Storage | Supabase Storage | Ticket attachments |
 | Email | Resend | Notification emails |
-| UI | Tailwind CSS + shadcn/ui | Styling + components |
+| UI | Tailwind CSS | Styling (components hand-written, no shadcn/ui) |
 | Deployment | Vercel | Hosting + CDN |
 | Language | TypeScript | Type safety |
 
@@ -80,21 +80,93 @@ npm run test:e2e     # End-to-end tests
 
 ```
 src/
-├── app/                    # Next.js App Router pages
-│   ├── [locale]/           # i18n routing (en/zh)
-│   │   ├── page.tsx        # Home
-│   │   ├── products/       # Products
-│   │   ├── solutions/      # Industry solutions
-│   │   ├── case-studies/   # Case studies
-│   │   ├── blog/           # Blog
-│   │   ├── about/          # About us
-│   │   ├── support/        # Support/tickets
-│   │   └── contact/        # Contact
-│   └── api/                # API routes
-├── components/             # Reusable components
-├── lib/                    # Utilities, Supabase client, Sanity client
-├── styles/                 # Global styles
-└── types/                  # TypeScript types
+├── app/                        # Next.js App Router pages
+│   ├── globals.css             # Global styles + CSS classes
+│   ├── layout.tsx              # Root layout (fonts, metadata)
+│   ├── page.tsx                # Root redirect to /[locale]
+│   ├── robots.ts               # SEO robots.txt
+│   ├── sitemap.ts              # SEO sitemap
+│   ├── [locale]/               # i18n routing (en/zh)
+│   │   ├── page.tsx            # Home → re-exports home/page.tsx
+│   │   ├── layout.tsx          # Locale layout (next-intl provider)
+│   │   ├── error.tsx           # Error boundary
+│   │   ├── not-found.tsx       # 404 page
+│   │   ├── home/               # Home page components
+│   │   ├── products/           # Products listing
+│   │   ├── solutions/          # Industry solutions (6 industries)
+│   │   ├── case-studies/       # Case studies + [slug] detail
+│   │   ├── blog/               # Blog listing + [slug] detail
+│   │   ├── about/              # About us
+│   │   ├── contact/            # Contact form
+│   │   ├── support/            # Support portal
+│   │   │   ├── login/          # Login page
+│   │   │   └── register/       # Register page
+│   │   ├── compare/            # VMware comparison page
+│   │   ├── vmware-alternative/ # VMware alternatives page
+│   │   ├── help/               # Help center
+│   │   ├── privacy/            # Privacy policy
+│   │   └── terms/              # Terms of service
+│   └── api/                    # API routes
+│       ├── auth/
+│       │   ├── callback/       # OAuth callback
+│       │   └── reset-password/ # Password reset
+│       ├── contact/            # Contact form submission
+│       ├── products/           # Sanity product listing
+│       ├── revalidate/         # ISR revalidation (Sanity webhook)
+│       ├── tickets/            # Ticket CRUD
+│       │   ├── stats/          # Ticket statistics
+│       │   └── [id]/           # Ticket detail/update
+│       └── upload/             # File upload to Supabase Storage
+├── components/                 # Reusable components
+│   ├── auth/                   # Authentication
+│   │   ├── LoginForm.tsx       # Email/password + OAuth login
+│   │   └── RegisterForm.tsx    # New account registration
+│   ├── compare/                # VMware comparison
+│   │   └── CompareTable.tsx    # Feature comparison table
+│   ├── hero/                   # Hero section
+│   │   └── HeroSection.tsx     # Video background + typewriter
+│   ├── layout/                 # Layout components
+│   │   ├── Footer.tsx          # 4-column dark footer
+│   │   ├── MegaMenu.tsx        # Desktop dropdown mega menu
+│   │   └── Navbar.tsx          # Fixed glass-morphism nav
+│   ├── tickets/                # Ticket system
+│   │   ├── TicketForm.tsx      # Ticket submission form
+│   │   └── TicketList.tsx      # User ticket list
+│   └── ui/                     # Shared UI components
+│       ├── Breadcrumb.tsx      # Breadcrumb navigation
+│       ├── CookieConsent.tsx   # GDPR cookie consent banner
+│       ├── DarkModeToggle.tsx  # Light/dark/system theme toggle
+│       ├── ErrorBoundary.tsx   # React error boundary
+│       ├── FAQAccordion.tsx    # Collapsible FAQ items
+│       ├── HelpText.tsx        # Inline help text with icon
+│       ├── JsonLd.tsx          # SEO structured data
+│       ├── LanguageSwitcher.tsx # EN/ZH language toggle
+│       ├── ScrollReveal.tsx    # IntersectionObserver reveal
+│       ├── ScrollToTop.tsx     # Back-to-top button
+│       └── Tooltip.tsx         # Hover tooltip
+├── hooks/                      # Custom React hooks
+│   ├── useAutoSave.ts          # Auto-save form data to localStorage
+│   ├── useOfflineCache.ts      # Offline data caching
+│   ├── useOptimistic.ts        # Optimistic UI updates
+│   └── useRetry.ts             # Retry with exponential backoff
+├── i18n/                       # Internationalization config
+│   ├── config.ts               # i18n configuration
+│   └── request.ts              # Request locale resolution
+├── lib/                        # Utilities and clients
+│   ├── odoo.ts                 # Odoo CRM integration
+│   ├── resend.ts               # Resend email client
+│   ├── sanity.ts               # Sanity client (browser)
+│   ├── sanity.image.ts         # Sanity image URL builder
+│   ├── sanity.server.ts        # Sanity client (server)
+│   └── supabase/               # Supabase clients
+│       ├── client.ts           # Browser client
+│       ├── middleware.ts       # Auth middleware
+│       └── server.ts           # Server client
+├── messages/                   # i18n translation files
+│   ├── en.json                 # English translations
+│   └── zh.json                 # Traditional Chinese translations
+└── test/                       # Test setup
+    └── setup.ts                # Vitest setup
 ```
 
 ### Naming Conventions
@@ -111,7 +183,7 @@ src/
 - Input validation on all user inputs
 - Parameterized queries only (no string concatenation)
 - CSP headers configured
-- File uploads validated (type whitelist, 10MB limit)
+- File uploads validated (type whitelist, 50MB limit)
 - Session cookies: HttpOnly + Secure + SameSite
 - No sensitive data in logs or error responses
 
@@ -131,6 +203,14 @@ src/
 | `tgws/DESIGN.md` | Color system, typography, spacing, animations, accessibility, responsive rules |
 | `tgws/COMPONENTS.md` | Component inventory, props, patterns, shared conventions |
 | `tgws/src/app/globals.css` | All CSS classes (`.card`, `.glass`, `.glow`, `.btn-primary`, `.btn-secondary`, animations) |
+
+### Design Principles
+
+- **Restrained**: Tinted neutrals + cyan accent, accent color stays ≤10% of surface area
+- **Professional**: Enterprise IT — not a startup, not a toy
+- **Progressive enhancement**: Content visible without JS; animations are enhancement
+- **Accessibility-first**: WCAG 2.1 AA compliance throughout
+- **Light theme primary**: Auto dark mode via `prefers-color-scheme: dark`, no manual toggle
 
 ### Color Tokens (from globals.css)
 
@@ -223,21 +303,56 @@ These constraints are enforced during development:
 33. **修bug不要动正常功能** - 进行功能改动时，只修改与问题直接相关的代码，不要顺手"清理"或"优化"其他看似无关的部分。任何非必要的改动都可能引入新问题。
 34. **评估维度必须记录工具归属** - 每个评估维度完成后，必须在checkpoint中记录"维度X → 工具Y → 评分/结论Z"，确保可追溯。不能只写"评估完成"，必须写明每个维度用了什么工具、得到什么结论。
 35. **维度评估不能替代实现审查** - 维度级评分（如"信息密度2.5/4"）会掩盖具体实现bug（空标签、未翻译字段、URL不同步）。评估时必须同时做：(1)维度打分 (2)按页面逐项检查具体实现。两者缺一不可。
+36. **事实核查必须读源码** - 做待办梳理或差距评估时，禁止仅凭文件树、旧评估报告、PRD原始设计来推断当前实现状态。必须逐页 `read` 源代码确认实际内容。教训：2026-07-09 因未读 about/page.tsx 就断言"内容单薄、缺时间线"，实际上时间线/团队/资质三个板块早已实现。二手信息（旧评估、PRD）只能作为起点，不能作为结论。
 
 ## Open Items (PRD [S22])
 
-Before implementation, confirm:
+| # | 问题 | 状态 | 说明 |
+|---|------|------|------|
+| 1 | Hero视频来源 | ✅ 已解决 | CloudFront CDN 托管 MP4 |
+| 2 | 合作伙伴Logo | ✅ 已解决 | 21个SVG/PNG在 `public/logos/` |
+| 3 | 案例数据 | ⚠️ 需确认 | Sanity已有seed数据，需确认是否真实 |
+| 4 | 团队成员照片 | 🔲 待收集 | |
+| 5 | 办公地址 | 🔲 待确认 | |
+| 6 | 社交媒体账号 | 🔲 待确认 | |
+| 7 | 分析工具 | 🔲 待选择 | GA vs Umami |
+| 8 | 工单时区 | 🔲 待确认 | |
+| 9 | 邮件模板 | 🔲 待设计 | acknowledge/状态更新模板 |
+| 10 | 超级管理员 | 🔲 待确认 | 初始创建方式 |
 
-1. Hero video source (free library vs custom)
-2. Partner logos collection
-3. Real case study data
-4. Team member photos
-5. Office addresses for map
-6. Social media accounts (WeChat, WhatsApp)
-7. Analytics tool (Google Analytics vs Umami)
-8. Timezone handling for tickets
-9. Acknowledge email template
-10. Initial super admin creation method
+## 项目现状（2026-07-09 源码验证）
+
+### 已完成
+
+- **19个页面全部实现**：首页/关于/产品/解决方案/案例列表+详情/博客列表+详情/联系/支持(含登录注册)/帮助/VMware替代/对比/隐私/条款/404/错误
+- **9个API路由全部实现**：auth callback/reset-password, contact, products, revalidate, tickets(CRUD+stats), upload
+- **25个组件全部实现**：HeroSection, Navbar, MegaMenu, Footer, LoginForm, RegisterForm, TicketForm, TicketList, CompareTable, + 12个UI组件
+- **4个Hooks全部实现**：useAutoSave, useOfflineCache, useOptimistic, useRetry
+- **6表数据库**：users, tickets, ticket_attachments, ticket_comments, contact_submissions, ticket_audit_log + RLS + 审计
+- **4个Sanity Schema**：product, caseStudy, post, solution
+- **17个E2E测试 + 7个单元测试**
+- **安全头部**：CSP, HSTS, X-Frame-Options 等全部配置
+
+### 待改进
+
+- **CMS化**：帮助页FAQ、合作伙伴Logo、团队信息、解决方案内容目前用i18n硬编码，需迁移到Sanity CMS
+- **i18n**：Solutions页面6处硬编码英文 metricLabel
+- **功能缺失**：全站搜索、客户评价(Testimonial)、Sanity缺FAQ/Partner/Team Schema
+- **测试补充**：Sanity数据完整性测试、API集成测试、性能基准测试
+
+## 教训记录
+
+### 2026-07-09: 事实核查必须读源码
+
+**事件**：做全面待办评估时，断言"关于页面内容单薄、缺时间线/团队/资质"，实际上这三个板块早已实现。
+
+**根因链**：
+1. 只检查文件是否存在（`about/page.tsx` ✅），没读内容
+2. 采信旧评估报告（UI-UX-GAP-ASSESSMENT.md 2026-07-05）的结论
+3. 用PRD原始设计推断当前状态
+4. 三个判断全部基于二手信息，零次原始验证
+
+**规则**：已写入第36条 — 做待办梳理或差距评估时，必须逐页 `read` 源代码确认实际内容，禁止仅凭文件树、旧评估报告、PRD原始设计推断。
 
 ## Notes
 
