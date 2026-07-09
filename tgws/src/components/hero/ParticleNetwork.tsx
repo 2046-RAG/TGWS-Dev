@@ -1,18 +1,20 @@
 'use client';
 
-import { useRef, useMemo, useEffect } from 'react';
+import { useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
 // ═══════════════════════════════════════════════
 // Particle Network — AI Neural Network Animation
 // Mouse-following particle system with connections
+// Uses spatial grid for O(n) performance
 // ═══════════════════════════════════════════════
 
-const PARTICLE_COUNT = 120;
+const PARTICLE_COUNT = 80; // Reduced for performance
 const CONNECTION_DISTANCE = 1.8;
 const MOUSE_INFLUENCE_RADIUS = 2.5;
 const MOUSE_ATTRACT_STRENGTH = 0.3;
+const GRID_CELL_SIZE = 2.0; // Spatial grid cell size
 
 // Brand colors
 const CYAN = new THREE.Color('#00D4FF');
@@ -21,64 +23,86 @@ const WHITE = new THREE.Color('#ffffff');
 
 interface Particle {
   position: THREE.Vector3;
-  velocity: THREE.Vector3;
   basePosition: THREE.Vector3;
   color: THREE.Color;
-  size: number;
+}
+
+// Spatial grid for O(n) neighbor lookup
+class SpatialGrid {
+  private cells: Map<string, number[]> = new Map();
+
+  clear() {
+    this.cells.clear();
+  }
+
+  getKey(x: number, y: number): string {
+    const gx = Math.floor(x / GRID_CELL_SIZE);
+    const gy = Math.floor(y / GRID_CELL_SIZE);
+    return `${gx},${gy}`;
+  }
+
+  insert(index: number, x: number, y: number) {
+    const key = this.getKey(x, y);
+    if (!this.cells.has(key)) this.cells.set(key, []);
+    this.cells.get(key)!.push(index);
+  }
+
+  getNearby(x: number, y: number): number[] {
+    const gx = Math.floor(x / GRID_CELL_SIZE);
+    const gy = Math.floor(y / GRID_CELL_SIZE);
+    const result: number[] = [];
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -1; dy <= 1; dy++) {
+        const key = `${gx + dx},${gy + dy}`;
+        const cell = this.cells.get(key);
+        if (cell) result.push(...cell);
+      }
+    }
+    return result;
+  }
 }
 
 function Particles() {
-  const meshRef = useRef<THREE.InstancedMesh>(null);
+  const meshRef = useRef<THREE.Points>(null);
   const lineRef = useRef<THREE.LineSegments>(null);
   const mouseRef = useRef(new THREE.Vector2(9999, 9999));
-  const { viewport } = useThree();
+  const { viewport, size } = useThree();
+  const gridRef = useRef(new SpatialGrid());
 
   // Initialize particles
-  const particles = useMemo<Particle[]>(() => {
-    const arr: Particle[] = [];
+  const particleData = useMemo(() => {
+    const positions = new Float32Array(PARTICLE_COUNT * 3);
+    const colors = new Float32Array(PARTICLE_COUNT * 3);
+    const basePositions: THREE.Vector3[] = [];
+    const particleColors: THREE.Color[] = [];
+
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const x = (Math.random() - 0.5) * viewport.width * 1.5;
       const y = (Math.random() - 0.5) * viewport.height * 1.5;
       const z = (Math.random() - 0.5) * 2;
-      const pos = new THREE.Vector3(x, y, z);
-      // Color: 70% cyan, 20% purple, 10% white
+
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = z;
+
       const r = Math.random();
       const color = r < 0.7 ? CYAN.clone() : r < 0.9 ? PURPLE.clone() : WHITE.clone();
-      arr.push({
-        position: pos.clone(),
-        velocity: new THREE.Vector3(
-          (Math.random() - 0.5) * 0.002,
-          (Math.random() - 0.5) * 0.002,
-          0
-        ),
-        basePosition: pos.clone(),
-        color,
-        size: 0.02 + Math.random() * 0.02,
-      });
+      colors[i * 3] = color.r;
+      colors[i * 3 + 1] = color.g;
+      colors[i * 3 + 2] = color.b;
+
+      basePositions.push(new THREE.Vector3(x, y, z));
+      particleColors.push(color);
     }
-    return arr;
+
+    return { positions, colors, basePositions, particleColors };
   }, [viewport.width, viewport.height]);
 
-  // Instanced mesh matrix + color buffers
-  const { matrices, colors } = useMemo(() => {
-    const m = new Float32Array(PARTICLE_COUNT * 16);
-    const c = new Float32Array(PARTICLE_COUNT * 3);
-    const tempMatrix = new THREE.Matrix4();
-    particles.forEach((p, i) => {
-      tempMatrix.makeTranslation(p.position.x, p.position.y, p.position.z);
-      tempMatrix.toArray(m, i * 16);
-      c[i * 3] = p.color.r;
-      c[i * 3 + 1] = p.color.g;
-      c[i * 3 + 2] = p.color.b;
-    });
-    return { matrices: m, colors: c };
-  }, [particles]);
-
-  // Line geometry buffer (max connections: PARTICLE_COUNT * 6)
+  // Line geometry buffer
   const linePositions = useMemo(() => new Float32Array(PARTICLE_COUNT * 6 * 3), []);
   const lineColors = useMemo(() => new Float32Array(PARTICLE_COUNT * 6 * 3), []);
 
-  // Mouse tracking via window
+  // Mouse tracking
   useEffect(() => {
     const handleMove = (e: MouseEvent) => {
       mouseRef.current.set(
@@ -94,69 +118,80 @@ function Particles() {
   useFrame((state) => {
     if (!meshRef.current || !lineRef.current) return;
 
-    const tempMatrix = new THREE.Matrix4();
+    const time = state.clock.elapsedTime;
+    const posArray = meshRef.current.geometry.attributes.position.array as Float32Array;
     const mouse3D = new THREE.Vector3(
       mouseRef.current.x * viewport.width * 0.5,
       mouseRef.current.y * viewport.height * 0.5,
       0
     );
 
-    // Update particle positions
-    particles.forEach((p, i) => {
-      // Drift animation
-      const time = state.clock.elapsedTime;
-      p.position.x = p.basePosition.x + Math.sin(time * 0.3 + i * 0.5) * 0.08;
-      p.position.y = p.basePosition.y + Math.cos(time * 0.25 + i * 0.7) * 0.06;
-      p.position.z = p.basePosition.z + Math.sin(time * 0.2 + i * 0.3) * 0.03;
+    // Rebuild spatial grid
+    gridRef.current.clear();
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const base = particleData.basePositions[i];
+      const x = base.x + Math.sin(time * 0.3 + i * 0.5) * 0.08;
+      const y = base.y + Math.cos(time * 0.25 + i * 0.7) * 0.06;
+      const z = base.z + Math.sin(time * 0.2 + i * 0.3) * 0.03;
 
       // Mouse attraction
-      const dx = mouse3D.x - p.position.x;
-      const dy = mouse3D.y - p.position.y;
+      const dx = mouse3D.x - x;
+      const dy = mouse3D.y - y;
       const dist = Math.sqrt(dx * dx + dy * dy);
+      let fx = x, fy = y;
       if (dist < MOUSE_INFLUENCE_RADIUS && dist > 0.01) {
         const force = (1 - dist / MOUSE_INFLUENCE_RADIUS) * MOUSE_ATTRACT_STRENGTH;
-        p.position.x += dx * force * 0.02;
-        p.position.y += dy * force * 0.02;
+        fx = x + dx * force * 0.02;
+        fy = y + dy * force * 0.02;
       }
 
-      // Update instanced matrix
-      tempMatrix.makeTranslation(p.position.x, p.position.y, p.position.z);
-      tempMatrix.toArray(matrices, i * 16);
-    });
+      posArray[i * 3] = fx;
+      posArray[i * 3 + 1] = fy;
+      posArray[i * 3 + 2] = z;
 
-    meshRef.current.instanceMatrix.needsUpdate = true;
+      gridRef.current.insert(i, fx, fy);
+    }
 
-    // Build connections
+    meshRef.current.geometry.attributes.position.needsUpdate = true;
+
+    // Build connections using spatial grid (O(n) average)
     let connectionCount = 0;
-    const maxConnections = PARTICLE_COUNT * 6;
+    const maxConnections = PARTICLE_COUNT * 4;
 
-    for (let i = 0; i < particles.length && connectionCount < maxConnections; i++) {
-      for (let j = i + 1; j < particles.length && connectionCount < maxConnections; j++) {
-        const dx = particles[i].position.x - particles[j].position.x;
-        const dy = particles[i].position.y - particles[j].position.y;
-        const dz = particles[i].position.z - particles[j].position.z;
+    for (let i = 0; i < PARTICLE_COUNT && connectionCount < maxConnections; i++) {
+      const ix = posArray[i * 3];
+      const iy = posArray[i * 3 + 1];
+      const iz = posArray[i * 3 + 2];
+      const nearby = gridRef.current.getNearby(ix, iy);
+
+      for (const j of nearby) {
+        if (j <= i || connectionCount >= maxConnections) continue;
+
+        const jx = posArray[j * 3];
+        const jy = posArray[j * 3 + 1];
+        const jz = posArray[j * 3 + 2];
+        const dx = ix - jx;
+        const dy = iy - jy;
+        const dz = iz - jz;
         const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
         if (dist < CONNECTION_DISTANCE) {
-          const alpha = 1 - dist / CONNECTION_DISTANCE;
+          const alpha = (1 - dist / CONNECTION_DISTANCE) * 0.2;
           const idx = connectionCount * 6;
 
-          // Line vertices
-          linePositions[idx] = particles[i].position.x;
-          linePositions[idx + 1] = particles[i].position.y;
-          linePositions[idx + 2] = particles[i].position.z;
-          linePositions[idx + 3] = particles[j].position.x;
-          linePositions[idx + 4] = particles[j].position.y;
-          linePositions[idx + 5] = particles[j].position.z;
+          linePositions[idx] = ix;
+          linePositions[idx + 1] = iy;
+          linePositions[idx + 2] = iz;
+          linePositions[idx + 3] = jx;
+          linePositions[idx + 4] = jy;
+          linePositions[idx + 5] = jz;
 
-          // Line colors (cyan with alpha)
-          const c = alpha * 0.15;
-          lineColors[idx] = CYAN.r * c;
-          lineColors[idx + 1] = CYAN.g * c;
-          lineColors[idx + 2] = CYAN.b * c;
-          lineColors[idx + 3] = CYAN.r * c;
-          lineColors[idx + 4] = CYAN.g * c;
-          lineColors[idx + 5] = CYAN.b * c;
+          lineColors[idx] = CYAN.r * alpha;
+          lineColors[idx + 1] = CYAN.g * alpha;
+          lineColors[idx + 2] = CYAN.b * alpha;
+          lineColors[idx + 3] = CYAN.r * alpha;
+          lineColors[idx + 4] = CYAN.g * alpha;
+          lineColors[idx + 5] = CYAN.b * alpha;
 
           connectionCount++;
         }
@@ -176,11 +211,27 @@ function Particles() {
 
   return (
     <>
-      {/* Particles */}
-      <instancedMesh ref={meshRef} args={[undefined, undefined, PARTICLE_COUNT]}>
-        <sphereGeometry args={[1, 8, 8]} />
-        <meshBasicMaterial transparent opacity={0.8} />
-      </instancedMesh>
+      {/* Particles as points — much more efficient than instanced spheres */}
+      <points ref={meshRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[particleData.positions, 3]}
+          />
+          <bufferAttribute
+            attach="attributes-color"
+            args={[particleData.colors, 3]}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.04}
+          vertexColors
+          transparent
+          opacity={0.85}
+          sizeAttenuation
+          depthWrite={false}
+        />
+      </points>
       {/* Connections */}
       <lineSegments ref={lineRef}>
         <bufferGeometry>
@@ -193,13 +244,51 @@ function Particles() {
             args={[lineColors, 3]}
           />
         </bufferGeometry>
-        <lineBasicMaterial vertexColors transparent opacity={0.6} />
+        <lineBasicMaterial vertexColors transparent opacity={1} depthWrite={false} />
       </lineSegments>
     </>
   );
 }
 
+// WebGL detection
+function hasWebGL(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    const canvas = document.createElement('canvas');
+    return !!(canvas.getContext('webgl2') || canvas.getContext('webgl'));
+  } catch {
+    return false;
+  }
+}
+
+// Static fallback background
+function StaticFallback() {
+  return (
+    <div className="absolute inset-0 z-0">
+      <div
+        className="w-full h-full"
+        style={{
+          background: 'radial-gradient(ellipse at 30% 50%, rgba(0,212,255,0.08) 0%, transparent 60%), radial-gradient(ellipse at 70% 30%, rgba(123,97,255,0.06) 0%, transparent 50%), #0a0a0f',
+        }}
+      />
+    </div>
+  );
+}
+
 export default function ParticleNetwork() {
+  const [webglSupported, setWebglSupported] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    setWebglSupported(hasWebGL());
+  }, []);
+
+  // Still loading — show nothing (will be wrapped in Suspense)
+  if (webglSupported === null) return <StaticFallback />;
+
+  // No WebGL — show static fallback
+  if (!webglSupported) return <StaticFallback />;
+
+  // WebGL available — show particle network
   return (
     <div className="absolute inset-0 z-0">
       <Canvas

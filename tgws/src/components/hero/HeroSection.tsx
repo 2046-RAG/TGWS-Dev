@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
@@ -8,19 +8,14 @@ import { Copy, Check, Mail, Code2, Sparkles, ArrowRight, Monitor } from 'lucide-
 import ParticleNetwork from './ParticleNetwork';
 
 /**
- * Hero Section 组件
+ * Hero Section
  *
- * 功能：
- * 1. 全屏视频背景，鼠标左右移动控制视频播放进度（scrubbing）
- * 2. 打字机效果显示品牌标语
- * 3. 模糊介绍标签（品牌身份锚点）
- * 4. CTA按钮组 + 邮箱复制功能
- *
- * 视频跟随原理：
- * - 监听 mousemove 事件，计算鼠标水平位移
- * - 根据位移量计算视频时间偏移（SENSITIVITY 控制灵敏度）
- * - 使用 fastSeek() 优先（Chrome支持），降级为 currentTime
- * - 通过 seekingRef 防止 seek 堆积，确保每次只有一个 seek 执行
+ * Features:
+ * 1. Three.js particle network background with mouse-following interaction
+ * 2. Typewriter effect for brand tagline
+ * 3. Brand subtitle with opacity hierarchy
+ * 4. CTA button group + email copy
+ * 5. Three storyline cards (Build.Run.Protect / AI Journey / VMware)
  */
 
 // 邮箱地址
@@ -116,8 +111,10 @@ export default function HeroSection() {
 
   return (
     <section className="relative w-full h-[100dvh] overflow-hidden flex flex-col bg-[#0a0a0f]">
-      {/* Three.js 粒子网络背景 */}
-      <ParticleNetwork />
+      {/* Three.js 粒子网络背景 — Suspense包裹防止SSR崩溃 */}
+      <Suspense fallback={null}>
+        <ParticleNetwork />
+      </Suspense>
 
       {/* 深色渐变遮罩 — 左深右浅，增强文字对比度 */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/25 to-transparent z-[1]" />
