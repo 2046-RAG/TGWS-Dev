@@ -3,7 +3,7 @@
     "home": "Home",
     "products": "Products",
     "solutions": "Solutions",
-    "caseStudies": "Case Studies",
+    "caseStudies": "Solution Architecture",
     "blog": "Blog",
     "about": "About",
     "support": "Tickets",
@@ -549,7 +549,7 @@
     }
   },
   "caseStudies": {
-    "title": "Case Studies",
+    "title": "Solution Architecture",
     "subtitle": "Explore how we've helped organizations across industries transform their IT infrastructure.",
     "readMore": "View Details",
     "noResults": "No case studies match the selected filters.",
@@ -748,8 +748,8 @@
       }
     },
     "metadata": {
-      "title": "Case Studies | TechGuru",
-      "description": "Real-world success stories from TechGuru clients across healthcare, finance, retail, logistics, education, and government sectors."
+      "title": "Solution Architecture | TechGuru",
+      "description": "Technical solution architectures and implementation scenarios across healthcare, finance, retail, logistics, education, and government sectors."
     },
     "loadMore": "Load More",
     "showing": "showing",

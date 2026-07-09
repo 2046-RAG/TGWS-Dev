@@ -127,3 +127,36 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string) {
     `,
   });
 }
+
+// 4. Ticket reply notification
+export async function sendTicketReplyEmail(
+  to: string,
+  ticketNumber: string,
+  subject: string,
+  replyAuthor: string,
+  replyContent: string
+) {
+  return sendEmail({
+    to,
+    subject: `New Reply on Ticket ${ticketNumber}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #00D4FF;">New Reply on Your Ticket</h2>
+        <p>A team member has replied to your support ticket.</p>
+        <div style="background: #FAFAFA; border-radius: 12px; padding: 20px; margin: 20px 0;">
+          <p><strong>Ticket:</strong> ${ticketNumber}</p>
+          <p><strong>Subject:</strong> ${subject}</p>
+          <p><strong>From:</strong> ${replyAuthor}</p>
+        </div>
+        <div style="background: white; border: 1px solid #E5E7EB; border-radius: 12px; padding: 20px; margin: 20px 0;">
+          <p style="color: #374151; line-height: 1.6; white-space: pre-wrap;">${replyContent}</p>
+        </div>
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${SITE_URL}/en/support" style="background: #00D4FF; color: white; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">View & Reply</a>
+        </div>
+        <hr style="border: none; border-top: 1px solid #F4F4F5; margin: 20px 0;">
+        <p style="color: #888; font-size: 12px;">TechGuru Network & Data Solutions</p>
+      </div>
+    `,
+  });
+}

@@ -92,7 +92,7 @@ export default function TicketList({ tickets }: { tickets: Ticket[] }) {
                 </div>
                 <h3 className="text-gray-900 font-medium truncate">{ticket.subject}</h3>
                 <p className="text-sm text-gray-500 mt-1">
-                  Created {format(new Date(ticket.created_at), 'MMM d, yyyy HH:mm')}
+                  {format(new Date(ticket.created_at), 'MMM d, yyyy HH:mm')} PHT
                 </p>
               </div>
 

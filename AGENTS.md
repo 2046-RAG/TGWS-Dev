@@ -318,7 +318,7 @@ These constraints are enforced during development:
 | 7 | 分析工具 | 🔲 待选择 | GA vs Umami |
 | 8 | 工单时区 | 🔲 待确认 | |
 | 9 | 邮件模板 | 🔲 待设计 | acknowledge/状态更新模板 |
-| 10 | 超级管理员 | 🔲 待确认 | 初始创建方式 |
+| 10 | 超级管理员 | ✅ 已解决 | 通过网站/register页面创建Supabase Auth账号即可 |
 
 ## 项目现状（2026-07-09 源码验证）
 
