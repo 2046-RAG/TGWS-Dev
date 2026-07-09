@@ -145,7 +145,7 @@
     "ctaDesc": "告訴我們您的IT挑戰，我們的團隊將為您匹配Build、Run、Protect解決方案。",
     "ctaPrimary": "立即開始",
     "ctaSecondary": "預約演示",
-    "routing_switching": "路由交换",
+    "routing_switching": "路由交換",
     "routing_switchingDesc": "企業級路由器和交換機，提供可靠的網絡連接基礎設施。",
     "wireless": "無線網絡",
     "wirelessDesc": "企業級WiFi接入點、無線控制器和WiFi 6/7解決方案。",
@@ -520,7 +520,7 @@
         },
         "3": {
           "title": "專項解決方案",
-          "description": "四方繼保，電力保護和變电站自動化。Proxmox VE，開源虛擬化。"
+          "description": "四方繼保，電力保護和變電站自動化。Proxmox VE，開源虛擬化。"
         }
       }
     }
@@ -773,7 +773,7 @@
     "aiAdoption": "AI落地服務",
     "aiAdoptionDesc": "從零到AI落地，評估、PoC、培訓、全面推廣。",
     "vmPlatform": "虛擬化平台",
-    "vmPlatformDesc": "VMware替代方案：Proxmox VE、深信服aSV、Nutanix、Arcfra、StarWind和新华三。",
+    "vmPlatformDesc": "VMware替代方案：Proxmox VE、深信服aSV、Nutanix、Arcfra、StarWind和新華三。",
     "hci": "超融合基礎架構",
     "hciDesc": "將運算、儲存和網路整合於單一平台。",
     "cloudPlatform": "雲平台",

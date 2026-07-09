@@ -25,6 +25,7 @@ interface PortableTextBlock {
 interface CaseStudy {
   _id: string;
   title: string;
+  titleZh?: string;
   slug: { current: string };
   industry: string;
   clientName: string;
@@ -88,7 +89,7 @@ export default function CaseStudyDetail({ caseStudy, locale }: { caseStudy: Case
               {tFilters(caseStudy.industry)}
             </span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">{caseStudy.title}</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">{locale === 'zh' ? (caseStudy.titleZh || caseStudy.title) : caseStudy.title}</h1>
           <p className="text-gray-600">{caseStudy.clientName}</p>
         </div>
 

@@ -19,6 +19,7 @@ async function getCaseStudies() {
     const query = `*[_type == "caseStudy"] | order(industry asc) {
       _id,
       title,
+      titleZh,
       slug,
       industry,
       clientName,

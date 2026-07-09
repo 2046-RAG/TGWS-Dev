@@ -10,6 +10,7 @@ async function getCaseStudy(slug: string) {
     const query = `*[_type == "caseStudy" && slug.current == $slug][0] {
       _id,
       title,
+      titleZh,
       slug,
       industry,
       clientName,
@@ -28,13 +29,14 @@ async function getCaseStudy(slug: string) {
   }
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }): Promise<Metadata> {
+  const { slug, locale } = await params;
   const caseStudy = await getCaseStudy(slug);
   if (!caseStudy) return { title: 'Case Study Not Found' };
+  const title = locale === 'zh' ? (caseStudy.titleZh || caseStudy.title) : caseStudy.title;
   return {
-    title: caseStudy.title,
-    description: caseStudy.summary
+    title,
+    description: locale === 'zh' ? (caseStudy.summaryZh || caseStudy.summary) : caseStudy.summary
   };
 }
 

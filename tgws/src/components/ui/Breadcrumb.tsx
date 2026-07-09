@@ -9,12 +9,13 @@ interface BreadcrumbItem {
 }
 
 export default function Breadcrumb({ items, locale = 'en' }: { items: BreadcrumbItem[]; locale?: string }) {
+  const homeLabel = locale === 'zh' ? '首頁' : 'Home';
   return (
     <nav aria-label="Breadcrumb" className="py-4 px-5 sm:px-8 max-w-7xl mx-auto">
       <ol className="flex items-center gap-1.5 text-sm text-gray-500">
         <li>
           <Link href={`/${locale}`} className="hover:text-[#00D4FF] transition-colors">
-            Home
+            {homeLabel}
           </Link>
         </li>
         {items.map((item, index) => (

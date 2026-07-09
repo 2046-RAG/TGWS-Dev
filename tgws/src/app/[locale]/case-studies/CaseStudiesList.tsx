@@ -26,6 +26,7 @@ const ITEMS_PER_PAGE = 9;
 interface CaseStudy {
   _id: string;
   title: string;
+  titleZh?: string;
   slug: { current: string };
   industry: string;
   clientName: string;
@@ -143,7 +144,7 @@ export default function CaseStudiesList({ cases }: { cases: CaseStudy[] }) {
                 </div>
 
                 <h2 className="text-2xl md:text-4xl font-bold text-white mb-3 max-w-3xl" style={{ fontFamily: 'var(--font-heading)' }}>
-                  {featuredCase.title}
+                  {locale === 'zh' ? (featuredCase.titleZh || featuredCase.title) : featuredCase.title}
                 </h2>
 
                 <p className="text-white/70 mb-6 max-w-2xl line-clamp-2 leading-relaxed">
@@ -217,7 +218,7 @@ export default function CaseStudiesList({ cases }: { cases: CaseStudy[] }) {
                       </div>
 
                       <h3 className="text-base font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#00D4FF] transition-colors duration-200">
-                        {cs.title}
+                        {locale === 'zh' ? (cs.titleZh || cs.title) : cs.title}
                       </h3>
 
                       <p className="text-sm text-gray-500 mb-4 line-clamp-2 flex-1 leading-relaxed">
