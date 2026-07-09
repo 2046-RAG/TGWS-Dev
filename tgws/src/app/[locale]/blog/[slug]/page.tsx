@@ -30,13 +30,15 @@ async function getPost(slug: string) {
   }
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }): Promise<Metadata> {
+  const { slug, locale } = await params;
   const post = await getPost(slug);
   if (!post) return { title: 'Post Not Found' };
+  const title = locale === 'zh' ? (post.titleZh || post.title) : post.title;
+  const description = locale === 'zh' ? (post.excerptZh || post.excerpt) : post.excerpt;
   return {
-    title: post.title,
-    description: post.excerpt
+    title,
+    description
   };
 }
 
