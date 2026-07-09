@@ -246,3 +246,4 @@ Before implementation, confirm:
 - Sanity webhooks configured for ISR revalidation
 - Resend used for all transactional emails
 - **每次变更后自动部署Vercel**: 任何代码变更(新模块/新功能/质感提升)完成后，必须执行 `npx vercel --prod --yes` 部署到Vercel，并提醒用户前往 https://www.techguru-it.asia 复审
+- **功能任务自动分解**: 当用户规划到对功能进行添加或修改相关的任务时，自动进入任务设计分解过程，帮助用户逐步进行任务/计划的分解，直到无可再分为止。分解输出格式：(1)目标 (2)前置依赖 (3)子任务列表(每个子任务含：具体文件/改动点/验证方式) (4)执行顺序
