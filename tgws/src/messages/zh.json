@@ -7,14 +7,30 @@
     "blog": "新聞博客",
     "about": "關於我們",
     "support": "客戶支持",
-    "contact": "聯絡我們"
+    "contact": "聯絡我們",
+    "compare": "為什麼選我們",
+    "vmware": "VMware替代方案",
+    "build": "構建",
+    "run": "承載",
+    "protect": "保護",
+    "healthcare": "醫療健康",
+    "finance": "金融服務",
+    "retail": "零售電商",
+    "logistics": "物流運輸",
+    "education": "教育科研",
+    "government": "政府公共",
+    "allIndustries": "所有行業",
+    "allPosts": "所有文章",
+    "technical": "技術文章",
+    "industry": "行業動態",
+    "caseStudy": "案例研究"
   },
   "hero": {
     "company": "泰谷網數科技",
-    "tagline": "您在亞洲值得信賴的IT合作夥伴。我們能為您解決什麼挑戰？",
+    "tagline": "從AI工作負載到關鍵任務基礎設施，我們保護每一層。",
     "heroLabel": {
-      "line1": "您好，認識TechGuru，",
-      "line2": "構建·承載·保護 您的IT基礎設施合作夥伴"
+      "line1": "泰谷網數科技",
+      "line2": "構建·承載·保護，您的端到端IT合作夥伴"
     },
     "cta": {
       "solutions": "瀏覽解決方案",
@@ -29,11 +45,11 @@
     "build": "構建",
     "run": "承載",
     "protect": "保護",
-    "buildDesc": "構建通用業務負載和面向未來的人工智慧負載",
-    "runDesc": "極致性能、極致可靠的基礎架構",
-    "protectDesc": "全方位多維度保護負載和數據安全",
-    "journeyLabel": "您的IT旅程，全面覆蓋",
-    "journeyDesc": "從構建工作負載到運行基礎設施再到保護一切——我們涵蓋您IT生命週期的每個階段。",
+    "buildDesc": "設計和部署現代工作負載，從AI生成內容、智慧編碼到自主代理和老舊系統增強。",
+    "runDesc": "透過企業虛擬化、超融合平台、雲端遷移和託管服務運行您的基礎架構，為性能和穩定性而優化。",
+    "protectDesc": "透過次世代防火牆、EDR、NDR、雲端安全和24/7託管偵測回應，守護您的邊緣、端點、網路和雲端。",
+    "journeyLabel": "一個合作夥伴。三大支柱。每個階段。",
+    "journeyDesc": "無論您正在構建AI工作負載、運行企業基礎架構，還是保護關鍵資產，TechGuru為您提供涵蓋整個IT生命週期的端到端解決方案。",
     "buildShort": "創建負載",
     "runShort": "運行基礎設施",
     "protectShort": "守護一切",
@@ -41,6 +57,7 @@
     "aigcT2V": "文字轉視頻",
     "aigcI2V": "圖片轉視頻",
     "aigcCoding": "AI編程",
+    "aiAdoption": "AI落地",
     "aiAgent": "AI代理開發",
     "legacyAI": "傳統系統改造",
     "vmPlatform": "虛擬化平台",
@@ -61,16 +78,47 @@
     "runTitle": "承載",
     "protectTitle": "保護",
     "exploreProducts": "探索產品",
+    "valueSectionTitle": "一套框架，守護每一層",
+    "valueSectionDesc": "從AI工作負載到關鍵任務基礎設施，三大核心支柱覆蓋您的整個IT生命週期。",
+    "aiJourneyTitle": "您的AI旅程從這裡開始",
+    "aiJourneyDesc": "從就緒評估到自主代理，我們在每個階段引領您的AI轉型。",
+    "aiStep1Title": "AI採用評估",
+    "aiStep1Desc": "評估AI就緒度，識別用例，制定符合您行業的路線圖。",
+    "aiStep3Title": "AI代理開發",
+    "aiStep3Desc": "構建處理複雜工作流的自主代理，基於阿里雲百煉和字節跳動火山引擎。",
+    "vmwareCta": "探索遷移路徑",
+    "buildHighlight1": "AI生成內容與影片",
+    "buildHighlight2": "AI編碼助手",
+    "buildHighlight3": "老舊系統現代化",
+    "runHighlight1": "企業虛擬化平台",
+    "runHighlight2": "超融合基礎架構",
+    "runHighlight3": "業務連續性與災備",
+    "protectHighlight1": "次世代防火牆與IPS",
+    "protectHighlight2": "EDR與NDR偵測",
+    "protectHighlight3": "託管安全服務",
+    "socialProofLabel": "深受亞洲企業信賴",
+    "socialProofStat1": "28",
+    "socialProofStat1Label": "企業級產品",
+    "socialProofStat2": "19",
+    "socialProofStat2Label": "技術合作夥伴",
+    "socialProofStat3": "6",
+    "socialProofStat3Label": "行業解決方案",
+    "socialProofStat4": "3+",
+    "socialProofStat4Label": "年企業IT經驗",
+    "conversionTitle": "準備好改造您的IT了嗎？",
+    "conversionDesc": "告訴我們您的挑戰，我們的團隊將為您匹配Build、Run、Protect解決方案，從評估到部署。",
+    "conversionPrimary": "立即開始",
+    "conversionSecondary": "預約演示",
     "vmwareLabel": "VMware替代方案",
-    "vmwareTitle": "無縫VMware遷移",
-    "vmwareDesc": "想要擺脫VMware？我們提供成熟的遷移方案，轉向開源和高性價比替代方案，最大限度減少停機時間，確保順利過渡。",
+    "vmwareTitle": "VMware替代方案，按您的節奏來",
+    "vmwareDesc": "還沒準備好完全告別VMware？從雙Hypervisor架構開始：將邊緣和非核心業務運行在Proxmox VE、Sangfor、Nutanix、StarWind或H3C上，與現有VMware環境並行。驗證穩定後，按您的計劃逐步淘汰VMware，同時保護您已投入的Veeam、Veritas（Cohesity）等VMware生態資產。",
     "vmwareFeature1": "Proxmox VE 和 KVM 解決方案",
     "vmwareFeature2": "Sangfor aSV 和 HCI 平台",
     "vmwareFeature3": "Nutanix 和 Arcfra 選項",
-    "vmwareFeature4": "H3C 超融合基礎架構",
+    "vmwareFeature4": "StarWind HCI 和 Virtual SAN",
     "vmwareCta": "探索VMware替代方案",
     "industriesTitle": "行業解決方案",
-    "industriesDesc": "為每個行業量身定制的技術方案，以專業經驗解決獨特挑戰。",
+    "industriesDesc": "深耕醫療、金融、零售、物流、教育和政府六大行業，解決方案針對亞洲獨特的監管和營運環境量身打造。",
     "industries": {
       "healthcare": {
         "name": "醫療健康",
@@ -87,16 +135,16 @@
     },
     "viewAllSolutions": "查看所有方案",
     "stats": {
-      "clients": "企業客戶",
-      "uptime": "可用性保障",
-      "years": "行業經驗",
+      "clients": "解決方案已交付",
+      "uptime": "廠商認證",
+      "years": "覆蓋亞洲市場",
       "partners": "技術合作夥伴"
     },
-    "partnersLabel": "值得領先企業信賴",
-    "ctaTitle": "準備好轉型了嗎？",
-    "ctaDesc": "讓我們討論Build、Run、Protect如何為您的組織服務。",
+    "partnersLabel": "我們的技術合作夥伴",
+    "ctaTitle": "一起構建更好的IT",
+    "ctaDesc": "告訴我們您的IT挑戰，我們的團隊將為您匹配Build、Run、Protect解決方案。",
     "ctaPrimary": "立即開始",
-    "ctaSecondary": "聯繫支持",
+    "ctaSecondary": "預約演示",
     "routing_switching": "路由交换",
     "routing_switchingDesc": "企業級路由器和交換機，提供可靠的網絡連接基礎設施。",
     "wireless": "無線網絡",
@@ -108,125 +156,125 @@
   },
   "solutions": {
     "title": "行業解決方案",
-    "subtitle": "為每個行業量身定制的技術方案，以專業經驗解決獨特挑戰。",
+    "subtitle": "針對您行業工作負載需求配置的企業級IT基礎設施。",
     "painPoints": "痛點分析",
-    "ourSolutions": "解決方案",
-    "featuredProducts": "推薦產品",
+    "ourSolutions": "基礎設施需求",
+    "featuredProducts": "AI應用",
     "cta": "探索此行業的產品方案",
-    "ctaDesc": "準備好轉型您的IT基礎設施了嗎？",
+    "ctaDesc": "準備好升級您的IT基礎設施了嗎？",
     "industries": {
       "healthcare": {
         "name": "醫療健康",
-        "description": "為醫療機構提供數位轉型方案，透過安全合規的技術基礎設施提升患者護理品質。",
+        "description": "為醫療機構提供可靠、安全的基礎設施，保護患者數據，同時保持系統持續運行。",
         "painPoints": [
-          "嚴格的法規合規要求（HIPAA、本地數據保護法）",
-          "傳統系統阻礙數位化患者護理",
-          "針對敏感健康記錄的網路安全威脅"
+          "系統停機直接影響患者護理和安全",
+          "PACS影像數據不斷增長，需要可擴展的高可用儲存",
+          "多家診所和醫院需要統一IT管理"
         ],
         "solutions": [
-          "HIPAA合規雲端遷移與混合基礎設施",
-          "統一患者數據平台與即時分析",
-          "零信任安全框架保護健康數據"
+          "構建：PACS需要大容量分層儲存（Sangfor/Nutanix超融合）",
+          "HIS需要高IOPS全快碟配置",
+          "承載：多院區SD-WAN實現診所-醫院互聯"
         ],
         "products": [
-          "SecureCloud 醫療版",
-          "DataVault 醫療級",
-          "NetGuard 健康防護"
+          "Legacy System AI增強HIS、LIS、RIS和EMR，智慧報告生成、工作流自動化和異常偵測，無需替換核心系統",
+          "AIGC生成醫療培訓教材、患者教育內容和放射報告模板",
+          "AI Agent自動化預約排程、保險理賠處理和轉診路由"
         ]
       },
       "finance": {
         "name": "金融服務",
-        "description": "為金融機構提供穩健安全的基礎設施，實現即時處理與法規合規。",
+        "description": "為銀行、保險和金融科技提供高效能、高韌性的基礎設施，為速度和可靠性而生。",
         "painPoints": [
-          "高頻交易處理瓶頸",
-          "不斷演變的金融法規要求",
-          "大規模詐欺偵測與防範"
+          "交易系統要求極低延遲和高IOPS",
+          "任何停機都意味著直接財務損失和監管風險",
+          "多分支機構需要一致的安全策略"
         ],
         "solutions": [
-          "低延遲交易基礎設施優化",
-          "自動化合規監控與報告",
-          "AI驅動的詐欺偵測與風險管理"
+          "構建：交易系統需要高可用全快碟超融合（Sangfor/Nutanix）保障uptime和故障轉移",
+          "數據分析需要大容量儲存",
+          "承載：分支機構透過SD-WAN互聯"
         ],
         "products": [
-          "FinCloud 金融雲",
-          "ComplianceOS 合規系統",
-          "RiskShield AI 風控"
+          "Legacy System AI增強非核心金融系統，CRM自動化、報表生成、文件處理和合規工作流編排",
+          "我們不觸碰核心銀行和交易系統",
+          "AI Agent自動化詐欺偵測工作流、KYC驗證和監管報告生成"
         ]
       },
       "retail": {
         "name": "零售業",
-        "description": "全通路零售技術，優化客戶體驗並提升供應鏈運營效率。",
+        "description": "為零售營運提供可擴展的基礎設施，從POS系統到電商平台。",
         "painPoints": [
-          "碎片化的全通路客戶體驗",
-          "多渠道庫存可視性不足",
-          "高峰購物季節的擴展能力"
+          "高峰季節造成大規模流量暴漲",
+          "電商平台需要高可用性和快速回應",
+          "客戶支付數據需要嚴格保護"
         ],
         "solutions": [
-          "統一商務平台與即時庫存同步",
-          "AI驅動的需求預測與個人化",
-          "自動擴展雲端基礎設施應對流量高峰"
+          "構建：電商需要彈性雲端擴展",
+          "POS需要穩定的本地計算",
+          "承載：多店鋪SD-WAN優化"
         ],
         "products": [
-          "RetailCloud 零售雲",
-          "DemandSense AI 需求預測",
-          "ScaleFlex 零售擴展"
+          "AIGC生成商品圖片、廣告視覺和行銷文案，將內容生產從數週縮短至數小時",
+          "AI Agent處理庫存預測、需求規劃和供應商溝通",
+          "Legacy System AI增強POS分析、客戶行為洞察和忠誠度計劃自動化"
         ]
       },
       "logistics": {
         "name": "物流供應鏈",
-        "description": "端到端物流技術方案，提升供應鏈可視性、優化與韌性。",
+        "description": "為物流營運提供互聯基礎設施，讓倉庫、車隊和辦公室保持同步。",
         "painPoints": [
-          "即時供應鏈可視性不足",
-          "路線優化與配送效率",
-          "跨境數據傳輸與合規"
+          "即時追蹤需要可靠、持續在線的連線",
+          "多個倉庫和辦公室需要統一網路管理",
+          "跨境數據傳輸需要安全合規的通道"
         ],
         "solutions": [
-          "IoT即時追蹤與監控",
-          "AI優化路線與車隊管理",
-          "安全跨境數據基礎設施"
+          "構建：WMS需要本地超融合計算和儲存",
+          "運輸系統需要可靠的數據處理",
+          "承載：多站點SD-WAN互聯"
         ],
         "products": [
-          "LogiTrack Pro 追蹤系統",
-          "RouteAI 路線優化",
-          "BorderLink 跨境安全"
+          "AI Agent處理路線調度、到貨時間預測和異常告警，與現有TMS和車隊管理系統整合",
+          "AIGC製作倉庫培訓教材、安全文檔和物流標準作業流程",
+          "Legacy System AI增強TMS預測分析、車隊優化和報關文件自動化"
         ]
       },
       "education": {
         "name": "教育機構",
-        "description": "為現代教育機構與線上學習平台提供可擴展、易存取的技術基礎設施。",
+        "description": "為學校和大學提供高性價比基礎設施，支撐線上學習和校園IT需求。",
         "painPoints": [
-          "支援大規模遠距學習平台",
-          "保護學生數據與隱私",
-          "管理混合本地與雲端環境"
+          "考試和選課期間造成流量暴漲",
+          "有限的IT預算要求最大化價值",
+          "校園網路服務數千同時在線用戶"
         ],
         "solutions": [
-          "可擴展線上學習平台基礎設施",
-          "學生數據保護與FERPA合規",
-          "混合校園IT現代化"
+          "構建：LMS和選課系統需要彈性擴展應對高峰",
+          "預算友善的超融合配置",
+          "承載：校園WiFi服務數千用戶"
         ],
         "products": [
-          "EduCloud 教育雲",
-          "StudentShield 學生防護",
-          "CampusNet 混合架構"
+          "AIGC製作課件、培訓影片和教學內容，講師無需專門的製作團隊即可產出豐富媒體",
+          "AI Agent自動化學生諮詢回應、入學處理和學業輔導",
+          "Legacy System AI增強LMS個人化學習路徑、自動評分和學生績效分析"
         ]
       },
       "government": {
         "name": "政府機構",
-        "description": "為政府機關提供安全、主權級技術方案，滿足嚴格的合規與可用性要求。",
+        "description": "為政府機關提供安全、可靠的基礎設施，為可用性和數據保護而建。",
         "painPoints": [
-          "嚴格的安全與數據主權要求",
-          "零停機時間的傳統系統現代化",
-          "大規模面向市民服務的可靠性"
+          "面向市民的服務必須24/7在線",
+          "老舊系統需要不中斷服務的現代化",
+          "數據主權要求限制公有雲選項"
         ],
         "solutions": [
-          "主權雲端與氣隙基礎設施",
-          "持續可用性的分階段現代化",
-          "高可用市民服務平台"
+          "構建：本地超融合部署滿足數據主權",
+          "關鍵系統高可用配置",
+          "承載：BCDR保障關鍵任務服務連續性"
         ],
         "products": [
-          "GovCloud 主權雲",
-          "LegacyBridge 舊系統橋接",
-          "CitizenHub 市民服務"
+          "Legacy System AI增強OA和公文管理，自動化文件摘要、審批路由和工作流編排",
+          "AI Agent自動化市民服務路由、許可證處理和跨部門協調",
+          "AIGC生成政策摘要、公共溝通材料和政府員工培訓內容"
         ]
       }
     }
@@ -247,28 +295,28 @@
     },
     "articles": {
       "1": {
-        "title": "建構彈性混合雲架構",
-        "excerpt": "了解如何設計兼顧性能、成本與合規的混合雲環境，滿足企業工作負載需求。"
+        "title": "混合雲架構設計實戰指南",
+        "excerpt": "實用框架：工作負載分類、四象限決策、分階段遷移，設計兼顧性能與合規的混合雲環境。"
       },
       "2": {
-        "title": "零信任安全：完整實作指南",
-        "excerpt": "深入了解如何在組織網路與應用中實施零信任架構。"
+        "title": "零信任網路架構落地",
+        "excerpt": "從理念到實踐：身份驗證、微分段、最小權限存取，建構企業級零信任網路。"
       },
       "3": {
-        "title": "2025年AI驅動的基礎設施監控",
-        "excerpt": "機器學習如何透過預測分析與自動化事件回應革新IT運維。"
+        "title": "AI Infra熱潮下的冷思考",
+        "excerpt": "每個企業都想搞AI，但不是每個都需要自建AI基礎設施。務實路徑比跟風更重要。"
       },
       "4": {
-        "title": "SD-WAN vs SASE：選擇正確的網路策略",
-        "excerpt": "實用比較指南，幫助您為組織網路需求選擇SD-WAN或SASE。"
+        "title": "SD-WAN vs SASE 選擇指南",
+        "excerpt": "SD-WAN和SASE不是非此即彼。理解兩者差異，才能根據實際需求做出正確選擇。"
       },
       "5": {
-        "title": "雲端成本優化：10個實證策略",
-        "excerpt": "發現可操作的技術，在維持性能與可靠性的同時降低雲端支出。"
+        "title": "雲成本失控：Cloud Repatriation趨勢",
+        "excerpt": "越來越多企業將工作負載從公有雲拉回。雲端並非萬靈丹，成本與控制力正在重塑IT格局。"
       },
       "6": {
-        "title": "勒索軟體防護：企業防禦手册",
-        "excerpt": "全面策略保護您的組織免受持續演變的勒索軟體威脅。"
+        "title": "Ransomware-as-a-Service 中小企業防禦",
+        "excerpt": "勒索軟體已商業化，攻擊門檻降至數百美元。中小企業不再是旁觀者，而是首要目標。"
       }
     },
     "detail": {
@@ -291,7 +339,7 @@
             },
             {
               "heading": "關鍵設計原則",
-              "body": "從工作負載分類開始：依據延遲敏感度、數據主權和突發需求對每個應用進行分類。為故障而設計——假設每個元件都會故障，建立自動容錯機制。自動化一切，從配置到擴展到恢復。"
+              "body": "從工作負載分類開始：依據延遲敏感度、數據主權和突發需求對每個應用進行分類。為故障而設計，假設每個元件都會故障，建立自動容錯機制。自動化一切，從配置到擴展到恢復。"
             },
             {
               "heading": "實施路線圖",
@@ -299,7 +347,7 @@
             },
             {
               "heading": "常見陷阱",
-              "body": "避免供應商鎖定，使用 Kubernetes 實現可攜性。不要忽視網路——跨雲連接是最困難的部分。考慮數據重力：大型數據集移動成本高昂。始終制定回滾計畫。"
+              "body": "避免供應商鎖定，使用 Kubernetes 實現可攜性。不要忽視網路，跨雲連接是最困難的部分。考慮數據重力：大型數據集移動成本高昂。始終制定回滾計畫。"
             }
           ]
         },
@@ -423,61 +471,56 @@
   },
   "about": {
     "title": "關於泰谷科技",
-    "intro": "成立於2010年，泰谷網數科技一直處於亞洲IT基礎設施創新的前沿。我們與領先技術供應商合作，提供前沿方案，赋能企業在數位時代蓬勃發展。",
+    "intro": "成立於2023年，泰谷網數科技為亞洲企業提供IT基礎設施解決方案。我們與領先技術供應商合作，協助企業構建、承載和保護其關鍵系統。",
     "timeline": {
       "title": "發展歷程",
       "events": [
-        "泰谷科技在台北成立，專注企業網路解決方案。",
-        "擴展至香港，推出託管安全服務。",
-        "與主要雲端供應商合作，推出混合雲解決方案。",
-        "開設上海辦公室，推出AI基礎設施平台。",
-        "獲得ISO 27001和SOC 2認證，企業客戶突破500家。",
-        "推出VMware遷移計畫，業務拓展至東南亞。"
+        "2023年：泰谷科技在馬尼拉成立，由三位擁有5-10年企業銷售和售前經驗的IT老兵創辦。",
+        "2023年：取得Sangfor、Fortinet和H3C合作夥伴資格，啟動基礎架構和安全產品組合。",
+        "2024年：擴展廠商生態至Nutanix、Sophos、Hillstone、阿里雲和華為。團隊成長至10人。",
+        "2024年：推出VMware替代方案，提供Proxmox VE、Sangfor HCI和Nutanix AHV遷移路徑。",
+        "2025年：透過阿里雲百煉和字節跳動火山引擎合作夥伴關係引入AI能力。推出AIGC和AI落地服務。",
+        "2025年：擴展至20+合作夥伴，涵蓋超融合、安全、網路、雲端和AI。服務菲律賓及東南亞客戶。"
       ]
     },
     "team": {
-      "title": "領導團隊",
+      "title": "我們的團隊",
       "members": {
         "0": {
-          "name": "陳大衛",
-          "role": "執行長兼創辦人",
-          "bio": "20年以上IT基礎設施經驗。曾任亞太區知名科技公司副總裁。"
+          "name": "Marco Reyes",
+          "role": "CEO兼銷售總監",
+          "bio": "10年以上企業IT銷售經驗。與亞洲主要廠商和企業客戶建立深厚關係。"
         },
         "1": {
-          "name": "林莎拉",
-          "role": "技術長",
-          "bio": "雲端架構專家。曾任財富500強科技公司工程主管。"
+          "name": "Rafael Santos",
+          "role": "CTO兼解決方案架構師",
+          "bio": "10年以上IT基礎設施售前經驗。專精超融合、雲端遷移和安全架構。"
         },
         "2": {
-          "name": "王詹姆斯",
-          "role": "業務副總裁",
-          "bio": "15年以上大中華區及東南亞企業IT解決方案銷售經驗。"
-        },
-        "3": {
-          "name": "張艾蜜莉",
-          "role": "資安主管",
-          "bio": "CISSP與CISM認證。曾任政府機關資安顧問。"
+          "name": "Adrian Mendoza",
+          "role": "業務發展副總裁",
+          "bio": "8年以上IT通路和合作夥伴管理經驗。專注廠商生態拓展和企業客戶開發。"
         }
       }
     },
     "qualifications": {
-      "title": "認證與合作夥伴",
+      "title": "廠商合作夥伴",
       "items": {
         "0": {
-          "title": "ISO 27001 認證",
-          "description": "資訊安全管理系統認證，確保企業級數據保護。"
+          "title": "基礎架構與虛擬化",
+          "description": "Sangfor、Nutanix、H3C、華為、聯想、Dell、HPE，超融合、伺服器、儲存和虛擬化平台。"
         },
         "1": {
-          "title": "SOC 2 Type II",
-          "description": "獨立審計驗證安全性、可用性與機密性控制。"
+          "title": "網路與安全",
+          "description": "Fortinet、Sophos、Hillstone、Ruijie、Prolink，次世代防火牆、EDR、NDR、SD-WAN、交換機和無線。"
         },
         "2": {
-          "title": "AWS 高級合作夥伴",
-          "description": "認證AWS諮詢合作夥伴，具備雲端遷移與優化專業能力。"
+          "title": "雲端與AI",
+          "description": "阿里雲、字節跳動火山引擎，AIGC流程、AI平台部署和託管雲服務。"
         },
         "3": {
-          "title": "VMware 白金合作夥伴",
-          "description": "白金級合作夥伴，提供虛擬化、雲端管理與遷移服務。"
+          "title": "專項解決方案",
+          "description": "四方繼保，電力保護和變电站自動化。Proxmox VE，開源虛擬化。"
         }
       }
     }
@@ -692,7 +735,7 @@
     "company": "公司名稱",
     "companyPlaceholder": "公司名稱（選填）",
     "phone": "電話號碼",
-    "phonePlaceholder": "+886 912-345-678",
+    "phonePlaceholder": "+63 960 282 5051",
     "message": "訊息",
     "messagePlaceholder": "請告訴我們您的專案或問題...",
     "submit": "發送訊息",
@@ -701,13 +744,15 @@
     "error": "發生錯誤，請稍後再試。",
     "required": "此欄位為必填",
     "invalidEmail": "請輸入有效的電子郵件地址",
-    "offices": "辦公室據點",
-    "taipei": "台北總部",
-    "taipeiAddr": "10101 台北市中正區",
-    "hongKong": "香港",
-    "hongKongAddr": "香港中環",
+    "offices": "辦公室",
+    "taipei": "馬尼拉總部",
+    "taipeiAddr": "10 Rajah Matanda St, corner JP Rizal St, Project 4, Quezon City, 1109 Metro Manila",
+    "hongKong": "聯繫方式",
+    "hongKongAddr": "+63 960 282 5051 | Inquiries@techguru-it.asia",
     "social": "關注我們",
-    "skipToForm": "跳至聯絡表單"
+    "skipToForm": "跳至聯絡表單",
+    "emailAddress": "Inquiries@techguru-it.asia",
+    "phoneNumber": "+63 960 282 5051"
   },
   "products": {
     "title": "產品與服務",
@@ -716,17 +761,19 @@
     "run": "承載",
     "protect": "保護",
     "aigcT2V": "文字轉影片",
-    "aigcT2VDesc": "使用前沿AI模型，從文字描述生成影片內容。",
+    "aigcT2VDesc": "透過Seedance和HappyHorse模型，從文字提示生成專業影片。",
     "aigcI2V": "圖片轉影片",
-    "aigcI2VDesc": "利用AI技術將靜態圖片轉化為動態影片。",
+    "aigcI2VDesc": "利用Seedance和HappyHorse將靜態圖片轉化為動態影片。",
     "aigcCoding": "AI程式開發",
-    "aigcCodingDesc": "AI驅動的開發工具，加速您的程式開發流程。",
+    "aigcCodingDesc": "我們協助您的團隊導入AI編碼助手，從試點到全面上線。",
     "aiAgent": "AI Agent開發",
-    "aiAgentDesc": "建構智慧型自主Agent，實現複雜任務自動化。",
+    "aiAgentDesc": "自主代理處理跨系統的多步驟工作流程。",
     "legacyAI": "傳統業務智能化改造",
-    "legacyAIDesc": "為傳統系統注入AI能力，實現智慧化升級。",
+    "legacyAIDesc": "在不替換的前提下，為您的ERP、CRM或OA系統加入AI，預測、自動化、異常偵測。",
+    "aiAdoption": "AI落地服務",
+    "aiAdoptionDesc": "從零到AI落地，評估、PoC、培訓、全面推廣。",
     "vmPlatform": "虛擬化平台",
-    "vmPlatformDesc": "VMware替代方案：Proxmox VE、深信服aSV、Nutanix、Arcfra、新華三。",
+    "vmPlatformDesc": "VMware替代方案：Proxmox VE、深信服aSV、Nutanix、Arcfra、StarWind和新华三。",
     "hci": "超融合基礎架構",
     "hciDesc": "將運算、儲存和網路整合於單一平台。",
     "cloudPlatform": "雲平台",
@@ -734,7 +781,7 @@
     "hardware": "硬體設備",
     "hardwareDesc": "企業級伺服器與儲存解決方案，支撐您的基礎架構。",
     "hosting": "託管服務",
-    "hostingDesc": "全方位託管基礎設施服務，提供7×24小時支援。",
+    "hostingDesc": "全方位託管基礎設施服務，提供快速響應支援。",
     "bcdr": "業務連續性",
     "bcdrDesc": "災難即服務（DRaaS）與備份即服務（BaaS），保障數據安全。",
     "ngfw": "下一代防火牆與IPS",
@@ -753,19 +800,19 @@
     "mdrDesc": "7×24小時安全監控、滲透測試與專家威脅分析。",
     "incidentResponse": "應急響應",
     "incidentResponseDesc": "快速回應安全事件，提供專業數位鑑識分析。",
-    "buildTitle": "Build — 構建您的業務負載",
-    "buildStory": "當您需要創建、開發或現代化業務負載時，這些產品幫您從0到1構建智能工作負載。從AIGC視頻生成到AI Agent開發再到傳統系統現代化改造。",
-    "runTitle": "Run — 驅動您的基礎設施",
+    "buildTitle": "Build，構建您的業務負載",
+    "buildStory": "當您需要創建、開發或現代化業務負載時，這些產品助您從0到1構建智慧運營。從AIGC內容生產到AI輔助開發、AI落地服務再到老舊系統智慧化升級。",
+    "runTitle": "Run，驅動您的基礎設施",
     "runStory": "當您需要極致性能和可靠性來運行工作負載時，這些產品提供統一的基礎架構。從虛擬化到超融合再到雲平台和業務連續性保障。",
-    "protectTitle": "Protect — 守護每一個層面",
+    "protectTitle": "Protect，守護每一個層面",
     "protectStory": "當您需要全方位安全保障時，這些產品守護您的每一個層面。從邊界防火牆到端點檢測再到雲安全和託管安全檢測與響應。",
     "features": {
       "ai-generated-content-aigc": [
-        "文字轉視頻生成",
-        "圖片轉視頻轉換",
-        "多語言支持",
-        "批量處理",
-        "品牌定制"
+        "文字轉影片 (Seedance, HappyHorse)",
+        "圖片轉影片 (Seedance, HappyHorse)",
+        "文字轉圖片 (即夢, Wan 2.7)",
+        "文字轉語音 (CosyVoice)",
+        "託管雲端部署"
       ],
       "ai-assisted-coding": [
         "代碼生成",
@@ -775,17 +822,25 @@
         "多語言支持"
       ],
       "ai-agent-development": [
-        "多代理編排",
-        "工具整合",
-        "記憶與上下文管理",
-        "生產環境部署"
+        "客服分流處理",
+        "數據分析工作流",
+        "審批流程自動化",
+        "跨系統協同編排",
+        "百煉與火山引擎部署"
       ],
       "enterprise-legacy-system-ai-augmentation": [
-        "API代理層",
-        "零侵入整合",
-        "模型適配",
-        "漸進式部署",
-        "流程自動化"
+        "ERP/CRM/OA智慧增強",
+        "API整合層",
+        "核心系統零改動",
+        "預測與自動化",
+        "漸進式部署"
+      ],
+      "ai-adoption-services": [
+        "AI就緒度評估",
+        "使用場景識別",
+        "平台選型與PoC",
+        "團隊培訓與賦能",
+        "全組織推廣"
       ],
       "server-virtualization-platform": [
         "VMware遷移路徑",
@@ -823,7 +878,7 @@
         "可擴展容量"
       ],
       "managed-hosting-services": [
-        "7×24小時監控",
+        "持續監控",
         "補丁管理",
         "備份與恢復",
         "安全加固",
@@ -946,101 +1001,252 @@
     "section7Body": "有關此隱私權政策的問題，請透過以下方式聯繫我們",
     "backHome": "← 返回首頁"
   },
-  "vmware": {
-    "heroTag": "VMware替代方案",
-    "heroTitle": "擺脫VMware供應商鎖定",
-    "heroSubtitle": "遷移到具成本效益的開源替代方案，實現零停機和經過驗證的遷移路徑。",
-    "heroCta": "免費評估",
-    "whyTitle": "為什麼要遷離VMware？",
-    "whySubtitle": "Broadcom收購後帶來不確定性。現在是探索更好選擇的時機。",
-    "reason1Title": "成本上升",
-    "reason1Desc": "Broadcom收購後VMware授權費用大幅增加，加重IT預算壓力。",
-    "reason2Title": "供應商鎖定",
-    "reason2Desc": "專有虛擬化程式限制了靈活性，增加了對單一供應商的依賴。",
-    "reason3Title": "強制升級",
-    "reason3Desc": "Broadcom 2027年10月VCF 9轉換迫使組織做出緊急決定。",
-    "reason4Title": "支援減少",
-    "reason4Desc": "收購後合作夥伴生態系統和支援選項減少。",
-    "solutionsTitle": "我們的遷移解決方案",
-    "solutionsSubtitle": "從VMware到開源和高性價比替代方案的經過驗證的路徑。",
-    "sol1Title": "Proxmox VE",
-    "sol1Desc": "開源企業級虛擬化，支援KVM、容器和集群管理。",
-    "sol2Title": "Sangfor aSV",
-    "sol2Desc": "超融合基礎設施，內建虛擬化、HCI和統一管理。",
-    "sol3Title": "Nutanix AHV",
-    "sol3Desc": "企業級超融合平台，具備混合雲能力。",
-    "sol4Title": "H3C UIS",
-    "sol4Desc": "整合虛擬化、存儲和網絡的統一基礎設施。",
-    "processTitle": "我們的遷移流程",
-    "processSubtitle": "結構化的4步方法，最大限度降低風險和停機時間。",
-    "step1": "評估",
-    "step1Desc": "審計當前VMware環境、工作負載和依賴項。",
-    "step2": "規劃",
-    "step2Desc": "設計目標架構並創建詳細的遷移運行手冊。",
-    "step3": "遷移",
-    "step3Desc": "執行遷移，進行即時切換和零停機驗證。",
-    "step4": "優化",
-    "step4Desc": "微調性能、培訓團隊並建立持續支援。",
-    "statsTitle": "經過驗證的業績",
-    "stat1": "500+",
-    "stat1Label": "VMware遷移案例",
-    "stat2": "99.9%",
-    "stat2Label": "遷移期間正常運行時間",
-    "stat3": "35%",
-    "stat3Label": "平均成本節省",
-    "stat4": "24/7",
-    "stat4Label": "遷移後支援",
-    "ctaTitle": "準備好探索VMware替代方案了嗎？",
-    "ctaSubtitle": "獲取免費的當前VMware環境評估，發現適合您組織的最佳遷移路徑。",
-    "ctaBtn": "預約免費評估",
-    "ctaPhone": "立即致電",
-    "viewAllProducts": "查看所有產品",
-    "stepLabel": "步驟 {num}"
+  "compare": {
+    "title": "TechGuru vs 競品對比",
+    "subtitle": "查看TechGuru在安全、基礎設施和服務品質方面與傳統IT供應商的差異。",
+    "heroTag": "競爭優勢",
+    "heroCta": "獲取免費對比",
+    "partnerCertifications": "技術合作夥伴認證",
+    "categories": {
+      "all": "所有類別",
+      "security": "安全",
+      "networking": "網路",
+      "cloud": "雲端與超融合",
+      "ai": "AI與自動化"
+    },
+    "table": {
+      "feature": "功能特性",
+      "techguru": "TechGuru",
+      "competitorA": "傳統供應商",
+      "competitorB": "雲端供應商",
+      "highlight": "核心優勢"
+    },
+    "features": {
+      "vmwareMigration": "VMware遷移支持",
+      "vmwareMigrationDesc": "透過Proxmox、Sangfor、Nutanix提供雙Hypervisor遷移路徑",
+      "vmwareMigrationTg": "5種替代方案+分階段遷移",
+      "vmwareMigrationA": "僅支持VMware，無替代方案",
+      "vmwareMigrationB": "不適用（僅雲端）",
+      "managedSecurity": "託管安全服務（MDR）",
+      "managedSecurityDesc": "持續威脅監控與回應",
+      "managedSecurityTg": "所有安全方案均包含",
+      "managedSecurityA": "需額外付費",
+      "managedSecurityB": "僅基礎監控",
+      "aigcCapabilities": "AIGC與AI能力",
+      "aigcCapabilitiesDesc": "文字轉影片、圖片轉影片、AI編程、AI代理",
+      "aigcCapabilitiesTg": "完整AIGC技術棧+傳統系統AI",
+      "aigcCapabilitiesA": "不提供",
+      "aigcCapabilitiesB": "僅基礎雲端AI",
+      "multiVendor": "多廠商產品組合",
+      "multiVendorDesc": "涵蓋所有類別的20+合作夥伴",
+      "multiVendorTg": "20+合作夥伴，最佳組合",
+      "multiVendorA": "僅1-3個廠商",
+      "multiVendorB": "單一雲端生態",
+      "regionalSupport": "區域現場支持",
+      "regionalSupportDesc": "東南亞本地工程團隊",
+      "regionalSupportTg": "本地團隊，當日響應",
+      "regionalSupportA": "僅遠端，24-48hr SLA",
+      "regionalSupportB": "無本地服務",
+      "hybridCloud": "混合雲策略",
+      "hybridCloudDesc": "本地+雲端統一管理",
+      "hybridCloudTg": "完整混合雲，數據主權",
+      "hybridCloudA": "僅本地部署",
+      "hybridCloudB": "僅公有雲",
+      "costModel": "成本模型",
+      "costModelDesc": "透明靈活的定價方案",
+      "costModelTg": "靈活，高性價比",
+      "costModelA": "僵化的授權層級",
+      "costModelB": "按量計費，不可預測"
+    },
+    "testimonials": {
+      "title": "客戶評價",
+      "items": {
+        "1": {
+          "quote": "TechGuru為我們節省了40%的VMware授權費用，同時提供了比前供應商更好的支持。",
+          "author": "IT總監",
+          "industry": "醫療健康"
+        },
+        "2": {
+          "quote": "他們的雙Hypervisor方案讓我們實現了零停機遷移，團隊處理得非常順暢。",
+          "author": "CTO",
+          "industry": "金融服務"
+        },
+        "3": {
+          "quote": "我們從雲端供應商切換到TechGuru的混合方案，年度IT成本降低了35%。",
+          "author": "基礎設施副總裁",
+          "industry": "零售業"
+        }
+      }
+    },
+    "ctaTitle": "親自體驗差異",
+    "ctaDesc": "根據您的基礎設施需求，獲取免費的定制化對比分析。",
+    "ctaBtn": "獲取免費對比"
+  },
+  "whyUs": {
+    "title": "為什麼選擇TechGuru",
+    "subtitle": "您的端到端IT合作夥伴，擁有構建、承載、保護三大支柱的專業實力。",
+    "heroTag": "我們的差異",
+    "heroCta": "與我們團隊對話",
+    "advantages": {
+      "title": "核心優勢",
+      "items": {
+        "1": {
+          "title": "構建·承載·保護",
+          "desc": "唯一覆蓋完整IT生命週期的框架，從AI工作負載到關鍵任務基礎設施安全。"
+        },
+        "2": {
+          "title": "20+廠商合作夥伴",
+          "desc": "涵蓋超融合、安全、網路、雲端和AI的最佳組合選擇，不綁定單一生態系統。"
+        },
+        "3": {
+          "title": "VMware遷移專家",
+          "desc": "5種經過驗證的替代方案，雙Hypervisor架構實現零風險遷移。"
+        },
+        "4": {
+          "title": "區域專業經驗",
+          "desc": "東南亞本地工程團隊，深入理解區域合規要求。"
+        },
+        "5": {
+          "title": "AIGC與AI能力",
+          "desc": "從文字轉影片到AI編程助手和傳統系統現代化，為您的業務帶來前沿AI技術。"
+        },
+        "6": {
+          "title": "託管安全",
+          "desc": "MDR、NDR和應急響應，透過主動監控守護您的基礎設施安全。"
+        }
+      }
+    },
+    "partners": {
+      "title": "技術合作夥伴",
+      "subtitle": "我們與頂尖廠商合作，提供最佳組合解決方案。",
+      "categories": {
+        "infrastructure": "基礎設施與虛擬化",
+        "security": "網路與安全",
+        "cloud": "雲端與AI",
+        "specialized": "專項解決方案"
+      }
+    },
+    "certifications": {
+      "title": "認證與資質",
+      "items": {
+        "1": {
+          "title": "Sangfor合作夥伴",
+          "desc": "認證超融合和安全解決方案"
+        },
+        "2": {
+          "title": "Fortinet合作夥伴",
+          "desc": "NGFW和安全織網專業"
+        },
+        "3": {
+          "title": "Nutanix合作夥伴",
+          "desc": "企業級超融合和雲平台"
+        },
+        "4": {
+          "title": "H3C合作夥伴",
+          "desc": "網路和基礎設施"
+        },
+        "5": {
+          "title": "阿里雲合作夥伴",
+          "desc": "AIGC和雲服務"
+        },
+        "6": {
+          "title": "Sophos合作夥伴",
+          "desc": "端點和雲安全"
+        }
+      }
+    },
+    "stats": {
+      "title": "我們的成績單",
+      "items": {
+        "1": {
+          "value": "27+",
+          "label": "解決方案已交付"
+        },
+        "2": {
+          "value": "9",
+          "label": "技術合作夥伴"
+        },
+        "3": {
+          "value": "10+",
+          "label": "廠商認證"
+        },
+        "4": {
+          "value": "6",
+          "label": "覆蓋市場"
+        }
+      }
+    },
+    "process": {
+      "title": "合作流程",
+      "subtitle": "從評估到部署，我們全程陪伴。",
+      "steps": {
+        "1": {
+          "title": "發現與評估",
+          "desc": "審計現有基礎設施，識別痛點，為您匹配Build/Run/Protect解決方案。"
+        },
+        "2": {
+          "title": "方案設計",
+          "desc": "架構師為您的環境設計最佳廠商組合方案。"
+        },
+        "3": {
+          "title": "實施部署",
+          "desc": "認證工程師部署、配置和驗證您的方案，最小化業務中斷。"
+        },
+        "4": {
+          "title": "持續支持",
+          "desc": "主動監控、託管服務和專屬客戶團隊，持續優化您的基礎設施。"
+        }
+      }
+    },
+    "ctaTitle": "準備好與TechGuru合作了嗎？",
+    "ctaDesc": "讓我們展示Build、Run、Protect框架如何改造您的IT基礎設施。",
+    "ctaBtn": "預約諮詢",
+    "ctaPhone": "立即致電"
   },
   "auth": {
     "signIn": "登入",
     "signInSubtitle": "歡迎回來！請登入您的帳戶。",
     "signingIn": "登入中...",
-    "signInWithGoogle": "使用 Google 登入",
+    "signInWithGoogle": "使用Google登入",
     "or": "或",
     "createAccount": "建立帳戶",
-    "registerSubtitle": "加入我們，存取支援並提交工單。",
+    "registerSubtitle": "加入我們以使用支援服務和提交工單。",
     "creatingAccount": "建立帳戶中...",
-    "fullName": "全名",
-    "fullNamePlaceholder": "陳大衛",
+    "fullName": "姓名",
+    "fullNamePlaceholder": "您的全名",
     "email": "電子郵件",
     "emailPlaceholder": "you@company.com",
     "password": "密碼",
-    "passwordPlaceholder": "至少8字元，含大寫、小寫、數字",
+    "passwordPlaceholder": "至少8個字符，包含大小寫字母和數字",
     "confirmPassword": "確認密碼",
     "confirmPasswordPlaceholder": "請再次輸入密碼",
     "passwordMismatch": "密碼不一致",
-    "passwordMinLength": "密碼至少需要8個字元",
-    "passwordRequirements": "密碼必須包含大寫字母、小寫字母和數字",
+    "passwordMinLength": "密碼長度至少為8個字符",
+    "passwordRequirements": "密碼須包含大寫字母、小寫字母和數字",
     "noAccount": "還沒有帳戶？",
     "hasAccount": "已有帳戶？",
     "forgotPassword": "忘記密碼？",
     "resetPassword": "重設密碼",
-    "resetSent": "密碼重設郵件已發送，請檢查您的收件匣。",
-    "supportTitle": "客戶支援中心",
-    "supportSubtitle": "提交並追蹤您的支援工單",
-    "newTicket": "新工單",
+    "resetSent": "密碼重設郵件已發送，請檢查您的收件箱。",
+    "supportTitle": "工單系統",
+    "supportSubtitle": "提交和追蹤您的支援請求",
+    "newTicket": "建立工單",
     "myTickets": "我的工單",
-    "category": "類別",
-    "selectCategory": "選擇類別",
+    "category": "分類",
+    "selectCategory": "選擇分類",
     "productService": "產品/服務",
     "subject": "主旨",
-    "description": "描述",
-    "attachments": "附件（最多10MB）",
+    "description": "問題描述",
+    "attachments": "附件（最大10MB）",
     "submitTicket": "提交工單",
     "submitting": "提交中...",
     "ticketSubmitted": "工單已提交！",
-    "ticketSubmittedDesc": "您將收到確認郵件。",
+    "ticketSubmittedDesc": "您將很快收到確認郵件。",
     "ticketNumber": "工單編號",
     "status": "狀態",
     "createdAt": "建立時間",
-    "noTickets": "尚無工單",
-    "ticketOpen": "開啟",
+    "noTickets": "暫無工單",
+    "ticketOpen": "待處理",
     "ticketInProgress": "處理中",
     "ticketResolved": "已解決",
     "ticketClosed": "已關閉",
@@ -1049,16 +1255,227 @@
     "sendResetLink": "發送重設連結",
     "sending": "發送中...",
     "occurredAt": "問題發生時間",
-    "occurredAtPlaceholder": "問題是什麼時候發生的？",
+    "occurredAtPlaceholder": "問題何時發生？",
     "screenshots": "截圖",
-    "pasteScreenshot": "在此貼上截圖 (Ctrl+V)",
+    "pasteScreenshot": "在此貼上截圖（Ctrl+V）",
     "orClickToUpload": "或點擊上傳",
     "charCount": "{count}/800",
     "otherSpecify": "其他（請說明）",
-    "maxFileSize": "每檔案最大 50MB。接受任何格式。",
-    "productOtherPlaceholder": "請說明具體產品或服務名稱",
-    "subjectPlaceholder": "問題的簡要描述",
-    "descriptionPlaceholder": "問題的詳細描述...",
-    "uploadingFiles": "正在上傳檔案..."
+    "maxFileSize": "單檔最大50MB，接受任何格式。",
+    "productOtherPlaceholder": "請說明產品或服務名稱",
+    "subjectPlaceholder": "簡要描述您的問題",
+    "descriptionPlaceholder": "詳細描述您的問題...",
+    "uploadingFiles": "正在上傳檔案...",
+    "build": "構建",
+    "run": "承載",
+    "protect": "保護",
+    "attachmentsLabel": "附件："
+  },
+  "support": {
+    "dashboard": "控制面板",
+    "supportCenter": "客戶支援中心",
+    "customer": "客戶",
+    "signOut": "登出",
+    "welcomeBack": "歡迎回來",
+    "manageTicketsDesc": "管理您的支援工單並獲得協助。",
+    "totalTickets": "工單總數",
+    "open": "待處理",
+    "inProgress": "處理中",
+    "resolved": "已解決",
+    "submitNewTicket": "提交新工單",
+    "getHelp": "獲得我們支援團隊的協助",
+    "viewMyTickets": "查看我的工單",
+    "trackStatus": "追蹤現有工單狀態",
+    "recentTickets": "最近的工單",
+    "newTicketDesc": "提交新的支援請求，我們的團隊將為您提供協助。",
+    "myTicketsDesc": "查看並追蹤所有支援請求。",
+    "created": "建立於",
+    "submitTicketHint": "提交工單以開始使用"
+  },
+  "error": {
+    "title": "發生錯誤",
+    "description": "發生未預期的錯誤，請重試或聯絡我們的支援團隊。",
+    "retry": "重試",
+    "retrying": "重試中...",
+    "retryCount": "第 {count} 次嘗試，共 {max} 次",
+    "goHome": "返回首頁",
+    "contactSupport": "聯絡支援",
+    "supportHint": "如果問題持續存在，請聯絡我們的支援團隊以獲得協助。",
+    "networkError": "網路錯誤",
+    "networkErrorDesc": "無法連線到伺服器，請檢查您的網路連線。",
+    "offline": "您已離線",
+    "offlineDesc": "似乎您已失去網路連線，請檢查網路設定。",
+    "backOnline": "已恢復連線",
+    "notFound": "找不到頁面",
+    "notFoundDesc": "您查找的頁面不存在或已被移動。",
+    "notFoundHint": "嘗試搜尋您需要的內容，或返回首頁。",
+    "searchPlaceholder": "搜尋網站...",
+    "search": "搜尋",
+    "backHome": "返回首頁",
+    "suggestedLinks": "快速連結",
+    "suggestedHome": "首頁",
+    "suggestedProducts": "產品服務",
+    "suggestedContact": "聯絡我們",
+    "suggestedSupport": "客戶支援"
+  },
+  "vmware": {
+    "heroTag": "VMware替代方案",
+    "heroTitle": "擺脫VMware綁定",
+    "heroSubtitle": "遷移至高性價比的替代方案，最小化停機時間，提供經過驗證的雙Hypervisor遷移路徑。",
+    "heroCta": "獲取免費評估",
+    "whyTitle": "為何要告別VMware？",
+    "whySubtitle": "Broadcom收購引發不確定性。現在正是探索更佳選擇的時機。",
+    "reason1Title": "成本飆升",
+    "reason1Desc": "Broadcom收購後，VMware授權費用大幅上漲，加重IT預算壓力。",
+    "reason2Title": "供應商鎖定",
+    "reason2Desc": "專有Hypervisor限制了靈活性，增加了對單一供應商的依賴。",
+    "reason3Title": "被迫升級",
+    "reason3Desc": "Broadcom 2027年10月VCF 9切換迫使組織緊急做出決策。",
+    "reason4Title": "支援縮減",
+    "reason4Desc": "收購後合作夥伴生態和支援選項減少。",
+    "solutionsTitle": "我們的遷移方案",
+    "solutionsSubtitle": "從VMware遷移到開源及高性價比替代方案的經過驗證的路徑。",
+    "sol1Title": "Proxmox VE",
+    "sol1Desc": "開源企業級虛擬化，支援KVM、容器和叢集管理。",
+    "sol2Title": "Sangfor aSV",
+    "sol2Desc": "超融合基礎架構，內建虛擬化、HCI和統一管理。",
+    "sol3Title": "Nutanix AHV",
+    "sol3Desc": "企業級超融合平台，具備混合雲能力。",
+    "sol4Title": "StarWind HCI",
+    "sol4Desc": "軟體定義超融合，原生支援雙節點叢集，相容Hyper-V、VMware和Proxmox VE。",
+    "processTitle": "我們的遷移流程",
+    "processSubtitle": "結構化的4步方法，最大程度降低風險和中斷。",
+    "step1": "評估",
+    "step1Desc": "審計您現有的VMware環境、工作負載和依賴項。",
+    "step2": "規劃",
+    "step2Desc": "設計雙Hypervisor目標架構，建立詳細的遷移操作手冊。",
+    "step3": "遷移",
+    "step3Desc": "先遷移邊緣和非關鍵工作負載，驗證穩定性後逐步淘汰VMware。",
+    "step4": "優化",
+    "step4Desc": "調優性能，保護您的Veeam/Veritas備份投資，建立持續支援機制。",
+    "statsTitle": "選擇TechGuru替代VMware的優勢",
+    "stat1": "5",
+    "stat1Label": "替代平台",
+    "stat2": "雙Hypervisor",
+    "stat2Label": "零風險架構",
+    "stat3": "分階段",
+    "stat3Label": "遷移方法",
+    "stat4": "專屬",
+    "stat4Label": "遷移後支持",
+    "ctaTitle": "準備好探索VMware替代方案了嗎？",
+    "ctaSubtitle": "獲取您現有VMware環境的免費評估，發掘最適合您組織的遷移路徑。",
+    "ctaBtn": "預約免費評估",
+    "ctaPhone": "立即致電",
+    "viewAllProducts": "查看所有產品",
+    "stepLabel": "步驟 {num}"
+  },
+  "terms": {
+    "title": "服務條款",
+    "lastUpdated": "最後更新",
+    "section1Title": "接受條款",
+    "section1Body": "使用TechGuru網站和服務即表示您同意受本服務條款的約束。如不同意其中任何部分，請勿使用我們的服務。",
+    "section2Title": "服務內容",
+    "section2Body": "TechGuru提供IT基礎設施解決方案，包括硬體、軟體授權、雲端服務、託管服務和顧問諮詢。服務可用性和定價可能不另行通知地進行調整。",
+    "section3Title": "用戶帳戶",
+    "section3Body": "您有責任維護帳戶憑證的機密性，並對帳戶下的所有活動負責。如發現任何未經授權的使用，請立即通知我們。",
+    "section4Title": "智慧財產權",
+    "section4Body": "本網站上的所有內容，包括文字、圖形、標誌和軟體，均為TechGuru或其授權方的財產，受智慧財產權法律保護。",
+    "section5Title": "責任限制",
+    "section5Body": "TechGuru不對因使用我們的服務而產生的任何間接、偶然、特殊或後果性損害承擔責任。我們的總責任不超過您為特定服務支付的金額。",
+    "section6Title": "管轄法律",
+    "section6Body": "本條款受菲律賓共和國法律管轄。任何爭議應在奎松市、馬尼拉大都會的法院解決。",
+    "section7Title": "聯絡方式",
+    "section7Body": "有關本服務條款的問題，請透過以下方式聯繫我們",
+    "backHome": "← 返回首頁"
+  },
+  "help": {
+    "title": "幫助中心",
+    "subtitle": "查找關於我們產品、服務和支援的常見問題解答。",
+    "searchPlaceholder": "搜尋答案...",
+    "categories": {
+      "all": "全部",
+      "product": "產品與服務",
+      "technical": "技術支援",
+      "account": "帳戶管理",
+      "billing": "價格方案"
+    },
+    "noResults": "未找到相關結果",
+    "noResultsHint": "請嘗試其他搜尋關鍵字或按分類瀏覽。",
+    "ctaTitle": "仍需要幫助？",
+    "ctaDesc": "找不到您需要的答案？我們的團隊隨時為您提供協助。",
+    "ctaContact": "聯絡我們",
+    "ctaTicket": "提交工單",
+    "faqCounts": {
+      "product": "4",
+      "technical": "4",
+      "account": "3",
+      "billing": "3"
+    },
+    "faq": {
+      "product": [
+        {
+          "q": "TechGuru提供哪些解決方案？",
+          "a": "我們提供涵蓋三大支柱的全面IT解決方案：Build（AI工作負載、AIGC、傳統系統改造）、Run（虛擬化、超融合、雲端、託管服務）和Protect（防火牆、EDR、NDR、MDR）。每個解決方案都根據您的行業和業務需求量身定制。"
+        },
+        {
+          "q": "你們提供VMware遷移服務嗎？",
+          "a": "是的。我們提供結構化的VMware遷移路徑，支援遷移到Proxmox VE、Sangfor aSV、Nutanix AHV和StarWind HCI。我們的4步流程（評估、規劃、遷移、優化）透過雙Hypervisor方法最大程度降低風險。"
+        },
+        {
+          "q": "你們能幫助AI落地嗎？",
+          "a": "當然可以。我們的AI落地服務涵蓋就緒評估、用例識別、平台選擇、PoC開發、團隊培訓和全組織推廣。我們與阿里雲百煉和字節跳動火山引擎合作。"
+        },
+        {
+          "q": "你們服務哪些行業？",
+          "a": "我們服務亞洲地區的醫療健康、金融服務、零售業、物流、教育和政府行業。每個行業解決方案都針對特定的法規和營運需求而構建。"
+        }
+      ],
+      "technical": [
+        {
+          "q": "如何提交支援工單？",
+          "a": "登入您的帳戶，前往客戶支援中心，點擊「提交新工單」。提供您的問題詳情、分類和優先級。我們的團隊會在24小時內回覆一般問題。"
+        },
+        {
+          "q": "你們的支援回應時間是多久？",
+          "a": "緊急問題：4小時內回應。高優先級：8小時內回應。一般問題：24小時內回應。低優先級：48小時內回應。所有回應時間為工作時間（週一至週五，上午9點至下午6點）。"
+        },
+        {
+          "q": "你們提供現場支援嗎？",
+          "a": "是的。我們提供部署、配置和故障排除的現場技術支援。現場服務涵蓋馬尼拉大都會區及周邊地區。請聯絡我們預約安排。"
+        },
+        {
+          "q": "我可以線上追蹤工單狀態嗎？",
+          "a": "可以。登入您的帳戶後，前往客戶支援中心查看所有工單、當前狀態和回覆歷史記錄。您也可以在現有工單上新增留言。"
+        }
+      ],
+      "account": [
+        {
+          "q": "如何建立帳戶？",
+          "a": "點擊導航欄中的「客戶支援」，然後選擇「建立帳戶」。輸入您的全名、電子郵件和密碼。您也可以使用Google快速登入。建立帳戶免費。"
+        },
+        {
+          "q": "如何重設密碼？",
+          "a": "在登入頁面，點擊「忘記密碼」並輸入您的電子郵件地址。您將在幾分鐘內收到密碼重設連結。如果沒有收到，請檢查垃圾郵件資料夾。"
+        },
+        {
+          "q": "我可以更新帳戶資訊嗎？",
+          "a": "可以。登入後，前往個人資料設定更新您的姓名、電子郵件、電話號碼和公司資訊。變更會立即生效。"
+        }
+      ],
+      "billing": [
+        {
+          "q": "你們的服務如何定價？",
+          "a": "價格取決於解決方案範圍、廠商產品和服務等級。我們在初步評估後提供客製化報價。透過我們的廠商合作夥伴關係，許多解決方案提供免費方案選擇。"
+        },
+        {
+          "q": "你們提供分期付款嗎？",
+          "a": "是的。我們提供靈活的付款選項，包括預付、季度和年度計費。企業客戶可討論客製化付款條款。請聯絡我們的銷售團隊了解詳情。"
+        },
+        {
+          "q": "有免費諮詢服務嗎？",
+          "a": "有的。我們提供免費初始諮詢，了解您的需求並推薦解決方案。預約通話或提交聯絡表單即可開始，無需任何承諾。"
+        }
+      ]
+    }
   }
 }

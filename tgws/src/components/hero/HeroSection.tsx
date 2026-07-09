@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
-import { Copy, Check, Mail } from 'lucide-react';
+import { Copy, Check, Mail, Code2, Server, Shield, Sparkles, ArrowRight, Monitor } from 'lucide-react';
 
 /**
  * Hero Section 组件
@@ -23,7 +23,7 @@ import { Copy, Check, Mail } from 'lucide-react';
  */
 
 // 邮箱地址
-const EMAIL = 'info@techguru-it.asia';
+const EMAIL = 'Inquiries@techguru-it.asia';
 
 // 视频源（Cloudfront CDN）
 const VIDEO_URL = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260530_042513_df96a13b-6155-4f6e-8b93-c9dee66fba08.mp4';
@@ -243,7 +243,7 @@ export default function HeroSection() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="inline-flex items-center justify-center bg-white text-black border border-black/10 rounded-full text-[13px] sm:text-[15px] px-4 sm:px-5 py-3 sm:py-[0.3em] mx-[0.2em] mb-[0.4em] min-h-[44px] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
+                className="inline-flex items-center justify-center bg-white text-black border border-black/10 rounded-full text-[14px] sm:text-[15px] px-4 sm:px-5 py-3 sm:py-[0.3em] mx-[0.2em] mb-[0.4em] min-h-[44px] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
               >
                 {link.label}
               </Link>
@@ -251,7 +251,7 @@ export default function HeroSection() {
             {/* 邮箱复制按钮 - 透明底+黑色边框 */}
             <button
               onClick={handleCopyEmail}
-              className="inline-flex items-center gap-1.5 sm:gap-3 text-black bg-transparent border border-black rounded-full text-[12px] sm:text-[15px] px-4 sm:px-5 py-3 sm:py-[0.3em] mx-[0.2em] mb-[0.4em] min-h-[44px] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
+              className="inline-flex items-center gap-1.5 sm:gap-3 text-black bg-transparent border border-black rounded-full text-[13px] sm:text-[15px] px-4 sm:px-5 py-3 sm:py-[0.3em] mx-[0.2em] mb-[0.4em] min-h-[44px] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
             >
               <Mail size={14} className="shrink-0" /> <span>{EMAIL}</span>
               {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
@@ -264,7 +264,7 @@ export default function HeroSection() {
       <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3">
         {/* 提示文字 */}
         <span
-          className="text-[11px] sm:text-xs text-white/60"
+          className="text-[12px] sm:text-xs text-white/60"
           style={{ fontFamily: 'var(--font-body)', animation: 'scrollFadeIn 0.8s 1.5s ease both' }}
         >
           {t('scrollHint')}
@@ -272,7 +272,7 @@ export default function HeroSection() {
         {/* 下滑圆圈按钮 */}
         <button
           onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-          className="group relative w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/25 bg-white/5 backdrop-blur-sm flex items-center justify-center cursor-pointer hover:bg-white/15 hover:border-white/40 transition-all duration-300"
+          className="group relative w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-white/25 bg-white/5 backdrop-blur-sm flex items-center justify-center cursor-pointer hover:bg-white/15 hover:border-white/40 transition-all duration-300"
           style={{ animation: 'fadeInUp 0.8s 2s ease both' }}
           aria-label="Scroll down"
         >
@@ -286,6 +286,86 @@ export default function HeroSection() {
             <path d="M12 5v14M19 12l-7 7-7-7"/>
           </svg>
         </button>
+      </div>
+
+      {/* ═══ Three Storylines - Hero底部视觉锚点 ═══ */}
+      <div className="absolute bottom-0 left-0 right-0 z-10 pb-8 px-5 sm:px-8">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Build.Run.Protect. */}
+            <Link
+              href={`/${locale}/products`}
+              className="storyline-card group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-5 sm:p-6 hover:bg-white/20 transition-all duration-300"
+              style={{ animationDelay: '0.8s' }}
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-[#00D4FF]/20 flex items-center justify-center">
+                  <Code2 size={20} className="text-[#00D4FF]" />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-sm">Build. Run. Protect.</h3>
+                  <p className="text-white/60 text-xs">Core Infrastructure</p>
+                </div>
+              </div>
+              <p className="text-white/70 text-xs leading-relaxed">
+                End-to-end IT lifecycle. From AI workloads to mission-critical security.
+              </p>
+              <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ArrowRight size={14} className="text-white/60" />
+              </div>
+            </Link>
+
+            {/* AI Journey */}
+            <Link
+              href={`/${locale}/products`}
+              className="storyline-card storyline-ai group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#7B61FF]/20 to-[#00D4FF]/10 backdrop-blur-md border border-[#7B61FF]/30 p-5 sm:p-6 hover:from-[#7B61FF]/30 hover:to-[#00D4FF]/20 transition-all duration-300"
+              style={{ animationDelay: '1s' }}
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-[#7B61FF]/20 flex items-center justify-center">
+                  <Sparkles size={20} className="text-[#7B61FF]" />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-sm">AI Journey</h3>
+                  <p className="text-white/60 text-xs">Intelligent Transformation</p>
+                </div>
+              </div>
+              <p className="text-white/70 text-xs leading-relaxed">
+                AI Adoption, AIGC, Coding Assistants, Legacy AI, AI Agents.
+              </p>
+              <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ArrowRight size={14} className="text-white/60" />
+              </div>
+              {/* AI glow accent */}
+              <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-[#7B61FF]/10 rounded-full blur-2xl" />
+            </Link>
+
+            {/* VMware Alternatives */}
+            <Link
+              href={`/${locale}/vmware-alternative`}
+              className="storyline-card storyline-vmware group relative overflow-hidden rounded-2xl border border-white/10 p-5 sm:p-6 hover:border-white/20 transition-all duration-300"
+              style={{ animationDelay: '1.2s' }}
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
+                  <Monitor size={20} className="text-white" />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-sm">VMware Alternatives</h3>
+                  <p className="text-white/60 text-xs">Migration & Freedom</p>
+                </div>
+              </div>
+              <p className="text-white/70 text-xs leading-relaxed">
+                5 proven alternatives. Dual-hypervisor architecture. Zero lock-in.
+              </p>
+              <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ArrowRight size={14} className="text-white/60" />
+              </div>
+              {/* Shimmer accent */}
+              <div className="storyline-badge absolute inset-0 pointer-events-none" />
+            </Link>
+          </div>
+        </div>
       </div>
 
     </section>

@@ -1,7 +1,18 @@
 import { client } from '@/lib/sanity';
 import ProductsList from './ProductsList';
+import Breadcrumb from '@/components/ui/Breadcrumb';
+import type { Metadata } from 'next';
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: 'Products',
+  description: 'Explore TechGuru\'s comprehensive IT solutions: Build infrastructure, Run operations, and Protect your data with enterprise-grade products.',
+  openGraph: {
+    title: 'Products | TechGuru',
+    description: 'Explore TechGuru\'s comprehensive IT solutions: Build infrastructure, Run operations, and Protect your data with enterprise-grade products.',
+  },
+};
 
 async function getProducts() {
   try {
@@ -25,5 +36,10 @@ async function getProducts() {
 
 export default async function ProductsPage() {
   const products = await getProducts();
-  return <ProductsList products={products} />;
+  return (
+    <>
+      <Breadcrumb items={[{ label: 'Products' }]} />
+      <ProductsList products={products} />
+    </>
+  );
 }

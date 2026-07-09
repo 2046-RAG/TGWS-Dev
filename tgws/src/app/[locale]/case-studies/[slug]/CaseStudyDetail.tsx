@@ -6,6 +6,17 @@ import { ArrowLeft, Lightbulb, CheckCircle, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { urlFor } from '@/lib/sanity.image';
 
+const industryColors: Record<string, string> = {
+  healthcare: '#EF4444',
+  finance: '#3B82F6',
+  retail: '#F59E0B',
+  logistics: '#8B5CF6',
+  education: '#10B981',
+  government: '#6366F1',
+  manufacturing: '#EC4899',
+  other: '#6B7280',
+};
+
 interface PortableTextBlock {
   _type: string;
   children?: { _type: string; text: string }[];
@@ -43,11 +54,13 @@ function PortableText({ content }: { content: PortableTextBlock[] }) {
 
 export default function CaseStudyDetail({ caseStudy, locale }: { caseStudy: CaseStudy; locale: string }) {
   const t = useTranslations('caseStudies.detail');
+  const tFilters = useTranslations('caseStudies.filters.industry');
+  const color = industryColors[caseStudy.industry] || '#6B7280';
 
   return (
     <section className="py-20 px-5 sm:px-8 max-w-5xl mx-auto">
       <div className="scroll-reveal">
-        <Link href={`/${locale}/case-studies`} className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 transition-colors">
+        <Link href={`/${locale}/case-studies`} className="inline-flex items-center gap-2 py-2 px-1 text-gray-600 hover:text-gray-900 min-h-[44px] mb-8 transition-colors">
           <ArrowLeft size={16} />
           {t('backToCases')}
         </Link>
@@ -60,14 +73,19 @@ export default function CaseStudyDetail({ caseStudy, locale }: { caseStudy: Case
             alt={caseStudy.title}
             width={1200}
             height={600}
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
             className="w-full h-64 sm:h-96 object-cover rounded-2xl mb-8"
           />
         )}
 
         <div className="bg-[#00D4FF]/10 rounded-2xl p-8 mb-8">
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <span className="px-3 py-0.5 rounded-full text-xs font-medium bg-[#00D4FF]/20 text-[#00D4FF]">
-              {caseStudy.industry}
+            <span
+              className="px-3 py-0.5 rounded-full text-xs font-medium text-white"
+              style={{ backgroundColor: color }}
+            >
+              {tFilters(caseStudy.industry)}
             </span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">{caseStudy.title}</h1>
@@ -134,7 +152,7 @@ export default function CaseStudyDetail({ caseStudy, locale }: { caseStudy: Case
         <div className="bg-[#00D4FF]/5 border border-gray-200 rounded-2xl p-8 text-center">
           <h3 className="text-xl font-bold text-gray-900 mb-2">{t('cta')}</h3>
           <p className="text-gray-600 mb-6 max-w-md mx-auto">{t('ctaDesc')}</p>
-          <Link href={`/${locale}/contact`} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#00D4FF] text-white font-medium hover:bg-[#00B8DB] transition-colors">
+          <Link href={`/${locale}/contact`} className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#00D4FF] text-white font-medium hover:bg-[#00B8DB] transition-colors">
             {t('ctaBtn')}
             <ArrowRight size={16} />
           </Link>

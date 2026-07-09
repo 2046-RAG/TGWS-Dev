@@ -129,7 +129,7 @@ export default function LoginForm() {
           <button
             type="button"
             onClick={() => { setResetMode(true); setError(''); setSuccess(''); }}
-            className="text-sm text-[#00D4FF] hover:underline"
+            className="text-sm text-[#00D4FF] hover:underline py-2 px-1 min-h-[44px] inline-flex items-center"
           >
             {t('forgotPassword')}
           </button>
@@ -138,7 +138,7 @@ export default function LoginForm() {
           <button
             type="button"
             onClick={() => { setResetMode(false); setError(''); setSuccess(''); }}
-            className="text-sm text-gray-500 hover:underline"
+            className="text-sm text-gray-500 hover:underline py-2 px-1 min-h-[44px] inline-flex items-center"
           >
             {t('backToLogin')}
           </button>

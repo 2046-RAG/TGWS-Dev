@@ -20,7 +20,7 @@ async function getPost(slug: string) {
       author,
       publishedAt,
       featured,
-      mainImage,
+      coverImage,
       tags
     }`;
     return await client.fetch(query, { slug });

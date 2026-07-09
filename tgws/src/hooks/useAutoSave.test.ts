@@ -96,7 +96,8 @@ describe('useAutoSave', () => {
       vi.advanceTimersByTime(intervalMs);
     });
     
-    expect(localStorageMock.setItem).toHaveBeenCalledWith('test-key', JSON.stringify(data));
+    // The hook adds __version and __timestamp fields, so check the structure
+    expect(localStorageMock.setItem).toHaveBeenCalledWith('test-key', expect.stringMatching(/"test":"data"/));
   });
 
   it('clears interval on unmount', () => {

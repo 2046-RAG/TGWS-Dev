@@ -1,7 +1,18 @@
 import { client } from '@/lib/sanity';
 import CaseStudiesList from './CaseStudiesList';
+import Breadcrumb from '@/components/ui/Breadcrumb';
+import type { Metadata } from 'next';
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: 'Case Studies',
+  description: 'Real-world success stories from TechGuru clients across healthcare, finance, retail, logistics, education, and government sectors.',
+  openGraph: {
+    title: 'Case Studies | TechGuru',
+    description: 'Real-world success stories from TechGuru clients across healthcare, finance, retail, logistics, education, and government sectors.',
+  },
+};
 
 async function getCaseStudies() {
   try {
@@ -26,5 +37,10 @@ async function getCaseStudies() {
 
 export default async function CaseStudiesPage() {
   const cases = await getCaseStudies();
-  return <CaseStudiesList cases={cases} />;
+  return (
+    <>
+      <Breadcrumb items={[{ label: 'Case Studies' }]} />
+      <CaseStudiesList cases={cases} />
+    </>
+  );
 }

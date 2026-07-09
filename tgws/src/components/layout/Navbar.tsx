@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
+import DarkModeToggle from '@/components/ui/DarkModeToggle';
 import MegaMenu from './MegaMenu';
 
 export default function Navbar() {
@@ -19,9 +20,9 @@ export default function Navbar() {
       label: t('products'),
       href: `/${locale}/products`,
       children: [
-        { label: 'Build', href: `/${locale}/products#build`, desc: home('buildDesc') },
-        { label: 'Run', href: `/${locale}/products#run`, desc: home('runDesc') },
-        { label: 'Protect', href: `/${locale}/products#protect`, desc: home('protectDesc') },
+        { label: t('build'), href: `/${locale}/products#build`, desc: home('buildDesc') },
+        { label: t('run'), href: `/${locale}/products#run`, desc: home('runDesc') },
+        { label: t('protect'), href: `/${locale}/products#protect`, desc: home('protectDesc') },
       ],
     },
     {
@@ -29,12 +30,12 @@ export default function Navbar() {
       label: t('solutions'),
       href: `/${locale}/solutions`,
       children: [
-        { label: 'Healthcare', href: `/${locale}/solutions?tab=healthcare`, desc: '' },
-        { label: 'Finance', href: `/${locale}/solutions?tab=finance`, desc: '' },
-        { label: 'Retail', href: `/${locale}/solutions?tab=retail`, desc: '' },
-        { label: 'Logistics', href: `/${locale}/solutions?tab=logistics`, desc: '' },
-        { label: 'Education', href: `/${locale}/solutions?tab=education`, desc: '' },
-        { label: 'Government', href: `/${locale}/solutions?tab=government`, desc: '' },
+        { label: t('healthcare'), href: `/${locale}/solutions?tab=healthcare`, desc: '' },
+        { label: t('finance'), href: `/${locale}/solutions?tab=finance`, desc: '' },
+        { label: t('retail'), href: `/${locale}/solutions?tab=retail`, desc: '' },
+        { label: t('logistics'), href: `/${locale}/solutions?tab=logistics`, desc: '' },
+        { label: t('education'), href: `/${locale}/solutions?tab=education`, desc: '' },
+        { label: t('government'), href: `/${locale}/solutions?tab=government`, desc: '' },
       ],
     },
     {
@@ -42,10 +43,10 @@ export default function Navbar() {
       label: t('caseStudies'),
       href: `/${locale}/case-studies`,
       children: [
-        { label: 'All Industries', href: `/${locale}/case-studies?filter=all`, desc: '' },
-        { label: 'Healthcare', href: `/${locale}/case-studies?filter=healthcare`, desc: '' },
-        { label: 'Finance', href: `/${locale}/case-studies?filter=finance`, desc: '' },
-        { label: 'Retail', href: `/${locale}/case-studies?filter=retail`, desc: '' },
+        { label: t('allIndustries'), href: `/${locale}/case-studies?filter=all`, desc: '' },
+        { label: t('healthcare'), href: `/${locale}/case-studies?filter=healthcare`, desc: '' },
+        { label: t('finance'), href: `/${locale}/case-studies?filter=finance`, desc: '' },
+        { label: t('retail'), href: `/${locale}/case-studies?filter=retail`, desc: '' },
       ],
     },
     {
@@ -53,10 +54,10 @@ export default function Navbar() {
       label: t('blog'),
       href: `/${locale}/blog`,
       children: [
-        { label: 'All Posts', href: `/${locale}/blog`, desc: '' },
-        { label: 'Technical', href: `/${locale}/blog`, desc: '' },
-        { label: 'Industry', href: `/${locale}/blog`, desc: '' },
-        { label: 'Case Study', href: `/${locale}/blog`, desc: '' },
+        { label: t('allPosts'), href: `/${locale}/blog`, desc: '' },
+        { label: t('technical'), href: `/${locale}/blog`, desc: '' },
+        { label: t('industry'), href: `/${locale}/blog`, desc: '' },
+        { label: t('caseStudy'), href: `/${locale}/blog`, desc: '' },
       ],
     },
     {
@@ -98,6 +99,7 @@ export default function Navbar() {
 
         <div className="hidden md:flex items-center gap-4">
           <LanguageSwitcher />
+          <DarkModeToggle />
           <Link
             href={`/${locale}/contact`}
             className="text-[16px] text-black/80 hover:text-[#00D4FF] transition-colors duration-200"
@@ -107,7 +109,7 @@ export default function Navbar() {
         </div>
 
         <button
-          className="md:hidden flex flex-col gap-[5px] p-2"
+          className="md:hidden flex flex-col gap-[5px] p-2 w-11 h-11 items-center justify-center"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
           aria-expanded={mobileOpen}
@@ -158,7 +160,7 @@ export default function Navbar() {
                     <Link
                       key={child.href}
                       href={child.href}
-                      className="text-sm text-gray-600 hover:text-[#00D4FF] transition-colors duration-200"
+                      className="text-sm text-gray-600 hover:text-[#00D4FF] py-1 px-2 rounded-lg min-h-[44px] inline-flex items-center transition-colors duration-200"
                       onClick={() => setMobileOpen(false)}
                     >
                       {child.label}

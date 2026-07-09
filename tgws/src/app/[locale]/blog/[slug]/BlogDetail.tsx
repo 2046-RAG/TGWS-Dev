@@ -25,7 +25,7 @@ interface Post {
   author: string;
   publishedAt: string;
   featured: boolean;
-  mainImage: string;
+  coverImage: string;
   tags: string[];
 }
 
@@ -71,19 +71,21 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
   return (
     <section className="py-20 px-5 sm:px-8 max-w-4xl mx-auto">
       <div className="scroll-reveal">
-        <Link href={`/${locale}/blog`} className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 transition-colors">
+        <Link href={`/${locale}/blog`} className="inline-flex items-center gap-2 py-2 px-1 text-gray-600 hover:text-gray-900 min-h-[44px] mb-8 transition-colors">
           <ArrowLeft size={16} />
           {t('backToBlog')}
         </Link>
 
-        {post.mainImage && (
+        {post.coverImage && (
           <Image
-            src={typeof post.mainImage === 'string' && post.mainImage.startsWith('http')
-              ? post.mainImage
-              : urlFor(post.mainImage).width(1200).height(600).url()}
+            src={typeof post.coverImage === 'string' && post.coverImage.startsWith('http')
+              ? post.coverImage
+              : urlFor(post.coverImage).width(1200).height(600).url()}
             alt={post.title}
             width={1200}
             height={600}
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
             className="w-full h-64 sm:h-96 object-cover rounded-2xl mb-8"
           />
         )}
@@ -108,7 +110,7 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
           </p>
           <div className="flex items-center gap-4 text-sm text-gray-500">
             <span>By {post.author}</span>
-            <button onClick={handleShare} className="inline-flex items-center gap-2 hover:text-[#00D4FF] transition-colors">
+            <button onClick={handleShare} className="inline-flex items-center gap-2 py-2 px-1 hover:text-[#00D4FF] min-h-[44px] transition-colors">
               <Share2 size={14} />
               {t('share')}
             </button>

@@ -1,7 +1,18 @@
 import { client } from '@/lib/sanity';
 import BlogList from './BlogList';
+import Breadcrumb from '@/components/ui/Breadcrumb';
+import type { Metadata } from 'next';
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: 'Blog',
+  description: 'Latest insights on enterprise networking, cybersecurity, cloud infrastructure, and IT best practices from TechGuru experts.',
+  openGraph: {
+    title: 'Blog | TechGuru',
+    description: 'Latest insights on enterprise networking, cybersecurity, cloud infrastructure, and IT best practices from TechGuru experts.',
+  },
+};
 
 async function getPosts() {
   try {
@@ -16,7 +27,7 @@ async function getPosts() {
       author,
       publishedAt,
       featured,
-      mainImage,
+      coverImage,
       tags
     }`;
     const posts = await client.fetch(query);
@@ -29,5 +40,10 @@ async function getPosts() {
 
 export default async function BlogPage() {
   const posts = await getPosts();
-  return <BlogList posts={posts} />;
+  return (
+    <>
+      <Breadcrumb items={[{ label: 'Blog' }]} />
+      <BlogList posts={posts} />
+    </>
+  );
 }

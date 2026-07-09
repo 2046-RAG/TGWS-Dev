@@ -5,56 +5,65 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-const HeroSection = dynamic(() => import('@/components/hero/HeroSection'), { ssr: false });
-import { Code2, Server, Shield, ArrowRight, Check, Zap, Users, Building2, Heart, ShoppingCart } from 'lucide-react';
+const HeroSection = dynamic(() => import('@/components/hero/HeroSection'));
+import { Code2, Server, Shield, ArrowRight, Check, Zap, Users, Building2, Sparkles, Monitor } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════
-   区块2: Build/Run/Protect 常驻时间轴
+   Block 2: Core Value — Build. Run. Protect.
    ═══════════════════════════════════════════════ */
 
-const stages = [
+const pillars = [
   {
     key: 'build',
     icon: Code2,
     color: '#00D4FF',
-    count: 5,
-    features: ['aigcT2V', 'aigcI2V', 'aigcCoding', 'aiAgent', 'legacyAI'],
+    highlights: ['buildHighlight1', 'buildHighlight2', 'buildHighlight3'],
   },
   {
     key: 'run',
     icon: Server,
     color: '#7B61FF',
-    count: 8,
-    features: ['vmPlatform', 'hci', 'cloudPlatform', 'hardware', 'hosting', 'bcdr', 'routing_switching', 'wireless'],
+    highlights: ['runHighlight1', 'runHighlight2', 'runHighlight3'],
   },
   {
     key: 'protect',
     icon: Shield,
     color: '#22C55E',
-    count: 8,
-    features: ['ngfw', 'waf', 'edr', 'ndr', 'cloudSecurity', 'sdwan', 'mdr', 'incidentResponse'],
+    highlights: ['protectHighlight1', 'protectHighlight2', 'protectHighlight3'],
   },
 ];
 
 /* ═══════════════════════════════════════════════
-   区块4: 行业解决方案精选
+   Block 3: Conversion — Social Proof + CTA
    ═══════════════════════════════════════════════ */
 
-const industries = [
-  { key: 'healthcare', icon: Heart, color: '#00D4FF' },
-  { key: 'finance', icon: Building2, color: '#7B61FF' },
-  { key: 'retail', icon: ShoppingCart, color: '#22C55E' },
+const socialStats = [
+  { valueKey: 'socialProofStat1', labelKey: 'socialProofStat1Label', icon: Users },
+  { valueKey: 'socialProofStat2', labelKey: 'socialProofStat2Label', icon: Check },
+  { valueKey: 'socialProofStat3', labelKey: 'socialProofStat3Label', icon: Zap },
+  { valueKey: 'socialProofStat4', labelKey: 'socialProofStat4Label', icon: Building2 },
 ];
 
-/* ═══════════════════════════════════════════════
-   区块5: 数据统计
-   ═══════════════════════════════════════════════ */
-
-const stats = [
-  { value: '500+', labelKey: 'clients', icon: Users },
-  { value: '99.99%', labelKey: 'uptime', icon: Zap },
-  { value: '15+', labelKey: 'years', icon: Building2 },
-  { value: '50+', labelKey: 'partners', icon: Check },
+const partners = [
+  { name: 'Sangfor', src: '/logos/sangfor.svg' },
+  { name: 'Fortinet', src: '/logos/fortinet.svg' },
+  { name: 'Nutanix', src: '/logos/nutanix.svg' },
+  { name: 'Huawei', src: '/logos/huawei.svg' },
+  { name: 'Cisco', src: '/logos/cisco.svg' },
+  { name: 'H3C', src: '/logos/h3c.png' },
+  { name: 'Ruijie', src: '/logos/ruijie.svg' },
+  { name: 'Proxmox', src: '/logos/proxmox.svg' },
+  { name: 'KVM', src: '/logos/kvm.svg' },
+  { name: 'Arcfra', src: '/logos/arcfra.png' },
+  { name: 'Sophos', src: '/logos/sophos.png' },
+  { name: 'StarWind', src: '/logos/starwind.svg' },
+  { name: 'Hillstone', src: '/logos/hillstone.svg' },
+  { name: 'Alibaba Cloud', src: '/logos/alibaba-cloud.svg' },
+  { name: 'ByteDance', src: '/logos/bytedance.svg' },
+  { name: 'Veeam', src: '/logos/veeam.svg' },
+  { name: 'Dell', src: '/logos/dell.svg' },
+  { name: 'HP', src: '/logos/hp.svg' },
+  { name: 'Lenovo', src: '/logos/lenovo.svg' },
 ];
 
 export default function HomePage() {
@@ -64,251 +73,302 @@ export default function HomePage() {
 
   return (
     <>
+      {/* ═══ Block 1: Hero ═══ */}
       <HeroSection />
 
-      {/* ═══ 区块2: Build. Run. Protect. 常驻时间轴 ═══ */}
+      {/* ═══ Block 2: Core Value — Build. Run. Protect. ═══ */}
       <section className="py-16 sm:py-24 px-5 sm:px-8 max-w-6xl mx-auto scroll-reveal">
-        {/* 标题 */}
         <div className="text-center mb-12 sm:mb-16 anim-fade-up">
-          <h2 className="section-title">Build. Run. Protect.</h2>
-          <p className="section-subtitle mx-auto">{t('journeyDesc')}</p>
+          <h2 className="section-title">{t('valueSectionTitle')}</h2>
+          <p className="section-subtitle mx-auto">{t('valueSectionDesc')}</p>
         </div>
 
-        {/* 时间轴 + 常驻内容 */}
-        <div className="relative">
-          {/* 连接线（桌面端） */}
-          <div className="hidden md:block absolute top-[52px] left-[calc(16.67%+20px)] right-[calc(16.67%+20px)] h-[2px] bg-gray-200 anim-line-grow">
-            <div className="absolute inset-y-0 left-0 w-full bg-gradient-to-r from-[#00D4FF] via-[#7B61FF] to-[#22C55E]" />
+        <div className="grid sm:grid-cols-3 gap-6">
+          {pillars.map((pillar, index) => {
+            const Icon = pillar.icon;
+            return (
+              <div
+                key={pillar.key}
+                className="card group anim-card"
+                style={{ animationDelay: `${0.1 + index * 0.15}s`, padding: '32px 28px' }}
+              >
+                <div
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
+                  style={{ backgroundColor: `${pillar.color}12` }}
+                >
+                  <Icon size={26} style={{ color: pillar.color }} strokeWidth={1.8} />
+                </div>
+
+                <h3
+                  className="text-xl font-bold text-gray-900 mb-2"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
+                  {t(pillar.key)}
+                </h3>
+
+                <p className="text-sm text-gray-500 leading-relaxed mb-5">
+                  {t(`${pillar.key}Desc`)}
+                </p>
+
+                <ul className="space-y-2.5 mb-6">
+                  {pillar.highlights.map((h) => (
+                    <li key={h} className="flex items-start gap-2">
+                      <Check
+                        size={15}
+                        className="mt-0.5 shrink-0"
+                        style={{ color: pillar.color }}
+                      />
+                      <span className="text-sm text-gray-600">{t(h)}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Link
+                  href={`/${locale}/products`}
+                  className="inline-flex items-center gap-1 text-sm font-medium py-2 px-1 min-h-[44px] transition-colors duration-200 hover:opacity-80"
+                  style={{ color: pillar.color }}
+                >
+                  {t('exploreProducts')} <ArrowRight size={14} />
+                </Link>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ═══ Block 2.5: AI Journey — Three-Step Flow ═══ */}
+      <section className="py-16 sm:py-24 px-5 sm:px-8 bg-gradient-to-b from-white to-gray-50 scroll-reveal">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12 sm:mb-16 anim-fade-up">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#7B61FF]/10 text-[#7B61FF] text-sm font-medium mb-4">
+              <Sparkles size={16} />
+              <span>AI Journey</span>
+            </div>
+            <h2 className="section-title">{t('aiJourneyTitle')}</h2>
+            <p className="section-subtitle mx-auto">{t('aiJourneyDesc')}</p>
           </div>
 
-          {/* 三列：节点 + 内容卡片 */}
-          <div className="flex flex-col md:flex-row items-start justify-between gap-10 md:gap-6">
-            {stages.map((stage, index) => {
-              const Icon = stage.icon;
-              return (
-                <div
-                  key={stage.key}
-                  className="flex-1 flex flex-col items-center"
-                >
-                  {/* 节点圆 */}
-                  <div
-                    className="relative z-10 w-[104px] h-[104px] rounded-full bg-white border-2 flex flex-col items-center justify-center anim-node"
-                    style={{
-                      borderColor: stage.color,
-                      boxShadow: `0 0 0 6px ${stage.color}12, 0 4px 20px ${stage.color}15`,
-                      animationDelay: `${0.3 + index * 0.2}s`,
-                    }}
-                  >
-                    <Icon size={28} style={{ color: stage.color }} strokeWidth={1.8} />
-                    <span className="text-sm font-bold text-gray-900 mt-1">{t(stage.key)}</span>
-                  </div>
-
-                  {/* 数量 */}
-                  <div className="mt-5 text-center anim-fade-up" style={{ animationDelay: `${0.6 + index * 0.2}s` }}>
-                    <span className="text-3xl font-bold" style={{ color: stage.color }}>
-                      {stage.count}
-                    </span>
-                    <span className="text-sm text-gray-400 ml-1">{t('products')}</span>
-                  </div>
-
-                  {/* 内容卡片（常驻显示） */}
-                  <div
-                    className="mt-6 w-full card anim-card"
-                    style={{
-                      animationDelay: `${0.8 + index * 0.2}s`,
-                      padding: '24px 20px',
-                    }}
-                  >
-                    {/* 描述 */}
-                    <p className="text-sm text-gray-500 leading-relaxed mb-4">
-                      {t(`${stage.key}Desc`)}
-                    </p>
-
-                    {/* 产品标签 */}
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {stage.features.map((f) => (
-                        <span
-                          key={f}
-                          className="text-[11px] px-2 py-0.5 rounded-full"
-                          style={{
-                            backgroundColor: `${stage.color}10`,
-                            color: stage.color,
-                          }}
-                        >
-                          {t(f)}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* 跳转链接 */}
-                    <Link
-                      href={`/${locale}/products`}
-                      className="inline-flex items-center gap-1 text-xs font-medium transition-colors hover:opacity-80"
-                      style={{ color: stage.color }}
-                    >
-                      {t('exploreProducts')} <ArrowRight size={12} />
-                    </Link>
-                  </div>
+          {/* Three AI Paths - Horizontal Cards */}
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {/* Step 1 */}
+            <div className="relative group anim-card" style={{ animationDelay: '0.1s' }}>
+              <div className="card h-full !border-[#7B61FF]/20 hover:!border-[#7B61FF]/40 transition-all">
+                <div className="w-12 h-12 rounded-xl bg-[#7B61FF]/10 flex items-center justify-center mb-4">
+                  <span className="text-[#7B61FF] font-bold text-lg">1</span>
                 </div>
-              );
-            })}
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-[#7B61FF] transition-colors">
+                  {t('aiStep1Title')}
+                </h3>
+                <p className="text-sm text-gray-500 leading-relaxed">
+                  {t('aiStep1Desc')}
+                </p>
+              </div>
+            </div>
+
+            {/* Step 2 - Three Paths */}
+            <div className="relative group anim-card" style={{ animationDelay: '0.2s' }}>
+              <div className="card h-full !border-[#00D4FF]/20 hover:!border-[#00D4FF]/40 transition-all">
+                <div className="w-12 h-12 rounded-xl bg-[#00D4FF]/10 flex items-center justify-center mb-4">
+                  <span className="text-[#00D4FF] font-bold text-lg">2</span>
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-[#00D4FF] transition-colors">
+                  {locale === 'zh' ? '選擇路徑' : 'Choose Path'}
+                </h3>
+                <div className="space-y-2">
+                  {[
+                    { name: 'AIGC', desc: locale === 'zh' ? '文本/圖像/視頻生成' : 'Text, Image, Video' },
+                    { name: 'AI Coding', desc: locale === 'zh' ? '開發者AI輔助' : 'Developer AI Tools' },
+                    { name: 'Legacy AI', desc: locale === 'zh' ? '現有系統AI賦能' : 'Legacy System AI' },
+                  ].map((path) => (
+                    <div key={path.name} className="flex items-center gap-3 px-3 py-2 rounded-lg bg-gray-50 hover:bg-[#00D4FF]/5 transition-colors">
+                      <Check size={14} className="text-[#00D4FF] shrink-0" />
+                      <div>
+                        <span className="text-sm font-semibold text-gray-900">{path.name}</span>
+                        <span className="text-xs text-gray-400 ml-2">{path.desc}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="relative group anim-card" style={{ animationDelay: '0.3s' }}>
+              <div className="card h-full !border-[#7B61FF]/20 hover:!border-[#00D4FF]/40 transition-all">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#7B61FF]/10 to-[#00D4FF]/10 flex items-center justify-center mb-4">
+                  <Sparkles size={20} className="text-[#7B61FF]" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-[#00D4FF] transition-colors">
+                  {t('aiStep3Title')}
+                </h3>
+                <p className="text-sm text-gray-500 leading-relaxed">
+                  {t('aiStep3Desc')}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Partner Logos */}
+          <div className="flex justify-center gap-8 items-center opacity-50">
+            <span className="text-xs font-medium text-gray-400">{locale === 'zh' ? '合作伙伴' : 'Powered by'}</span>
+            <span className="text-sm font-semibold text-gray-500">Alibaba Cloud Bailian</span>
+            <span className="text-gray-300">|</span>
+            <span className="text-sm font-semibold text-gray-500">ByteDance Volcengine</span>
           </div>
         </div>
       </section>
 
-      {/* ═══ 区块3: VMware替代方案 ═══ */}
-      <section className="py-14 sm:py-24 px-5 sm:px-8 bg-white/50 scroll-reveal">
+      {/* ═══ Block 2.7: VMware Alternatives — Migration Steps ═══ */}
+      <section className="py-16 sm:py-24 px-5 sm:px-8 scroll-reveal">
         <div className="max-w-6xl mx-auto">
-          <div className="card overflow-hidden anim-fade-up" style={{ padding: 0 }}>
-            <div className="flex flex-col md:flex-row">
-              <div className="flex-1 p-8 sm:p-12">
-                <p className="text-sm font-medium text-[#7B61FF] mb-3">
-                  {t('vmwareLabel')}
-                </p>
-                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>
-                  {t('vmwareTitle')}
-                </h2>
-                <p className="text-base text-gray-500 leading-relaxed mb-8">{t('vmwareDesc')}</p>
-                <div className="grid grid-cols-2 gap-4 mb-8">
-                  {['vmwareFeature1', 'vmwareFeature2', 'vmwareFeature3', 'vmwareFeature4'].map((f) => (
-                    <div key={f} className="flex items-start gap-2">
-                      <Check size={16} className="text-[#22C55E] mt-0.5 shrink-0" />
-                      <span className="text-sm text-gray-600">{t(f)}</span>
+          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-8 sm:p-12 relative overflow-hidden">
+            {/* Background glow */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#00D4FF]/5 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#7B61FF]/5 rounded-full blur-3xl" />
+
+            <div className="relative z-10">
+              {/* Header */}
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white/80 text-sm font-medium mb-4 w-fit">
+                <Monitor size={16} />
+                <span>VMware Alternatives</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3" style={{ fontFamily: 'var(--font-heading)' }}>
+                {t('vmwareTitle')}
+              </h2>
+              <p className="text-white/60 leading-relaxed mb-8 max-w-2xl">
+                {t('vmwareDesc')}
+              </p>
+
+              {/* Migration Steps */}
+              <div className="grid sm:grid-cols-3 gap-4 mb-8">
+                {[
+                  { step: '1', title: locale === 'zh' ? '評估就緒度' : 'Assess Readiness', desc: locale === 'zh' ? '盤點VMware許可、工作負載和依賴' : 'Audit licenses, workloads, dependencies' },
+                  { step: '2', title: locale === 'zh' ? '邊緣先行' : 'Start at Edge', desc: locale === 'zh' ? '雙Hypervisor架構，非核心業務先行' : 'Dual-hypervisor, non-critical first' },
+                  { step: '3', title: locale === 'zh' ? '按節奏遷移' : 'Migrate on Schedule', desc: locale === 'zh' ? '驗證後逐步淘汰，保護現有投資' : 'Validate, phase out, preserve investments' },
+                ].map((item) => (
+                  <div key={item.step} className="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-[#00D4FF]/30 transition-colors">
+                    <div className="w-8 h-8 rounded-lg bg-[#00D4FF]/20 flex items-center justify-center mb-3">
+                      <span className="text-[#00D4FF] font-bold text-sm">{item.step}</span>
                     </div>
+                    <h4 className="text-sm font-bold text-white mb-1">{item.title}</h4>
+                    <p className="text-xs text-white/50 leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Alternatives + CTA */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                <div className="flex flex-wrap gap-2">
+                  {['Proxmox', 'Sangfor', 'Nutanix', 'StarWind', 'H3C'].map((alt) => (
+                    <span key={alt} className="px-3 py-1.5 rounded-full bg-white/10 text-white/80 text-xs font-medium border border-white/10 hover:border-[#00D4FF]/30 transition-colors">
+                      {alt}
+                    </span>
                   ))}
                 </div>
-                <Link href={`/${locale}/vmware-alternative`} className="btn-primary inline-flex items-center gap-2 text-sm">
+                <Link
+                  href={`/${locale}/vmware-alternative`}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-gray-900 font-medium rounded-full hover:bg-gray-100 transition-colors text-sm shrink-0"
+                >
                   {t('vmwareCta')} <ArrowRight size={16} />
                 </Link>
-              </div>
-              <div className="flex-1 bg-gray-50 p-8 sm:p-12 flex items-center justify-center">
-                <div className="grid grid-cols-3 gap-4">
-                  {[
-                    { name: 'Proxmox', src: '/logos/proxmox.svg' },
-                    { name: 'Sangfor', src: '/logos/sangfor.svg' },
-                    { name: 'Nutanix', src: '/logos/nutanix.svg' },
-                    { name: 'Arcfra', src: '/logos/arcfra.png' },
-                    { name: 'H3C', src: '/logos/h3c.png' },
-                    { name: 'KVM', src: '/logos/kvm.svg' },
-                  ].map((brand) => (
-                    <div key={brand.name} className="flex items-center justify-center bg-white rounded-xl border border-gray-200 px-4 py-3">
-                      <Image src={brand.src} alt={brand.name} width={0} height={0} className="h-6 w-auto object-contain" style={{ maxWidth: '60px' }} />
-                    </div>
-                  ))}
-                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ═══ 区块4: 行业解决方案精选 ═══ */}
-      <section className="py-14 sm:py-24 px-5 sm:px-8 scroll-reveal">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16 anim-fade-up">
-            <h2 className="section-title">{t('industriesTitle')}</h2>
-            <p className="section-subtitle mx-auto">{t('industriesDesc')}</p>
+      {/* ═══ Block 3: Social Proof + CTA ═══ */}
+      <section className="scroll-reveal">
+        {/* Stats row */}
+        <div className="py-12 sm:py-16 px-5 sm:px-8 bg-white/50">
+          <div className="max-w-5xl mx-auto">
+            <p className="text-sm text-gray-500 text-center mb-8 anim-fade-up">
+              {t('socialProofLabel')}
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+              {socialStats.map((stat, i) => {
+                const Icon = stat.icon;
+                return (
+                  <div
+                    key={stat.labelKey}
+                    className="text-center anim-stat"
+                    style={{ animationDelay: `${0.1 + i * 0.12}s` }}
+                  >
+                    <div className="w-11 h-11 rounded-2xl bg-[#00D4FF]/10 flex items-center justify-center mx-auto mb-3">
+                      <Icon size={20} className="text-[#00D4FF]" />
+                    </div>
+                    <div className="text-3xl sm:text-4xl font-bold text-gray-900 mb-1">
+                      {t(stat.valueKey)}
+                    </div>
+                    <div className="text-sm text-gray-400">{t(stat.labelKey)}</div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {industries.map((ind, i) => {
-              const Icon = ind.icon;
-              return (
-                <Link
-                  key={ind.key}
-                  href={`/${locale}/solutions?tab=${ind.key}`}
-                  className="card group text-center anim-card"
-                  style={{ animationDelay: `${0.1 + i * 0.1}s`, padding: '40px 32px' }}
+        </div>
+
+        {/* Partner logos */}
+        <div className="py-10 sm:py-14 px-5 sm:px-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+              {partners.map((p, i) => (
+                <div
+                  key={p.name}
+                  className="flex items-center gap-2 bg-white rounded-xl border border-gray-200/60 px-3 py-2.5 transition-all duration-300 hover:border-gray-300 hover:shadow-md hover:scale-105 anim-fade-up"
+                  style={{ animationDelay: `${i * 0.06}s` }}
                 >
-                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: `${ind.color}10` }}>
-                    <Icon size={32} style={{ color: ind.color }} />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#00D4FF] transition-colors duration-200" style={{ fontFamily: 'var(--font-heading)' }}>
-                    {t(`industries.${ind.key}.name`)}
-                  </h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">
-                    {t(`industries.${ind.key}.description`)}
-                  </p>
-                </Link>
-              );
-            })}
-          </div>
-          <div className="text-center mt-12 anim-fade-up" style={{ animationDelay: '0.5s' }}>
-            <Link href={`/${locale}/solutions`} className="btn-secondary inline-flex items-center gap-2 text-sm">
-              {t('viewAllSolutions')} <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ 区块5: 数据统计 ═══ */}
-      <section className="py-14 sm:py-24 px-5 sm:px-8 bg-white/50 scroll-reveal">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, i) => {
-              const Icon = stat.icon;
-              return (
-                <div key={stat.labelKey} className="text-center anim-stat" style={{ animationDelay: `${0.1 + i * 0.15}s` }}>
-                  <div className="w-12 h-12 rounded-2xl bg-[#00D4FF]/10 flex items-center justify-center mx-auto mb-4">
-                    <Icon size={22} className="text-[#00D4FF]" />
-                  </div>
-                  <div className="text-3xl sm:text-4xl font-bold text-gray-900 mb-1">{stat.value}</div>
-                  <div className="text-sm text-gray-400">{t(`stats.${stat.labelKey}`)}</div>
+                  <Image
+                    src={p.src}
+                    alt={p.name}
+                    width={70}
+                    height={20}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-5 w-auto object-contain"
+                  />
+                  <span className="text-xs font-medium text-gray-500">{p.name}</span>
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
-      </section>
 
-      {/* ═══ 区块6: 合作伙伴Logo墙 ═══ */}
-      <section className="py-12 sm:py-20 px-5 sm:px-8">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-sm text-gray-600 mb-10">{t('partnersLabel')}</p>
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-            {[
-              { name: 'H3C', src: '/logos/h3c.png', delay: '0s' },
-              { name: 'Sangfor', src: '/logos/sangfor.svg', delay: '0.1s' },
-              { name: 'Sophos', src: '/logos/sophos.png', delay: '0.2s' },
-              { name: 'Fortinet', src: '/logos/fortinet.svg', delay: '0.3s' },
-              { name: 'Huawei', src: '/logos/huawei.svg', delay: '0.4s' },
-              { name: 'Cisco', src: '/logos/cisco.svg', delay: '0.5s' },
-              { name: 'Ruijie', src: '/logos/ruijie.svg', delay: '0.6s' },
-              { name: 'Arcfra', src: '/logos/arcfra.png', delay: '0.7s' },
-              { name: 'KVM', src: '/logos/kvm.svg', delay: '0.8s' },
-            ].map((p) => (
-              <div
-                key={p.name}
-                className="partner-logo flex items-center gap-2 bg-white rounded-xl border border-gray-200/60 px-4 py-3 cursor-default transition-all duration-300 hover:border-gray-300 hover:shadow-md hover:scale-105"
-                style={{ animationDelay: p.delay }}
+        {/* Final CTA */}
+        <div className="py-14 sm:py-20 px-5 sm:px-8">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2
+              className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 anim-fade-up"
+              style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}
+            >
+              {t('conversionTitle')}
+            </h2>
+            <p
+              className="text-lg text-gray-500 mb-8 max-w-xl mx-auto anim-fade-up"
+              style={{ animationDelay: '0.1s', lineHeight: '1.7' }}
+            >
+              {t('conversionDesc')}
+            </p>
+            <div
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 anim-fade-up"
+              style={{ animationDelay: '0.2s' }}
+            >
+              <Link
+                href={`/${locale}/contact`}
+                className="btn-primary inline-flex items-center gap-2 text-sm"
               >
-                <Image src={p.src} alt={p.name} width={0} height={0} className="h-6 w-auto object-contain" style={{ maxWidth: '80px' }} />
-                <span className="text-sm font-medium text-gray-700">{p.name}</span>
-              </div>
-            ))}
+                {t('conversionPrimary')} <ArrowRight size={16} />
+              </Link>
+              <Link
+                href={`/${locale}/support`}
+                className="btn-secondary inline-flex items-center gap-2 text-sm"
+              >
+                {t('conversionSecondary')}
+              </Link>
+            </div>
           </div>
         </div>
       </section>
-
-      {/* ═══ 区块7: CTA区域 ═══ */}
-      <section className="py-14 sm:py-24 px-5 sm:px-8 scroll-reveal">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 anim-fade-up" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>
-            {t('ctaTitle')}
-          </h2>
-          <p className="text-lg text-gray-500 mb-8 max-w-xl mx-auto anim-fade-up" style={{ animationDelay: '0.1s', lineHeight: '1.7' }}>
-            {t('ctaDesc')}
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 anim-fade-up" style={{ animationDelay: '0.2s' }}>
-            <Link href={`/${locale}/contact`} className="btn-primary inline-flex items-center gap-2 text-sm">
-              {t('ctaPrimary')} <ArrowRight size={16} />
-            </Link>
-            <Link href={`/${locale}/support`} className="btn-secondary inline-flex items-center gap-2 text-sm">
-              {t('ctaSecondary')}
-            </Link>
-          </div>
-        </div>
-      </section>
-
     </>
   );
 }

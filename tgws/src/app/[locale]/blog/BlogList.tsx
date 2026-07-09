@@ -4,11 +4,18 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useState } from 'react';
-import { Calendar, ArrowRight, Star, Clock, User } from 'lucide-react';
+import { Calendar, ArrowRight, Star, Clock, User, Tag } from 'lucide-react';
 import Image from 'next/image';
 import { urlFor } from '@/lib/sanity.image';
 
 const categories = ['all', 'news', 'technical', 'case-study', 'industry'];
+
+const categoryColors: Record<string, string> = {
+  news: '#00D4FF',
+  technical: '#7B61FF',
+  'case-study': '#22C55E',
+  industry: '#F59E0B',
+};
 
 interface Post {
   _id: string;
@@ -21,7 +28,7 @@ interface Post {
   author: string;
   publishedAt: string;
   featured: boolean;
-  mainImage: string;
+  coverImage: string;
   tags: string[];
 }
 
@@ -58,15 +65,16 @@ export default function BlogList({ posts }: { posts: Post[] }) {
         <p className="section-subtitle mx-auto">{t('subtitle')}</p>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-3 mb-12">
+      {/* Category Tabs - Editorial Style */}
+      <div className="flex flex-wrap justify-center gap-2 mb-14">
         {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 ${
+            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 ${
               activeCategory === cat
-                ? 'bg-[#00D4FF] text-white shadow-sm'
-                : 'bg-white border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300 hover:shadow-sm'
+                ? 'bg-gray-900 text-white shadow-sm'
+                : 'bg-white border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300'
             }`}
           >
             {t(`categories.${cat}`)}
@@ -74,84 +82,72 @@ export default function BlogList({ posts }: { posts: Post[] }) {
         ))}
       </div>
 
-      {/* Featured Post - Magazine Hero Layout */}
+      {/* Featured Post - Full Width Editorial Hero */}
       {featuredPost && (
         <div className="mb-16 scroll-reveal">
           <Link href={`/${locale}/blog/${featuredPost.slug?.current}`}>
-            <article className="bg-white border border-gray-200 rounded-2xl overflow-hidden group hover:shadow-xl transition-all cursor-pointer">
-              <div className="grid md:grid-cols-5 gap-0">
-                {/* Image Section - 3 columns */}
-                <div className="md:col-span-3 relative h-64 md:h-[400px]">
-                  {featuredPost.mainImage ? (
-                    <Image
-                      src={typeof featuredPost.mainImage === 'string' && featuredPost.mainImage.startsWith('http')
-                        ? featuredPost.mainImage
-                        : urlFor(featuredPost.mainImage).width(800).height(500).url()}
-                      alt={featuredPost.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 60vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-[#00D4FF]/20 to-[#7B61FF]/20 flex items-center justify-center">
-                      <span className="text-8xl font-bold text-gray-200">
-                        {featuredPost.title.charAt(0)}
-                      </span>
-                    </div>
-                  )}
-                  {/* Category Badge */}
-                  <div className="absolute top-4 left-4">
-                    <span className="px-4 py-2 rounded-full text-sm font-semibold bg-[#00D4FF] text-white shadow-lg">
-                      {t(`categories.${featuredPost.category}`)}
-                    </span>
-                  </div>
-                  {/* Featured Badge */}
+            <article className="relative rounded-2xl overflow-hidden group cursor-pointer min-h-[420px] md:min-h-[480px] flex items-end">
+              {/* Background Image */}
+              <div className="absolute inset-0">
+                {featuredPost.coverImage ? (
+                  <Image
+                    src={typeof featuredPost.coverImage === 'string' && featuredPost.coverImage.startsWith('http')
+                      ? featuredPost.coverImage
+                      : urlFor(featuredPost.coverImage).width(1200).height(600).url()}
+                    alt={featuredPost.title}
+                    fill
+                    priority
+                    sizes="100vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-gray-900 to-gray-800" />
+                )}
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent" />
+              </div>
+
+              {/* Content Overlay */}
+              <div className="relative z-10 p-8 md:p-12 w-full">
+                {/* Top Badges */}
+                <div className="flex items-center gap-3 mb-4">
+                  <span
+                    className="px-3 py-1 rounded-full text-xs font-semibold text-white"
+                    style={{ backgroundColor: categoryColors[featuredPost.category] || '#00D4FF' }}
+                  >
+                    {t(`categories.${featuredPost.category}`)}
+                  </span>
                   {featuredPost.featured && (
-                    <div className="absolute top-4 right-4">
-                      <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-yellow-500 text-white shadow-lg">
-                        <Star size={12} className="fill-current" />
-                        {t('featured') || 'Featured'}
-                      </span>
-                    </div>
+                    <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-500 text-white">
+                      <Star size={12} className="fill-current" />
+                      {t('featured') || 'Featured'}
+                    </span>
                   )}
                 </div>
 
-                {/* Content Section - 2 columns */}
-                <div className="md:col-span-2 p-8 md:p-10 flex flex-col justify-center">
-                  {/* Meta Info */}
-                  <div className="flex items-center gap-4 mb-4 text-sm text-gray-500">
-                    <div className="flex items-center gap-1.5">
-                      <Calendar size={14} />
-                      {formatDate(featuredPost.publishedAt)}
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <Clock size={14} />
-                      {formatReadingTime(featuredPost.excerpt)}
-                    </div>
+                {/* Title */}
+                <h2 className="text-2xl md:text-4xl font-bold text-white mb-3 max-w-3xl" style={{ fontFamily: 'var(--font-heading)' }}>
+                  {locale === 'zh' ? (featuredPost.titleZh || featuredPost.title) : featuredPost.title}
+                </h2>
+
+                {/* Excerpt */}
+                <p className="text-white/70 mb-6 max-w-2xl line-clamp-2 leading-relaxed">
+                  {locale === 'zh' ? (featuredPost.excerptZh || featuredPost.excerpt) : featuredPost.excerpt}
+                </p>
+
+                {/* Meta Row */}
+                <div className="flex flex-wrap items-center gap-4 text-sm text-white/60">
+                  <div className="flex items-center gap-1.5">
+                    <User size={14} />
+                    <span>{featuredPost.author}</span>
                   </div>
-
-                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 line-clamp-3 group-hover:text-[#00D4FF] transition-colors duration-200">
-                    {locale === 'zh' ? (featuredPost.titleZh || featuredPost.title) : featuredPost.title}
-                  </h2>
-                  
-                  <p className="text-gray-600 mb-6 line-clamp-4 leading-relaxed" style={{ lineHeight: '1.7' }}>
-                    {locale === 'zh' ? (featuredPost.excerptZh || featuredPost.excerpt) : featuredPost.excerpt}
-                  </p>
-
-                  {/* Author */}
-                  <div className="flex items-center gap-3 mb-6 p-3 bg-gray-50 rounded-xl">
-                    <div className="w-10 h-10 rounded-full bg-[#00D4FF]/10 flex items-center justify-center">
-                      <User size={18} className="text-[#00D4FF]" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-medium text-gray-900">{featuredPost.author}</div>
-                      <div className="text-xs text-gray-500">{t('author') || 'Author'}</div>
-                    </div>
+                  <div className="flex items-center gap-1.5">
+                    <Calendar size={14} />
+                    <span>{formatDate(featuredPost.publishedAt)}</span>
                   </div>
-
-                  <div className="flex items-center gap-2 text-[#00D4FF] font-semibold group-hover:gap-4 transition-all">
-                    {t('readMore')}
-                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                  <div className="flex items-center gap-1.5">
+                    <Clock size={14} />
+                    <span>{formatReadingTime(featuredPost.excerpt)}</span>
                   </div>
                 </div>
               </div>
@@ -160,78 +156,87 @@ export default function BlogList({ posts }: { posts: Post[] }) {
         </div>
       )}
 
-      {/* Remaining Posts - Editorial Grid */}
+      {/* Remaining Posts - Two-Column Editorial List */}
       {remainingPosts.length > 0 && (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 gap-6">
           {remainingPosts.map((post, index) => (
             <div
               key={post._id}
               className="scroll-reveal"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              style={{ animationDelay: `${index * 0.08}s` }}
             >
               <Link href={`/${locale}/blog/${post.slug?.current}`}>
-                <article className="bg-white border border-gray-200 rounded-xl overflow-hidden group hover:shadow-lg transition-all cursor-pointer h-full flex flex-col">
-                  {/* Image */}
-                  <div className="relative h-48">
-                    {post.mainImage ? (
+                <article className="bg-white border border-gray-200 rounded-xl overflow-hidden group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full">
+                  {/* Image with category color accent */}
+                  <div className="relative h-44">
+                    {post.coverImage ? (
                       <Image
-                        src={typeof post.mainImage === 'string' && post.mainImage.startsWith('http')
-                          ? post.mainImage
-                          : urlFor(post.mainImage).width(400).height(200).url()}
+                        src={typeof post.coverImage === 'string' && post.coverImage.startsWith('http')
+                          ? post.coverImage
+                          : urlFor(post.coverImage).width(600).height(300).url()}
                         alt={post.title}
                         fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        loading="lazy"
+                        decoding="async"
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-[#00D4FF]/10 to-[#7B61FF]/10 flex items-center justify-center">
-                        <span className="text-5xl font-bold text-gray-200">
+                      <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                        <span className="text-6xl font-bold text-gray-200">
                           {post.title.charAt(0)}
                         </span>
                       </div>
                     )}
-                    {/* Category Tag */}
-                    <div className="absolute top-3 left-3">
-                      <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-white/90 text-gray-700 backdrop-blur-sm">
-                        {t(`categories.${post.category}`)}
-                      </span>
+                    {/* Category color bar */}
+                    <div
+                      className="absolute bottom-0 left-0 right-0 h-1"
+                      style={{ backgroundColor: categoryColors[post.category] || '#00D4FF' }}
+                    />
+                    {/* Date badge */}
+                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-lg px-2.5 py-1.5 text-xs font-medium text-gray-700">
+                      {formatDate(post.publishedAt)}
                     </div>
-                    {/* Featured Star */}
-                    {post.featured && (
-                      <div className="absolute top-3 right-3">
-                        <Star size={16} className="text-yellow-500 fill-yellow-500" />
-                      </div>
-                    )}
                   </div>
 
                   {/* Content */}
                   <div className="p-5 flex flex-col flex-1">
-                    {/* Meta */}
-                    <div className="flex items-center gap-3 mb-3 text-xs text-gray-500">
-                      <div className="flex items-center gap-1">
-                        <Calendar size={12} />
-                        {formatDate(post.publishedAt)}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Clock size={12} />
+                    {/* Category + Reading Time */}
+                    <div className="flex items-center gap-3 mb-3">
+                      <span
+                        className="text-xs font-semibold px-2 py-0.5 rounded"
+                        style={{ color: categoryColors[post.category] || '#00D4FF', backgroundColor: `${categoryColors[post.category] || '#00D4FF'}15` }}
+                      >
+                        {t(`categories.${post.category}`)}
+                      </span>
+                      <span className="text-xs text-gray-400 flex items-center gap-1">
+                        <Clock size={11} />
                         {formatReadingTime(post.excerpt)}
-                      </div>
+                      </span>
                     </div>
-                    
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#00D4FF] transition-colors duration-200">
+
+                    <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#00D4FF] transition-colors duration-200">
                       {locale === 'zh' ? (post.titleZh || post.title) : post.title}
                     </h3>
-                    
-                    <p className="text-sm text-gray-600 mb-4 line-clamp-3 flex-1">
+
+                    <p className="text-sm text-gray-500 mb-4 line-clamp-2 flex-1 leading-relaxed">
                       {locale === 'zh' ? (post.excerptZh || post.excerpt) : post.excerpt}
                     </p>
 
-                    {/* Author */}
-                    <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
-                      <div className="w-6 h-6 rounded-full bg-[#00D4FF]/10 flex items-center justify-center">
-                        <User size={12} className="text-[#00D4FF]" />
+                    {/* Author + Tags */}
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
+                          <User size={12} className="text-gray-400" />
+                        </div>
+                        <span className="text-xs font-medium text-gray-500">{post.author}</span>
                       </div>
-                      <span className="text-xs font-medium text-gray-600">{post.author}</span>
+                      {post.tags && post.tags.length > 0 && (
+                        <div className="flex items-center gap-1 text-xs text-gray-400">
+                          <Tag size={11} />
+                          <span>{post.tags[0]}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </article>

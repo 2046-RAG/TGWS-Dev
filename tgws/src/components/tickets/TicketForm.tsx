@@ -356,9 +356,9 @@ export default function TicketForm() {
                 <button
                   type="button"
                   onClick={(e) => { e.stopPropagation(); removePastedImage(i); }}
-                  className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center text-sm opacity-0 group-hover:opacity-100 transition-opacity"
                 >
-                  <X size={12} />
+                  <X size={14} />
                 </button>
               </div>
             ))}
@@ -376,7 +376,7 @@ export default function TicketForm() {
           id="ticket-attachments"
           type="file"
           multiple
-          className="w-full text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gray-100 file:text-gray-700 file:hover:bg-gray-200 file:cursor-pointer"
+          className="w-full text-gray-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:bg-gray-100 file:text-gray-700 file:hover:bg-gray-200 file:cursor-pointer"
         />
           <p className="text-xs text-gray-600 mt-1">{t('maxFileSize')}</p>
       </div>

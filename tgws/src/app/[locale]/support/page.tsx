@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter, useParams } from 'next/navigation';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 import TicketForm from '@/components/tickets/TicketForm';
 import TicketList from '@/components/tickets/TicketList';
 import Link from 'next/link';
@@ -29,7 +30,7 @@ interface Ticket {
 type Tab = 'dashboard' | 'new-ticket' | 'my-tickets';
 
 export default function SupportPage() {
-  const t = useTranslations('auth');
+  const s = useTranslations('support');
   const router = useRouter();
   const params = useParams();
   const locale = params.locale as string;
@@ -87,9 +88,9 @@ export default function SupportPage() {
   };
 
   const sidebarItems: { key: Tab; icon: React.ReactNode; label: string }[] = [
-    { key: 'dashboard', icon: <LayoutDashboard size={20} />, label: 'Dashboard' },
-    { key: 'new-ticket', icon: <PlusCircle size={20} />, label: t('newTicket') },
-    { key: 'my-tickets', icon: <Ticket size={20} />, label: t('myTickets') },
+    { key: 'dashboard', icon: <LayoutDashboard size={20} />, label: s('dashboard') },
+    { key: 'new-ticket', icon: <PlusCircle size={20} />, label: s('submitNewTicket') },
+    { key: 'my-tickets', icon: <Ticket size={20} />, label: s('viewMyTickets') },
   ];
 
   return (
@@ -104,7 +105,7 @@ export default function SupportPage() {
             </div>
             <div>
               <p className="text-gray-900 font-semibold">TechGuru</p>
-              <p className="text-xs text-gray-500">Support Center</p>
+              <p className="text-xs text-gray-500">{s('supportCenter')}</p>
             </div>
           </Link>
         </div>
@@ -135,22 +136,22 @@ export default function SupportPage() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm text-gray-900 truncate">{user.email}</p>
-              <p className="text-xs text-gray-500">Customer</p>
+              <p className="text-xs text-gray-500">{s('customer')}</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2"
+            className="w-full flex items-center gap-2 px-4 py-3 text-sm text-gray-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-all duration-200 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2"
           >
             <LogOut size={16} />
-            Sign Out
+            {s('signOut')}
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto">
-        <h1 className="sr-only">Support Center</h1>
+        <h1 className="sr-only">{s('supportCenter')}</h1>
         {/* Mobile Header */}
         <div className="lg:hidden bg-white/80 backdrop-blur-xl border-b border-gray-200 p-4">
           <div className="flex items-center justify-between">
@@ -158,11 +159,11 @@ export default function SupportPage() {
               <div className="w-8 h-8 bg-gradient-to-br from-[#00D4FF] to-[#7B61FF] rounded-lg flex items-center justify-center">
                 <Headphones size={16} className="text-white" />
               </div>
-              <span className="text-gray-900 font-semibold">Support Center</span>
+              <span className="text-gray-900 font-semibold">{s('supportCenter')}</span>
             </div>
             <button
               onClick={handleLogout}
-              className="text-gray-500 hover:text-red-500 transition-colors"
+              className="text-gray-500 hover:text-red-500 transition-colors p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
             >
               <LogOut size={20} />
             </button>
@@ -175,7 +176,7 @@ export default function SupportPage() {
                 <button
                   key={item.key}
                   onClick={() => setActiveTab(item.key)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 ${
+                  className={`flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-200 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 ${
                     activeTab === item.key
                       ? 'bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/20'
                       : 'text-gray-600 bg-gray-100'
@@ -196,27 +197,27 @@ export default function SupportPage() {
             <div>
               <div className="mb-8">
                 <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-                  Welcome back, {user.email?.split('@')[0]}
+                  {s('welcomeBack')}, {user.email?.split('@')[0]}
                 </h1>
-                <p className="text-gray-500">Manage your support tickets and get help.</p>
+                <p className="text-gray-500">{s('manageTicketsDesc')}</p>
               </div>
 
               {/* Stats Cards */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
-                  <p className="text-gray-500 text-sm mb-1">Total Tickets</p>
+                  <p className="text-gray-500 text-sm mb-1">{s('totalTickets')}</p>
                   <p className="text-3xl font-bold text-gray-900">{ticketStats.total}</p>
                 </div>
                 <div className="bg-white border border-yellow-200 rounded-2xl p-5 shadow-sm">
-                  <p className="text-gray-500 text-sm mb-1">Open</p>
+                  <p className="text-gray-500 text-sm mb-1">{s('open')}</p>
                   <p className="text-3xl font-bold text-yellow-500">{ticketStats.open}</p>
                 </div>
                 <div className="bg-white border border-blue-200 rounded-2xl p-5 shadow-sm">
-                  <p className="text-gray-500 text-sm mb-1">In Progress</p>
+                  <p className="text-gray-500 text-sm mb-1">{s('inProgress')}</p>
                   <p className="text-3xl font-bold text-blue-500">{ticketStats.inProgress}</p>
                 </div>
                 <div className="bg-white border border-green-200 rounded-2xl p-5 shadow-sm">
-                  <p className="text-gray-500 text-sm mb-1">Resolved</p>
+                  <p className="text-gray-500 text-sm mb-1">{s('resolved')}</p>
                   <p className="text-3xl font-bold text-green-500">{ticketStats.resolved}</p>
                 </div>
               </div>
@@ -229,8 +230,8 @@ export default function SupportPage() {
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#00D4FF] transition-colors duration-200">Submit New Ticket</h3>
-                      <p className="text-sm text-gray-500">Get help from our support team</p>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#00D4FF] transition-colors duration-200">{s('submitNewTicket')}</h3>
+                      <p className="text-sm text-gray-500">{s('getHelp')}</p>
                     </div>
                     <ChevronRight className="text-gray-400 group-hover:text-[#00D4FF] transition-colors duration-200" />
                   </div>
@@ -242,8 +243,8 @@ export default function SupportPage() {
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#00D4FF] transition-colors duration-200">View My Tickets</h3>
-                      <p className="text-sm text-gray-500">Track existing ticket status</p>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#00D4FF] transition-colors duration-200">{s('viewMyTickets')}</h3>
+                      <p className="text-sm text-gray-500">{s('trackStatus')}</p>
                     </div>
                     <ChevronRight className="text-gray-400 group-hover:text-gray-900 transition-colors duration-200" />
                   </div>
@@ -253,7 +254,7 @@ export default function SupportPage() {
               {/* Recent Tickets */}
               {tickets.length > 0 && (
                 <div className="mt-8">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Tickets</h2>
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4">{s('recentTickets')}</h2>
                   <TicketList tickets={tickets.slice(0, 3)} />
                 </div>
               )}
@@ -263,8 +264,8 @@ export default function SupportPage() {
           {activeTab === 'new-ticket' && (
             <div>
               <div className="mb-6">
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('newTicket')}</h1>
-                <p className="text-gray-500">Submit a new support request and our team will assist you.</p>
+                <h1 className="text-2xl font-bold text-gray-900 mb-2">{s('submitNewTicket')}</h1>
+                <p className="text-gray-500">{s('newTicketDesc')}</p>
               </div>
               <div className="max-w-2xl">
                 <TicketForm />
@@ -275,8 +276,8 @@ export default function SupportPage() {
           {activeTab === 'my-tickets' && (
             <div>
               <div className="mb-6">
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('myTickets')}</h1>
-                <p className="text-gray-500">View and track all your support requests.</p>
+                <h1 className="text-2xl font-bold text-gray-900 mb-2">{s('viewMyTickets')}</h1>
+                <p className="text-gray-500">{s('myTicketsDesc')}</p>
               </div>
               <TicketList tickets={tickets} />
             </div>

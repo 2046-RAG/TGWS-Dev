@@ -24,7 +24,7 @@ export default async function LoginPage({
 
       <p className="text-center text-gray-500 text-sm mt-6">
         {t('noAccount')}{' '}
-        <Link href={`/${locale}/support/register`} className="text-[#00D4FF] hover:underline">
+        <Link href={`/${locale}/support/register`} className="inline-flex items-center text-[#00D4FF] hover:underline min-h-[44px] py-1">
           {t('createAccount')}
         </Link>
       </p>

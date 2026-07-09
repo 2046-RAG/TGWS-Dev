@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Video, Code2, Bot, BrainCircuit, Server, Cloud, HardDrive,
+  Video, Code2, Bot, BrainCircuit, Compass, Server, Cloud, HardDrive,
   Shield, Lock, MonitorCheck, Network, CloudCog, Bug,
   AlertTriangle, Settings, Database, RefreshCw, Globe, ShieldCheck,
   Wifi, Cable, Route, Unplug, Radio, Router, NetworkIcon
@@ -35,6 +36,7 @@ const slugToI18n: Record<string, string> = {
   'ai-assisted-coding': 'aigcCoding',
   'ai-agent-development': 'aiAgent',
   'enterprise-legacy-system-ai-augmentation': 'legacyAI',
+  'ai-adoption-services': 'aiAdoption',
   'server-virtualization-platform': 'vmPlatform',
   'hyper-converged-infrastructure': 'hci',
   'cloud-migration': 'cloudPlatform',
@@ -65,6 +67,7 @@ const iconMap: Record<string, React.ReactNode> = {
   'ai-assisted-coding': <Code2 size={28} />,
   'ai-agent-development': <Bot size={28} />,
   'enterprise-legacy-system-ai-augmentation': <BrainCircuit size={28} />,
+  'ai-adoption-services': <Compass size={28} />,
   'server-virtualization-platform': <Server size={28} />,
   'hyper-converged-infrastructure': <Database size={28} />,
   'cloud-migration': <Cloud size={28} />,
@@ -105,7 +108,18 @@ const tabs: { key: TabKey; i18nKey: string }[] = [
 
 export default function ProductsList({ products }: { products: Product[] }) {
   const t = useTranslations('products');
-  const [activeTab, setActiveTab] = useState<TabKey>('build');
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const initialTab = (searchParams.get('category') as TabKey) || 'build';
+  const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
+
+  const handleTabChange = useCallback((tab: TabKey) => {
+    setActiveTab(tab);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('category', tab);
+    router.replace(`?${params.toString()}`, { scroll: false });
+  }, [searchParams, router]);
 
   const filtered = products.filter(p => p.category === activeTab);
 
@@ -162,7 +176,7 @@ export default function ProductsList({ products }: { products: Product[] }) {
         {tabs.map((tab) => (
           <button
             key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
+            onClick={() => handleTabChange(tab.key)}
             className={`relative px-6 sm:px-8 py-3 rounded-full text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 ${
               activeTab === tab.key
                 ? 'text-white'

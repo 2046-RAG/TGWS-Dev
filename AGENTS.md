@@ -122,6 +122,56 @@ src/
 - Content managed via Sanity multi-language fields
 - Use `next-intl` or similar for i18n
 
+## Design Context
+
+### Design System Files
+
+| File | Purpose |
+|------|---------|
+| `tgws/DESIGN.md` | Color system, typography, spacing, animations, accessibility, responsive rules |
+| `tgws/COMPONENTS.md` | Component inventory, props, patterns, shared conventions |
+| `tgws/src/app/globals.css` | All CSS classes (`.card`, `.glass`, `.glow`, `.btn-primary`, `.btn-secondary`, animations) |
+
+### Color Tokens (from globals.css)
+
+| Token | Value | Role |
+|-------|-------|------|
+| `--color-primary` | `#00D4FF` | CTAs, links, focus rings, accents |
+| `--color-accent` | `#7B61FF` | Secondary accent (Run pillar) |
+| `--color-surface` | `#FAFAFA` | Card backgrounds |
+| `--color-background` | `#F4F4F5` | Page background |
+| `--color-foreground` | `#18181B` | Primary text |
+
+### Font Stack
+
+| Role | Font | CSS Variable |
+|------|------|-------------|
+| Heading | HelveticaNowDisplay-Medium | `var(--font-heading)` |
+| Body | HelveticaNowDisplayW01-Rg | `var(--font-body)` |
+| Mono | JetBrains Mono | `var(--font-mono)` |
+
+### Key Design Rules
+
+1. **Accent restraint**: Primary color `#00D4FF` stays ≤10% of any surface area
+2. **Pill buttons**: All primary/secondary buttons use `border-radius: 9999px`
+3. **Card hover**: `translateY(-2px)` with cyan border glow — respects `prefers-reduced-motion`
+4. **Focus rings**: `box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #00D4FF` (double ring)
+5. **Touch targets**: 44px minimum on mobile (WCAG 2.5.8)
+6. **Dark mode**: Automatic via `prefers-color-scheme: dark` — no manual toggle
+7. **Form inputs**: Consistent `bg-gray-50 border-gray-200 rounded-lg` with `focus:border-[#00D4FF]`
+8. **Icons**: Lucide React, sizes 14–32px depending on context
+9. **Progressive enhancement**: Content visible without JS; animations are enhancement via `.js-loaded` class
+10. **Reduced motion**: All animations disabled via `@media (prefers-reduced-motion: reduce)`
+
+### Brand Personality
+
+- **Professional**: Enterprise IT, not a startup
+- **Technical**: Code-forward, infrastructure-focused
+- **Reliable**: Trust signals, partner logos, case studies
+- **Anti-patterns**: No gradient CTAs, no fake metrics, no template-feeling card grids
+
+---
+
 ## Harness Constraints
 
 These constraints are enforced during development:
@@ -167,6 +217,12 @@ These constraints are enforced during development:
 27. **Playwright只允许Edge浏览器** - 所有Playwright测试和配置禁止使用Chrome/Chromium，只允许使用Microsoft Edge。配置路径: `executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'`。禁止安装Chromium。
 28. **重复检测处理规则** - 系统提示"repetition detected"时，禁止用不同措辞重复相同内容。正确做法：直接跳过该部分，继续下一个话题，或等待用户指示。"重新组织输出"会陷入循环，不是解决方案。
 29. **行动前必须查阅约束** - 每次执行任何操作前，必须先查阅AGENTS.md中的约束条件（第25-28条），确保不违反项目规则。违反约束将导致严重错误。
+30. **评估必须用工具，不能手动判断** - 任何UI/UX、内容质量、一致性的评估，必须调用对应的MCP工具或skill，不能仅凭阅读源代码就下结论。手动阅读代码只能发现"现象"（如字段名不匹配），不能做出"评价"（如设计质量、内容优劣）。违反此规则会导致评估缺乏工具支撑，结论不可靠。
+31. **skill是规范不是工具** - skill提供的是评估规范和最佳实践（只读知识），MCP提供的是数据查询和操作能力（读写工具）。评估时必须两者配合：skill定标准，MCP查数据，不能只用其中一个。
+32. **禁止启动dev server做测试** - `npm run dev` / `next dev` 启动耗时过长（>5秒），禁止用于问题排查。分析问题时必须用代码静态分析（读文件+逻辑推理）或 `npx next build --webpack` 验证编译。如需运行时验证，使用 `webfetch` 直接访问线上部署地址，或用 `node -e` 编写脚本测试API/数据层。
+33. **修bug不要动正常功能** - 进行功能改动时，只修改与问题直接相关的代码，不要顺手"清理"或"优化"其他看似无关的部分。任何非必要的改动都可能引入新问题。
+34. **评估维度必须记录工具归属** - 每个评估维度完成后，必须在checkpoint中记录"维度X → 工具Y → 评分/结论Z"，确保可追溯。不能只写"评估完成"，必须写明每个维度用了什么工具、得到什么结论。
+35. **维度评估不能替代实现审查** - 维度级评分（如"信息密度2.5/4"）会掩盖具体实现bug（空标签、未翻译字段、URL不同步）。评估时必须同时做：(1)维度打分 (2)按页面逐项检查具体实现。两者缺一不可。
 
 ## Open Items (PRD [S22])
 

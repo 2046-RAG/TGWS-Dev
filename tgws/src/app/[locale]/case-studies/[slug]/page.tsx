@@ -1,4 +1,4 @@
-import { client } from '@/lib/sanity.server';
+import { client } from '@/lib/sanity';
 import { notFound } from 'next/navigation';
 import CaseStudyDetail from './CaseStudyDetail';
 import type { Metadata } from 'next';

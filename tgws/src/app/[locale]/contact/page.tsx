@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Send, Loader2, MapPin, Mail, Phone } from 'lucide-react';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 
 interface FormErrors {
   name?: string;
@@ -59,9 +60,11 @@ export default function ContactPage() {
   };
 
   return (
-    <section className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
-      <a
-        href="#contact-form"
+    <>
+      <Breadcrumb items={[{ label: 'Contact Us' }]} />
+      <section className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
+        <a
+          href="#contact-form"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-[#00D4FF] focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:font-medium"
       >
         {t('skipToForm')}
@@ -200,7 +203,7 @@ export default function ContactPage() {
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="w-full sm:w-auto px-8 py-3 bg-[#00D4FF] text-white font-medium rounded-full hover:bg-[#00B8DB] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="btn-primary w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {status === 'sending' ? (
                 <>
@@ -241,18 +244,19 @@ export default function ContactPage() {
           <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('social')}</h2>
             <div className="space-y-3">
-              <a href="mailto:info@techguru-it.asia" className="flex items-center gap-3 text-gray-600 hover:text-gray-900 transition-colors">
-                <Mail size={18} className="text-[#00D4FF]" />
-                <span className="text-sm">info@techguru-it.asia</span>
+              <a href={`mailto:${t('emailAddress')}`} className="flex items-center gap-3 py-2 px-1 text-gray-600 hover:text-gray-900 min-h-[44px] transition-colors">
+                <Mail size={18} className="text-[#00D4FF] shrink-0" />
+                <span className="text-sm">{t('emailAddress')}</span>
               </a>
-              <a href="tel:+886223456789" className="flex items-center gap-3 text-gray-600 hover:text-gray-900 transition-colors">
-                <Phone size={18} className="text-[#7B61FF]" />
-                <span className="text-sm">+886 2-2345-6789</span>
+              <a href={`tel:${t('phoneNumber').replace(/\s/g, '')}`} className="flex items-center gap-3 py-2 px-1 text-gray-600 hover:text-gray-900 min-h-[44px] transition-colors">
+                <Phone size={18} className="text-[#7B61FF] shrink-0" />
+                <span className="text-sm">{t('phoneNumber')}</span>
               </a>
             </div>
           </div>
         </aside>
       </div>
-    </section>
+      </section>
+    </>
   );
 }

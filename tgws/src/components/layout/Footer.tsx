@@ -10,7 +10,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#18181B] py-12 sm:py-16">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-8 mb-10">
           <div>
             <h3 className="text-white font-semibold mb-4 text-sm">{t('products')}</h3>
             <ul className="space-y-2.5 text-sm text-gray-400">
@@ -39,7 +39,7 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-4 text-sm">{t('support')}</h3>
             <ul className="space-y-2.5 text-sm text-gray-400">
               <li><Link href={`/${locale}/support`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('tickets')}</Link></li>
-              <li><Link href={`/${locale}/support`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('faq')}</Link></li>
+              <li><Link href={`/${locale}/help`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('faq')}</Link></li>
             </ul>
           </div>
         </div>

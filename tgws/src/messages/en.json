@@ -7,14 +7,30 @@
     "blog": "Blog",
     "about": "About",
     "support": "Tickets",
-    "contact": "Contact Us"
+    "contact": "Contact Us",
+    "compare": "Why Us",
+    "vmware": "VMware Alternatives",
+    "build": "Build",
+    "run": "Run",
+    "protect": "Protect",
+    "healthcare": "Healthcare",
+    "finance": "Finance",
+    "retail": "Retail",
+    "logistics": "Logistics",
+    "education": "Education",
+    "government": "Government",
+    "allIndustries": "All Industries",
+    "allPosts": "All Posts",
+    "technical": "Technical",
+    "industry": "Industry",
+    "caseStudy": "Case Study"
   },
   "hero": {
     "company": "TechGuru Network & Data Solutions",
-    "tagline": "Your Trusted IT Partner in Asia. What challenge can we solve for you?",
+    "tagline": "From AI Workloads to Mission-Critical Infrastructure, We Secure Every Layer.",
     "heroLabel": {
-      "line1": "Hey there, meet TechGuru,",
-      "line2": "Build. Run. Protect. Your IT Infrastructure Partner"
+      "line1": "TechGuru Network & Data Solutions",
+      "line2": "Build. Run. Protect., Your End-to-End IT Partner"
     },
     "cta": {
       "solutions": "Explore Solutions",
@@ -29,11 +45,11 @@
     "build": "Build",
     "run": "Run",
     "protect": "Protect",
-    "buildDesc": "Build general workloads and future-oriented AI workloads",
-    "runDesc": "Extreme performance, extreme reliability infrastructure",
-    "protectDesc": "Comprehensive multi-dimensional protection for workloads and data",
-    "journeyLabel": "Your IT Journey, Fully Covered",
-    "journeyDesc": "From building workloads to running infrastructure to protecting everything — we cover every stage of your IT lifecycle.",
+    "buildDesc": "Design and deploy modern workloads, from AI-generated content and intelligent coding to autonomous agents and legacy system augmentation.",
+    "runDesc": "Run your infrastructure with enterprise virtualization, hyper-converged platforms, cloud migration, and managed hosting, optimized for performance and uptime.",
+    "protectDesc": "Secure your edge, endpoints, network, and cloud with next-gen firewalls, EDR, NDR, cloud security, and 24/7 managed detection and response.",
+    "journeyLabel": "One Partner. Three Pillars. Every Stage.",
+    "journeyDesc": "Whether you're building AI workloads, running enterprise infrastructure, or protecting critical assets, TechGuru delivers end-to-end solutions across your entire IT lifecycle.",
     "buildShort": "Create Workloads",
     "runShort": "Run Infrastructure",
     "protectShort": "Secure Everything",
@@ -41,6 +57,7 @@
     "aigcT2V": "Text-To-Video",
     "aigcI2V": "Image-To-Video",
     "aigcCoding": "AI Coding",
+    "aiAdoption": "AI Adoption",
     "aiAgent": "AI Agent Dev",
     "legacyAI": "Legacy Modernization",
     "vmPlatform": "Virtualization",
@@ -61,16 +78,47 @@
     "runTitle": "Run",
     "protectTitle": "Protect",
     "exploreProducts": "Explore Products",
+    "valueSectionTitle": "One Framework. Every Layer.",
+    "valueSectionDesc": "From AI workloads to mission-critical infrastructure, we cover your entire IT lifecycle with three focused pillars.",
+    "aiJourneyTitle": "Your AI Journey Starts Here",
+    "aiJourneyDesc": "From readiness assessment to autonomous agents, we guide your AI transformation at every stage.",
+    "aiStep1Title": "AI Adoption Assessment",
+    "aiStep1Desc": "Evaluate AI readiness, identify use cases, and create a roadmap tailored to your industry.",
+    "aiStep3Title": "AI Agent Development",
+    "aiStep3Desc": "Build autonomous agents that handle complex workflows, powered by Alibaba Cloud Bailian and ByteDance Volcengine.",
+    "vmwareCta": "Explore Migration Paths",
+    "buildHighlight1": "AI-generated content & video",
+    "buildHighlight2": "AI coding assistants",
+    "buildHighlight3": "Legacy system modernization",
+    "runHighlight1": "Enterprise virtualization",
+    "runHighlight2": "Hyper-converged infrastructure",
+    "runHighlight3": "Business continuity & DR",
+    "protectHighlight1": "Next-gen firewall & IPS",
+    "protectHighlight2": "EDR & NDR detection",
+    "protectHighlight3": "Managed security services",
+    "socialProofLabel": "Trusted by businesses across Asia",
+    "socialProofStat1": "28",
+    "socialProofStat1Label": "Enterprise Products",
+    "socialProofStat2": "19",
+    "socialProofStat2Label": "Technology Partners",
+    "socialProofStat3": "6",
+    "socialProofStat3Label": "Industry Solutions",
+    "socialProofStat4": "3+",
+    "socialProofStat4Label": "Years of Enterprise IT",
+    "conversionTitle": "Ready to Transform Your IT?",
+    "conversionDesc": "Tell us your challenges. Our team will map Build, Run, and Protect solutions to your needs, from assessment to deployment.",
+    "conversionPrimary": "Get Started Today",
+    "conversionSecondary": "Schedule a Demo",
     "vmwareLabel": "VMware Alternative",
-    "vmwareTitle": "Seamless VMware Migration",
-    "vmwareDesc": "Looking to move away from VMware? We provide proven migration paths to open-source and cost-effective alternatives, minimizing downtime and ensuring a smooth transition.",
+    "vmwareTitle": "VMware Alternatives, Your Pace, Your Way",
+    "vmwareDesc": "Not ready to fully abandon VMware? Start with a dual-hypervisor architecture: run edge and non-critical workloads on Proxmox VE, Sangfor, Nutanix, StarWind, or H3C alongside your existing VMware environment. Once validated, phase out VMware on your schedule, preserving your Veeam, Veritas (Cohesity), and other VMware ecosystem investments along the way.",
     "vmwareFeature1": "Proxmox VE & KVM solutions",
     "vmwareFeature2": "Sangfor aSV & HCI platforms",
     "vmwareFeature3": "Nutanix & Arcfra options",
-    "vmwareFeature4": "H3C hyper-converged infrastructure",
+    "vmwareFeature4": "StarWind HCI & Virtual SAN",
     "vmwareCta": "Explore VMware Alternatives",
     "industriesTitle": "Industry Solutions",
-    "industriesDesc": "Tailored technology solutions for every industry, addressing unique challenges with proven expertise.",
+    "industriesDesc": "Deep expertise across healthcare, finance, retail, logistics, education, and government, with solutions built for Asia's unique regulatory and operational landscape.",
     "industries": {
       "healthcare": {
         "name": "Healthcare",
@@ -87,16 +135,16 @@
     },
     "viewAllSolutions": "View All Solutions",
     "stats": {
-      "clients": "Enterprise Clients",
-      "uptime": "Uptime Guarantee",
-      "years": "Years in Business",
+      "clients": "Solutions Delivered",
+      "uptime": "Vendor Certifications",
+      "years": "Markets Across Asia",
       "partners": "Technology Partners"
     },
-    "partnersLabel": "Trusted by Leading Organizations",
-    "ctaTitle": "Ready to Transform Your IT?",
-    "ctaDesc": "Let's discuss how Build, Run, and Protect can work for your organization.",
+    "partnersLabel": "Our Technology Partners",
+    "ctaTitle": "Let's Build Something Together",
+    "ctaDesc": "Tell us your IT challenges. Our team will map Build, Run, and Protect solutions to your needs.",
     "ctaPrimary": "Get Started",
-    "ctaSecondary": "Contact Support",
+    "ctaSecondary": "Schedule a Demo",
     "routing_switching": "Routing & Switching",
     "routing_switchingDesc": "Enterprise routers, managed switches, and network infrastructure for reliable connectivity.",
     "wireless": "Wireless",
@@ -108,125 +156,125 @@
   },
   "solutions": {
     "title": "Industry Solutions",
-    "subtitle": "Tailored technology solutions for every industry, addressing unique challenges with proven expertise.",
+    "subtitle": "Enterprise IT infrastructure configured for your industry's specific workload demands.",
     "painPoints": "Pain Points",
-    "ourSolutions": "Our Solutions",
-    "featuredProducts": "Featured Products",
+    "ourSolutions": "Infrastructure Needs",
+    "featuredProducts": "AI Applications",
     "cta": "Explore Products for This Industry",
-    "ctaDesc": "Ready to transform your IT infrastructure?",
+    "ctaDesc": "Ready to upgrade your IT infrastructure?",
     "industries": {
       "healthcare": {
         "name": "Healthcare",
-        "description": "Digital transformation for healthcare providers, improving patient outcomes through secure, compliant technology infrastructure.",
+        "description": "Reliable, secure infrastructure for healthcare providers, protecting patient data while keeping systems always-on.",
         "painPoints": [
-          "Strict regulatory compliance (HIPAA, local data protection laws)",
-          "Legacy systems hindering digital patient care",
-          "Cybersecurity threats targeting sensitive health records"
+          "System downtime directly impacts patient care and safety",
+          "Growing PACS imaging data requires scalable, always-on storage",
+          "Multiple clinics and hospitals need unified IT management"
         ],
         "solutions": [
-          "HIPAA-compliant cloud migration and hybrid infrastructure",
-          "Unified patient data platform with real-time analytics",
-          "Zero-trust security framework for health data protection"
+          "Build: PACS needs high-capacity tiered storage (Sangfor/Nutanix HCI); HIS demands high-IOPS all-flash configuration",
+          "Run: Multi-site SD-WAN for clinic-hospital integration; core and aggregation switches build hospital backbone; WiFi 6 covers wards, outpatient areas, and mobile rounds; HCI clusters ensure continuous availability",
+          "Protect: NGFW perimeter defense; NDR monitors network anomalies; MDR provides continuous security monitoring and threat response; BCDR for disaster recovery."
         ],
         "products": [
-          "SecureCloud Healthcare",
-          "DataVault Medical",
-          "NetGuard Health"
+          "Legacy System AI augments HIS, LIS, RIS, and EMR, adding intelligent report generation, workflow automation, and anomaly detection without replacing core systems.",
+          "AIGC generates medical training materials, patient education content, and radiology report templates.",
+          "AI Agent automates appointment scheduling, insurance claim processing, and referral routing."
         ]
       },
       "finance": {
         "name": "Finance",
-        "description": "Robust, secure infrastructure for financial institutions, enabling real-time processing and regulatory compliance.",
+        "description": "High-performance, resilient infrastructure for banks, insurance, and fintech, built for speed and reliability.",
         "painPoints": [
-          "High-frequency transaction processing bottlenecks",
-          "Evolving financial regulatory requirements",
-          "Fraud detection and prevention at scale"
+          "Transaction systems demand ultra-low latency and high IOPS",
+          "Any downtime means direct financial loss and regulatory risk",
+          "Multiple branches need consistent security policies"
         ],
         "solutions": [
-          "Low-latency trading infrastructure optimization",
-          "Automated compliance monitoring and reporting",
-          "AI-powered fraud detection and risk management"
+          "Build: Transaction systems need high-availability all-flash HCI (Sangfor/Nutanix) for uptime and failover; data analytics requires high-capacity storage",
+          "Run: Branch offices connected via SD-WAN; core switches build reliable branch networks; branch WiFi supports mobile office and customer services; HCI simplifies multi-site operations",
+          "Protect: NGFW with deep packet inspection; EDR + NDR for real-time monitoring; MDR for continuous threat detection."
         ],
         "products": [
-          "FinCloud Pro",
-          "ComplianceOS",
-          "RiskShield AI"
+          "Legacy System AI enhances non-core financial systems, CRM automation, report generation, document processing, and compliance workflow orchestration.",
+          "We avoid core banking and trading platforms.",
+          "AI Agent automates fraud detection workflows, KYC verification, and regulatory report generation."
         ]
       },
       "retail": {
         "name": "Retail",
-        "description": "Omnichannel retail technology that personalizes customer experiences and optimizes supply chain operations.",
+        "description": "Scalable infrastructure for retail operations, from POS systems to e-commerce platforms.",
         "painPoints": [
-          "Fragmented omnichannel customer experience",
-          "Inventory visibility across multiple channels",
-          "Scalability during peak shopping seasons"
+          "Peak seasons cause massive traffic spikes",
+          "E-commerce platforms need high availability and fast response",
+          "Customer payment data requires strict protection"
         ],
         "solutions": [
-          "Unified commerce platform with real-time inventory sync",
-          "AI-driven demand forecasting and personalization",
-          "Auto-scaling cloud infrastructure for traffic spikes"
+          "Build: E-commerce needs elastic cloud scaling; POS requires stable local compute",
+          "Run: Multi-store SD-WAN optimization; store WiFi supports POS, customer access, and smart shelving; access switches connect in-store devices; HCI supports local inventory management",
+          "Protect: WAF shields web apps and payment gateways; NGFW guards store network security."
         ],
         "products": [
-          "RetailCloud Hub",
-          "DemandSense AI",
-          "ScaleFlex Retail"
+          "AIGC generates product imagery, advertising visuals, and marketing copy, reducing content production from weeks to hours.",
+          "AI Agent handles inventory forecasting, demand planning, and supplier communication.",
+          "Legacy System AI enhances POS analytics, customer behavior insights, and loyalty program automation."
         ]
       },
       "logistics": {
         "name": "Logistics",
-        "description": "End-to-end logistics technology solutions for supply chain visibility, optimization, and resilience.",
+        "description": "Connected infrastructure for supply chain operations, keeping warehouses, fleets, and offices in sync.",
         "painPoints": [
-          "Limited real-time supply chain visibility",
-          "Route optimization and delivery efficiency",
-          "Cross-border data transfer and compliance"
+          "Real-time tracking requires reliable, always-on connectivity",
+          "Multiple warehouses and offices need unified network management",
+          "Cross-border data transfer needs secure, compliant channels"
         ],
         "solutions": [
-          "IoT-enabled real-time tracking and monitoring",
-          "AI-optimized routing and fleet management",
-          "Secure cross-border data infrastructure"
+          "Build: WMS needs local HCI compute and storage; transport systems require reliable data processing",
+          "Run: Multi-site SD-WAN interconnection; warehouse WiFi supports barcode scanners, mobile inventory tablets, and IoT sensors; backbone switches connect distribution centers",
+          "Protect: NGFW secures perimeter across distributed sites; encrypted channels protect cross-border data."
         ],
         "products": [
-          "LogiTrack Pro",
-          "RouteAI",
-          "BorderLink Secure"
+          "AI Agent handles route scheduling, delivery time prediction, and anomaly alerting, integrating with existing TMS and fleet management systems.",
+          "AIGC creates warehouse training materials, safety documentation, and logistics SOPs.",
+          "Legacy System AI enhances TMS with predictive analytics, fleet optimization, and customs documentation."
         ]
       },
       "education": {
         "name": "Education",
-        "description": "Scalable, accessible technology infrastructure for modern educational institutions and e-learning platforms.",
+        "description": "Cost-effective infrastructure for schools and universities, supporting e-learning and campus IT needs.",
         "painPoints": [
-          "Supporting large-scale remote learning platforms",
-          "Protecting student data and privacy",
-          "Managing hybrid on-premise and cloud environments"
+          "Exam periods and course registration cause traffic spikes",
+          "Limited IT budgets require maximum value per dollar",
+          "Campus networks serve thousands of concurrent users"
         ],
         "solutions": [
-          "Scalable e-learning platform infrastructure",
-          "Student data protection and FERPA compliance",
-          "Hybrid campus IT modernization"
+          "Build: LMS and course selection need elastic scaling for peak periods; budget HCI for cost efficiency",
+          "Run: Campus WiFi serves thousands of users; core and aggregation switches build campus backbone; cloud platform provides flexible expansion",
+          "Protect: WAF protects student portals; NGFW guards campus network security."
         ],
         "products": [
-          "EduCloud Platform",
-          "StudentShield",
-          "CampusNet Hybrid"
+          "AIGC creates course materials, training videos, and educational content, instructors produce rich media without dedicated production teams.",
+          "AI Agent automates student inquiry responses, enrollment processing, and academic advising.",
+          "Legacy System AI enhances LMS with personalized learning paths, automated grading, and student performance analytics."
         ]
       },
       "government": {
         "name": "Government",
-        "description": "Secure, sovereign technology solutions for government agencies, meeting strict compliance and availability requirements.",
+        "description": "Secure, reliable infrastructure for government agencies, built for availability and data protection.",
         "painPoints": [
-          "Stringent security and data sovereignty mandates",
-          "Legacy system modernization with zero downtime",
-          "Citizen-facing services reliability at scale"
+          "Citizen-facing services must stay online 24/7",
+          "Legacy systems need modernization without service disruption",
+          "Data sovereignty requirements restrict public cloud options"
         ],
         "solutions": [
-          "Sovereign cloud and air-gapped infrastructure",
-          "Phased modernization with continuous availability",
-          "High-availability citizen service platforms"
+          "Build: On-premise HCI for data sovereignty; high-availability configuration for critical systems",
+          "Run: BCDR ensures mission-critical services continuity; citizen service hall WiFi supports queue management and self-service kiosks; core switches interconnect agency networks; phased modernization with parallel-run validation",
+          "Protect: NGFW meets security compliance; encryption and access controls protect sensitive data."
         ],
         "products": [
-          "GovCloud Sovereign",
-          "LegacyBridge",
-          "CitizenHub Platform"
+          "Legacy System AI enhances OA and document management, automating document summarization, approval routing, and workflow orchestration.",
+          "AI Agent automates citizen service routing, permit processing, and inter-agency coordination.",
+          "AIGC generates policy summaries, public communication materials, and training content for government staff."
         ]
       }
     }
@@ -247,28 +295,28 @@
     },
     "articles": {
       "1": {
-        "title": "Building Resilient Hybrid Cloud Architecture",
-        "excerpt": "Learn how to design hybrid cloud environments that balance performance, cost, and compliance for enterprise workloads."
+        "title": "Hybrid Cloud Architecture Design Guide",
+        "excerpt": "A practical framework for designing hybrid cloud environments, workload classification, four-quadrant decisions, and phased migration."
       },
       "2": {
-        "title": "Zero Trust Security: A Complete Implementation Guide",
-        "excerpt": "Deep dive into implementing zero trust architecture across your organization's network and applications."
+        "title": "Zero Trust Network Architecture Implementation",
+        "excerpt": "From concept to implementation: identity verification, micro-segmentation, and least-privilege access for enterprise networks."
       },
       "3": {
-        "title": "AI-Powered Infrastructure Monitoring in 2025",
-        "excerpt": "How machine learning is transforming IT operations with predictive analytics and automated incident response."
+        "title": "AI Infrastructure Hype: A Cold Reality Check",
+        "excerpt": "Every enterprise wants AI, but not every needs to build its own AI infrastructure. A pragmatic path matters more than following trends."
       },
       "4": {
-        "title": "SD-WAN vs SASE: Choosing the Right Network Strategy",
-        "excerpt": "A practical comparison to help you decide between SD-WAN and SASE for your organization's network needs."
+        "title": "SD-WAN vs SASE: Selection Guide",
+        "excerpt": "SD-WAN and SASE are not mutually exclusive. Understanding their differences helps you choose based on actual needs."
       },
       "5": {
-        "title": "Cloud Cost Optimization: 10 Proven Strategies",
-        "excerpt": "Discover actionable techniques to reduce cloud spending while maintaining performance and reliability."
+        "title": "Cloud Cost Crisis: The Repatriation Trend",
+        "excerpt": "More enterprises are moving workloads back from public cloud. Cloud is not a silver bullet, cost and control are reshaping IT."
       },
       "6": {
-        "title": "Ransomware Prevention: Enterprise Defense Playbook",
-        "excerpt": "Comprehensive strategies to protect your organization against evolving ransomware threats."
+        "title": "Ransomware-as-a-Service: SME Defense Strategies",
+        "excerpt": "Ransomware has become commercialized with attack costs dropping to hundreds of dollars. SMEs are now primary targets."
       }
     },
     "detail": {
@@ -291,7 +339,7 @@
             },
             {
               "heading": "Key Design Principles",
-              "body": "Start with workload classification: classify every application by latency sensitivity, data sovereignty, and burst requirements. Design for failure — assume every component will fail and build automatic failover. Automate everything from provisioning to scaling to recovery."
+              "body": "Start with workload classification: classify every application by latency sensitivity, data sovereignty, and burst requirements. Design for failure, assume every component will fail and build automatic failover. Automate everything from provisioning to scaling to recovery."
             },
             {
               "heading": "Implementation Roadmap",
@@ -299,7 +347,7 @@
             },
             {
               "heading": "Common Pitfalls",
-              "body": "Avoid vendor lock-in by using Kubernetes for portability. Don't ignore networking — cross-cloud connectivity is the hardest part. Plan for data gravity: large datasets are expensive to move. Always have a rollback plan."
+              "body": "Avoid vendor lock-in by using Kubernetes for portability. Don't ignore networking, cross-cloud connectivity is the hardest part. Plan for data gravity: large datasets are expensive to move. Always have a rollback plan."
             }
           ]
         },
@@ -423,61 +471,56 @@
   },
   "about": {
     "title": "About TechGuru",
-    "intro": "Founded in 2010, TechGuru Network & Data Solutions has been at the forefront of IT infrastructure innovation in Asia. We partner with leading technology providers to deliver cutting-edge solutions that empower businesses to thrive in the digital era.",
+    "intro": "Founded in 2023, TechGuru Network & Data Solutions delivers IT infrastructure solutions across Asia. We partner with leading technology providers to help businesses build, run, and protect their critical systems.",
     "timeline": {
       "title": "Our Journey",
       "events": [
-        "TechGuru founded in Taipei, specializing in enterprise networking solutions.",
-        "Expanded to Hong Kong, launched managed security services.",
-        "Partnered with major cloud providers, introduced hybrid cloud solutions.",
-        "Opened Shanghai office, launched AI-powered infrastructure platform.",
-        "Achieved ISO 27001 and SOC 2 certifications, reached 500+ enterprise clients.",
-        "Launched VMware migration program, expanded across Southeast Asia."
+        "2023: TechGuru founded in Manila by three IT veterans with 5-10 years of enterprise sales and pre-sales experience.",
+        "2023: Secured partnerships with Sangfor, Fortinet, and H3C. Launched core infrastructure and security portfolio.",
+        "2024: Expanded vendor ecosystem to Nutanix, Sophos, Hillstone, Alibaba Cloud, and Huawei. Grew team to 10.",
+        "2024: Launched VMware alternative program with Proxmox VE, Sangfor HCI, and Nutanix AHV migration paths.",
+        "2025: Added AI capabilities through Alibaba Cloud Bailian and ByteDance Volcengine partnerships. Introduced AIGC and AI Adoption services.",
+        "2025: Expanded to 20+ vendor partnerships covering HCI, security, networking, cloud, and AI. Serving clients across Philippines and Southeast Asia."
       ]
     },
     "team": {
-      "title": "Leadership Team",
+      "title": "Our Team",
       "members": {
         "0": {
-          "name": "David Chen",
-          "role": "CEO & Founder",
-          "bio": "20+ years in IT infrastructure. Former VP at a leading Asia-Pacific tech firm."
+          "name": "Marco Reyes",
+          "role": "CEO & Sales Director",
+          "bio": "10+ years in enterprise IT sales. Deep relationships with major vendors and enterprise clients across Asia."
         },
         "1": {
-          "name": "Sarah Lin",
-          "role": "CTO",
-          "bio": "Cloud architecture expert. Previously led engineering at a Fortune 500 tech company."
+          "name": "Rafael Santos",
+          "role": "CTO & Solutions Architect",
+          "bio": "10+ years in IT infrastructure pre-sales. Expert in HCI, cloud migration, and security architecture."
         },
         "2": {
-          "name": "James Wang",
-          "role": "VP of Sales",
-          "bio": "15+ years driving enterprise IT solutions across Greater China and Southeast Asia."
-        },
-        "3": {
-          "name": "Emily Zhang",
-          "role": "Head of Security",
-          "bio": "Certified CISSP and CISM. Former cybersecurity advisor for government agencies."
+          "name": "Adrian Mendoza",
+          "role": "VP of Business Development",
+          "bio": "8+ years in IT channel and partner management. Specializes in vendor ecosystem expansion and enterprise client acquisition."
         }
       }
     },
     "qualifications": {
-      "title": "Certifications & Partnerships",
+      "title": "Vendor Partnerships",
       "items": {
         "0": {
-          "title": "ISO 27001 Certified",
-          "description": "Information security management system certification for enterprise-grade data protection."
+          "title": "Infrastructure & Virtualization",
+          "description": "Sangfor, Nutanix, H3C, Huawei, Lenovo, Dell, HPE, HCI, servers, storage, and virtualization platforms."
         },
         "1": {
-          "title": "SOC 2 Type II",
-          "description": "Independent audit verification of security, availability, and confidentiality controls."
+          "title": "Network & Security",
+          "description": "Fortinet, Sophos, Hillstone, Ruijie, Prolink, NGFW, EDR, NDR, SD-WAN, switches, and wireless."
         },
         "2": {
-          "title": "AWS Advanced Partner",
-          "description": "Certified AWS consulting partner with validated cloud migration and optimization expertise."
+          "title": "Cloud & AI",
+          "description": "Alibaba Cloud, ByteDance Volcengine, AIGC pipelines, AI platform deployment, and managed cloud services."
         },
         "3": {
-          "title": "VMware Premier Partner",
-          "description": "Premier-level partnership for virtualization, cloud management, and migration services."
+          "title": "Specialized Solutions",
+          "description": "Sifang (北京四方继保), power protection and substation automation. Proxmox VE, open-source virtualization."
         }
       }
     }
@@ -692,7 +735,7 @@
     "company": "Company",
     "companyPlaceholder": "Company name (optional)",
     "phone": "Phone Number",
-    "phonePlaceholder": "+886 912-345-678",
+    "phonePlaceholder": "+63 960 282 5051",
     "message": "Message",
     "messagePlaceholder": "Tell us about your project or question...",
     "submit": "Send Message",
@@ -701,13 +744,15 @@
     "error": "Something went wrong. Please try again later.",
     "required": "This field is required",
     "invalidEmail": "Please enter a valid email address",
-    "offices": "Our Offices",
-    "taipei": "Taipei HQ",
-    "taipeiAddr": "10101 Taipei, Zhongzheng District",
-    "hongKong": "Hong Kong",
-    "hongKongAddr": "Central, Hong Kong",
+    "offices": "Our Office",
+    "taipei": "Manila HQ",
+    "taipeiAddr": "10 Rajah Matanda St, corner JP Rizal St, Project 4, Quezon City, 1109 Metro Manila",
+    "hongKong": "Contact",
+    "hongKongAddr": "+63 960 282 5051 | Inquiries@techguru-it.asia",
     "social": "Follow Us",
-    "skipToForm": "Skip to contact form"
+    "skipToForm": "Skip to contact form",
+    "emailAddress": "Inquiries@techguru-it.asia",
+    "phoneNumber": "+63 960 282 5051"
   },
   "products": {
     "title": "Our Products & Services",
@@ -716,17 +761,17 @@
     "run": "Run",
     "protect": "Protect",
     "aigcT2V": "Text-To-Video",
-    "aigcT2VDesc": "Generate videos from text descriptions using cutting-edge AI models.",
+    "aigcT2VDesc": "Generate professional videos from text prompts using Seedance and HappyHorse models.",
     "aigcI2V": "Image-To-Video",
-    "aigcI2VDesc": "Transform static images into dynamic video content with AI.",
+    "aigcI2VDesc": "Transform static images into dynamic video content with Seedance and HappyHorse.",
     "aigcCoding": "AI Coding",
-    "aigcCodingDesc": "AI-powered development tools to accelerate your coding workflow.",
+    "aigcCodingDesc": "We help your team adopt AI coding assistants, from pilot to production.",
     "aiAgent": "AI Agent Development",
-    "aiAgentDesc": "Build intelligent autonomous agents for complex task automation.",
+    "aiAgentDesc": "Autonomous agents that handle multi-step workflows across your systems.",
     "legacyAI": "Legacy System AI Transformation",
-    "legacyAIDesc": "Modernize traditional systems with AI-driven intelligent upgrades.",
+    "legacyAIDesc": "Add AI to your existing ERP, CRM, or OA systems, prediction, automation, anomaly detection, without replacing them.",
     "vmPlatform": "Virtualization Platform",
-    "vmPlatformDesc": "VMware alternatives including Proxmox VE, Sangfor aSV, Nutanix, Arcfra, H3C.",
+    "vmPlatformDesc": "VMware alternatives including Proxmox VE, Sangfor aSV, Nutanix, Arcfra, StarWind, and H3C.",
     "hci": "Hyper-Converged Infrastructure",
     "hciDesc": "Integrated compute, storage, and networking in a single platform.",
     "cloudPlatform": "Cloud Platform",
@@ -734,7 +779,7 @@
     "hardware": "Hardware",
     "hardwareDesc": "Enterprise-grade servers and storage solutions for your infrastructure.",
     "hosting": "Managed Hosting",
-    "hostingDesc": "Fully managed infrastructure services with 24/7 support.",
+    "hostingDesc": "Fully managed infrastructure services with responsive support.",
     "bcdr": "Business Continuity",
     "bcdrDesc": "DR-as-a-Service and Backup-as-a-Service for data protection.",
     "ngfw": "Next-Gen Firewall & IPS",
@@ -753,39 +798,49 @@
     "mdrDesc": "24/7 security monitoring, penetration testing, and expert threat analysis.",
     "incidentResponse": "Incident Response",
     "incidentResponseDesc": "Rapid response to security incidents with expert forensic analysis.",
-    "buildTitle": "Build — Create Your Workloads",
-    "buildStory": "When you need to create, develop, or modernize your business workloads, these products help you build intelligent operations from 0 to 1. From AIGC video generation to AI Agent development to legacy system modernization.",
-    "runTitle": "Run — Power Your Infrastructure",
+    "aiAdoption": "AI Adoption Services",
+    "aiAdoptionDesc": "From zero to production AI, assessment, PoC, training, and rollout.",
+    "buildTitle": "Build, Create Your Workloads",
+    "buildStory": "When you need to create, develop, or modernize your business workloads, these products help you build intelligent operations from 0 to 1. From AIGC content production to AI-assisted development, AI adoption enablement, and legacy system modernization.",
+    "runTitle": "Run, Power Your Infrastructure",
     "runStory": "When you need extreme performance and reliability to run your workloads, these products provide the unified infrastructure. From virtualization to hyper-converged to cloud platforms to business continuity.",
-    "protectTitle": "Protect — Secure Every Layer",
+    "protectTitle": "Protect, Secure Every Layer",
     "protectStory": "When you need comprehensive security across your entire stack, these products protect every layer. From perimeter firewalls to endpoint detection to cloud security to managed detection and response.",
     "features": {
       "ai-generated-content-aigc": [
-        "Text-to-video generation",
-        "Image-to-video conversion",
-        "Multi-language support",
-        "Batch processing",
-        "Brand customization"
+        "Text-to-video (Seedance, HappyHorse)",
+        "Image-to-video (Seedance, HappyHorse)",
+        "Text-to-image (Jimeng, Wan 2.7)",
+        "Text-to-speech (CosyVoice)",
+        "Managed cloud deployment"
       ],
       "ai-assisted-coding": [
-        "Code generation",
-        "Automated testing",
-        "Code review",
-        "Documentation generation",
-        "Multi-language support"
+        "AI readiness assessment",
+        "Tool deployment (Copilot, Cursor, Lingma)",
+        "Team training workshops",
+        "Code quality governance",
+        "Organization-wide rollout"
       ],
       "ai-agent-development": [
-        "Multi-agent orchestration",
-        "Tool integration",
-        "Memory & context management",
-        "Production deployment"
+        "Customer service triage",
+        "Data analysis workflows",
+        "Approval routing automation",
+        "Cross-system orchestration",
+        "Bailian & Volcengine deployment"
       ],
       "enterprise-legacy-system-ai-augmentation": [
-        "API proxy layer",
-        "Zero-intrusion integration",
-        "Model adaptation",
-        "Gradual deployment",
-        "Process automation"
+        "ERP/CRM/OA AI enhancement",
+        "API integration layer",
+        "No core system changes",
+        "Prediction & automation",
+        "Gradual deployment"
+      ],
+      "ai-adoption-services": [
+        "AI readiness assessment",
+        "Use case identification",
+        "Platform selection & PoC",
+        "Team training & enablement",
+        "Organization-wide rollout"
       ],
       "server-virtualization-platform": [
         "VMware migration paths",
@@ -823,7 +878,7 @@
         "Scalable capacity"
       ],
       "managed-hosting-services": [
-        "24/7 monitoring",
+        "Continuous monitoring",
         "Patch management",
         "Backup & recovery",
         "Security hardening",
@@ -949,7 +1004,7 @@
   "vmware": {
     "heroTag": "VMware Alternative",
     "heroTitle": "Break Free from VMware Lock-in",
-    "heroSubtitle": "Migrate to cost-effective, open-source alternatives with zero downtime and proven migration paths.",
+    "heroSubtitle": "Migrate to cost-effective alternatives with minimal downtime and proven dual-hypervisor migration paths.",
     "heroCta": "Get Free Assessment",
     "whyTitle": "Why Migrate Away from VMware?",
     "whySubtitle": "Broadcom's acquisition has created uncertainty. Now is the time to explore better options.",
@@ -969,26 +1024,26 @@
     "sol2Desc": "Hyper-converged infrastructure with built-in virtualization, HCI, and unified management.",
     "sol3Title": "Nutanix AHV",
     "sol3Desc": "Enterprise-grade hyper-converged platform with hybrid cloud capabilities.",
-    "sol4Title": "H3C UIS",
-    "sol4Desc": "Integrated infrastructure with virtualization, storage, and networking in one platform.",
+    "sol4Title": "StarWind HCI",
+    "sol4Desc": "Software-defined HCI with native two-node clustering, supporting Hyper-V, VMware, and Proxmox VE.",
     "processTitle": "Our Migration Process",
-    "processSubtitle": "A structured 4-step approach to minimize risk and downtime.",
+    "processSubtitle": "A structured 4-step approach to minimize risk and disruption.",
     "step1": "Assessment",
     "step1Desc": "Audit your current VMware environment, workloads, and dependencies.",
     "step2": "Planning",
-    "step2Desc": "Design the target architecture and create a detailed migration runbook.",
+    "step2Desc": "Design the dual-hypervisor target architecture and create a detailed migration runbook.",
     "step3": "Migration",
-    "step3Desc": "Execute the migration with live cutover and zero-downtime validation.",
+    "step3Desc": "Migrate edge and non-critical workloads first, validate stability, then phase out VMware progressively.",
     "step4": "Optimization",
-    "step4Desc": "Fine-tune performance, train your team, and establish ongoing support.",
-    "statsTitle": "Proven Track Record",
-    "stat1": "500+",
-    "stat1Label": "VMware Migrations",
-    "stat2": "99.9%",
-    "stat2Label": "Uptime During Migration",
-    "stat3": "35%",
-    "stat3Label": "Average Cost Savings",
-    "stat4": "24/7",
+    "step4Desc": "Fine-tune performance, preserve your Veeam/Veritas backup investments, and establish ongoing support.",
+    "statsTitle": "Why TechGuru for VMware Alternatives",
+    "stat1": "5",
+    "stat1Label": "Alternative Platforms",
+    "stat2": "Dual-Hypervisor",
+    "stat2Label": "Risk-Free Architecture",
+    "stat3": "Phased",
+    "stat3Label": "Migration Approach",
+    "stat4": "Dedicated",
     "stat4Label": "Post-Migration Support",
     "ctaTitle": "Ready to Explore VMware Alternatives?",
     "ctaSubtitle": "Get a free assessment of your current VMware environment and discover the best migration path for your organization.",
@@ -1059,6 +1114,368 @@
     "productOtherPlaceholder": "Please specify the product or service",
     "subjectPlaceholder": "Brief description of your issue",
     "descriptionPlaceholder": "Detailed description of your issue...",
-    "uploadingFiles": "Uploading files..."
+    "uploadingFiles": "Uploading files...",
+    "build": "Build",
+    "run": "Run",
+    "protect": "Protect",
+    "attachmentsLabel": "Attachments:"
+  },
+  "support": {
+    "dashboard": "Dashboard",
+    "supportCenter": "Support Center",
+    "customer": "Customer",
+    "signOut": "Sign Out",
+    "welcomeBack": "Welcome back",
+    "manageTicketsDesc": "Manage your support tickets and get help.",
+    "totalTickets": "Total Tickets",
+    "open": "Open",
+    "inProgress": "In Progress",
+    "resolved": "Resolved",
+    "submitNewTicket": "Submit New Ticket",
+    "getHelp": "Get help from our support team",
+    "viewMyTickets": "View My Tickets",
+    "trackStatus": "Track existing ticket status",
+    "recentTickets": "Recent Tickets",
+    "newTicketDesc": "Submit a new support request and our team will assist you.",
+    "myTicketsDesc": "View and track all your support requests.",
+    "created": "Created",
+    "submitTicketHint": "Submit a ticket to get started"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again or contact our support team.",
+    "retry": "Try Again",
+    "retrying": "Retrying...",
+    "retryCount": "Attempt {count} of {max}",
+    "goHome": "Back to Home",
+    "contactSupport": "Contact Support",
+    "supportHint": "If this problem persists, please contact our support team for assistance.",
+    "networkError": "Network Error",
+    "networkErrorDesc": "Unable to connect to our servers. Please check your internet connection.",
+    "offline": "You are offline",
+    "offlineDesc": "It seems you have lost your internet connection. Please check your network settings.",
+    "backOnline": "Back Online",
+    "notFound": "Page Not Found",
+    "notFoundDesc": "The page you are looking for does not exist or has been moved.",
+    "notFoundHint": "Try searching for what you need, or return to the home page.",
+    "searchPlaceholder": "Search our website...",
+    "search": "Search",
+    "backHome": "Back to Home",
+    "suggestedLinks": "Quick Links",
+    "suggestedHome": "Home",
+    "suggestedProducts": "Products",
+    "suggestedContact": "Contact Us",
+    "suggestedSupport": "Support"
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last Updated",
+    "section1Title": "Acceptance of Terms",
+    "section1Body": "By accessing and using the TechGuru website and services, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, please do not use our services.",
+    "section2Title": "Services",
+    "section2Body": "TechGuru provides IT infrastructure solutions including hardware, software licensing, cloud services, managed services, and consulting. Service availability and pricing are subject to change without notice.",
+    "section3Title": "User Accounts",
+    "section3Body": "You are responsible for maintaining the confidentiality of your account credentials and for all activities under your account. Notify us immediately of any unauthorized use.",
+    "section4Title": "Intellectual Property",
+    "section4Body": "All content on this website, including text, graphics, logos, and software, is the property of TechGuru or its licensors and is protected by intellectual property laws.",
+    "section5Title": "Limitation of Liability",
+    "section5Body": "TechGuru shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our services. Our total liability shall not exceed the amount paid for the specific service in question.",
+    "section6Title": "Governing Law",
+    "section6Body": "These terms are governed by the laws of the Republic of the Philippines. Any disputes shall be resolved in the courts of Quezon City, Metro Manila.",
+    "section7Title": "Contact",
+    "section7Body": "For questions about these Terms of Service, please contact us at",
+    "backHome": "Back to Home"
+  },
+  "compare": {
+    "title": "TechGuru vs Competitors",
+    "subtitle": "See how TechGuru compares to traditional IT vendors across security, infrastructure, and service quality.",
+    "heroTag": "Competitive Advantage",
+    "heroCta": "Get a Free Comparison",
+    "partnerCertifications": "Technology Partner Certifications",
+    "categories": {
+      "all": "All Categories",
+      "security": "Security",
+      "networking": "Networking",
+      "cloud": "Cloud & HCI",
+      "ai": "AI & Automation"
+    },
+    "table": {
+      "feature": "Feature",
+      "techguru": "TechGuru",
+      "competitorA": "Traditional Vendor",
+      "competitorB": "Cloud-Only Provider",
+      "highlight": "Key Advantage"
+    },
+    "features": {
+      "vmwareMigration": "VMware Migration Support",
+      "vmwareMigrationDesc": "Dual-hypervisor migration paths with Proxmox, Sangfor, Nutanix",
+      "vmwareMigrationTg": "5 alternatives with phased migration",
+      "vmwareMigrationA": "VMware only, no alternatives",
+      "vmwareMigrationB": "N/A, cloud only",
+      "managedSecurity": "Managed Security (MDR)",
+      "managedSecurityDesc": "Continuous threat monitoring and response",
+      "managedSecurityTg": "Included in all security packages",
+      "managedSecurityA": "Extra cost add-on",
+      "managedSecurityB": "Basic monitoring only",
+      "aigcCapabilities": "AIGC & AI Capabilities",
+      "aigcCapabilitiesDesc": "Text-to-video, image-to-video, AI coding, AI agents",
+      "aigcCapabilitiesTg": "Full AIGC stack + legacy AI",
+      "aigcCapabilitiesA": "Not available",
+      "aigcCapabilitiesB": "Basic cloud AI only",
+      "multiVendor": "Multi-Vendor Portfolio",
+      "multiVendorDesc": "20+ vendor partnerships across all categories",
+      "multiVendorTg": "20+ partners, best-of-breed",
+      "multiVendorA": "1-3 vendors only",
+      "multiVendorB": "Single cloud ecosystem",
+      "regionalSupport": "Regional On-Site Support",
+      "regionalSupportDesc": "Local engineering team across Southeast Asia",
+      "regionalSupportTg": "Local team, same-day response",
+      "regionalSupportA": "Remote only, 24-48hr SLA",
+      "regionalSupportB": "No local presence",
+      "hybridCloud": "Hybrid Cloud Strategy",
+      "hybridCloudDesc": "On-premise + cloud with unified management",
+      "hybridCloudTg": "Full hybrid, data sovereignty",
+      "hybridCloudA": "On-premise only",
+      "hybridCloudB": "Public cloud only",
+      "costModel": "Cost Model",
+      "costModelDesc": "Transparent, flexible pricing options",
+      "costModelTg": "Flexible, best-value packages",
+      "costModelA": "Rigid licensing tiers",
+      "costModelB": "Pay-as-you-go, unpredictable"
+    },
+    "testimonials": {
+      "title": "What Our Clients Say",
+      "items": {
+        "1": {
+          "quote": "TechGuru saved us 40% on VMware licensing while providing better support than our previous vendor.",
+          "author": "IT Director",
+          "industry": "Healthcare"
+        },
+        "2": {
+          "quote": "Their dual-hypervisor approach let us migrate without any downtime. The team handled everything seamlessly.",
+          "author": "CTO",
+          "industry": "Finance"
+        },
+        "3": {
+          "quote": "We switched from a cloud-only provider to TechGuru's hybrid solution and cut our annual IT costs by 35%.",
+          "author": "VP of Infrastructure",
+          "industry": "Retail"
+        }
+      }
+    },
+    "ctaTitle": "See the Difference for Yourself",
+    "ctaDesc": "Request a free comparison tailored to your infrastructure needs.",
+    "ctaBtn": "Request Free Comparison"
+  },
+  "whyUs": {
+    "title": "Why Choose TechGuru",
+    "subtitle": "Your end-to-end IT partner with proven expertise across Build, Run, and Protect.",
+    "heroTag": "Our Difference",
+    "heroCta": "Talk to Our Team",
+    "advantages": {
+      "title": "Our Core Advantages",
+      "items": {
+        "1": {
+          "title": "Build. Run. Protect.",
+          "desc": "The only framework covering your entire IT lifecycle, from AI workloads to mission-critical infrastructure security."
+        },
+        "2": {
+          "title": "20+ Vendor Partnerships",
+          "desc": "Best-of-breed selection across HCI, security, networking, cloud, and AI, not locked into a single ecosystem."
+        },
+        "3": {
+          "title": "VMware Migration Experts",
+          "desc": "5 proven alternatives with dual-hypervisor architecture for risk-free migration."
+        },
+        "4": {
+          "title": "Regional Expertise",
+          "desc": "Local engineering team across Southeast Asia with deep understanding of regional compliance requirements."
+        },
+        "5": {
+          "title": "AIGC & AI Capabilities",
+          "desc": "From text-to-video to AI coding assistants and legacy system modernization, we bring cutting-edge AI to your business."
+        },
+        "6": {
+          "title": "Managed Security",
+          "desc": "MDR, NDR, and incident response, keeping your infrastructure safe with proactive monitoring."
+        }
+      }
+    },
+    "partners": {
+      "title": "Technology Partners",
+      "subtitle": "We work with the best vendors to deliver best-of-breed solutions.",
+      "categories": {
+        "infrastructure": "Infrastructure & Virtualization",
+        "security": "Network & Security",
+        "cloud": "Cloud & AI",
+        "specialized": "Specialized Solutions"
+      }
+    },
+    "certifications": {
+      "title": "Certifications & Qualifications",
+      "items": {
+        "1": {
+          "title": "Sangfor Partner",
+          "desc": "Certified HCI and security solutions"
+        },
+        "2": {
+          "title": "Fortinet Partner",
+          "desc": "NGFW and security fabric expertise"
+        },
+        "3": {
+          "title": "Nutanix Partner",
+          "desc": "Enterprise HCI and cloud platform"
+        },
+        "4": {
+          "title": "H3C Partner",
+          "desc": "Networking and infrastructure"
+        },
+        "5": {
+          "title": "Alibaba Cloud Partner",
+          "desc": "AIGC and cloud services"
+        },
+        "6": {
+          "title": "Sophos Partner",
+          "desc": "Endpoint and cloud security"
+        }
+      }
+    },
+    "stats": {
+      "title": "Our Track Record",
+      "items": {
+        "1": {
+          "value": "27+",
+          "label": "Solutions Delivered"
+        },
+        "2": {
+          "value": "9",
+          "label": "Technology Partners"
+        },
+        "3": {
+          "value": "10+",
+          "label": "Vendor Certifications"
+        },
+        "4": {
+          "value": "6",
+          "label": "Markets Served"
+        }
+      }
+    },
+    "process": {
+      "title": "How We Work",
+      "subtitle": "From assessment to deployment, we guide you every step of the way.",
+      "steps": {
+        "1": {
+          "title": "Discovery & Assessment",
+          "desc": "We audit your current infrastructure, identify pain points, and map Build/Run/Protect solutions to your needs."
+        },
+        "2": {
+          "title": "Solution Design",
+          "desc": "Our architects design a best-fit solution using the right mix of vendors for your environment."
+        },
+        "3": {
+          "title": "Implementation",
+          "desc": "Certified engineers deploy, configure, and validate your solution with minimal disruption."
+        },
+        "4": {
+          "title": "Ongoing Support",
+          "desc": "Proactive monitoring, managed services, and a dedicated account team for continuous optimization."
+        }
+      }
+    },
+    "ctaTitle": "Ready to Partner with TechGuru?",
+    "ctaDesc": "Let us show you how our Build, Run, Protect framework can transform your IT infrastructure.",
+    "ctaBtn": "Schedule a Consultation",
+    "ctaPhone": "Call Us Now"
+  },
+  "help": {
+    "title": "Help Center",
+    "subtitle": "Find answers to common questions about our products, services, and support.",
+    "searchPlaceholder": "Search for answers...",
+    "categories": {
+      "all": "All",
+      "product": "Products & Services",
+      "technical": "Technical Support",
+      "account": "Account & Billing",
+      "billing": "Pricing & Plans"
+    },
+    "noResults": "No results found",
+    "noResultsHint": "Try a different search term or browse by category.",
+    "ctaTitle": "Still need help?",
+    "ctaDesc": "Can't find what you're looking for? Our team is ready to assist you.",
+    "ctaContact": "Contact Us",
+    "ctaTicket": "Submit a Ticket",
+    "faqCounts": {
+      "product": "4",
+      "technical": "4",
+      "account": "3",
+      "billing": "3"
+    },
+    "faq": {
+      "product": [
+        {
+          "q": "What solutions does TechGuru offer?",
+          "a": "We offer comprehensive IT solutions across three pillars: Build (AI workloads, AIGC, legacy modernization), Run (virtualization, HCI, cloud, hosting), and Protect (firewalls, EDR, NDR, MDR). Each solution is tailored to your industry and business needs."
+        },
+        {
+          "q": "Do you provide VMware migration services?",
+          "a": "Yes. We offer structured VMware migration paths to Proxmox VE, Sangfor aSV, Nutanix AHV, and StarWind HCI. Our 4-step process (Assessment, Planning, Migration, Optimization) minimizes risk with a dual-hypervisor approach."
+        },
+        {
+          "q": "Can you help with AI adoption?",
+          "a": "Absolutely. Our AI Adoption Services cover readiness assessment, use case identification, platform selection, PoC development, team training, and organization-wide rollout. We partner with Alibaba Cloud Bailian and ByteDance Volcengine."
+        },
+        {
+          "q": "What industries do you serve?",
+          "a": "We serve Healthcare, Finance, Retail, Logistics, Education, and Government sectors across Asia. Each industry solution is built for specific regulatory and operational requirements."
+        }
+      ],
+      "technical": [
+        {
+          "q": "How do I submit a support ticket?",
+          "a": "Log in to your account, go to the Support Center, and click 'Submit New Ticket.' Provide your issue details, category, and priority. Our team responds within 24 hours for standard issues."
+        },
+        {
+          "q": "What is your support response time?",
+          "a": "Critical issues: 4-hour response. High priority: 8-hour response. Normal: 24-hour response. Low priority: 48-hour response. All response times are during business hours (Mon-Fri, 9AM-6PM)."
+        },
+        {
+          "q": "Do you offer on-site support?",
+          "a": "Yes. We provide on-site technical support for deployment, configuration, and troubleshooting. On-site visits are available in Metro Manila and surrounding areas. Contact us for scheduling."
+        },
+        {
+          "q": "Can I track my ticket status online?",
+          "a": "Yes. Log in to your account and visit the Support Center to view all your tickets, their current status, and response history. You can also add comments to existing tickets."
+        }
+      ],
+      "account": [
+        {
+          "q": "How do I create an account?",
+          "a": "Click 'Support' in the navigation, then 'Create Account.' Enter your full name, email, and password. You can also sign in with Google for faster access. Account creation is free."
+        },
+        {
+          "q": "How do I reset my password?",
+          "a": "On the login page, click 'Forgot Password' and enter your email address. You'll receive a password reset link within a few minutes. Check your spam folder if you don't see it."
+        },
+        {
+          "q": "Can I update my account information?",
+          "a": "Yes. After logging in, go to your profile settings to update your name, email, phone number, and company information. Changes take effect immediately."
+        }
+      ],
+      "billing": [
+        {
+          "q": "How are your services priced?",
+          "a": "Pricing depends on the solution scope, vendor products, and service level. We provide custom quotes after an initial assessment. Many solutions have free tier options through our vendor partnerships."
+        },
+        {
+          "q": "Do you offer payment plans?",
+          "a": "Yes. We offer flexible payment options including upfront, quarterly, and annual billing. Enterprise clients can discuss custom payment terms. Contact our sales team for details."
+        },
+        {
+          "q": "Is there a free consultation available?",
+          "a": "Yes. We offer a free initial consultation to understand your needs and recommend solutions. Schedule a call or submit a contact form to get started. No commitment required."
+        }
+      ]
+    }
   }
 }

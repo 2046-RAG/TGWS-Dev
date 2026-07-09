@@ -2,13 +2,14 @@
 
 import { useTranslations } from 'next-intl';
 import { Award, Users, Target, Shield, Briefcase, Code, TrendingUp, ShieldCheck } from 'lucide-react';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 
 const timeline = [
-  { year: '2010' },
-  { year: '2014' },
-  { year: '2017' },
-  { year: '2020' },
   { year: '2023' },
+  { year: '2023' },
+  { year: '2024' },
+  { year: '2024' },
+  { year: '2025' },
   { year: '2025' },
 ];
 
@@ -16,22 +17,23 @@ const team = [
   { icon: Briefcase, color: '#00D4FF' },
   { icon: Code, color: '#7B61FF' },
   { icon: TrendingUp, color: '#22C55E' },
-  { icon: ShieldCheck, color: '#F59E0B' },
 ];
 
 const qualifications = [
   { icon: Award, color: '#00D4FF' },
   { icon: Shield, color: '#7B61FF' },
-  { icon: Target, color: '#00D4FF' },
-  { icon: Users, color: '#7B61FF' },
+  { icon: Target, color: '#22C55E' },
+  { icon: Users, color: '#F59E0B' },
 ];
 
 export default function AboutPage() {
   const t = useTranslations('about');
 
   return (
-    <section className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
-      <div className="text-center mb-20">
+    <>
+      <Breadcrumb items={[{ label: 'About Us' }]} />
+      <section className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
+        <div className="text-center mb-20">
         <h1 className="section-title text-gray-900">{t('title')}</h1>
         <p className="section-subtitle mx-auto max-w-3xl">{t('intro')}</p>
       </div>
@@ -64,7 +66,7 @@ export default function AboutPage() {
 
       <div className="mb-24">
         <h2 className="text-2xl font-bold text-gray-900 text-center mb-12" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em' }}>{t('team.title')}</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
           {team.map((member, i) => {
             const Icon = member.icon;
             return (
@@ -102,6 +104,7 @@ export default function AboutPage() {
           })}
         </div>
       </div>
-    </section>
+      </section>
+    </>
   );
 }

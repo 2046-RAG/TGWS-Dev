@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 import {
   ArrowRight, Shield, DollarSign, Zap, Clock,
   Server, Cloud, RefreshCw, Phone
@@ -12,12 +13,13 @@ export default function VMwareAlternativePage() {
   const params = useParams();
   const locale = params.locale as string;
   const t = useTranslations('vmware');
+  const tContact = useTranslations('contact');
 
   const solutions = [
     { key: 'sol1', icon: Server, color: '#E57000', brand: 'Proxmox' },
     { key: 'sol2', icon: Cloud, color: '#0066CC', brand: 'Sangfor' },
     { key: 'sol3', icon: RefreshCw, color: '#00A859', brand: 'Nutanix' },
-    { key: 'sol4', icon: Server, color: '#D4213D', brand: 'H3C' },
+    { key: 'sol4', icon: Server, color: '#D4213D', brand: 'StarWind' },
   ];
 
   const steps = [
@@ -36,6 +38,10 @@ export default function VMwareAlternativePage() {
 
   return (
     <div className="min-h-screen bg-[#F4F4F5]">
+      <Breadcrumb
+        items={[{ label: t('heroTag') }]}
+        locale={locale}
+      />
       {/* Hero Section */}
       <section className="relative py-20 sm:py-32 px-5 sm:px-8 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#7B61FF]/5 to-[#00D4FF]/5" />
@@ -59,7 +65,7 @@ export default function VMwareAlternativePage() {
               </Link>
               <Link
                 href={`/${locale}/contact`}
-                className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+                className="inline-flex items-center gap-2 py-2 px-1 text-gray-600 hover:text-gray-900 min-h-[44px] transition-colors"
               >
                 <Phone size={16} /> {t('ctaPhone')}
               </Link>
@@ -221,10 +227,10 @@ export default function VMwareAlternativePage() {
                 {t('ctaBtn')} <ArrowRight size={18} />
               </Link>
               <a
-                href="tel:+886223456789"
-                className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+                href={`tel:${tContact('phoneNumber').replace(/\s/g, '')}`}
+                className="inline-flex items-center gap-2 py-2 px-1 text-gray-600 hover:text-gray-900 min-h-[44px] transition-colors"
               >
-                <Phone size={16} /> {t('ctaPhone')}
+                <Phone size={16} /> {tContact('phoneNumber')}
               </a>
             </div>
           </div>
