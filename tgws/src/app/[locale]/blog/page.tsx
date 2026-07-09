@@ -1,18 +1,27 @@
 import { client } from '@/lib/sanity';
 import BlogList from './BlogList';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: 'Blog',
-  description: 'Latest insights on enterprise networking, cybersecurity, cloud infrastructure, and IT best practices from TechGuru experts.',
-  openGraph: {
-    title: 'Blog | TechGuru',
-    description: 'Latest insights on enterprise networking, cybersecurity, cloud infrastructure, and IT best practices from TechGuru experts.',
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'blog.metadata' });
+  return {
+    title: t('title'),
+    description: t('description'),
+    openGraph: {
+      title: t('title'),
+      description: t('description'),
+    },
+  };
+}
 
 async function getPosts() {
   try {

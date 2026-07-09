@@ -1,18 +1,27 @@
 import { client } from '@/lib/sanity';
 import ProductsList from './ProductsList';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: 'Products',
-  description: 'Explore TechGuru\'s comprehensive IT solutions: Build infrastructure, Run operations, and Protect your data with enterprise-grade products.',
-  openGraph: {
-    title: 'Products | TechGuru',
-    description: 'Explore TechGuru\'s comprehensive IT solutions: Build infrastructure, Run operations, and Protect your data with enterprise-grade products.',
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'products.metadata' });
+  return {
+    title: t('title'),
+    description: t('description'),
+    openGraph: {
+      title: t('title'),
+      description: t('description'),
+    },
+  };
+}
 
 async function getProducts() {
   try {

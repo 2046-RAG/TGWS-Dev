@@ -86,7 +86,7 @@
     "aiStep1Desc": "Evaluate AI readiness, identify use cases, and create a roadmap tailored to your industry.",
     "aiStep3Title": "AI Agent Development",
     "aiStep3Desc": "Build autonomous agents that handle complex workflows, powered by Alibaba Cloud Bailian and ByteDance Volcengine.",
-    "vmwareCta": "Explore Migration Paths",
+    "vmwareCta": "Explore VMware Alternatives",
     "buildHighlight1": "AI-generated content & video",
     "buildHighlight2": "AI coding assistants",
     "buildHighlight3": "Legacy system modernization",
@@ -116,7 +116,6 @@
     "vmwareFeature2": "Sangfor aSV & HCI platforms",
     "vmwareFeature3": "Nutanix & Arcfra options",
     "vmwareFeature4": "StarWind HCI & Virtual SAN",
-    "vmwareCta": "Explore VMware Alternatives",
     "industriesTitle": "Industry Solutions",
     "industriesDesc": "Deep expertise across healthcare, finance, retail, logistics, education, and government, with solutions built for Asia's unique regulatory and operational landscape.",
     "industries": {
@@ -152,7 +151,11 @@
     "routing_switchingTitle": "Routing & Switching",
     "routing_switchingStory": "Build a robust network foundation with enterprise-grade routers and switches from H3C, Huawei, Cisco, Ruijie, and Sundray.",
     "wirelessTitle": "Wireless",
-    "wirelessStory": "Deploy high-performance wireless infrastructure with enterprise APs, controllers, and WiFi 6/7 solutions."
+    "wirelessStory": "Deploy high-performance wireless infrastructure with enterprise APs, controllers, and WiFi 6/7 solutions.",
+    "metadata": {
+      "title": "TechGuru | Enterprise IT Solutions",
+      "description": "Build, run, and protect your enterprise IT infrastructure. TechGuru provides network, cybersecurity, and data solutions for businesses."
+    }
   },
   "solutions": {
     "title": "Industry Solutions",
@@ -467,6 +470,10 @@
           ]
         }
       }
+    },
+    "metadata": {
+      "title": "Blog | TechGuru",
+      "description": "Latest insights on enterprise networking, cybersecurity, cloud infrastructure, and IT best practices from TechGuru experts."
     }
   },
   "about": {
@@ -723,6 +730,10 @@
           ]
         }
       }
+    },
+    "metadata": {
+      "title": "Case Studies | TechGuru",
+      "description": "Real-world success stories from TechGuru clients across healthcare, finance, retail, logistics, education, and government sectors."
     }
   },
   "contact": {
@@ -954,7 +965,11 @@
     "outdoorWirelessAP": "Outdoor Wireless AP",
     "wifi67AP": "WiFi 6/6E/7 AP",
     "compute": "Infrastructure",
-    "cloudRepatriation": "Cloud Repatriation"
+    "cloudRepatriation": "Cloud Repatriation",
+    "metadata": {
+      "title": "Products & Services | TechGuru",
+      "description": "Explore TechGuru's comprehensive IT solutions: Build infrastructure, Run operations, and Protect your data with enterprise-grade products."
+    }
   },
   "footer": {
     "products": "Products",

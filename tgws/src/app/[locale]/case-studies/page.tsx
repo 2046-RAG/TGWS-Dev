@@ -1,18 +1,27 @@
 import { client } from '@/lib/sanity';
 import CaseStudiesList from './CaseStudiesList';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: 'Case Studies',
-  description: 'Real-world success stories from TechGuru clients across healthcare, finance, retail, logistics, education, and government sectors.',
-  openGraph: {
-    title: 'Case Studies | TechGuru',
-    description: 'Real-world success stories from TechGuru clients across healthcare, finance, retail, logistics, education, and government sectors.',
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'caseStudies.metadata' });
+  return {
+    title: t('title'),
+    description: t('description'),
+    openGraph: {
+      title: t('title'),
+      description: t('description'),
+    },
+  };
+}
 
 async function getCaseStudies() {
   try {

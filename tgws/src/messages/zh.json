@@ -86,7 +86,7 @@
     "aiStep1Desc": "評估AI就緒度，識別用例，制定符合您行業的路線圖。",
     "aiStep3Title": "AI代理開發",
     "aiStep3Desc": "構建處理複雜工作流的自主代理，基於阿里雲百煉和字節跳動火山引擎。",
-    "vmwareCta": "探索遷移路徑",
+    "vmwareCta": "探索VMware替代方案",
     "buildHighlight1": "AI生成內容與影片",
     "buildHighlight2": "AI編碼助手",
     "buildHighlight3": "老舊系統現代化",
@@ -116,7 +116,6 @@
     "vmwareFeature2": "Sangfor aSV 和 HCI 平台",
     "vmwareFeature3": "Nutanix 和 Arcfra 選項",
     "vmwareFeature4": "StarWind HCI 和 Virtual SAN",
-    "vmwareCta": "探索VMware替代方案",
     "industriesTitle": "行業解決方案",
     "industriesDesc": "深耕醫療、金融、零售、物流、教育和政府六大行業，解決方案針對亞洲獨特的監管和營運環境量身打造。",
     "industries": {
@@ -152,7 +151,11 @@
     "routing_switchingTitle": "路由交換",
     "routing_switchingStory": "與H3C、Huawei、Cisco、Ruijie和Sundray合作，構建穩固的網絡基礎設施。",
     "wirelessTitle": "無線網絡",
-    "wirelessStory": "部署高性能無線基礎設施，包括企業級AP、控制器和WiFi 6/7解決方案。"
+    "wirelessStory": "部署高性能無線基礎設施，包括企業級AP、控制器和WiFi 6/7解決方案。",
+    "metadata": {
+      "title": "TechGuru | 企業IT解決方案",
+      "description": "建構、運行和保護您的企業IT基礎設施。TechGuru為企業提供網路、網路安全和數據解決方案。"
+    }
   },
   "solutions": {
     "title": "行業解決方案",
@@ -467,6 +470,10 @@
           ]
         }
       }
+    },
+    "metadata": {
+      "title": "部落格 | TechGuru",
+      "description": "TechGuru專家提供的企業網路、網路安全、雲端基礎設施和IT最佳實踐最新見解。"
     }
   },
   "about": {
@@ -723,6 +730,10 @@
           ]
         }
       }
+    },
+    "metadata": {
+      "title": "案例展示 | TechGuru",
+      "description": "TechGuru客戶在醫療、金融、零售、物流、教育和政府领域的真實成功案例。"
     }
   },
   "contact": {
@@ -954,7 +965,11 @@
     "outdoorWirelessAP": "戶外無線AP",
     "wifi67AP": "WiFi 6/6E/7 AP",
     "compute": "基礎設施",
-    "cloudRepatriation": "雲端回遷"
+    "cloudRepatriation": "雲端回遷",
+    "metadata": {
+      "title": "產品與服務 | TechGuru",
+      "description": "探索TechGuru全面的IT解決方案：Build建構基礎設施、Run運營作業、Protect保護您的資料。"
+    }
   },
   "footer": {
     "products": "產品服務",
