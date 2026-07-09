@@ -11,7 +11,7 @@ import { Copy, Check, Mail, Code2, Sparkles, ArrowRight, Monitor } from 'lucide-
 // ═══════════════════════════════════════════════
 
 const EMAIL = 'Inquiries@techguru-it.asia';
-const VIDEO_URL = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260530_042513_df96a13b-6155-4f6e-8b93-c9dee66fba08.mp4';
+const VIDEO_URL = '/hero-bg.mp4';
 const SENSITIVITY = 0.5;
 const TYPING_SPEED = 38;
 const START_DELAY = 600;
