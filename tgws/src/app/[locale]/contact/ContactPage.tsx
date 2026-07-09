@@ -88,6 +88,7 @@ export default function ContactPage() {
             aria-invalid={!!errors.name}
             value={formData.name}
             onChange={(e) => handleChange('name', e.target.value)}
+            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
           />
           {errors.name && <span role="alert">{errors.name}</span>}
         </div>
@@ -101,6 +102,7 @@ export default function ContactPage() {
             aria-invalid={!!errors.email}
             value={formData.email}
             onChange={(e) => handleChange('email', e.target.value)}
+            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
           />
           {errors.email && <span role="alert">{errors.email}</span>}
         </div>
@@ -112,6 +114,7 @@ export default function ContactPage() {
             type="text"
             value={formData.company}
             onChange={(e) => handleChange('company', e.target.value)}
+            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
           />
         </div>
 
@@ -122,6 +125,7 @@ export default function ContactPage() {
             type="tel"
             value={formData.phone}
             onChange={(e) => handleChange('phone', e.target.value)}
+            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
           />
         </div>
 
@@ -133,11 +137,12 @@ export default function ContactPage() {
             aria-invalid={!!errors.message}
             value={formData.message}
             onChange={(e) => handleChange('message', e.target.value)}
+            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200 min-h-[120px] resize-y"
           />
           {errors.message && <span role="alert">{errors.message}</span>}
         </div>
 
-        <button type="submit" disabled={formState === 'sending'}>
+        <button type="submit" disabled={formState === 'sending'} className="w-full bg-[#00D4FF] text-white font-medium py-3 rounded-full hover:bg-[#00B8DB] hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
           {formState === 'sending' ? (
             <>
               <Loader2 className="animate-spin" />

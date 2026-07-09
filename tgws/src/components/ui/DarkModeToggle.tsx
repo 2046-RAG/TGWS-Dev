@@ -48,13 +48,13 @@ export default function DarkModeToggle() {
   };
 
   if (!mounted) {
-    return <div className="w-9 h-9" />;
+    return <div className="w-11 h-11" />;
   }
 
   return (
     <button
       onClick={cycleTheme}
-      className="w-9 h-9 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+      className="w-11 h-11 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
       aria-label={`Theme: ${theme}. Click to cycle.`}
       title={`Theme: ${theme}`}
     >

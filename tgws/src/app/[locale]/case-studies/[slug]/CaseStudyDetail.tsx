@@ -19,6 +19,8 @@ const industryColors: Record<string, string> = {
 
 interface PortableTextBlock {
   _type: string;
+  style?: string;
+  listItem?: string;
   children?: { _type: string; text: string }[];
 }
 
@@ -44,7 +46,13 @@ function PortableText({ content }: { content: PortableTextBlock[] }) {
     <div className="space-y-4">
       {content.map((block, i) => {
         if (block._type === 'block') {
+          const style = block.style || 'normal';
           const text = block.children?.map((c) => c.text).join('') || '';
+          if (style === 'h2') return <h2 key={i} className="text-xl font-bold text-gray-900 mt-6 mb-2">{text}</h2>;
+          if (style === 'h3') return <h3 key={i} className="text-lg font-semibold text-gray-900 mt-4 mb-2">{text}</h3>;
+          if (style === 'blockquote') return <blockquote key={i} className="border-l-4 border-[#00D4FF] pl-4 italic text-gray-500">{text}</blockquote>;
+          if (block.listItem === 'bullet') return <li key={i} className="text-gray-600 leading-relaxed ml-4 list-disc">{text}</li>;
+          if (block.listItem === 'number') return <li key={i} className="text-gray-600 leading-relaxed ml-4 list-decimal">{text}</li>;
           return <p key={i} className="text-gray-600 leading-relaxed">{text}</p>;
         }
         return null;

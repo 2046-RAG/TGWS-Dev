@@ -241,6 +241,7 @@ textarea:focus-visible,
   /* All interactive elements must have at least 44x44px touch targets */
   a, button, input, select, textarea, [role="button"], [tabindex] {
     min-height: 44px;
+    min-width: 44px;
   }
   /* Increase spacing between adjacent interactive elements */
   nav a, footer a, nav li, footer li {

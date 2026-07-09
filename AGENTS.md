@@ -245,3 +245,4 @@ Before implementation, confirm:
 - Supabase RLS must be enabled for all tables
 - Sanity webhooks configured for ISR revalidation
 - Resend used for all transactional emails
+- **每次变更后自动部署Vercel**: 任何代码变更(新模块/新功能/质感提升)完成后，必须执行 `npx vercel --prod --yes` 部署到Vercel，并提醒用户前往 https://www.techguru-it.asia 复审
