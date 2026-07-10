@@ -41,17 +41,6 @@ export default function Navbar() {
       ],
     },
     {
-      key: 'caseStudies',
-      label: t('caseStudies'),
-      href: `/${locale}/case-studies`,
-      children: [
-        { label: t('allIndustries'), href: `/${locale}/case-studies?filter=all`, desc: '' },
-        { label: t('healthcare'), href: `/${locale}/case-studies?filter=healthcare`, desc: '' },
-        { label: t('finance'), href: `/${locale}/case-studies?filter=finance`, desc: '' },
-        { label: t('retail'), href: `/${locale}/case-studies?filter=retail`, desc: '' },
-      ],
-    },
-    {
       key: 'blog',
       label: t('blog'),
       href: `/${locale}/blog`,

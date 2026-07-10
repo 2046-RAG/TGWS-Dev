@@ -8,7 +8,6 @@ const staticPages = [
   '/about',
   '/products',
   '/solutions',
-  '/case-studies',
   '/blog',
   '/contact',
   '/support',

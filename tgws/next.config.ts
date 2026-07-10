@@ -4,6 +4,20 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/:locale/case-studies',
+        destination: '/:locale/blog',
+        permanent: true,
+      },
+      {
+        source: '/:locale/case-studies/:slug',
+        destination: '/:locale/blog',
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
@@ -13,6 +27,10 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: '*.supabase.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
       },
     ],
     formats: ['image/avif', 'image/webp'],

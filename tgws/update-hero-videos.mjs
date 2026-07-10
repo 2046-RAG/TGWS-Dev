@@ -1,4 +1,18 @@
-'use client';
+import { readFileSync, writeFileSync } from 'fs';
+
+// 读取视频目录
+const catalog = JSON.parse(readFileSync('public/videos/ai-video-catalog.json', 'utf-8'));
+
+// 生成VIDEO_OPTIONS数组
+const VIDEO_OPTIONS = catalog.map(v => ({
+  id: v.id,
+  src: `/videos/${v.filename}`,
+  label: `${v.category.charAt(0).toUpperCase() + v.category.slice(1)} ${v.id}`,
+  category: v.category,
+}));
+
+// 生成新的HeroSection代码
+const heroCode = `'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
@@ -12,45 +26,8 @@ import { Copy, Check, Mail, Code2, Sparkles, ArrowRight, Monitor, ChevronDown, C
 
 const EMAIL = 'Inquiries@techguru-it.asia';
 
-// IT/AI主题视频选项 (S46 - 30个精选)
-const VIDEO_OPTIONS = [
-  // Robot - 机器人
-  { id: 'robot-47257', src: '/videos/mixkit-robot-47257.mp4', label: 'Robot Production', category: 'robot' },
-  { id: 'robot-49042', src: '/videos/mixkit-robot-49042.mp4', label: 'Robot Dance', category: 'robot' },
-  { id: 'robot-47266', src: '/videos/mixkit-robot-47266.mp4', label: 'Robot Circuit', category: 'robot' },
-  { id: 'robot-20961', src: '/videos/mixkit-robot-20961.mp4', label: 'Robot Eyes', category: 'robot' },
-  { id: 'robot-21921', src: '/videos/mixkit-robot-21921.mp4', label: 'Robot Greeting', category: 'robot' },
-  // Cyborg - 半机械人
-  { id: 'cyborg-40200', src: '/videos/mixkit-cyborg-40200.mp4', label: 'Cyborg 1', category: 'cyborg' },
-  { id: 'cyborg-40203', src: '/videos/mixkit-cyborg-40203.mp4', label: 'Cyborg 2', category: 'cyborg' },
-  { id: 'cyborg-40199', src: '/videos/mixkit-cyborg-40199.mp4', label: 'Cyborg 3', category: 'cyborg' },
-  { id: 'cyborg-40206', src: '/videos/mixkit-cyborg-40206.mp4', label: 'Cyborg 4', category: 'cyborg' },
-  { id: 'cyborg-40192', src: '/videos/mixkit-cyborg-40192.mp4', label: 'Cyborg 5', category: 'cyborg' },
-  // Futuristic - 未来科技
-  { id: 'futuristic-18774', src: '/videos/mixkit-futuristic-18774.mp4', label: 'Digital Tunnel', category: 'futuristic' },
-  { id: 'futuristic-51214', src: '/videos/mixkit-futuristic-51214.mp4', label: 'VR Glasses', category: 'futuristic' },
-  { id: 'futuristic-50498', src: '/videos/mixkit-futuristic-50498.mp4', label: 'Blue Lasers', category: 'futuristic' },
-  { id: 'futuristic-5399', src: '/videos/mixkit-futuristic-5399.mp4', label: 'Futuristic 1', category: 'futuristic' },
-  { id: 'futuristic-43527', src: '/videos/mixkit-futuristic-43527.mp4', label: 'Futuristic 2', category: 'futuristic' },
-  // Neon - 霓虹
-  { id: 'neon-34317', src: '/videos/mixkit-neon-34317.mp4', label: 'Neon Tunnel', category: 'neon' },
-  { id: 'neon-34332', src: '/videos/mixkit-neon-34332.mp4', label: 'Neon Abstract', category: 'neon' },
-  { id: 'neon-35693', src: '/videos/mixkit-neon-35693.mp4', label: 'Neon Glow', category: 'neon' },
-  { id: 'neon-43524', src: '/videos/mixkit-neon-43524.mp4', label: 'Neon Future', category: 'neon' },
-  { id: 'neon-43539', src: '/videos/mixkit-neon-43539.mp4', label: 'Neon City', category: 'neon' },
-  // Circuit/Code - 电路/代码
-  { id: 'circuit-30869', src: '/videos/mixkit-circuit-30869.mp4', label: 'Virtual Network', category: 'circuit' },
-  { id: 'code-31378', src: '/videos/mixkit-code-31378.mp4', label: 'Hacker Code', category: 'code' },
-  { id: 'code-46634', src: '/videos/mixkit-code-46634.mp4', label: 'Programming', category: 'code' },
-  { id: 'cyberpunk-12773', src: '/videos/mixkit-cyberpunk-12773.mp4', label: 'Cyberpunk City', category: 'cyberpunk' },
-  { id: 'cyber-46575', src: '/videos/mixkit-cyber-46575.mp4', label: 'Eye Laptop', category: 'cyber' },
-  // Hologram - 全息
-  { id: 'hologram-31029', src: '/videos/mixkit-hologram-31029.mp4', label: 'Hologram 1', category: 'hologram' },
-  { id: 'hologram-31089', src: '/videos/mixkit-hologram-31089.mp4', label: 'Hologram 2', category: 'hologram' },
-  { id: 'hologram-32960', src: '/videos/mixkit-hologram-32960.mp4', label: 'Hologram 3', category: 'hologram' },
-  { id: 'hologram-19213', src: '/videos/mixkit-hologram-19213.mp4', label: 'Hologram 4', category: 'hologram' },
-  { id: 'hologram-19630', src: '/videos/mixkit-hologram-19630.mp4', label: 'Hologram 5', category: 'hologram' },
-];
+// AI/IT主题视频选项 (S46)
+const VIDEO_OPTIONS = ${JSON.stringify(VIDEO_OPTIONS, null, 2)};
 
 const SENSITIVITY = 0.5;
 const TYPING_SPEED = 38;
@@ -172,10 +149,13 @@ export default function HeroSection() {
   }, []);
 
   const ctaLinks = [
-    { href: `/${locale}/products`, label: t('cta.solutions'), primary: true },
-    { href: `/${locale}/contact`, label: t('cta.demo'), primary: false },
-    { href: `/${locale}/vmware-alternative`, label: t('cta.vmware'), primary: false },
+    { href: \`/\${locale}/products\`, label: t('cta.solutions'), primary: true },
+    { href: \`/\${locale}/contact\`, label: t('cta.demo'), primary: false },
+    { href: \`/\${locale}/vmware-alternative\`, label: t('cta.vmware'), primary: false },
   ];
+
+  // 获取分类列表
+  const categories = ['all', ...new Set(VIDEO_OPTIONS.map(v => v.category))];
 
   return (
     <section className="relative w-full h-[100dvh] overflow-hidden flex flex-col">
@@ -223,18 +203,18 @@ export default function HeroSection() {
 
           {/* CTA buttons */}
           <div
-            className={`flex flex-wrap gap-3 ${showButtons ? 'opacity-100' : 'opacity-0'}`}
+            className={\`flex flex-wrap gap-3 \${showButtons ? 'opacity-100' : 'opacity-0'}\`}
             style={{ transform: showButtons ? 'translateY(0)' : 'translateY(8px)', transition: 'opacity 0.4s ease, transform 0.4s ease' }}
           >
             {ctaLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`inline-flex items-center justify-center rounded-full text-[14px] sm:text-[15px] px-5 sm:px-6 py-3 min-h-[44px] whitespace-nowrap transition-colors duration-200 ${
+                className={\`inline-flex items-center justify-center rounded-full text-[14px] sm:text-[15px] px-5 sm:px-6 py-3 min-h-[44px] whitespace-nowrap transition-colors duration-200 \${
                   link.primary
                     ? 'bg-[#00D4FF] text-white hover:bg-[#00B8DB]'
                     : 'bg-white/10 text-white border border-white/25 hover:bg-white/20'
-                }`}
+                }\`}
               >
                 {link.label}
               </Link>
@@ -264,23 +244,23 @@ export default function HeroSection() {
         </button>
       </div>
 
-      {/* Video Selector (S46) — bottom-right corner */}
+      {/* Video Selector — bottom-right corner */}
       <div className="absolute bottom-20 right-4 sm:right-6 z-20">
-        <div className={`transition-all duration-300 ${showVideoSelector ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}>
+        <div className={\`transition-all duration-300 \${showVideoSelector ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}\`}>
           <div className="bg-black/70 backdrop-blur-md rounded-xl border border-white/20 p-3 w-[200px] max-h-[400px] overflow-hidden flex flex-col">
             <p className="text-white/60 text-[10px] uppercase tracking-wider mb-2">Video Selector</p>
 
             {/* Category tabs */}
-            <div className="flex gap-1 mb-2">
-              {['all', 'data', 'futuristic', 'server'].map((cat) => (
+            <div className="flex gap-1 mb-2 flex-wrap">
+              {categories.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setVideoCategory(cat)}
-                  className={`px-2 py-0.5 text-[10px] rounded capitalize transition-colors ${
+                  className={\`px-2 py-0.5 text-[10px] rounded capitalize transition-colors \${
                     videoCategory === cat
                       ? 'bg-[#00D4FF]/30 text-white'
                       : 'text-white/50 hover:text-white/80'
-                  }`}
+                  }\`}
                 >
                   {cat}
                 </button>
@@ -297,11 +277,11 @@ export default function HeroSection() {
                     <button
                       key={video.id}
                       onClick={() => setVideoIndex(globalIdx)}
-                      className={`w-full flex items-center gap-2 px-2 py-1 rounded text-left transition-colors ${
+                      className={\`w-full flex items-center gap-2 px-2 py-1 rounded text-left transition-colors \${
                         globalIdx === videoIndex
                           ? 'bg-[#00D4FF]/20 text-white'
                           : 'text-white/60 hover:bg-white/10 hover:text-white'
-                      }`}
+                      }\`}
                     >
                       <Play size={8} className={globalIdx === videoIndex ? 'text-[#00D4FF]' : 'text-white/30'} />
                       <span className="text-[11px] truncate">{video.label}</span>
@@ -325,7 +305,7 @@ export default function HeroSection() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             <Link
-              href={`/${locale}/products`}
+              href={\`/\${locale}/products\`}
               className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 sm:p-5 hover:bg-white/20 transition-all duration-300"
             >
               <div className="flex items-center gap-3 mb-2">
@@ -346,7 +326,7 @@ export default function HeroSection() {
             </Link>
 
             <Link
-              href={`/${locale}/products`}
+              href={\`/\${locale}/products\`}
               className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#7B61FF]/20 to-[#00D4FF]/10 backdrop-blur-md border border-[#7B61FF]/30 p-4 sm:p-5 hover:from-[#7B61FF]/30 hover:to-[#00D4FF]/20 transition-all duration-300"
             >
               <div className="flex items-center gap-3 mb-2">
@@ -368,7 +348,7 @@ export default function HeroSection() {
             </Link>
 
             <Link
-              href={`/${locale}/vmware-alternative`}
+              href={\`/\${locale}/vmware-alternative\`}
               className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-4 sm:p-5 hover:border-white/25 hover:bg-white/10 transition-all duration-300"
             >
               <div className="flex items-center gap-3 mb-2">
@@ -377,7 +357,7 @@ export default function HeroSection() {
                 </div>
                 <div>
                   <h3 className="text-white font-bold text-sm leading-tight">VMware Alternatives</h3>
-                  <p className="text-white/50 text-xs">Migration &amp; Freedom</p>
+                  <p className="text-white/50 text-xs">Migration & Freedom</p>
                 </div>
               </div>
               <p className="text-white/60 text-xs leading-relaxed">
@@ -393,3 +373,9 @@ export default function HeroSection() {
     </section>
   );
 }
+`;
+
+writeFileSync('src/components/hero/HeroSection.tsx', heroCode);
+console.log('HeroSection.tsx updated successfully!');
+console.log(\`Total videos: \${VIDEO_OPTIONS.length}\`);
+console.log(\`Categories: \${[...new Set(VIDEO_OPTIONS.map(v => v.category))].join(', ')}\`);

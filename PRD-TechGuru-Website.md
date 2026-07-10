@@ -938,17 +938,17 @@ Hero 底部包含三个故事卡片（Storyline Cards）：
 
 ## [S22] 开放问题
 
-> **更新日期**: 2026-07-09
+> **更新日期**: 2026-07-11
 
 | # | 问题 | 状态 | 说明 |
 |---|------|------|------|
 | 1 | Hero视频素材 | ✅ 已解决 | 使用 CloudFront CDN 托管的 MP4 视频 |
 | 2 | 合作伙伴Logo | ✅ 已解决 | 21 个 SVG/PNG 文件已收集在 `public/logos/`（Alibaba Cloud, Arcfra, ByteDance, Cisco, Dell, Fortinet, H3C, Hillstone, HP, Huawei, KVM, Lenovo, Nutanix, Proxmox, Ruijie, Sangfor, Sophos, StarWind, Veeam） |
-| 3 | 案例数据 | ⚠️ 部分解决 | Sanity 中已有案例内容（通过 seed 脚本），但需确认是否为真实数据 |
-| 4 | 团队照片 | 🔲 待确认 | 需要收集团队成员照片 |
-| 5 | 办公地点地图 | 🔲 待确认 | 确认亚洲各办公室具体地址 |
-| 6 | 社交媒体账号 | 🔲 待确认 | 确认微信、WhatsApp等账号信息 |
-| 7 | 分析工具 | 🔲 待确认 | 是否使用Google Analytics或Umami？ |
-| 8 | 时区处理 | 🔲 待确认 | 工单时间显示使用哪个时区？ |
-| 9 | 邮件模板 | 🔲 待确认 | acknowledge邮件的具体内容模板？ |
-| 10 | 管理员账号 | 🔲 待确认 | 初始超级管理员如何创建？ |
+| 3 | 案例数据 | ✅ 已解决 | 匿名化+重构为"典型应用场景"（TechGuru 2023年成立，无真实案例） |
+| 4 | 团队照片 | 🔲 待收集 | 需要收集团队成员照片 |
+| 5 | 办公地点 | ✅ 已确认 | 10 Rajah Matanda St, corner JP Rizal St, Project 4, Quezon City, 1109 Metro Manila |
+| 6 | 社交媒体账号 | 🔲 待确认 | 用户暂时想不起来，待后续确认 |
+| 7 | 分析工具 | ⚠️ 推荐Umami | 免费开源、2KB script、零维护、天然GDPR合规，待用户最终确认 |
+| 8 | 工单时区 | ✅ 已解决 | Philippine Time (UTC+8)，已添加PHT后缀 |
+| 9 | 邮件模板 | ✅ 已完成 | 4套：确认/状态/密码/回复通知，FROM: support@techguru-it.asia |
+| 10 | 管理员账号 | ✅ 已解决 | 通过网站/register页面创建Supabase Auth账号即可 |

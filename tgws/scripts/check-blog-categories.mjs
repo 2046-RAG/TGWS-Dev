@@ -1,25 +1,28 @@
-import { createClient } from 'next-sanity';
+import { createClient } from '@sanity/client';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '.env.local' });
 
 const client = createClient({
-  projectId: 'r6ztl1oq',
-  dataset: 'production',
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
-  useCdn: false
+  useCdn: false,
 });
 
-async function check() {
-  const posts = await client.fetch('*[_type == "post"] | order(publishedAt desc) { _id, title, category, coverImage }');
-  
-  const withImage = posts.filter(p => p.coverImage);
-  const withoutImage = posts.filter(p => !p.coverImage);
-  
-  const categories = {};
-  withoutImage.forEach(p => {
-    categories[p.category] = (categories[p.category] || 0) + 1;
-  });
-  
-  console.log(`Total: ${posts.length}, With image: ${withImage.length}, Without: ${withoutImage.length}`);
-  console.log('Categories without image:', categories);
-}
+const posts = await client.fetch('*[_type == "post"]{title, category, tags}');
 
-check();
+console.log('Total posts:', posts.length);
+console.log('\nBy category:');
+const cats = {};
+posts.forEach(p => { cats[p.category] = (cats[p.category] || 0) + 1; });
+Object.entries(cats).forEach(([cat, count]) => console.log(`  ${cat}: ${count}`));
+
+console.log('\nCase study posts:');
+posts.filter(p => p.category === 'case-study').forEach(p => console.log(`  - ${p.title}`));
+
+console.log('\nTechnical posts:');
+posts.filter(p => p.category === 'technical').slice(0, 10).forEach(p => console.log(`  - ${p.title}`));
+
+console.log('\nIndustry posts:');
+posts.filter(p => p.category === 'industry').forEach(p => console.log(`  - ${p.title}`));
