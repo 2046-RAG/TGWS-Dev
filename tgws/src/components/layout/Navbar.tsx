@@ -48,7 +48,6 @@ export default function Navbar() {
         { label: t('allPosts'), href: `/${locale}/blog`, desc: '' },
         { label: t('technical'), href: `/${locale}/blog`, desc: '' },
         { label: t('industry'), href: `/${locale}/blog`, desc: '' },
-        { label: t('caseStudy'), href: `/${locale}/blog`, desc: '' },
       ],
     },
     {
@@ -71,14 +70,14 @@ export default function Navbar() {
   const isHomeActive = pathname === `/${locale}` || pathname === `/${locale}/`;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-black/5">
+    <nav className="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-black/5 dark:border-white/10">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-4 sm:py-5 flex items-center justify-between">
         <Link href={`/${locale}`} className="flex items-center gap-3 group">
-          <span className="text-[21px] sm:text-[26px] font-bold tracking-tight text-black group-hover:text-[#00D4FF] transition-colors duration-200" style={{ fontFamily: 'var(--font-heading)' }}>
+          <span className="text-[21px] sm:text-[26px] font-bold tracking-tight text-black dark:text-white group-hover:text-[#00D4FF] transition-colors duration-200" style={{ fontFamily: 'var(--font-heading)' }}>
             TechGuru
           </span>
-          <span className="text-[12px] text-black/60 align-super">®</span>
-          <span className="text-[25px] sm:text-[30px] text-black select-none group-hover:text-[#00D4FF] transition-colors duration-200" style={{ letterSpacing: '-0.02em' }}>✳︎</span>
+          <span className="text-[12px] text-black/60 dark:text-white/60 align-super">®</span>
+          <span className="text-[25px] sm:text-[30px] text-black dark:text-white select-none group-hover:text-[#00D4FF] transition-colors duration-200" style={{ letterSpacing: '-0.02em' }}>✳︎</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-6">
@@ -87,7 +86,7 @@ export default function Navbar() {
             className={`nav-link relative text-[14px] font-medium tracking-[-0.01em] py-1 transition-colors duration-200 ${
               isHomeActive
                 ? 'text-[#00D4FF]'
-                : 'text-black/70 hover:text-[#00D4FF]'
+                : 'text-black/70 dark:text-white/70 hover:text-[#00D4FF]'
             }`}
           >
             {t('home')}
@@ -106,7 +105,7 @@ export default function Navbar() {
             className={`nav-link relative text-[14px] font-medium tracking-[-0.01em] py-1 transition-colors duration-200 ${
               pathname?.includes('/contact')
                 ? 'text-[#00D4FF]'
-                : 'text-black/70 hover:text-[#00D4FF]'
+                : 'text-black/70 dark:text-white/70 hover:text-[#00D4FF]'
             }`}
           >
             {t('contact')}
@@ -123,17 +122,17 @@ export default function Navbar() {
           aria-expanded={mobileOpen}
         >
           <span
-            className={`w-6 h-[2px] bg-black transition-all duration-300 ${
+            className={`w-6 h-[2px] bg-black dark:bg-white transition-all duration-300 ${
               mobileOpen ? 'rotate-45 translate-y-[7px]' : ''
             }`}
           />
           <span
-            className={`w-6 h-[2px] bg-black transition-all duration-300 ${
+            className={`w-6 h-[2px] bg-black dark:bg-white transition-all duration-300 ${
               mobileOpen ? 'opacity-0' : ''
             }`}
           />
           <span
-            className={`w-6 h-[2px] bg-black transition-all duration-300 ${
+            className={`w-6 h-[2px] bg-black dark:bg-white transition-all duration-300 ${
               mobileOpen ? '-rotate-45 -translate-y-[7px]' : ''
             }`}
           />
@@ -148,7 +147,7 @@ export default function Navbar() {
         <div className="flex flex-col items-start px-8 py-8 gap-8">
           <Link
             href={`/${locale}`}
-            className="text-[32px] font-medium text-black hover:text-[#00D4FF] transition-colors duration-200"
+            className="text-[32px] font-medium text-black dark:text-white hover:text-[#00D4FF] transition-colors duration-200"
             onClick={() => setMobileOpen(false)}
           >
             {t('home')}
@@ -157,7 +156,7 @@ export default function Navbar() {
             <div key={item.key}>
               <Link
                 href={item.href}
-                className="text-[32px] font-medium text-black hover:text-[#00D4FF] transition-colors duration-200"
+                className="text-[32px] font-medium text-black dark:text-white hover:text-[#00D4FF] transition-colors duration-200"
                 onClick={() => setMobileOpen(false)}
               >
                 {item.label}
@@ -168,7 +167,7 @@ export default function Navbar() {
                     <Link
                       key={child.href}
                       href={child.href}
-                      className="text-sm text-gray-600 hover:text-[#00D4FF] py-1 px-2 rounded-lg min-h-[44px] inline-flex items-center transition-colors duration-200"
+                      className="text-sm text-gray-600 dark:text-gray-400 hover:text-[#00D4FF] py-1 px-2 rounded-lg min-h-[44px] inline-flex items-center transition-colors duration-200"
                       onClick={() => setMobileOpen(false)}
                     >
                       {child.label}
@@ -180,7 +179,7 @@ export default function Navbar() {
           ))}
           <Link
             href={`/${locale}/contact`}
-            className="text-[32px] font-medium text-black hover:text-[#00D4FF] transition-colors duration-200"
+            className="text-[32px] font-medium text-black dark:text-white hover:text-[#00D4FF] transition-colors duration-200"
             onClick={() => setMobileOpen(false)}
           >
             {t('contact')}

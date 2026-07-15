@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { useRouter, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { Mail, Lock, User, Loader2 } from 'lucide-react';
+import { Mail, Lock, User, Loader2, CheckCircle } from 'lucide-react';
 
 export default function RegisterForm() {
   const t = useTranslations('auth');
@@ -14,7 +14,7 @@ export default function RegisterForm() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const [registered, setRegistered] = useState(false);
   const params = useParams();
   const locale = params.locale as string;
   const supabase = createClient();
@@ -47,31 +47,57 @@ export default function RegisterForm() {
       password,
       options: {
         data: { full_name: fullName },
+        emailRedirectTo: `${window.location.origin}/api/auth/callback`,
       },
     });
 
     if (authError) {
       setError(authError.message);
     } else {
-      router.push(`/${locale}/support`);
+      setRegistered(true);
     }
     setLoading(false);
   };
 
+  if (registered) {
+    return (
+      <div className="text-center py-8">
+        <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
+          <CheckCircle size={32} className="text-green-500" />
+        </div>
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{t('checkEmail')}</h3>
+        <p className="text-gray-600 dark:text-gray-300 mb-6">
+          {t('verificationSent')} <span className="font-medium text-gray-900 dark:text-white">{email}</span>
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          {t('noEmail')}{' '}
+          <button
+            onClick={async () => {
+              await supabase.auth.resend({ email, type: 'signup' });
+            }}
+            className="text-[#00D4FF] hover:underline"
+          >
+            {t('resendEmail')}
+          </button>
+        </p>
+      </div>
+    );
+  }
+
   return (
     <form onSubmit={handleRegister} className="space-y-6" aria-label={t('createAccount')}>
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-red-600 text-sm">
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-4 py-3 text-red-600 dark:text-red-400 text-sm">
           {error}
         </div>
       )}
 
       <div>
-        <label htmlFor="register-name" className="block text-sm text-gray-700 mb-2">
+        <label htmlFor="register-name" className="block text-sm text-gray-700 dark:text-gray-200 mb-2">
           {t('fullName')}
         </label>
         <div className="relative">
-          <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
           <input
             id="register-name"
             type="text"
@@ -79,18 +105,18 @@ export default function RegisterForm() {
             onChange={(e) => setFullName(e.target.value)}
             required
             autoComplete="name"
-            className="w-full bg-gray-50 border border-gray-200 rounded-lg pl-10 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
+            className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-600 rounded-lg pl-10 pr-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
             placeholder={t('fullNamePlaceholder')}
           />
         </div>
       </div>
 
       <div>
-        <label htmlFor="register-email" className="block text-sm text-gray-700 mb-2">
+        <label htmlFor="register-email" className="block text-sm text-gray-700 dark:text-gray-200 mb-2">
           {t('email')}
         </label>
         <div className="relative">
-          <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
           <input
             id="register-email"
             type="email"
@@ -99,18 +125,18 @@ export default function RegisterForm() {
             required
             autoComplete="email"
             spellCheck={false}
-            className="w-full bg-gray-50 border border-gray-200 rounded-lg pl-10 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
+            className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-600 rounded-lg pl-10 pr-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
             placeholder={t('emailPlaceholder')}
           />
         </div>
       </div>
 
       <div>
-        <label htmlFor="register-password" className="block text-sm text-gray-700 mb-2">
+        <label htmlFor="register-password" className="block text-sm text-gray-700 dark:text-gray-200 mb-2">
           {t('password')}
         </label>
         <div className="relative">
-          <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
           <input
             id="register-password"
             type="password"
@@ -119,18 +145,18 @@ export default function RegisterForm() {
             required
             minLength={8}
             autoComplete="new-password"
-            className="w-full bg-gray-50 border border-gray-200 rounded-lg pl-10 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
+            className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-600 rounded-lg pl-10 pr-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
             placeholder={t('passwordPlaceholder')}
           />
         </div>
       </div>
 
       <div>
-        <label htmlFor="register-confirm" className="block text-sm text-gray-700 mb-2">
+        <label htmlFor="register-confirm" className="block text-sm text-gray-700 dark:text-gray-200 mb-2">
           {t('confirmPassword')}
         </label>
         <div className="relative">
-          <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
           <input
             id="register-confirm"
             type="password"
@@ -139,7 +165,7 @@ export default function RegisterForm() {
             required
             minLength={8}
             autoComplete="new-password"
-            className="w-full bg-gray-50 border border-gray-200 rounded-lg pl-10 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
+            className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-600 rounded-lg pl-10 pr-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
             placeholder={t('confirmPasswordPlaceholder')}
           />
         </div>

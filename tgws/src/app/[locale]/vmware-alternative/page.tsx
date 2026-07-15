@@ -37,7 +37,7 @@ export default function VMwareAlternativePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F4F4F5]">
+    <div className="min-h-screen bg-[#F4F4F5] dark:bg-zinc-900">
       <Breadcrumb
         items={[{ label: t('heroTag') }]}
         locale={locale}
@@ -50,10 +50,10 @@ export default function VMwareAlternativePage() {
             <span className="inline-block px-4 py-1.5 rounded-full bg-[#7B61FF]/10 text-[#7B61FF] text-sm font-medium mb-6">
               {t('heroTag')}
             </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.1' }}>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.1' }}>
               {t('heroTitle')}
             </h1>
-            <p className="text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto mb-10" style={{ lineHeight: '1.7' }}>
+            <p className="text-lg sm:text-xl text-gray-500 dark:text-gray-300 max-w-2xl mx-auto mb-10" style={{ lineHeight: '1.7' }}>
               {t('heroSubtitle')}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -65,7 +65,7 @@ export default function VMwareAlternativePage() {
               </Link>
               <Link
                 href={`/${locale}/contact`}
-                className="inline-flex items-center gap-2 py-2 px-1 text-gray-600 hover:text-gray-900 min-h-[44px] transition-colors"
+                className="inline-flex items-center gap-2 py-2 px-1 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white min-h-[44px] transition-colors"
               >
                 <Phone size={16} /> {t('ctaPhone')}
               </Link>
@@ -78,8 +78,8 @@ export default function VMwareAlternativePage() {
       <section className="py-20 sm:py-28 px-5 sm:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 scroll-reveal">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>{t('whyTitle')}</h2>
-            <p className="text-gray-500 max-w-2xl mx-auto">{t('whySubtitle')}</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>{t('whyTitle')}</h2>
+            <p className="text-gray-500 dark:text-gray-300 max-w-2xl mx-auto">{t('whySubtitle')}</p>
           </div>
           <div className="grid sm:grid-cols-2 gap-6">
             {reasons.map((r) => {
@@ -96,8 +96,8 @@ export default function VMwareAlternativePage() {
                     <Icon size={24} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">{t(`${r.key}Title`)}</h3>
-                    <p className="text-sm text-gray-500 leading-relaxed">{t(`${r.key}Desc`)}</p>
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{t(`${r.key}Title`)}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-300 leading-relaxed">{t(`${r.key}Desc`)}</p>
                   </div>
                 </div>
               );
@@ -107,11 +107,11 @@ export default function VMwareAlternativePage() {
       </section>
 
       {/* Solutions Section */}
-      <section className="py-20 sm:py-28 px-5 sm:px-8 bg-white/50">
+      <section className="py-20 sm:py-28 px-5 sm:px-8 bg-white/50 dark:bg-white/5">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 scroll-reveal">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>{t('solutionsTitle')}</h2>
-            <p className="text-gray-500 max-w-2xl mx-auto">{t('solutionsSubtitle')}</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>{t('solutionsTitle')}</h2>
+            <p className="text-gray-500 dark:text-gray-300 max-w-2xl mx-auto">{t('solutionsSubtitle')}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {solutions.map((s) => {
@@ -127,8 +127,8 @@ export default function VMwareAlternativePage() {
                   >
                     <Icon size={28} />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{t(`${s.key}Title`)}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">{t(`${s.key}Desc`)}</p>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t(`${s.key}Title`)}</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-300 leading-relaxed">{t(`${s.key}Desc`)}</p>
                 </div>
               );
             })}
@@ -148,8 +148,8 @@ export default function VMwareAlternativePage() {
       <section className="py-20 sm:py-28 px-5 sm:px-8">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16 scroll-reveal">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>{t('processTitle')}</h2>
-            <p className="text-gray-500 max-w-2xl mx-auto">{t('processSubtitle')}</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>{t('processTitle')}</h2>
+            <p className="text-gray-500 dark:text-gray-300 max-w-2xl mx-auto">{t('processSubtitle')}</p>
           </div>
           <div className="relative">
             {/* Connecting line */}
@@ -175,8 +175,8 @@ export default function VMwareAlternativePage() {
                       <span className="text-sm font-bold" style={{ color: colors[i] }}>
                         {t('stepLabel', { num: step.num })}
                       </span>
-                      <h3 className="text-xl font-bold text-gray-900 mt-1 mb-2">{t(`${step.key}`)}</h3>
-                      <p className="text-gray-500 text-sm leading-relaxed">{t(`${step.key}Desc`)}</p>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-1 mb-2">{t(`${step.key}`)}</h3>
+                      <p className="text-gray-500 dark:text-gray-300 text-sm leading-relaxed">{t(`${step.key}Desc`)}</p>
                     </div>
                   </div>
                 );
@@ -187,10 +187,10 @@ export default function VMwareAlternativePage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 sm:py-24 px-5 sm:px-8 bg-white/50">
+      <section className="py-20 sm:py-24 px-5 sm:px-8 bg-white/50 dark:bg-white/5">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12 scroll-reveal">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>{t('statsTitle')}</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>{t('statsTitle')}</h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
@@ -206,7 +206,7 @@ export default function VMwareAlternativePage() {
                 <div className="text-4xl sm:text-5xl font-bold mb-2" style={{ color: stat.color }}>
                   {stat.value}
                 </div>
-                <div className="text-sm text-gray-500">{stat.label}</div>
+                <div className="text-sm text-gray-500 dark:text-gray-300">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -217,8 +217,8 @@ export default function VMwareAlternativePage() {
       <section className="py-20 sm:py-28 px-5 sm:px-8">
         <div className="max-w-3xl mx-auto text-center">
           <div className="scroll-reveal">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>{t('ctaTitle')}</h2>
-            <p className="text-gray-500 mb-8 max-w-xl mx-auto">{t('ctaSubtitle')}</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>{t('ctaTitle')}</h2>
+            <p className="text-gray-500 dark:text-gray-300 mb-8 max-w-xl mx-auto">{t('ctaSubtitle')}</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href={`/${locale}/contact`}
@@ -228,7 +228,7 @@ export default function VMwareAlternativePage() {
               </Link>
               <a
                 href={`tel:${tContact('phoneNumber').replace(/\s/g, '')}`}
-                className="inline-flex items-center gap-2 py-2 px-1 text-gray-600 hover:text-gray-900 min-h-[44px] transition-colors"
+                className="inline-flex items-center gap-2 py-2 px-1 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white min-h-[44px] transition-colors"
               >
                 <Phone size={16} /> {tContact('phoneNumber')}
               </a>

@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <style>
+    text { font-family: 'Helvetica Neue', Arial, sans-serif; }
+    .title { font-size: 20px; font-weight: 700; fill: #18181B; }
+    .subtitle { font-size: 12px; fill: #71717A; }
+    .node-text { font-size: 13px; font-weight: 600; fill: #18181B; }
+    .node-sub { font-size: 10px; fill: #71717A; }
+    .label { font-size: 11px; font-weight: 600; fill: #71717A; }
+    .copyright { font-size: 10px; fill: #71717A; }
+    .connector { stroke: #71717A; stroke-width: 1.5; fill: none; }
+    .connector-cyan { stroke: #00D4FF; stroke-width: 2; fill: none; }
+    .connector-purple { stroke: #7B61FF; stroke-width: 2; fill: none; }
+    .connector-dashed { stroke: #71717A; stroke-width: 1.5; fill: none; stroke-dasharray: 6,3; }
+    .arrowhead { fill: #71717A; }
+    .arrowhead-cyan { fill: #00D4FF; }
+    .arrowhead-purple { fill: #7B61FF; }
+  </style>
+  <defs>
+    <marker id="arrowGray" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead"/>
+    </marker>
+    <marker id="arrowCyan" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead-cyan"/>
+    </marker>
+    <marker id="arrowPurple" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead-purple"/>
+    </marker>
+  </defs>
+  <rect width="800" height="450" fill="#FFFFFF" rx="8"/>
+  
+    <text x="400" y="35" text-anchor="middle" class="title">Disaster Recovery Architecture</text>
+    <text x="400" y="52" text-anchor="middle" class="subtitle">Primary → Replicate → DR Site</text>
+
+    <!-- Primary Site -->
+    <rect x="50" y="80" width="220" height="240" fill="#FFFFFF" stroke="#00D4FF" rx="12"/>
+    <text x="160" y="105" text-anchor="middle" class="label" style="fill:#00D4FF">PRIMARY SITE</text>
+
+    <rect x="75" y="120" width="170" height="40" fill="#00D4FF15" stroke="#00D4FF" rx="8"/>
+    <text x="160" y="145" class="node-text">App Servers</text>
+
+    <rect x="75" y="175" width="170" height="40" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="160" y="200" class="node-text">Database</text>
+
+    <rect x="75" y="230" width="170" height="40" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="160" y="255" class="node-text">Storage</text>
+
+    <!-- Replication arrows -->
+    <line x1="270" y1="140" x2="370" y2="140" class="connector-cyan" marker-end="url(#arrowCyan)"/>
+    <line x1="270" y1="195" x2="370" y2="195" class="connector-purple" marker-end="url(#arrowPurple)"/>
+    <line x1="270" y1="250" x2="370" y2="250" class="connector-cyan" marker-end="url(#arrowCyan)"/>
+
+    <!-- Replication labels -->
+    <text x="320" y="132" text-anchor="middle" class="label">Async</text>
+    <text x="320" y="187" text-anchor="middle" class="label">Sync</text>
+    <text x="320" y="242" text-anchor="middle" class="label">Async</text>
+
+    <!-- DR Site -->
+    <rect x="370" y="80" width="220" height="240" fill="#FFFFFF" stroke="#7B61FF" rx="12"/>
+    <text x="480" y="105" text-anchor="middle" class="label" style="fill:#7B61FF">DR SITE</text>
+
+    <rect x="395" y="120" width="170" height="40" fill="#7B61FF15" stroke="#7B61FF" rx="8"/>
+    <text x="480" y="145" class="node-text">Standby Servers</text>
+
+    <rect x="395" y="175" width="170" height="40" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="480" y="200" class="node-text">Replica DB</text>
+
+    <rect x="395" y="230" width="170" height="40" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="480" y="255" class="node-text">Backup Storage</text>
+
+    <!-- Monitoring -->
+    <rect x="650" y="130" width="130" height="80" fill="#F4F4F5" stroke="#D4D4D8" rx="8"/>
+    <text x="715" y="160" class="node-text">Monitoring</text>
+    <text x="715" y="175" class="node-sub">Failover</text>
+    <text x="715" y="190" class="node-sub">Alerting</text>
+
+    <line x1="590" y1="170" x2="650" y2="170" class="connector-dashed" marker-end="url(#arrowGray)"/>
+
+    <!-- Failover -->
+    <rect x="150" y="350" width="200" height="50" fill="#00D4FF15" stroke="#00D4FF" rx="8"/>
+    <text x="250" y="380" class="node-text">RTO: &lt; 1 Hour</text>
+
+    <rect x="400" y="350" width="200" height="50" fill="#7B61FF15" stroke="#7B61FF" rx="8"/>
+    <text x="500" y="380" class="node-text">RPO: &lt; 15 Minutes</text>
+
+    <line x1="480" y1="320" x2="250" y2="350" class="connector" marker-end="url(#arrowGray)"/>
+    <line x1="480" y1="320" x2="500" y2="350" class="connector" marker-end="url(#arrowGray)"/>
+  
+  <text x="400" y="438" text-anchor="middle" class="copyright">© TechGuru</text>
+</svg>

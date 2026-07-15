@@ -12,7 +12,7 @@ export default function Breadcrumb({ items, locale = 'en' }: { items: Breadcrumb
   const homeLabel = locale === 'zh' ? '首頁' : 'Home';
   return (
     <nav aria-label="Breadcrumb" className="py-4 px-5 sm:px-8 max-w-7xl mx-auto">
-      <ol className="flex items-center gap-1.5 text-sm text-gray-500">
+      <ol className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
         <li>
           <Link href={`/${locale}`} className="hover:text-[#00D4FF] transition-colors">
             {homeLabel}
@@ -20,13 +20,13 @@ export default function Breadcrumb({ items, locale = 'en' }: { items: Breadcrumb
         </li>
         {items.map((item, index) => (
           <li key={index} className="flex items-center gap-1.5">
-            <ChevronRight size={12} className="text-gray-300" />
+            <ChevronRight size={12} className="text-gray-300 dark:text-gray-500" />
             {item.href ? (
               <Link href={item.href} className="hover:text-[#00D4FF] transition-colors">
                 {item.label}
               </Link>
             ) : (
-              <span className="text-gray-900 font-medium">{item.label}</span>
+              <span className="text-gray-900 dark:text-white font-medium">{item.label}</span>
             )}
           </li>
         ))}

@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <style>
+    text { font-family: 'Helvetica Neue', Arial, sans-serif; }
+    .title { font-size: 20px; font-weight: 700; fill: #18181B; }
+    .subtitle { font-size: 12px; fill: #71717A; }
+    .node-text { font-size: 13px; font-weight: 600; fill: #18181B; }
+    .node-sub { font-size: 10px; fill: #71717A; }
+    .label { font-size: 11px; font-weight: 600; fill: #71717A; }
+    .copyright { font-size: 10px; fill: #71717A; }
+    .connector { stroke: #71717A; stroke-width: 1.5; fill: none; }
+    .connector-cyan { stroke: #00D4FF; stroke-width: 2; fill: none; }
+    .connector-purple { stroke: #7B61FF; stroke-width: 2; fill: none; }
+    .connector-dashed { stroke: #71717A; stroke-width: 1.5; fill: none; stroke-dasharray: 6,3; }
+    .arrowhead { fill: #71717A; }
+    .arrowhead-cyan { fill: #00D4FF; }
+    .arrowhead-purple { fill: #7B61FF; }
+  </style>
+  <defs>
+    <marker id="arrowGray" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead"/>
+    </marker>
+    <marker id="arrowCyan" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead-cyan"/>
+    </marker>
+    <marker id="arrowPurple" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead-purple"/>
+    </marker>
+  </defs>
+  <rect width="800" height="450" fill="#FFFFFF" rx="8"/>
+  
+    <text x="400" y="35" text-anchor="middle" class="title">SD-WAN Multi-Site Architecture</text>
+    <text x="400" y="52" text-anchor="middle" class="subtitle">HQ → SD-WAN Fabric → Branches</text>
+
+    <!-- HQ -->
+    <rect x="320" y="75" width="160" height="70" fill="#00D4FF15" stroke="#00D4FF" rx="8"/>
+    <text x="400" y="105" class="node-text">Headquarters</text>
+    <text x="400" y="120" class="node-sub">Data Center</text>
+
+    <!-- SD-WAN overlay -->
+    <rect x="150" y="175" width="500" height="60" fill="#7B61FF10" stroke="#7B61FF" rx="12"/>
+    <text x="400" y="200" text-anchor="middle" class="node-text" style="fill:#7B61FF">SD-WAN Overlay Network</text>
+    <text x="400" y="218" text-anchor="middle" class="node-sub">MPLS / Internet / LTE</text>
+
+    <!-- Branch 1 -->
+    <rect x="60" y="290" width="140" height="60" fill="#FFFFFF" stroke="#00D4FF" rx="8"/>
+    <text x="130" y="318" class="node-text">Branch 1</text>
+    <text x="130" y="333" class="node-sub">Manila</text>
+
+    <!-- Branch 2 -->
+    <rect x="240" y="290" width="140" height="60" fill="#FFFFFF" stroke="#00D4FF" rx="8"/>
+    <text x="310" y="318" class="node-text">Branch 2</text>
+    <text x="310" y="333" class="node-sub">Cebu</text>
+
+    <!-- Branch 3 -->
+    <rect x="420" y="290" width="140" height="60" fill="#FFFFFF" stroke="#00D4FF" rx="8"/>
+    <text x="490" y="318" class="node-text">Branch 3</text>
+    <text x="490" y="333" class="node-sub">Davao</text>
+
+    <!-- Cloud Apps -->
+    <rect x="600" y="290" width="140" height="60" fill="#FFFFFF" stroke="#7B61FF" rx="8"/>
+    <text x="670" y="318" class="node-text">Cloud / SaaS</text>
+    <text x="670" y="333" class="node-sub">Azure / AWS</text>
+
+    <!-- Arrows -->
+    <line x1="400" y1="145" x2="400" y2="175" class="connector-cyan" marker-end="url(#arrowCyan)"/>
+    <line x1="300" y1="235" x2="130" y2="290" class="connector" marker-end="url(#arrowGray)"/>
+    <line x1="350" y1="235" x2="310" y2="290" class="connector" marker-end="url(#arrowGray)"/>
+    <line x1="450" y1="235" x2="490" y2="290" class="connector" marker-end="url(#arrowGray)"/>
+    <line x1="520" y1="235" x2="670" y2="290" class="connector-purple" marker-end="url(#arrowPurple)"/>
+
+    <!-- WAN links -->
+    <text x="130" y="275" text-anchor="middle" class="label">Internet</text>
+    <text x="310" y="275" text-anchor="middle" class="label">MPLS</text>
+    <text x="490" y="275" text-anchor="middle" class="label">Internet</text>
+    <text x="640" y="275" text-anchor="middle" class="label">Direct</text>
+
+    <!-- Features -->
+    <rect x="180" y="380" width="120" height="35" fill="#ECFDF5" stroke="#10B981" rx="8"/>
+    <text x="240" y="403" text-anchor="middle" class="node-sub" style="fill:#065F46">App-Aware Routing</text>
+
+    <rect x="320" y="380" width="120" height="35" fill="#ECFDF5" stroke="#10B981" rx="8"/>
+    <text x="380" y="403" text-anchor="middle" class="node-sub" style="fill:#065F46">Zero-Touch Provision</text>
+
+    <rect x="460" y="380" width="120" height="35" fill="#ECFDF5" stroke="#10B981" rx="8"/>
+    <text x="520" y="403" text-anchor="middle" class="node-sub" style="fill:#065F46">Centralized Control</text>
+  
+  <text x="400" y="438" text-anchor="middle" class="copyright">© TechGuru</text>
+</svg>

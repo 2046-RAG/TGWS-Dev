@@ -62,6 +62,26 @@ export default defineType({
       of: [{ type: 'string' }],
     }),
     defineField({
+      name: 'relatedVendors',
+      type: 'array',
+      title: 'Related Vendor Solutions',
+      description: 'Vendor-specific products/solutions related to this product',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'vendor', type: 'string', title: 'Vendor Name', validation: (r: any) => r.required() },
+            { name: 'solution', type: 'string', title: 'Solution/Product Name', validation: (r: any) => r.required() },
+            { name: 'description', type: 'text', title: 'Brief Description' },
+            { name: 'descriptionZh', type: 'text', title: 'Description (Traditional Chinese)' },
+          ],
+          preview: {
+            select: { title: 'vendor', subtitle: 'solution' },
+          },
+        },
+      ],
+    }),
+    defineField({
       name: 'order',
       type: 'number',
     }),

@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <style>
+    text { font-family: 'Helvetica Neue', Arial, sans-serif; }
+    .title { font-size: 20px; font-weight: 700; fill: #18181B; }
+    .subtitle { font-size: 12px; fill: #71717A; }
+    .node-text { font-size: 13px; font-weight: 600; fill: #18181B; }
+    .node-sub { font-size: 10px; fill: #71717A; }
+    .label { font-size: 11px; font-weight: 600; fill: #71717A; }
+    .copyright { font-size: 10px; fill: #71717A; }
+    .connector { stroke: #71717A; stroke-width: 1.5; fill: none; }
+    .connector-cyan { stroke: #00D4FF; stroke-width: 2; fill: none; }
+    .connector-purple { stroke: #7B61FF; stroke-width: 2; fill: none; }
+    .connector-dashed { stroke: #71717A; stroke-width: 1.5; fill: none; stroke-dasharray: 6,3; }
+    .arrowhead { fill: #71717A; }
+    .arrowhead-cyan { fill: #00D4FF; }
+    .arrowhead-purple { fill: #7B61FF; }
+  </style>
+  <defs>
+    <marker id="arrowGray" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead"/>
+    </marker>
+    <marker id="arrowCyan" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead-cyan"/>
+    </marker>
+    <marker id="arrowPurple" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead-purple"/>
+    </marker>
+  </defs>
+  <rect width="800" height="450" fill="#FFFFFF" rx="8"/>
+  
+    <text x="400" y="35" text-anchor="middle" class="title">HCI Hyperconverged Architecture</text>
+    <text x="400" y="52" text-anchor="middle" class="subtitle">Compute + Storage + Network Converged</text>
+
+    <!-- Main container -->
+    <rect x="150" y="75" width="500" height="310" fill="#FAFAFA" stroke="#D4D4D8" rx="12"/>
+    <text x="400" y="100" text-anchor="middle" class="label">HCI APPLIANCE CLUSTER</text>
+
+    <!-- Compute -->
+    <rect x="185" y="120" width="135" height="100" fill="#FFFFFF" stroke="#00D4FF" rx="8"/>
+    <text x="252" y="148" class="node-text">Compute</text>
+    <text x="252" y="165" class="node-sub">vCPU / Memory</text>
+    <text x="252" y="180" class="node-sub">VMs / Containers</text>
+
+    <!-- Storage -->
+    <rect x="332" y="120" width="135" height="100" fill="#FFFFFF" stroke="#00D4FF" rx="8"/>
+    <text x="400" y="148" class="node-text">Storage</text>
+    <text x="400" y="165" class="node-sub">Distributed FS</text>
+    <text x="400" y="180" class="node-sub">Data Services</text>
+
+    <!-- Network -->
+    <rect x="480" y="120" width="135" height="100" fill="#FFFFFF" stroke="#00D4FF" rx="8"/>
+    <text x="547" y="148" class="node-text">Network</text>
+    <text x="547" y="165" class="node-sub">Virtual Switch</text>
+    <text x="547" y="180" class="node-sub">Overlay / VLAN</text>
+
+    <!-- Arrows between pillars -->
+    <line x1="320" y1="170" x2="332" y2="170" class="connector-cyan" marker-end="url(#arrowCyan)"/>
+    <line x1="467" y1="170" x2="480" y2="170" class="connector-cyan" marker-end="url(#arrowCyan)"/>
+
+    <!-- Management Layer -->
+    <rect x="200" y="250" width="180" height="60" fill="#7B61FF15" stroke="#7B61FF" rx="8"/>
+    <text x="290" y="278" class="node-text">Centralized Mgmt</text>
+    <text x="290" y="293" class="node-sub">Single Pane of Glass</text>
+
+    <!-- Scale-Out Layer -->
+    <rect x="420" y="250" width="180" height="60" fill="#00D4FF15" stroke="#00D4FF" rx="8"/>
+    <text x="510" y="278" class="node-text">Scale-Out Nodes</text>
+    <text x="510" y="293" class="node-sub">Add Nodes as Needed</text>
+
+    <!-- Connectors down -->
+    <line x1="290" y1="220" x2="290" y2="250" class="connector-purple" marker-end="url(#arrowPurple)"/>
+    <line x1="400" y1="220" x2="400" y2="250" class="connector-cyan" marker-end="url(#arrowCyan)"/>
+    <line x1="510" y1="220" x2="510" y2="250" class="connector-cyan" marker-end="url(#arrowCyan)"/>
+
+    <!-- Bottom boxes -->
+    <rect x="185" y="330" width="135" height="45" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="252" y="358" class="node-text">App 1</text>
+    <rect x="332" y="330" width="135" height="45" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="400" y="358" class="node-text">App 2</text>
+    <rect x="480" y="330" width="135" height="45" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="547" y="358" class="node-text">App 3</text>
+
+    <line x1="252" y1="310" x2="252" y2="330" class="connector" marker-end="url(#arrowGray)"/>
+    <line x1="400" y1="310" x2="400" y2="330" class="connector" marker-end="url(#arrowGray)"/>
+    <line x1="547" y1="310" x2="547" y2="330" class="connector" marker-end="url(#arrowGray)"/>
+  
+  <text x="400" y="438" text-anchor="middle" class="copyright">© TechGuru</text>
+</svg>

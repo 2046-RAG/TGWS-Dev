@@ -4,53 +4,14 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
-import { Copy, Check, Mail, Code2, Sparkles, ArrowRight, Monitor, ChevronDown, ChevronUp, Play } from 'lucide-react';
+import { Copy, Check, Mail, Code2, Sparkles, ArrowRight, Monitor } from 'lucide-react';
 
 // ═══════════════════════════════════════════════
 // Hero Section — Video Background + Mouse Scrubbing
 // ═══════════════════════════════════════════════
 
 const EMAIL = 'Inquiries@techguru-it.asia';
-
-// IT/AI主题视频选项 (S46 - 30个精选)
-const VIDEO_OPTIONS = [
-  // Robot - 机器人
-  { id: 'robot-47257', src: '/videos/mixkit-robot-47257.mp4', label: 'Robot Production', category: 'robot' },
-  { id: 'robot-49042', src: '/videos/mixkit-robot-49042.mp4', label: 'Robot Dance', category: 'robot' },
-  { id: 'robot-47266', src: '/videos/mixkit-robot-47266.mp4', label: 'Robot Circuit', category: 'robot' },
-  { id: 'robot-20961', src: '/videos/mixkit-robot-20961.mp4', label: 'Robot Eyes', category: 'robot' },
-  { id: 'robot-21921', src: '/videos/mixkit-robot-21921.mp4', label: 'Robot Greeting', category: 'robot' },
-  // Cyborg - 半机械人
-  { id: 'cyborg-40200', src: '/videos/mixkit-cyborg-40200.mp4', label: 'Cyborg 1', category: 'cyborg' },
-  { id: 'cyborg-40203', src: '/videos/mixkit-cyborg-40203.mp4', label: 'Cyborg 2', category: 'cyborg' },
-  { id: 'cyborg-40199', src: '/videos/mixkit-cyborg-40199.mp4', label: 'Cyborg 3', category: 'cyborg' },
-  { id: 'cyborg-40206', src: '/videos/mixkit-cyborg-40206.mp4', label: 'Cyborg 4', category: 'cyborg' },
-  { id: 'cyborg-40192', src: '/videos/mixkit-cyborg-40192.mp4', label: 'Cyborg 5', category: 'cyborg' },
-  // Futuristic - 未来科技
-  { id: 'futuristic-18774', src: '/videos/mixkit-futuristic-18774.mp4', label: 'Digital Tunnel', category: 'futuristic' },
-  { id: 'futuristic-51214', src: '/videos/mixkit-futuristic-51214.mp4', label: 'VR Glasses', category: 'futuristic' },
-  { id: 'futuristic-50498', src: '/videos/mixkit-futuristic-50498.mp4', label: 'Blue Lasers', category: 'futuristic' },
-  { id: 'futuristic-5399', src: '/videos/mixkit-futuristic-5399.mp4', label: 'Futuristic 1', category: 'futuristic' },
-  { id: 'futuristic-43527', src: '/videos/mixkit-futuristic-43527.mp4', label: 'Futuristic 2', category: 'futuristic' },
-  // Neon - 霓虹
-  { id: 'neon-34317', src: '/videos/mixkit-neon-34317.mp4', label: 'Neon Tunnel', category: 'neon' },
-  { id: 'neon-34332', src: '/videos/mixkit-neon-34332.mp4', label: 'Neon Abstract', category: 'neon' },
-  { id: 'neon-35693', src: '/videos/mixkit-neon-35693.mp4', label: 'Neon Glow', category: 'neon' },
-  { id: 'neon-43524', src: '/videos/mixkit-neon-43524.mp4', label: 'Neon Future', category: 'neon' },
-  { id: 'neon-43539', src: '/videos/mixkit-neon-43539.mp4', label: 'Neon City', category: 'neon' },
-  // Circuit/Code - 电路/代码
-  { id: 'circuit-30869', src: '/videos/mixkit-circuit-30869.mp4', label: 'Virtual Network', category: 'circuit' },
-  { id: 'code-31378', src: '/videos/mixkit-code-31378.mp4', label: 'Hacker Code', category: 'code' },
-  { id: 'code-46634', src: '/videos/mixkit-code-46634.mp4', label: 'Programming', category: 'code' },
-  { id: 'cyberpunk-12773', src: '/videos/mixkit-cyberpunk-12773.mp4', label: 'Cyberpunk City', category: 'cyberpunk' },
-  { id: 'cyber-46575', src: '/videos/mixkit-cyber-46575.mp4', label: 'Eye Laptop', category: 'cyber' },
-  // Hologram - 全息
-  { id: 'hologram-31029', src: '/videos/mixkit-hologram-31029.mp4', label: 'Hologram 1', category: 'hologram' },
-  { id: 'hologram-31089', src: '/videos/mixkit-hologram-31089.mp4', label: 'Hologram 2', category: 'hologram' },
-  { id: 'hologram-32960', src: '/videos/mixkit-hologram-32960.mp4', label: 'Hologram 3', category: 'hologram' },
-  { id: 'hologram-19213', src: '/videos/mixkit-hologram-19213.mp4', label: 'Hologram 4', category: 'hologram' },
-  { id: 'hologram-19630', src: '/videos/mixkit-hologram-19630.mp4', label: 'Hologram 5', category: 'hologram' },
-];
+const VIDEO_SRC = '/videos/mixkit-hologram-19630.mp4';
 
 const SENSITIVITY = 0.5;
 const TYPING_SPEED = 38;
@@ -89,15 +50,12 @@ export default function HeroSection() {
   const locale = params.locale as string;
   const [copied, setCopied] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
-  const [videoIndex, setVideoIndex] = useState(0);
-  const [videoCategory, setVideoCategory] = useState('all');
-  const [showVideoSelector, setShowVideoSelector] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const prevXRef = useRef(0);
+  const prevYRef = useRef(0);
   const targetTimeRef = useRef(0);
   const seekingRef = useRef(false);
 
-  const currentVideo = VIDEO_OPTIONS[videoIndex];
   const fullText = t('tagline');
   const { displayed, done } = useTypewriter(fullText);
 
@@ -129,10 +87,13 @@ export default function HeroSection() {
     const handleMouseMove = (e: MouseEvent) => {
       const video = videoRef.current;
       if (!video) return;
-      const delta = e.clientX - prevXRef.current;
+      const deltaX = e.clientX - prevXRef.current;
+      const deltaY = e.clientY - prevYRef.current;
       prevXRef.current = e.clientX;
+      prevYRef.current = e.clientY;
       if (!video.duration) return;
-      const timeOffset = (delta / window.innerWidth) * SENSITIVITY * video.duration;
+      const delta = deltaX + deltaY;
+      const timeOffset = (delta / (window.innerWidth + window.innerHeight)) * SENSITIVITY * video.duration;
       targetTimeRef.current = Math.max(0, Math.min(targetTimeRef.current + timeOffset, video.duration));
       if (!seekingRef.current) {
         requestAnimationFrame(doSeek);
@@ -150,7 +111,7 @@ export default function HeroSection() {
       if (v) v.removeEventListener('seeked', handleSeeked);
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [videoIndex]);
+  }, []);
 
   const handleCopyEmail = useCallback(async () => {
     try {
@@ -184,11 +145,10 @@ export default function HeroSection() {
         ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover"
         style={{ objectPosition: '70% center' }}
-        src={currentVideo.src}
+        src={VIDEO_SRC}
         muted
         playsInline
         preload="auto"
-        key={currentVideo.id}
       />
 
       {/* Gradient overlay — left dark, right transparent */}
@@ -201,7 +161,7 @@ export default function HeroSection() {
           {/* Brand subtitle — no blur, opacity hierarchy */}
           <div
             className="pointer-events-none select-none mb-5 sm:mb-6"
-            style={{ fontSize: 'clamp(16px, 3.5vw, 22px)', lineHeight: 1.3, fontWeight: 400, color: 'rgba(255,255,255,0.65)' }}
+            style={{ fontSize: 'clamp(16px, 3.5vw, 22px)', lineHeight: 1.3, fontWeight: 400, color: 'rgba(255,255,255,0.85)' }}
           >
             <p>{t('heroLabel.line1')}</p>
             <p>{t('heroLabel.line2')}</p>
@@ -264,62 +224,6 @@ export default function HeroSection() {
         </button>
       </div>
 
-      {/* Video Selector (S46) — bottom-right corner */}
-      <div className="absolute bottom-20 right-4 sm:right-6 z-20">
-        <div className={`transition-all duration-300 ${showVideoSelector ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}>
-          <div className="bg-black/70 backdrop-blur-md rounded-xl border border-white/20 p-3 w-[200px] max-h-[400px] overflow-hidden flex flex-col">
-            <p className="text-white/60 text-[10px] uppercase tracking-wider mb-2">Video Selector</p>
-
-            {/* Category tabs */}
-            <div className="flex gap-1 mb-2">
-              {['all', 'data', 'futuristic', 'server'].map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setVideoCategory(cat)}
-                  className={`px-2 py-0.5 text-[10px] rounded capitalize transition-colors ${
-                    videoCategory === cat
-                      ? 'bg-[#00D4FF]/30 text-white'
-                      : 'text-white/50 hover:text-white/80'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-
-            {/* Video list */}
-            <div className="overflow-y-auto flex-1 space-y-0.5 pr-1">
-              {VIDEO_OPTIONS
-                .filter(v => videoCategory === 'all' || v.category === videoCategory)
-                .map((video) => {
-                  const globalIdx = VIDEO_OPTIONS.findIndex(v => v.id === video.id);
-                  return (
-                    <button
-                      key={video.id}
-                      onClick={() => setVideoIndex(globalIdx)}
-                      className={`w-full flex items-center gap-2 px-2 py-1 rounded text-left transition-colors ${
-                        globalIdx === videoIndex
-                          ? 'bg-[#00D4FF]/20 text-white'
-                          : 'text-white/60 hover:bg-white/10 hover:text-white'
-                      }`}
-                    >
-                      <Play size={8} className={globalIdx === videoIndex ? 'text-[#00D4FF]' : 'text-white/30'} />
-                      <span className="text-[11px] truncate">{video.label}</span>
-                    </button>
-                  );
-                })}
-            </div>
-          </div>
-        </div>
-        <button
-          onClick={() => setShowVideoSelector(!showVideoSelector)}
-          className="mt-2 w-full flex items-center justify-center gap-1.5 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 text-white/70 text-[10px] uppercase tracking-wider hover:bg-white/20 hover:text-white transition-colors"
-        >
-          {showVideoSelector ? <ChevronDown size={10} /> : <ChevronUp size={10} />}
-          <span>Video</span>
-        </button>
-      </div>
-
       {/* Three Storylines — flow layout, no clip */}
       <div className="relative z-10 pb-6 px-5 sm:px-8">
         <div className="max-w-5xl mx-auto">
@@ -333,12 +237,12 @@ export default function HeroSection() {
                   <Code2 size={18} className="text-[#00D4FF]" />
                 </div>
                 <div>
-                  <h3 className="text-white font-bold text-sm leading-tight">Build. Run. Protect.</h3>
-                  <p className="text-white/50 text-xs">Core Infrastructure</p>
+                  <h3 className="text-white font-bold text-sm leading-tight">{t('storyline1Title')}</h3>
+                  <p className="text-white/50 text-xs">{t('storyline1Sub')}</p>
                 </div>
               </div>
               <p className="text-white/60 text-xs leading-relaxed">
-                End-to-end IT lifecycle. From AI workloads to mission-critical security.
+                {t('storyline1Desc')}
               </p>
               <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
                 <ArrowRight size={14} className="text-white/50" />
@@ -354,12 +258,12 @@ export default function HeroSection() {
                   <Sparkles size={18} className="text-[#7B61FF]" />
                 </div>
                 <div>
-                  <h3 className="text-white font-bold text-sm leading-tight">AI Journey</h3>
-                  <p className="text-white/50 text-xs">Intelligent Transformation</p>
+                  <h3 className="text-white font-bold text-sm leading-tight">{t('storyline2Title')}</h3>
+                  <p className="text-white/50 text-xs">{t('storyline2Sub')}</p>
                 </div>
               </div>
               <p className="text-white/60 text-xs leading-relaxed">
-                AI Adoption, AIGC, Coding Assistants, Legacy AI, AI Agents.
+                {t('storyline2Desc')}
               </p>
               <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
                 <ArrowRight size={14} className="text-white/50" />
@@ -376,12 +280,12 @@ export default function HeroSection() {
                   <Monitor size={18} className="text-white" />
                 </div>
                 <div>
-                  <h3 className="text-white font-bold text-sm leading-tight">VMware Alternatives</h3>
-                  <p className="text-white/50 text-xs">Migration &amp; Freedom</p>
+                  <h3 className="text-white font-bold text-sm leading-tight">{t('storyline3Title')}</h3>
+                  <p className="text-white/50 text-xs">{t('storyline3Sub')}</p>
                 </div>
               </div>
               <p className="text-white/60 text-xs leading-relaxed">
-                5 proven alternatives. Dual-hypervisor architecture. Zero lock-in.
+                {t('storyline3Desc')}
               </p>
               <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
                 <ArrowRight size={14} className="text-white/50" />

@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <style>
+    text { font-family: 'Helvetica Neue', Arial, sans-serif; }
+    .title { font-size: 20px; font-weight: 700; fill: #18181B; }
+    .subtitle { font-size: 12px; fill: #71717A; }
+    .node-text { font-size: 13px; font-weight: 600; fill: #18181B; }
+    .node-sub { font-size: 10px; fill: #71717A; }
+    .label { font-size: 11px; font-weight: 600; fill: #71717A; }
+    .copyright { font-size: 10px; fill: #71717A; }
+    .connector { stroke: #71717A; stroke-width: 1.5; fill: none; }
+    .connector-cyan { stroke: #00D4FF; stroke-width: 2; fill: none; }
+    .connector-purple { stroke: #7B61FF; stroke-width: 2; fill: none; }
+    .connector-dashed { stroke: #71717A; stroke-width: 1.5; fill: none; stroke-dasharray: 6,3; }
+    .arrowhead { fill: #71717A; }
+    .arrowhead-cyan { fill: #00D4FF; }
+    .arrowhead-purple { fill: #7B61FF; }
+  </style>
+  <defs>
+    <marker id="arrowGray" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead"/>
+    </marker>
+    <marker id="arrowCyan" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead-cyan"/>
+    </marker>
+    <marker id="arrowPurple" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead-purple"/>
+    </marker>
+  </defs>
+  <rect width="800" height="450" fill="#FFFFFF" rx="8"/>
+  
+    <text x="400" y="35" text-anchor="middle" class="title">AI Adoption Roadmap</text>
+    <text x="400" y="52" text-anchor="middle" class="subtitle">From Foundation to Autonomous Agents</text>
+
+    <!-- Phase 1: Foundation -->
+    <rect x="50" y="100" width="140" height="90" fill="#00D4FF15" stroke="#00D4FF" rx="8"/>
+    <text x="120" y="130" class="node-text">AI Foundation</text>
+    <text x="120" y="148" class="node-sub">Data Readiness</text>
+    <text x="120" y="163" class="node-sub">Infrastructure</text>
+    <text x="120" y="178" class="node-sub">Governance</text>
+
+    <!-- Phase 2: Use Cases -->
+    <rect x="240" y="80" width="180" height="130" fill="#FFFFFF" stroke="#18181B" rx="8"/>
+    <text x="330" y="105" text-anchor="middle" class="label">USE CASES</text>
+
+    <rect x="255" y="115" width="70" height="40" fill="#00D4FF15" stroke="#00D4FF" rx="8"/>
+    <text x="290" y="140" text-anchor="middle" class="node-sub">AIGC</text>
+
+    <rect x="335" y="115" width="70" height="40" fill="#7B61FF15" stroke="#7B61FF" rx="8"/>
+    <text x="370" y="140" text-anchor="middle" class="node-sub">AI Coding</text>
+
+    <rect x="255" y="165" width="70" height="40" fill="#FEF3C7" stroke="#F59E0B" rx="8"/>
+    <text x="290" y="190" text-anchor="middle" class="node-sub" style="fill:#92400E">Legacy Modern</text>
+
+    <rect x="335" y="165" width="70" height="40" fill="#ECFDF5" stroke="#10B981" rx="8"/>
+    <text x="370" y="190" text-anchor="middle" class="node-sub" style="fill:#065F46">Analytics</text>
+
+    <!-- Phase 3: Agent -->
+    <rect x="490" y="100" width="140" height="90" fill="#7B61FF15" stroke="#7B61FF" rx="8"/>
+    <text x="560" y="130" class="node-text">AI Agents</text>
+    <text x="560" y="148" class="node-sub">Autonomous</text>
+    <text x="560" y="163" class="node-sub">Multi-Step</text>
+    <text x="560" y="178" class="node-sub">Tool-Using</text>
+
+    <!-- Phase 4: Transformation -->
+    <rect x="680" y="100" width="90" height="90" fill="#18181B" stroke="#18181B" rx="8"/>
+    <text x="725" y="135" text-anchor="middle" class="node-text" style="fill:#FFFFFF">Biz</text>
+    <text x="725" y="152" text-anchor="middle" class="node-text" style="fill:#FFFFFF">Transform</text>
+
+    <!-- Arrows -->
+    <line x1="190" y1="145" x2="240" y2="145" class="connector-cyan" marker-end="url(#arrowCyan)"/>
+    <line x1="420" y1="145" x2="490" y2="145" class="connector-purple" marker-end="url(#arrowPurple)"/>
+    <line x1="630" y1="145" x2="680" y2="145" class="connector" marker-end="url(#arrowGray)"/>
+
+    <!-- Bottom timeline -->
+    <rect x="80" y="280" width="640" height="3" fill="#F4F4F5" stroke="#F4F4F5" rx="2"/>
+
+    <circle cx="120" cy="281" r="6" fill="#00D4FF"/>
+    <text x="120" y="305" text-anchor="middle" class="label">Month 1-3</text>
+
+    <circle cx="330" cy="281" r="6" fill="#18181B"/>
+    <text x="330" y="305" text-anchor="middle" class="label">Month 4-9</text>
+
+    <circle cx="560" cy="281" r="6" fill="#7B61FF"/>
+    <text x="560" y="305" text-anchor="middle" class="label">Month 10-15</text>
+
+    <circle cx="725" cy="281" r="6" fill="#18181B"/>
+    <text x="725" y="305" text-anchor="middle" class="label">Month 16+</text>
+
+    <!-- ROI -->
+    <rect x="150" y="340" width="500" height="45" fill="#F4F4F5" stroke="#D4D4D8" rx="8"/>
+    <text x="400" y="368" text-anchor="middle" class="node-sub" style="fill:#18181B">Expected ROI: 3-5x within 18 months with proper governance & change management</text>
+  
+  <text x="400" y="438" text-anchor="middle" class="copyright">© TechGuru</text>
+</svg>

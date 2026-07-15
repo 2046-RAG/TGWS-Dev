@@ -21,7 +21,8 @@ async function getPost(slug: string) {
       publishedAt,
       featured,
       coverImage,
-      tags
+      tags,
+      architectureDiagram
     }`;
     return await client.fetch(query, { slug });
   } catch (error) {
@@ -34,11 +35,28 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug, locale } = await params;
   const post = await getPost(slug);
   if (!post) return { title: 'Post Not Found' };
-  const title = locale === 'zh' ? (post.titleZh || post.title) : post.title;
-  const description = locale === 'zh' ? (post.excerptZh || post.excerpt) : post.excerpt;
+  const rawTitle = locale === 'zh' ? (post.titleZh || post.title) : post.title;
+  const rawDesc = locale === 'zh' ? (post.excerptZh || post.excerpt) : post.excerpt;
+  const title = typeof rawTitle === 'object' ? (rawTitle.en || rawTitle.zh || Object.values(rawTitle)[0] || '') : rawTitle;
+  const description = typeof rawDesc === 'object' ? (rawDesc.en || rawDesc.zh || Object.values(rawDesc)[0] || '') : rawDesc;
+  // OG image: use coverImage if Sanity object, else picsum fallback
+  const ogImage = post.coverImage && typeof post.coverImage === 'object'
+    ? `https://cdn.sanity.io/images/r6ztl1oq/production/${post.coverImage.asset?._ref?.replace('image-', '').replace('-$', '.') || 'fallback'}.png`
+    : `https://picsum.photos/seed/${slug}/1200/630`;
   return {
-    title,
-    description
+    title: String(title),
+    description: String(description),
+    openGraph: {
+      title: String(title),
+      description: String(description),
+      images: [{ url: ogImage, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: String(title),
+      description: String(description),
+      images: [ogImage],
+    },
   };
 }
 

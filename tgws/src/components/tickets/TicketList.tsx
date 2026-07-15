@@ -57,7 +57,7 @@ export default function TicketList({ tickets }: { tickets: Ticket[] }) {
 
   if (tickets.length === 0) {
     return (
-      <div className="bg-white border border-gray-200 rounded-2xl p-12 text-center shadow-sm">
+      <div className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl p-12 text-center shadow-sm">
         <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <Clock size={28} className="text-gray-400" />
         </div>
@@ -74,7 +74,7 @@ export default function TicketList({ tickets }: { tickets: Ticket[] }) {
         return (
           <div
             key={ticket.id}
-            className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-gray-300 transition-all duration-200 cursor-pointer group"
+            className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl p-5 hover:shadow-md hover:border-gray-300 dark:hover:border-zinc-600 transition-all duration-200 cursor-pointer group"
           >
             <div className="flex items-center justify-between gap-4">
               <div className="flex-1 min-w-0">
@@ -90,8 +90,8 @@ export default function TicketList({ tickets }: { tickets: Ticket[] }) {
                     {categoryLabels[ticket.category] || ticket.category}
                   </span>
                 </div>
-                <h3 className="text-gray-900 font-medium truncate">{ticket.subject}</h3>
-                <p className="text-sm text-gray-500 mt-1">
+                <h3 className="text-gray-900 dark:text-white font-medium truncate">{ticket.subject}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                   {format(new Date(ticket.created_at), 'MMM d, yyyy HH:mm')} PHT
                 </p>
               </div>

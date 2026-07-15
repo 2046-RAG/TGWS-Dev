@@ -2,13 +2,15 @@
 
 import { useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
 import {
   Video, Code2, Bot, BrainCircuit, Compass, Server, Cloud, HardDrive,
   Shield, Lock, MonitorCheck, Network, CloudCog, Bug,
   AlertTriangle, Settings, Database, RefreshCw, Globe, ShieldCheck,
-  Wifi, Cable, Route, Unplug, Radio, Router, NetworkIcon
+  Wifi, Cable, Route, Unplug, Radio, Router, NetworkIcon, ArrowRight
 } from 'lucide-react';
 
 type TabKey = 'build' | 'run' | 'protect';
@@ -32,7 +34,7 @@ const tabColors: Record<TabKey, string> = {
 };
 
 const slugToI18n: Record<string, string> = {
-  'ai-generated-content-aigc': 'aigcT2V',
+  'ai-generated-content-aigc': 'aigcTitle',
   'ai-assisted-coding': 'aigcCoding',
   'ai-agent-development': 'aiAgent',
   'enterprise-legacy-system-ai-augmentation': 'legacyAI',
@@ -93,6 +95,43 @@ const iconMap: Record<string, React.ReactNode> = {
   'incident-response': <AlertTriangle size={28} />,
 };
 
+// Real product images - each product has its own UNIQUE image
+const imageMap: Record<string, string> = {
+  // Build - AI products (5 unique images)
+  'ai-generated-content-aigc': '/images/products/real/aigc.jpg',
+  'ai-assisted-coding': '/images/products/real/ai-coding.jpg',
+  'ai-agent-development': '/images/products/real/ai-agent.jpg',
+  'enterprise-legacy-system-ai-augmentation': '/images/products/real/legacy-ai.jpg',
+  'ai-adoption-services': '/images/products/real/ai-adoption.jpg',
+  // Run - Infrastructure (7 unique images)
+  'server-virtualization-platform': '/images/products/real/virtualization.jpg',
+  'hyper-converged-infrastructure': '/images/products/real/hci.jpg',
+  'cloud-migration': '/images/products/real/cloud.jpg',
+  'cloud-repatriation': '/images/products/real/cloud-repatriation.jpg',
+  'enterprise-storage-solutions': '/images/products/real/storage.jpg',
+  'managed-hosting-services': '/images/products/real/managed-hosting-services.jpg',
+  'business-continuity-disaster-recovery': '/images/products/real/business-continuity-disaster-recovery.jpg',
+  // Run - Routing & Switching (4 unique images)
+  'enterprise-routers': '/images/products/real/routers.jpg',
+  'core-switches': '/images/products/real/switches.jpg',
+  'access-switches': '/images/products/real/access-switches.jpg',
+  'aggregation-switches': '/images/products/real/aggregation-switches.jpg',
+  // Run - Wireless (4 unique images)
+  'enterprise-wireless-ap': '/images/products/real/enterprise-wireless-ap.jpg',
+  'wireless-controllers': '/images/products/real/wireless-controllers.jpg',
+  'outdoor-wireless-ap': '/images/products/real/outdoor-wireless-ap.jpg',
+  'wifi-6-7-ap': '/images/products/real/wifi-6-7-ap.jpg',
+  // Protect - Security (8 unique images)
+  'next-gen-firewall-ips': '/images/products/real/next-gen-firewall-ips.jpg',
+  'web-application-firewall': '/images/products/real/web-application-firewall.jpg',
+  'endpoint-detection-response': '/images/products/real/endpoint-detection-response.jpg',
+  'network-detection-response': '/images/products/real/network-detection-response.jpg',
+  'cloud-security': '/images/products/real/cloud-security.jpg',
+  'sd-wan-load-balancing': '/images/products/real/sd-wan-load-balancing.jpg',
+  'managed-detection-response': '/images/products/real/managed-detection-response.jpg',
+  'incident-response': '/images/products/real/incident-response.jpg',
+};
+
 // Run tab subcategory groups
 const runSubgroups = [
   { key: 'infrastructure', i18nKey: 'compute', slugs: ['server-virtualization-platform', 'hyper-converged-infrastructure', 'cloud-migration', 'cloud-repatriation', 'enterprise-storage-solutions', 'managed-hosting-services', 'business-continuity-disaster-recovery'] },
@@ -110,6 +149,8 @@ export default function ProductsList({ products }: { products: Product[] }) {
   const t = useTranslations('products');
   const searchParams = useSearchParams();
   const router = useRouter();
+  const params = useParams();
+  const locale = params.locale as string;
 
   const initialTab = (searchParams.get('category') as TabKey) || 'build';
   const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
@@ -137,6 +178,7 @@ export default function ProductsList({ products }: { products: Product[] }) {
     const slug = product.slug?.current || '';
     const i18nKey = slugToI18n[slug] || '';
     const features = slug ? t.raw('features.' + slug) : null;
+    const imageSrc = imageMap[slug];
 
     return (
       <motion.div
@@ -144,23 +186,60 @@ export default function ProductsList({ products }: { products: Product[] }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: index * 0.05 }}
-        className="group bg-white border border-gray-200 rounded-2xl p-6 hover:border-[#00D4FF]/30 hover:shadow-lg transition-all duration-200"
       >
-        <div
-          className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
-          style={{
-            backgroundColor: tabColors[activeTab] + '15',
-            color: tabColors[activeTab],
-          }}
+        <Link
+          href={`/${locale}/products/${slug}`}
+          className="group block bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl overflow-hidden hover:border-[#00D4FF]/30 hover:shadow-lg transition-all duration-200 h-full"
         >
-          {iconMap[slug] || <Server size={28} />}
-        </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-[#00D4FF] transition-colors duration-200">
-          {t(i18nKey || product.title)}
-        </h3>
-        <p className="text-sm text-gray-500 leading-relaxed" style={{ lineHeight: '1.7' }}>
-          {Array.isArray(features) ? features.join(' • ') : (product.features?.join(' • ') || '')}
-        </p>
+          <div className="relative h-40 overflow-hidden">
+            {imageSrc ? (
+              <Image
+                src={imageSrc}
+                alt={t(i18nKey || product.title)}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            ) : (
+              <div
+                className="w-full h-full flex items-center justify-center"
+                style={{
+                  backgroundColor: tabColors[activeTab] + '10',
+                }}
+              >
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center"
+                  style={{
+                    backgroundColor: tabColors[activeTab] + '20',
+                    color: tabColors[activeTab],
+                  }}
+                >
+                  {iconMap[slug] || <Server size={32} />}
+                </div>
+              </div>
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+            <div
+              className="absolute top-3 left-3 w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{
+                backgroundColor: tabColors[activeTab] + '20',
+                color: tabColors[activeTab],
+              }}
+            >
+              {iconMap[slug] || <Server size={20} />}
+            </div>
+          </div>
+          <div className="p-5">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-[#00D4FF] transition-colors duration-200">
+              {t(i18nKey || product.title)}
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4 line-clamp-2" style={{ lineHeight: '1.7' }}>
+              {Array.isArray(features) ? features.join(' • ') : (product.features?.join(' • ') || '')}
+            </p>
+            <span className="inline-flex items-center gap-1 text-sm font-medium" style={{ color: tabColors[activeTab] }}>
+              Learn more <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            </span>
+          </div>
+        </Link>
       </motion.div>
     );
   };
@@ -168,7 +247,7 @@ export default function ProductsList({ products }: { products: Product[] }) {
   return (
     <section className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
       <div className="text-center mb-16">
-        <h1 className="section-title text-gray-900">{t('title')}</h1>
+        <h1 className="section-title text-gray-900 dark:text-white">{t('title')}</h1>
         <p className="section-subtitle mx-auto">{t('subtitle')}</p>
       </div>
 
@@ -180,7 +259,7 @@ export default function ProductsList({ products }: { products: Product[] }) {
             className={`relative px-6 sm:px-8 py-3 rounded-full text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 ${
               activeTab === tab.key
                 ? 'text-white'
-                : 'text-gray-500 hover:text-gray-700 bg-white border border-gray-200 hover:border-gray-300'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 hover:border-gray-300 dark:hover:border-zinc-600'
             }`}
           >
             {activeTab === tab.key && (
@@ -204,7 +283,7 @@ export default function ProductsList({ products }: { products: Product[] }) {
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="bg-white border border-gray-200 rounded-2xl p-6 mb-8 shadow-sm"
+        className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl p-6 mb-8 shadow-sm"
       >
         <div className="flex items-start gap-4">
           <div
@@ -216,10 +295,10 @@ export default function ProductsList({ products }: { products: Product[] }) {
             {activeTab === 'protect' && <Shield size={24} />}
           </div>
           <div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
               {t(`${activeTab}Title`)}
             </h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-300">
               {t(`${activeTab}Story`)}
             </p>
           </div>
@@ -244,10 +323,10 @@ export default function ProductsList({ products }: { products: Product[] }) {
                       className="w-2 h-8 rounded-full"
                       style={{ backgroundColor: tabColors.run }}
                     />
-                    <h2 className="text-xl font-bold text-gray-900">
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                       {t(group.i18nKey)}
                     </h2>
-                    <span className="text-sm text-gray-400">
+                    <span className="text-sm text-gray-400 dark:text-gray-500">
                       ({group.products.length})
                     </span>
                   </div>
@@ -268,7 +347,7 @@ export default function ProductsList({ products }: { products: Product[] }) {
 
       {filtered.length === 0 && (
         <div className="text-center py-20">
-          <p className="text-gray-500 text-lg">No products found in this category.</p>
+          <p className="text-gray-500 dark:text-gray-400 text-lg">No products found in this category.</p>
         </div>
       )}
     </section>

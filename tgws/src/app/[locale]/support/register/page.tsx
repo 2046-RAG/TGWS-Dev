@@ -1,6 +1,20 @@
 import Link from 'next/link';
 import RegisterForm from '@/components/auth/RegisterForm';
 import { getTranslations } from 'next-intl/server';
+import type { Metadata } from 'next';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'support.metadataRegister' });
+  return {
+    title: t('title'),
+    description: t('description'),
+  };
+}
 
 export default async function RegisterPage({
   params,
@@ -13,16 +27,16 @@ export default async function RegisterPage({
   return (
     <section className="py-20 px-5 sm:px-8 max-w-md mx-auto">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('createAccount')}</h1>
-        <p className="text-gray-500">{t('registerSubtitle')}</p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{t('createAccount')}</h1>
+        <p className="text-gray-500 dark:text-gray-400">{t('registerSubtitle')}</p>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm overflow-hidden relative">
+      <div className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl p-8 shadow-sm overflow-hidden relative">
         <div className="absolute top-0 left-0 right-0 h-1 bg-[#00D4FF]" />
         <RegisterForm />
       </div>
 
-      <p className="text-center text-gray-500 text-sm mt-6">
+      <p className="text-center text-gray-500 dark:text-gray-400 text-sm mt-6">
         {t('hasAccount')}{' '}
         <Link href={`/${locale}/support/login`} className="inline-flex items-center text-[#00D4FF] hover:underline min-h-[44px] py-1">
           {t('signIn')}

@@ -1,7 +1,9 @@
 import { createClient } from '@sanity/client';
 import dotenv from 'dotenv';
-
-dotenv.config({ path: '.env.local' });
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+const __dirname = dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: join(__dirname, '..', '.env.local') });
 
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,

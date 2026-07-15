@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-primary: #00D4FF;
@@ -375,6 +376,45 @@ textarea:focus-visible,
   background: rgba(255,255,255,0.05);
   border-color: rgba(255,255,255,0.25);
 }
+.dark .card-compact {
+  background: #18181B;
+  border-color: rgba(255,255,255,0.08);
+}
+.dark .card-compact:hover {
+  border-color: rgba(0, 212, 255, 0.25);
+}
+.dark .glass {
+  background: rgba(9,9,11,0.7);
+  border-color: rgba(255,255,255,0.1);
+}
+.dark .glow {
+  background: #18181B;
+  border-color: rgba(0, 212, 255, 0.15);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.08);
+}
+.dark .glow:hover {
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.15);
+}
+.dark .article-content h2 {
+  border-bottom-color: rgba(255,255,255,0.08);
+}
+.dark .article-content p {
+  color: #D4D4D8;
+}
+.dark .article-content li {
+  color: #D4D4D8;
+}
+.dark .article-content blockquote {
+  color: #A1A1AA;
+  background: rgba(0, 212, 255, 0.08);
+}
+.dark .article-content code {
+  background: #27272A;
+  color: #F87171;
+}
+.dark .article-content hr {
+  border-top-color: rgba(255,255,255,0.08);
+}
 
 /* Reduced Motion - disable all animations for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
@@ -425,62 +465,6 @@ textarea:focus-visible,
   to { clip-path: inset(0 0 0 0); }
 }
 
-/* ═══ Storyline animations ═══ */
-
-@keyframes storylineReveal {
-  from { opacity: 0; transform: translateY(24px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(123, 97, 255, 0.15); }
-  50% { box-shadow: 0 0 40px rgba(123, 97, 255, 0.3); }
-}
-
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-30px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(30px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.storyline-card {
-  animation: storylineReveal 0.6s ease both;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.storyline-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-}
-
-.storyline-ai {
-  animation: glowPulse 3s ease-in-out infinite;
-}
-
-.storyline-vmware {
-  background: linear-gradient(135deg, #18181B 0%, #27272A 100%);
-  animation: slideInRight 0.6s ease both;
-}
-
-.storyline-vmware:hover {
-  box-shadow: 0 12px 32px rgba(255, 255, 255, 0.08);
-}
-
-.storyline-badge {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 3s linear infinite;
-}
-
 /* ═══ Article Content Styles ═══ */
 
 .article-content h2 {
@@ -488,10 +472,14 @@ textarea:focus-visible,
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
   color: var(--color-foreground);
-  margin-top: 3rem;
-  margin-bottom: 1rem;
+  margin-top: 3.5rem;
+  margin-bottom: 1.25rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid #E5E7EB;
+}
+
+.article-content h2:first-child {
+  margin-top: 0;
 }
 
 .article-content h3 {
@@ -499,25 +487,30 @@ textarea:focus-visible,
   font-size: clamp(1.25rem, 2.5vw, 1.5rem);
   font-weight: 600;
   color: var(--color-foreground);
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
 }
 
 .article-content p {
-  line-height: 1.8;
-  margin-bottom: 1.25rem;
+  line-height: 1.85;
+  margin-bottom: 1.5rem;
   color: #374151;
+  font-size: 1.05rem;
+}
+
+.article-content p:last-child {
+  margin-bottom: 0;
 }
 
 .article-content ul,
 .article-content ol {
-  margin: 1.25rem 0;
+  margin: 1.5rem 0;
   padding-left: 1.5rem;
 }
 
 .article-content li {
-  margin-bottom: 0.5rem;
-  line-height: 1.7;
+  margin-bottom: 0.75rem;
+  line-height: 1.75;
   color: #374151;
 }
 
@@ -589,13 +582,92 @@ textarea:focus-visible,
 @media (max-width: 768px) {
   .article-content h2 {
     margin-top: 2rem;
+    font-size: 1.35rem;
   }
 
   .article-content h3 {
     margin-top: 1.5rem;
+    font-size: 1.15rem;
   }
 
   .article-content p {
-    line-height: 1.7;
+    line-height: 1.75;
+    font-size: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .article-content li {
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* ═══ Accessibility ═══ */
+
+/* Skip navigation link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-foreground);
+  color: white;
+  font-weight: 600;
+  border-radius: 0 0 0.5rem 0.5rem;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* Focus visible for all interactive elements */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Ensure minimum touch target size on mobile */
+@media (max-width: 768px) {
+  a, button, input, select, textarea {
+    min-height: 44px;
+  }
+}
+
+/* Improved subtitle contrast */
+.section-subtitle {
+  color: #4B5563;
+}
+
+/* ═══ Logo Marquee Animation ═══ */
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-marquee-left {
+  animation: marquee-left 25s linear infinite;
+  width: max-content;
+}
+
+.animate-marquee-right {
+  animation: marquee-right 25s linear infinite;
+  width: max-content;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-left,
+  .animate-marquee-right {
+    animation: none;
   }
 }

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <style>
+      .label { font-family: Arial, sans-serif; font-size: 13px; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- External Zone -->
+  <rect x="10" y="10" width="180" height="380" fill="#ffebee" stroke="#c62828" rx="8"/>
+  <text x="100" y="35" text-anchor="middle" class="title" style="fill:#c62828">External Zone</text>
+  
+  <rect x="30" y="60" width="140" height="40" fill="#fff" stroke="#c62828" rx="4"/>
+  <text x="100" y="85" text-anchor="middle" class="label">Internet</text>
+  
+  <rect x="30" y="120" width="140" height="40" fill="#fff" stroke="#c62828" rx="4"/>
+  <text x="100" y="145" text-anchor="middle" class="label">Payment Gateway</text>
+  
+  <rect x="30" y="180" width="140" height="40" fill="#fff" stroke="#c62828" rx="4"/>
+  <text x="100" y="205" text-anchor="middle" class="label">Mobile Apps</text>
+  
+  <!-- DMZ -->
+  <rect x="210" y="10" width="180" height="380" fill="#fff3e0" stroke="#f57c00" rx="8"/>
+  <text x="300" y="35" text-anchor="middle" class="title" style="fill:#f57c00">DMZ</text>
+  
+  <rect x="230" y="60" width="140" height="40" fill="#fff" stroke="#f57c00" rx="4"/>
+  <text x="300" y="85" text-anchor="middle" class="label">WAF</text>
+  
+  <rect x="230" y="120" width="140" height="40" fill="#fff" stroke="#f57c00" rx="4"/>
+  <text x="300" y="145" text-anchor="middle" class="label">Load Balancer</text>
+  
+  <rect x="230" y="180" width="140" height="40" fill="#fff" stroke="#f57c00" rx="4"/>
+  <text x="300" y="205" text-anchor="middle" class="label">API Gateway</text>
+  
+  <!-- Internal Zone -->
+  <rect x="410" y="10" width="180" height="380" fill="#e3f2fd" stroke="#1976d2" rx="8"/>
+  <text x="500" y="35" text-anchor="middle" class="title" style="fill:#1976d2">Internal Zone</text>
+  
+  <rect x="430" y="60" width="140" height="40" fill="#fff" stroke="#1976d2" rx="4"/>
+  <text x="500" y="85" text-anchor="middle" class="label">Core Banking</text>
+  
+  <rect x="430" y="120" width="140" height="40" fill="#fff" stroke="#1976d2" rx="4"/>
+  <text x="500" y="145" text-anchor="middle" class="label">Transaction DB</text>
+  
+  <rect x="430" y="180" width="140" height="40" fill="#fff" stroke="#1976d2" rx="4"/>
+  <text x="500" y="205" text-anchor="middle" class="label">PCI Vault</text>
+  
+  <!-- Security Controls -->
+  <rect x="610" y="10" width="180" height="380" fill="#e8f5e9" stroke="#388e3c" rx="8"/>
+  <text x="700" y="35" text-anchor="middle" class="title" style="fill:#388e3c">Security</text>
+  
+  <rect x="630" y="60" width="140" height="40" fill="#fff" stroke="#388e3c" rx="4"/>
+  <text x="700" y="85" text-anchor="middle" class="label">NGFW</text>
+  
+  <rect x="630" y="120" width="140" height="40" fill="#fff" stroke="#388e3c" rx="4"/>
+  <text x="700" y="145" text-anchor="middle" class="label">NDR Monitor</text>
+  
+  <rect x="630" y="180" width="140" height="40" fill="#fff" stroke="#388e3c" rx="4"/>
+  <text x="700" y="205" text-anchor="middle" class="label">MDR SOC</text>
+  
+  <rect x="630" y="240" width="140" height="40" fill="#fff" stroke="#388e3c" rx="4"/>
+  <text x="700" y="265" text-anchor="middle" class="label">SIEM Logs</text>
+  
+  <!-- Arrows -->
+  <path d="M170 145 L230 145" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <path d="M370 145 L430 145" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <path d="M570 145 L630 145" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+  <defs>
+    <style>
+      .label { font-family: Arial, sans-serif; font-size: 13px; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- Input -->
+  <rect x="20" y="100" width="140" height="100" fill="#e3f2fd" stroke="#1976d2" rx="8"/>
+  <text x="90" y="135" text-anchor="middle" class="label" style="font-weight:bold">Input</text>
+  <text x="90" y="155" text-anchor="middle" class="label">Text Prompt</text>
+  <text x="90" y="175" text-anchor="middle" class="label">Image Upload</text>
+  
+  <!-- Arrow -->
+  <path d="M160 150 L220 150" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- AI Models -->
+  <rect x="220" y="20" width="200" height="260" fill="#f3e5f5" stroke="#7b1fa2" rx="8"/>
+  <text x="320" y="45" text-anchor="middle" class="title" style="fill:#7b1fa2">AI Models</text>
+  
+  <rect x="240" y="60" width="160" height="35" fill="#fff" stroke="#7b1fa2" rx="4"/>
+  <text x="320" y="82" text-anchor="middle" class="label">Seedance (Video)</text>
+  
+  <rect x="240" y="105" width="160" height="35" fill="#fff" stroke="#7b1fa2" rx="4"/>
+  <text x="320" y="127" text-anchor="middle" class="label">Jimeng (Image)</text>
+  
+  <rect x="240" y="150" width="160" height="35" fill="#fff" stroke="#7b1fa2" rx="4"/>
+  <text x="320" y="172" text-anchor="middle" class="label">Wan 2.7 (Image)</text>
+  
+  <rect x="240" y="195" width="160" height="35" fill="#fff" stroke="#7b1fa2" rx="4"/>
+  <text x="320" y="217" text-anchor="middle" class="label">CosyVoice (Speech)</text>
+  
+  <rect x="240" y="240" width="160" height="35" fill="#fff" stroke="#7b1fa2" rx="4"/>
+  <text x="320" y="262" text-anchor="middle" class="label">HappyHorse (Video)</text>
+  
+  <!-- Arrow -->
+  <path d="M420 150 L480 150" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Output -->
+  <rect x="480" y="100" width="140" height="100" fill="#e8f5e9" stroke="#388e3c" rx="8"/>
+  <text x="550" y="135" text-anchor="middle" class="label" style="font-weight:bold">Output</text>
+  <text x="550" y="155" text-anchor="middle" class="label">Generated Video</text>
+  <text x="550" y="175" text-anchor="middle" class="label">Generated Image</text>
+  
+  <!-- Arrow -->
+  <path d="M620 150 L680 150" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Platform -->
+  <rect x="680" y="100" width="100" height="100" fill="#fff3e0" stroke="#f57c00" rx="8"/>
+  <text x="730" y="140" text-anchor="middle" class="label" style="font-weight:bold">Platform</text>
+  <text x="730" y="160" text-anchor="middle" class="label">Alibaba</text>
+  <text x="730" y="175" text-anchor="middle" class="label">Cloud</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+</svg>

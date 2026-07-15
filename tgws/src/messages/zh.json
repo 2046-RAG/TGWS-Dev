@@ -3,7 +3,6 @@
     "home": "首頁",
     "products": "產品服務",
     "solutions": "行業解決方案",
-    "caseStudies": "最佳實踐",
     "blog": "新聞博客",
     "about": "關於我們",
     "support": "客戶支持",
@@ -22,15 +21,14 @@
     "allIndustries": "所有行業",
     "allPosts": "所有文章",
     "technical": "技術文章",
-    "industry": "行業動態",
-    "caseStudy": "案例研究"
+    "industry": "行業動態"
   },
   "hero": {
     "company": "泰谷網數科技",
-    "tagline": "從AI工作負載到關鍵任務基礎設施，我們保護每一層。",
+    "tagline": "以AI構建。超越VMware運行。無邊界保護。",
     "heroLabel": {
       "line1": "泰谷網數科技",
-      "line2": "構建·承載·保護，您的端到端IT合作夥伴"
+      "line2": "AI與基礎設施和安全的交汇點"
     },
     "cta": {
       "solutions": "瀏覽解決方案",
@@ -39,7 +37,18 @@
       "vmware": "VMware遷移"
     },
     "scrollHint": "向下滑動",
-    "scrubHint": "滑動鼠標探索"
+    "scrubHint": "滑動鼠標探索",
+    "videoSelector": "影片選擇器",
+    "videoToggle": "影片",
+    "storyline1Title": "建構。承載。保護。",
+    "storyline1Sub": "核心基礎架構",
+    "storyline1Desc": "全光譜IT解決方案。從AI工作負載到關鍵任務安全。",
+    "storyline2Title": "AI旅程",
+    "storyline2Sub": "探索AI可能性",
+    "storyline2Desc": "AI導入、AIGC、編碼助手、老舊系統AI化、AI代理。",
+    "storyline3Title": "VMware替代方案",
+    "storyline3Sub": "遷移與自由",
+    "storyline3Desc": "5個驗證方案。雙架構。零鎖定。"
   },
   "home": {
     "build": "構建",
@@ -103,9 +112,9 @@
     "socialProofStat2Label": "技術合作夥伴",
     "socialProofStat3": "6",
     "socialProofStat3Label": "行業解決方案",
-    "socialProofStat4": "3+",
+    "socialProofStat4": "12+",
     "socialProofStat4Label": "年企業IT經驗",
-    "conversionTitle": "準備好改造您的IT了嗎？",
+    "conversionTitle": "準備好升級您的IT了嗎？",
     "conversionDesc": "告訴我們您的挑戰，我們的團隊將為您匹配Build、Run、Protect解決方案，從評估到部署。",
     "conversionPrimary": "立即開始",
     "conversionSecondary": "預約演示",
@@ -121,15 +130,27 @@
     "industries": {
       "healthcare": {
         "name": "醫療健康",
-        "description": "為醫療機構提供數位轉型方案，透過安全合規的技術基礎設施提升患者護理品質。"
+        "description": "為醫療機構提供技術現代化方案，透過安全合規的基礎設施提升患者護理品質。"
       },
       "finance": {
         "name": "金融服務",
-        "description": "為金融機構提供穩健安全的基礎設施，實現即時處理與法規合規。"
+        "description": "為金融機構提供安全可靠的基礎設施，實現即時處理與法規合規。"
       },
       "retail": {
         "name": "零售業",
         "description": "全通路零售技術，優化客戶體驗並提升供應鏈運營效率。"
+      },
+      "logistics": {
+        "name": "物流供應鏈",
+        "description": "為物流營運提供互聯基礎設施，讓倉庫、車隊和辦公室保持同步。"
+      },
+      "education": {
+        "name": "教育機構",
+        "description": "為學校和大學提供高性價比基礎設施，支撐線上學習和校園IT需求。"
+      },
+      "government": {
+        "name": "政府機構",
+        "description": "為政府機關提供安全、可靠的基礎設施，為可用性和數據保護而建。"
       }
     },
     "viewAllSolutions": "查看所有方案",
@@ -149,12 +170,18 @@
     "wireless": "無線網絡",
     "wirelessDesc": "企業級WiFi接入點、無線控制器和WiFi 6/7解決方案。",
     "routing_switchingTitle": "路由交換",
-    "routing_switchingStory": "與H3C、Huawei、Cisco、Ruijie和Sundray合作，構建穩固的網絡基礎設施。",
+    "routing_switchingStory": "與H3C、Huawei、Cisco、Ruijie和Sundray合作，構建可靠的網絡基礎設施。",
     "wirelessTitle": "無線網絡",
     "wirelessStory": "部署高性能無線基礎設施，包括企業級AP、控制器和WiFi 6/7解決方案。",
     "metadata": {
       "title": "TechGuru | 企業IT解決方案",
-      "description": "建構、運行和保護您的企業IT基礎設施。TechGuru為企業提供網路、網路安全和數據解決方案。"
+      "description": "建構、運行和保護您的企業IT基礎設施。TechGuru為企業提供網路、網路安全和數據解決方案。",
+      "buildTitle": "建構 — AI驅動的基礎設施",
+      "buildStory": "利用AI技術建構現代化、智能化的企業基礎設施。",
+      "runTitle": "運行 — 關鍵任務運維",
+      "runStory": "可靠的基础設施，確保您的關鍵業務運營零停機。",
+      "protectTitle": "保護 — 企業級安全",
+      "protectStory": "全面的安全解決方案，保護您的數據、網路和業務免受威脅。"
     }
   },
   "solutions": {
@@ -342,6 +369,10 @@
       "cta": "需要此主題的協助？",
       "ctaDesc": "我們的專家可協助您為組織實施正確的解決方案。",
       "ctaBtn": "聯絡我們",
+      "copy": "複製",
+      "copied": "已複製",
+      "featured": "精選",
+      "teamName": "TechGuru 團隊",
       "articles": {
         "1": {
           "title": "建構彈性混合雲架構",
@@ -548,213 +579,6 @@
       "description": "了解TechGuru的使命、團隊和歷程。探索我們的資質、合作夥伴關係和對企業IT卓越的承諾。"
     }
   },
-  "caseStudies": {
-    "title": "行業最佳實踐",
-    "subtitle": "了解我們如何協助各行各業組織實現IT基礎設施轉型。",
-    "readMore": "查看詳情",
-    "noResults": "目前沒有符合篩選條件的案例。",
-    "filterIndustry": "按行業篩選",
-    "filterProduct": "按產品篩選",
-    "metrics": {
-      "team": "團隊規模",
-      "results": "關鍵成果",
-      "duration": "專案時長"
-    },
-    "filters": {
-      "industry": {
-        "all": "所有行業",
-        "healthcare": "醫療健康",
-        "finance": "金融服務",
-        "retail": "零售業",
-        "logistics": "物流供應鏈",
-        "education": "教育機構",
-        "government": "政府機構",
-        "manufacturing": "製造業",
-        "other": "其他"
-      },
-      "product": {
-        "all": "所有產品",
-        "hybridCloud": "混合雲",
-        "security": "資安",
-        "ai": "AI與數據",
-        "networking": "網路"
-      }
-    },
-    "cases": {
-      "1": {
-        "title": "區域醫院網路雲端遷移",
-        "summary": "將12家醫院遷移至HIPAA合規混合雲，降低IT成本35%同時提升患者數據可及性。"
-      },
-      "2": {
-        "title": "銀行集團零信任轉型",
-        "summary": "在200+分支機構實施零信任安全，透過即時威脅偵測降低60%入侵風險。"
-      },
-      "3": {
-        "title": "零售連鎖AI需求預測",
-        "summary": "在500+門店部署AI庫存管理，減少40%缺貨率並提升利潤率。"
-      },
-      "4": {
-        "title": "物流企業全球網路升級",
-        "summary": "以SD-WAN重新設計全球網路，實現99.99%可用性與50%更快的跨境數據傳輸。"
-      },
-      "5": {
-        "title": "大學線上學習平台擴展",
-        "summary": "建構可擴展基礎設施，在高峰期支援10萬+並發使用者且零停機。"
-      },
-      "6": {
-        "title": "政府機關舊系統現代化",
-        "summary": "零停機現代化20年舊系統，提升70%市民服務交付效率。"
-      }
-    },
-    "detail": {
-      "backToCases": "返回案例展示",
-      "summary": "概要",
-      "challenge": "挑戰",
-      "solution": "解決方案",
-      "results": "成果",
-      "technologies": "使用技術",
-      "timeline": "專案時程",
-      "cta": "面臨類似挑戰？",
-      "ctaDesc": "讓我們協助您為組織設計量身定制的解決方案。",
-      "ctaBtn": "取得報價",
-      "cases": {
-        "1": {
-          "title": "區域醫院網路雲端遷移",
-          "industry": "醫療健康",
-          "product": "混合雲",
-          "duration": "6個月",
-          "technologies": [
-            "AWS 混合雲",
-            "Kubernetes",
-            "Terraform",
-            "Splunk"
-          ],
-          "challenge": "12家區域醫院面臨IT系統孤島、VMware授權成本上升和HIPAA合規要求。患者數據分散在老舊系統中，難以提供協調護理。",
-          "solution": "設計連接所有12家醫院的HIPAA合規混合雲架構。實施Kubernetes容器編排、Terraform基礎設施即代碼，以及Splunk集中日誌和合規監控。",
-          "results": [
-            "IT基礎設施成本降低35%",
-            "所有醫院達到99.99%可用性",
-            "統一患者數據平台服務50萬+患者",
-            "維持HIPAA合規認證",
-            "新臨床應用部署速度提升60%"
-          ]
-        },
-        "2": {
-          "title": "銀行集團零信任轉型",
-          "industry": "金融服務",
-          "product": "資安",
-          "duration": "9個月",
-          "technologies": [
-            "ZTNA",
-            "EDR",
-            "SIEM",
-            "MFA",
-            "微分段"
-          ],
-          "challenge": "一家擁有200+分支機構的銀行集團面臨日益嚴峻的網路威脅，需要現代化安全態勢。傳統基於邊界的安全無法應對複雜攻擊。",
-          "solution": "在所有分支機構和數位渠道實施全面的零信任架構。部署微分段實現網路隔離、ZTNA實現安全存取，以及進階SIEM實現即時威脅偵測。",
-          "results": [
-            "入侵風險降低60%",
-            "200+分支機構即時威脅偵測",
-            "安全營運成本降低30%",
-            "符合MAS TRM指南",
-            "平均偵測時間從4小時縮短至15分鐘"
-          ]
-        },
-        "3": {
-          "title": "零售連鎖AI需求預測",
-          "industry": "零售業",
-          "product": "AI與數據",
-          "duration": "4個月",
-          "technologies": [
-            "TensorFlow",
-            "Apache Kafka",
-            "Snowflake",
-            "Power BI"
-          ],
-          "challenge": "一家擁有500+門店的零售連鎖面臨庫存管理困難，頻繁缺貨和過度庫存。人工預測無法應對需求波動。",
-          "solution": "使用TensorFlow模型訓練歷史銷售數據、天氣模式和本地活動，部署AI驅動的需求預測。整合Apache Kafka實現即時數據串流，Snowflake實現分析。",
-          "results": [
-            "缺貨率降低40%",
-            "過剩庫存減少25%",
-            "利潤率提升15%",
-            "所有門店即時庫存可視性",
-            "前200個SKU自動補貨"
-          ]
-        },
-        "4": {
-          "title": "物流企業全球網路升級",
-          "industry": "物流供應鏈",
-          "product": "網路",
-          "duration": "8個月",
-          "technologies": [
-            "SD-WAN",
-            "MPLS",
-            "Cloudflare",
-            "Palo Alto"
-          ],
-          "challenge": "一家全球物流公司頻繁遭遇網路中斷和跨境數據傳輸緩慢，影響即時貨物追蹤和客戶服務交付。",
-          "solution": "使用SD-WAN疊加現有MPLS基礎設施重新設計全球網路。實施Cloudflare用於DDoS防護和邊緣快取，Palo Alto用於下一代防火牆功能。",
-          "results": [
-            "達到99.99%網路可用性",
-            "跨境數據傳輸速度提升50%",
-            "網路營運成本降低40%",
-            "50+國家即時追蹤可視性",
-            "客戶滿意度評分提升25%"
-          ]
-        },
-        "5": {
-          "title": "大學線上學習平台擴展",
-          "industry": "教育機構",
-          "product": "混合雲",
-          "duration": "3個月",
-          "technologies": [
-            "AWS Auto Scaling",
-            "CloudFront",
-            "RDS",
-            "Redis"
-          ],
-          "challenge": "一所大學的線上學習平台在高峰期考試期間崩潰，10萬+並發使用者。現有本地基礎設施無法擴展滿足需求。",
-          "solution": "使用自動擴展架構將平台遷移至AWS。實施CloudFront CDN用於內容交付、RDS用於資料庫擴展，Redis用於工作階段管理和快取。",
-          "results": [
-            "支援10萬+並發使用者且零停機",
-            "高峰期頁面載入時間低於1秒",
-            "基礎設施成本降低70%",
-            "考試季節99.99%可用性",
-            "與現有LMS系統無縫整合"
-          ]
-        },
-        "6": {
-          "title": "政府機關舊系統現代化",
-          "industry": "政府機構",
-          "product": "資安",
-          "duration": "12個月",
-          "technologies": [
-            "Kubernetes",
-            "Istio",
-            "Keycloak",
-            "Vault"
-          ],
-          "challenge": "一個政府機關運營20年老舊系統，維護困難、安全漏洞增加，市民服務交付緩慢且效率低下。",
-          "solution": "分階段現代化方法：使用Kubernetes容器化、Istio服務網格、Keycloak身份管理和Vault機密管理。零停機遷移確保服務持續可用。",
-          "results": [
-            "市民服務交付速度提升70%",
-            "整個現代化過程零停機",
-            "安全漏洞減少90%",
-            "營運成本降低40%",
-            "現代API架構支援未來數位服務"
-          ]
-        }
-      }
-    },
-    "metadata": {
-      "title": "行業最佳實踐 | TechGuru",
-      "description": "TechGuru在醫療、金融、零售、物流、教育和政府領域的IT基礎設施最佳實踐與參考架構。"
-    },
-    "loadMore": "載入更多",
-    "showing": "顯示",
-    "remaining": "還剩"
-  },
   "contact": {
     "title": "聯絡我們",
     "subtitle": "有任何問題或需要諮詢嗎？我們期待您的來信。",
@@ -783,6 +607,12 @@
     "skipToForm": "跳至聯絡表單",
     "emailAddress": "Inquiries@techguru-it.asia",
     "phoneNumber": "+63 960 282 5051",
+    "mapTitle": "我們的位置",
+    "linkedin": "LinkedIn",
+    "facebook": "Facebook",
+    "whatsapp": "WhatsApp",
+    "whatsappCta": "在WhatsApp上聊天",
+    "viewLargerMap": "查看地圖",
     "metadata": {
       "title": "聯絡我們 | TechGuru",
       "description": "與TechGuru聯繫，獲取企業IT解決方案。聯繫我們在Quezon City, Metro Manila的辦公室，或發送詢問。"
@@ -794,6 +624,7 @@
     "build": "構建",
     "run": "承載",
     "protect": "保護",
+    "aigcTitle": "AI 生成內容 (AIGC)",
     "aigcT2V": "文字轉影片",
     "aigcT2VDesc": "透過Seedance和HappyHorse模型，從文字提示生成專業影片。",
     "aigcI2V": "圖片轉影片",
@@ -991,7 +822,13 @@
     "cloudRepatriation": "雲端回遷",
     "metadata": {
       "title": "產品與服務 | TechGuru",
-      "description": "探索TechGuru全面的IT解決方案：Build建構基礎設施、Run運營作業、Protect保護您的資料。"
+      "description": "探索TechGuru全面的IT解決方案：Build建構基礎設施、Run運營作業、Protect保護您的資料。",
+      "buildTitle": "建構 — AI驅動的基礎設施",
+      "buildStory": "利用AI技術建構現代化、智能化的企業基礎設施。",
+      "runTitle": "運行 — 關鍵任務運維",
+      "runStory": "可靠的基础設施，確保您的關鍵業務運營零停機。",
+      "protectTitle": "保護 — 企業級安全",
+      "protectStory": "全面的安全解決方案，保護您的數據、網路和業務免受威脅。"
     }
   },
   "footer": {
@@ -1012,9 +849,21 @@
     "faq": "常見問題",
     "copyright": "© 2026 泰谷網數科技 版權所有",
     "privacy": "隱私權政策",
-    "terms": "服務條款"
+    "terms": "服務條款",
+    "followUs": "關注我們",
+    "linkedin": "LinkedIn",
+    "facebook": "Facebook",
+    "whatsapp": "WhatsApp",
+    "newsletter": "保持更新",
+    "newsletterDesc": "獲取最新的IT洞察和解決方案。",
+    "emailPlaceholder": "輸入您的電子郵件",
+    "subscribe": "訂閱"
   },
   "privacy": {
+    "metadata": {
+      "title": "隱私權政策 | TechGuru",
+      "description": "了解TechGuru如何收集、使用和保護您的個人資訊。我們的隱私權政策涵蓋資料收集、Cookie和您的權利。"
+    },
     "title": "隱私權政策",
     "lastUpdated": "最後更新",
     "section1Title": "我們收集的資訊",
@@ -1040,6 +889,10 @@
     "backHome": "← 返回首頁"
   },
   "compare": {
+    "metadata": {
+      "title": "為什麼選擇TechGuru | TechGuru",
+      "description": "比較TechGuru與傳統IT供應商的差異。了解我們在VMware遷移、託管安全、AIGC能力和多供應商支援方面的優勢。"
+    },
     "title": "TechGuru vs 競品對比",
     "subtitle": "查看TechGuru在安全、基礎設施和服務品質方面與傳統IT供應商的差異。",
     "heroTag": "競爭優勢",
@@ -1146,7 +999,7 @@
         },
         "5": {
           "title": "AIGC與AI能力",
-          "desc": "從文字轉影片到AI編程助手和傳統系統現代化，為您的業務帶來前沿AI技術。"
+          "desc": "從文字轉影片到AI編程助手和傳統系統現代化，為您的業務帶來先進AI技術。"
         },
         "6": {
           "title": "託管安全",
@@ -1275,7 +1128,7 @@
     "productService": "產品/服務",
     "subject": "主旨",
     "description": "問題描述",
-    "attachments": "附件（最大10MB）",
+    "attachments": "附件（最大50MB）",
     "submitTicket": "提交工單",
     "submitting": "提交中...",
     "ticketSubmitted": "工單已提交！",
@@ -1307,9 +1160,25 @@
     "build": "構建",
     "run": "承載",
     "protect": "保護",
-    "attachmentsLabel": "附件："
+    "attachmentsLabel": "附件：",
+    "checkEmail": "檢查你的信箱",
+    "verificationSent": "我們已發送驗證連結至",
+    "noEmail": "沒有收到驗證信？",
+    "resendEmail": "重新發送驗證信"
   },
   "support": {
+    "metadata": {
+      "title": "客戶支援中心 | TechGuru",
+      "description": "取得TechGuru產品和服務的幫助。提交支援工單、追蹤狀態並存取我們的知識庫。"
+    },
+    "metadataLogin": {
+      "title": "登入 | TechGuru",
+      "description": "登入您的TechGuru帳戶以存取支援工單和管理您的服務。"
+    },
+    "metadataRegister": {
+      "title": "建立帳戶 | TechGuru",
+      "description": "建立TechGuru帳戶以提交支援工單並存取我們的客戶入口網站。"
+    },
     "dashboard": "控制面板",
     "supportCenter": "客戶支援中心",
     "customer": "客戶",
@@ -1357,6 +1226,10 @@
     "suggestedSupport": "客戶支援"
   },
   "vmware": {
+    "metadata": {
+      "title": "VMware替代方案 | TechGuru",
+      "description": "探索經過驗證的VMware替代方案：Proxmox VE、Sangfor、Nutanix、StarWind、H3C。雙虛擬機監控器遷移，零鎖定。"
+    },
     "heroTag": "VMware替代方案",
     "heroTitle": "擺脫VMware綁定",
     "heroSubtitle": "遷移至高性價比的替代方案，最小化停機時間，提供經過驗證的雙Hypervisor遷移路徑。",
@@ -1408,6 +1281,10 @@
     "stepLabel": "步驟 {num}"
   },
   "terms": {
+    "metadata": {
+      "title": "服務條款 | TechGuru",
+      "description": "閱讀使用TechGuru網站和服務的條款和條件。了解您的權利和義務。"
+    },
     "title": "服務條款",
     "lastUpdated": "最後更新",
     "section1Title": "接受條款",

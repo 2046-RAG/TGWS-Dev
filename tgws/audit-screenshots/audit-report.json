@@ -1,0 +1,31 @@
+{
+  "timestamp": "2026-07-10T18:51:12.532Z",
+  "summary": {
+    "critical": 0,
+    "warning": 3,
+    "total": 3
+  },
+  "issues": [
+    {
+      "severity": "Warning",
+      "category": "Accessibility",
+      "detail": "Blog list: 147 links may lack visible focus style"
+    },
+    {
+      "severity": "Warning",
+      "category": "i18n",
+      "detail": "Blog detail ZH: 98 long English strings found (may need translation)"
+    },
+    {
+      "severity": "Warning",
+      "category": "Accessibility",
+      "detail": "Mobile: 22 touch targets smaller than 44px"
+    }
+  ],
+  "screenshots": [
+    "blog-detail-en.png",
+    "blog-detail-zh.png",
+    "blog-list-en.png",
+    "blog-list-mobile.png"
+  ]
+}

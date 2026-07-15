@@ -172,19 +172,19 @@ export default function TicketForm() {
 
   if (success) {
     return (
-      <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
+      <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl p-8 text-center">
         <CheckCircle size={48} className="text-green-500 mx-auto mb-4" />
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('ticketSubmitted')}</h3>
-        <p className="text-gray-600">{t('ticketSubmittedDesc')}</p>
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{t('ticketSubmitted')}</h3>
+        <p className="text-gray-600 dark:text-gray-300">{t('ticketSubmittedDesc')}</p>
         {ticketId && (
-          <p className="text-sm text-gray-500 mt-3">{t('ticketNumber')}: {ticketId.slice(0, 8)}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">{t('ticketNumber')}: {ticketId.slice(0, 8)}</p>
         )}
         {uploadedFiles.length > 0 && (
           <div className="mt-4 text-left">
-            <p className="text-sm font-medium text-gray-700 mb-2">Attachments:</p>
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Attachments:</p>
             <ul className="space-y-1">
               {uploadedFiles.map((f, i) => (
-                <li key={i} className="text-sm text-gray-600 flex items-center gap-2">
+                <li key={i} className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
                   <Upload size={12} />
                   {f.name} ({(f.size / 1024).toFixed(1)} KB)
                 </li>
@@ -208,10 +208,10 @@ export default function TicketForm() {
   const charColor = charCount >= DESCRIPTION_MAX ? 'text-red-500' : charCount >= 750 ? 'text-orange-500' : 'text-gray-400';
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-2xl p-8 space-y-6 shadow-sm">
+    <form onSubmit={handleSubmit} className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl p-8 space-y-6 shadow-sm">
       {/* Auto-save indicator */}
       {lastSaved && (
-        <div className="flex items-center gap-2 text-xs text-gray-400 -mt-2 mb-2">
+        <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 -mt-2 mb-2">
           <CheckCircle size={12} className="text-green-400" />
           <span>Draft saved at {lastSaved.toLocaleTimeString()}</span>
         </div>
@@ -233,7 +233,7 @@ export default function TicketForm() {
           required
           value={formData.category}
           onChange={(e) => handleChange('category', e.target.value)}
-          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
+          className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-white focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
         >
           <option value="">{t('selectCategory')}</option>
           <option value="build">{t('build')}</option>
@@ -253,7 +253,7 @@ export default function TicketForm() {
           required
           value={formData.product}
           onChange={(e) => handleChange('product', e.target.value)}
-          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
+          className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-white focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
         >
           <option value="">{t('selectCategory')}</option>
           {Object.entries(groupedProducts).map(([cat, items]) => (
@@ -271,7 +271,7 @@ export default function TicketForm() {
             required
             value={formData.productOther}
             onChange={(e) => handleChange('productOther', e.target.value)}
-            className="mt-2 w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
+            className="mt-2 w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
             placeholder={t('productOtherPlaceholder')}
           />
         )}
@@ -290,7 +290,7 @@ export default function TicketForm() {
           value={formData.occurredAt}
           max={new Date().toISOString().slice(0, 16)}
           onChange={(e) => handleChange('occurredAt', e.target.value)}
-          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
+          className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-white focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
         />
       </div>
 
@@ -307,7 +307,7 @@ export default function TicketForm() {
           maxLength={200}
           value={formData.subject}
           onChange={(e) => handleChange('subject', e.target.value)}
-          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
+          className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
           placeholder={t('subjectPlaceholder')}
         />
       </div>
@@ -325,7 +325,7 @@ export default function TicketForm() {
           maxLength={DESCRIPTION_MAX}
           value={formData.description}
           onChange={(e) => handleChange('description', e.target.value)}
-          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200 resize-none"
+          className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200 resize-none"
           placeholder={t('descriptionPlaceholder')}
         />
         <p className={`text-xs mt-1 text-right ${charColor}`}>

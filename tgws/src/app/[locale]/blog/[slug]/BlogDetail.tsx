@@ -6,6 +6,17 @@ import { ArrowLeft, Share2, Clock, HelpCircle, Star, Copy, Check, Info, AlertTri
 import Image from 'next/image';
 import { urlFor } from '@/lib/sanity.image';
 import { useState } from 'react';
+import { ArticleJsonLd } from '@/components/ui/JsonLd';
+
+// Safe string extractor: handles both plain strings and locale objects {en, zh}
+function str(val: unknown): string {
+  if (typeof val === 'string') return val;
+  if (val && typeof val === 'object') {
+    const obj = val as Record<string, string>;
+    return obj.en || obj.zh || Object.values(obj)[0] || '';
+  }
+  return '';
+}
 
 interface PortableTextBlock {
   _type: string;
@@ -17,11 +28,11 @@ interface PortableTextBlock {
 
 interface Post {
   _id: string;
-  title: string;
+  title: string | Record<string, string>;
   titleZh: string;
   slug: { current: string };
   category: string;
-  excerpt: string;
+  excerpt: string | Record<string, string>;
   excerptZh: string;
   content: PortableTextBlock[];
   contentZh: PortableTextBlock[];
@@ -30,11 +41,13 @@ interface Post {
   featured: boolean;
   coverImage: string;
   tags: string[];
+  architectureDiagram?: string;
 }
 
 // 代码块组件
 function CodeBlock({ code, language }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
+  const t = useTranslations('blog.detail');
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(code);
@@ -51,7 +64,7 @@ function CodeBlock({ code, language }: { code: string; language?: string }) {
           className="flex items-center gap-1.5 hover:text-white transition-colors"
         >
           {copied ? <Check size={14} /> : <Copy size={14} />}
-          {copied ? 'Copied' : 'Copy'}
+          {copied ? t('copied') : t('copy')}
         </button>
       </div>
       <pre className="p-4 bg-gray-900 text-gray-100 overflow-x-auto text-sm leading-relaxed">
@@ -99,6 +112,11 @@ function PortableText({ content }: { content: PortableTextBlock[] }) {
         if (block._type === 'block') {
           const text = block.children?.map((c) => c.text).join('') || '';
 
+          // 空block → 视觉间隔
+          if (!text.trim()) {
+            return <div key={i} className="h-4" />;
+          }
+
           // 检查是否是callout（通过特殊标记）
           if (text.startsWith('[INFO]')) {
             return <CalloutBox key={i} type="info">{text.replace('[INFO]', '').trim()}</CalloutBox>;
@@ -114,7 +132,7 @@ function PortableText({ content }: { content: PortableTextBlock[] }) {
           if (block.style === 'h2') {
             const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
             return (
-              <h2 key={i} id={id} className="text-2xl font-bold text-gray-900 mt-10 mb-4 pb-2 border-b border-gray-200">
+              <h2 key={i} id={id} className="text-2xl font-bold text-gray-900 dark:text-white mt-10 mb-4 pb-2 border-b border-gray-200 dark:border-zinc-700">
                 <a href={`#${id}`} className="hover:text-[#00D4FF] transition-colors">
                   {text}
                 </a>
@@ -124,7 +142,7 @@ function PortableText({ content }: { content: PortableTextBlock[] }) {
           if (block.style === 'h3') {
             const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
             return (
-              <h3 key={i} id={id} className="text-xl font-semibold text-gray-900 mt-8 mb-3">
+              <h3 key={i} id={id} className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-3">
                 <a href={`#${id}`} className="hover:text-[#00D4FF] transition-colors">
                   {text}
                 </a>
@@ -163,11 +181,28 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
     });
   };
 
+  const [showShareMenu, setShowShareMenu] = useState(false);
+  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const shareTitle = str(locale === 'zh' ? (post.titleZh || post.title) : post.title);
+
   const handleShare = async () => {
     if (navigator.share) {
-      await navigator.share({ title: post.title, url: window.location.href });
+      try {
+        await navigator.share({ title: shareTitle, url: shareUrl });
+      } catch {
+        // User cancelled share
+      }
+    } else {
+      setShowShareMenu(!showShareMenu);
     }
   };
+
+  const shareLinks = [
+    { name: 'Twitter', url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTitle)}&url=${encodeURIComponent(shareUrl)}` },
+    { name: 'LinkedIn', url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}` },
+    { name: 'WhatsApp', url: `https://wa.me/?text=${encodeURIComponent(shareTitle + ' ' + shareUrl)}` },
+    { name: 'Facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}` },
+  ];
 
   // 估算阅读时间
   const content = locale === 'zh' ? (post.contentZh || post.content) : post.content;
@@ -179,8 +214,18 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
   }, 0) || 0;
   const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
+  const ogImage = post.coverImage || `https://picsum.photos/seed/${str(post.slug?.current || 'blog')}/1200/630`;
+
   return (
     <section className="py-12 sm:py-20 px-5 sm:px-8 max-w-4xl mx-auto">
+      <ArticleJsonLd
+        title={str(locale === 'zh' ? (post.titleZh || post.title) : post.title)}
+        description={str(locale === 'zh' ? (post.excerptZh || post.excerpt) : post.excerpt)}
+        url={`https://www.techguru-it.asia/${locale}/blog/${str(post.slug?.current)}`}
+        image={ogImage}
+        datePublished={post.publishedAt || new Date().toISOString()}
+        author={post.author || t('teamName')}
+      />
       <article className="scroll-reveal">
         {/* 返回链接 */}
         <Link href={`/${locale}/blog`} className="inline-flex items-center gap-2 py-2 px-1 text-gray-600 hover:text-[#00D4FF] min-h-[44px] mb-6 transition-colors">
@@ -195,7 +240,7 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
               src={typeof post.coverImage === 'string' && post.coverImage.startsWith('http')
                 ? post.coverImage
                 : urlFor(post.coverImage).width(1200).height(600).url()}
-              alt={post.title}
+              alt={str(post.title)}
               width={1200}
               height={600}
               priority
@@ -203,6 +248,19 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
               className="w-full h-64 sm:h-96 object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+          </div>
+        )}
+
+        {/* 架构图 */}
+        {post.architectureDiagram && (
+          <div className="mb-8 rounded-2xl overflow-hidden border border-gray-200 bg-gray-50 p-4">
+            <Image
+              src={`/images/blog/${post.architectureDiagram}`}
+              alt={`${str(post.title)} - Architecture Diagram`}
+              width={800}
+              height={450}
+              className="w-full h-auto"
+            />
           </div>
         )}
 
@@ -216,21 +274,21 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
               <Clock size={12} />
               {formatDate(post.publishedAt)}
             </span>
-            <span className="text-xs text-gray-500">· {readTime} min read</span>
+            <span className="text-xs text-gray-500">· {t('readTime', { min: readTime })}</span>
             {post.featured && (
               <span className="flex items-center gap-1 text-xs text-yellow-600">
                 <Star size={12} className="fill-yellow-500" />
-                Featured
+                {t('featured')}
               </span>
             )}
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 leading-tight">
-            {locale === 'zh' ? (post.titleZh || post.title) : post.title}
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+            {str(locale === 'zh' ? (post.titleZh || post.title) : post.title)}
           </h1>
 
           <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-            {locale === 'zh' ? (post.excerptZh || post.excerpt) : post.excerpt}
+            {str(locale === 'zh' ? (post.excerptZh || post.excerpt) : post.excerpt)}
           </p>
 
           <div className="flex items-center justify-between py-4 border-y border-gray-200">
@@ -239,17 +297,34 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
                 <span className="text-[#00D4FF] font-medium text-sm">{post.author?.charAt(0) || 'T'}</span>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-900">{post.author}</p>
-                <p className="text-xs text-gray-500">TechGuru Team</p>
+                <p className="text-sm font-medium text-gray-900 dark:text-white">{post.author}</p>
+                <p className="text-xs text-gray-500">{t('teamName')}</p>
               </div>
             </div>
-            <button
-              onClick={handleShare}
-              className="inline-flex items-center gap-2 py-2 px-4 rounded-lg text-sm text-gray-600 hover:text-[#00D4FF] hover:bg-[#00D4FF]/5 transition-colors"
-            >
-              <Share2 size={14} />
-              {t('share')}
-            </button>
+            <div className="relative">
+              <button
+                onClick={handleShare}
+                className="inline-flex items-center gap-2 py-2 px-4 rounded-lg text-sm text-gray-600 hover:text-[#00D4FF] hover:bg-[#00D4FF]/5 transition-colors"
+              >
+                <Share2 size={14} />
+                {t('share')}
+              </button>
+              {showShareMenu && (
+                <div className="absolute right-0 top-full mt-1 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-lg py-2 z-50 min-w-[160px]">
+                  {shareLinks.map((link) => (
+                    <a
+                      key={link.name}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
+                    >
+                      {link.name}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </header>
 
@@ -272,7 +347,7 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
         {/* CTA */}
         <div className="bg-gradient-to-br from-[#00D4FF]/5 to-[#7B61FF]/5 border border-gray-200 rounded-2xl p-8 text-center mt-12">
           <HelpCircle className="mx-auto mb-4 text-[#00D4FF]" size={40} />
-          <h3 className="text-xl font-bold text-gray-900 mb-2">{t('cta')}</h3>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('cta')}</h3>
           <p className="text-gray-600 mb-6 max-w-md mx-auto">{t('ctaDesc')}</p>
           <Link
             href={`/${locale}/contact`}

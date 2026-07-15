@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { Search, Headphones, BookOpen, CreditCard, Shield, MessageCircle } from 'lucide-react';
 import FAQAccordion from '@/components/ui/FAQAccordion';
-import { FAQJsonLd } from '@/components/ui/JsonLd';
+import { FAQJsonLd, BreadcrumbJsonLd } from '@/components/ui/JsonLd';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import Breadcrumb from '@/components/ui/Breadcrumb';
@@ -99,10 +99,11 @@ export default function HelpPage() {
   return (
     <>
       <FAQJsonLd items={faqItems.map(item => ({ question: item.question, answer: item.answer }))} />
+      <BreadcrumbJsonLd items={[{ name: 'Help', url: `/${locale}/help` }]} locale={locale} />
       <Breadcrumb items={[{ label: 'Help' }]} />
       <section className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
       <div className="text-center mb-12">
-        <h1 className="section-title text-gray-900">{t('title')}</h1>
+        <h1 className="section-title text-gray-900 dark:text-white">{t('title')}</h1>
         <p className="section-subtitle mx-auto max-w-2xl">{t('subtitle')}</p>
       </div>
 
@@ -116,7 +117,7 @@ export default function HelpPage() {
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={t('searchPlaceholder')}
             aria-label={t('searchPlaceholder')}
-            className="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-[#00D4FF] focus:border-transparent focus:outline-none transition-colors shadow-sm text-[15px]"
+            className="w-full pl-11 pr-4 py-3.5 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-[#00D4FF] focus:border-transparent focus:outline-none transition-colors shadow-sm text-[15px]"
           />
         </div>
       </div>
@@ -130,7 +131,7 @@ export default function HelpPage() {
             className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-200 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 ${
               activeCategory === cat
                 ? 'bg-[#00D4FF] text-white shadow-md'
-                : 'bg-white text-gray-600 border border-gray-200 hover:border-[#00D4FF]/30 hover:text-[#00D4FF]'
+                : 'bg-white dark:bg-zinc-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-zinc-700 hover:border-[#00D4FF]/30 hover:text-[#00D4FF]'
             }`}
           >
             {categoryIcons[cat]}
@@ -144,9 +145,9 @@ export default function HelpPage() {
         {filteredFaqs.length > 0 ? (
           <FAQAccordion items={filteredFaqs} />
         ) : (
-          <div className="text-center py-16 bg-white border border-gray-200 rounded-2xl shadow-sm">
+          <div className="text-center py-16 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl shadow-sm">
             <Search size={40} className="mx-auto text-gray-300 mb-4" />
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">{t('noResults')}</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{t('noResults')}</h2>
             <p className="text-sm text-gray-500">{t('noResultsHint')}</p>
           </div>
         )}
@@ -155,7 +156,7 @@ export default function HelpPage() {
       {/* Contact CTA */}
       <div className="max-w-3xl mx-auto mt-16">
         <div className="bg-gradient-to-br from-[#00D4FF]/5 to-[#7B61FF]/5 border border-gray-200 rounded-2xl p-8 sm:p-10 text-center shadow-sm">
-          <h2 className="text-xl font-bold text-gray-900 mb-2">{t('ctaTitle')}</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('ctaTitle')}</h2>
           <p className="text-gray-500 text-sm mb-6 max-w-lg mx-auto">{t('ctaDesc')}</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link

@@ -31,17 +31,17 @@ export default function CompareTable({ activeCategory = 'all' }: { activeCategor
     <div className="overflow-x-auto">
       <table className="w-full min-w-[640px] border-collapse">
         <thead>
-          <tr className="border-b border-gray-200">
-            <th className="text-left py-4 px-4 text-sm font-semibold text-gray-900 w-1/4">
+          <tr className="border-b border-gray-200 dark:border-zinc-700">
+            <th className="text-left py-4 px-4 text-sm font-semibold text-gray-900 dark:text-white w-1/4">
               {t('table.feature')}
             </th>
             <th className="text-center py-4 px-4 text-sm font-semibold text-white bg-[#00D4FF] rounded-t-xl w-1/4">
               {t('table.techguru')}
             </th>
-            <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 bg-gray-100 w-1/4">
+            <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-zinc-700 w-1/4">
               {t('table.competitorA')}
             </th>
-            <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 bg-gray-50 w-1/4">
+            <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-zinc-800 w-1/4">
               {t('table.competitorB')}
             </th>
           </tr>
@@ -50,13 +50,13 @@ export default function CompareTable({ activeCategory = 'all' }: { activeCategor
           {filtered.map((feature, index) => (
             <tr
               key={feature.key}
-              className={`border-b border-gray-100 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}
+              className={`border-b border-gray-100 dark:border-zinc-700 ${index % 2 === 0 ? 'bg-white dark:bg-zinc-800' : 'bg-gray-50/50 dark:bg-zinc-700/50'}`}
             >
               <td className="py-4 px-4">
-                <div className="text-sm font-medium text-gray-900 mb-1">
+                <div className="text-sm font-medium text-gray-900 dark:text-white mb-1">
                   {t(`features.${feature.key}`)}
                 </div>
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-gray-500 dark:text-gray-400">
                   {t(`features.${feature.key}Desc`)}
                 </div>
               </td>
@@ -67,21 +67,21 @@ export default function CompareTable({ activeCategory = 'all' }: { activeCategor
                 </span>
               </td>
               <td className="py-4 px-4 text-center">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 text-gray-600 text-sm">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300 text-sm">
                   {t(`features.${feature.key}A`).includes('N/A') || t(`features.${feature.key}A`).includes('不') || t(`features.${feature.key}A`).includes('not') ? (
                     <X size={14} className="text-red-400 shrink-0" />
                   ) : (
-                    <Minus size={14} className="text-gray-400 shrink-0" />
+                    <Minus size={14} className="text-gray-400 dark:text-gray-500 shrink-0" />
                   )}
                   <span className="hidden sm:inline">{t(`features.${feature.key}A`)}</span>
                 </span>
               </td>
               <td className="py-4 px-4 text-center">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 text-gray-600 text-sm">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 text-sm">
                   {t(`features.${feature.key}B`).includes('N/A') || t(`features.${feature.key}B`).includes('不') || t(`features.${feature.key}B`).includes('not') || t(`features.${feature.key}B`).includes('N/A') ? (
                     <X size={14} className="text-red-400 shrink-0" />
                   ) : (
-                    <Minus size={14} className="text-gray-400 shrink-0" />
+                    <Minus size={14} className="text-gray-400 dark:text-gray-500 shrink-0" />
                   )}
                   <span className="hidden sm:inline">{t(`features.${feature.key}B`)}</span>
                 </span>

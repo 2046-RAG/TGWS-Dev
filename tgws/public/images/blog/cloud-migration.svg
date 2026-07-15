@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <style>
+    text { font-family: 'Helvetica Neue', Arial, sans-serif; }
+    .title { font-size: 20px; font-weight: 700; fill: #18181B; }
+    .subtitle { font-size: 12px; fill: #71717A; }
+    .node-text { font-size: 13px; font-weight: 600; fill: #18181B; }
+    .node-sub { font-size: 10px; fill: #71717A; }
+    .label { font-size: 11px; font-weight: 600; fill: #71717A; }
+    .copyright { font-size: 10px; fill: #71717A; }
+    .connector { stroke: #71717A; stroke-width: 1.5; fill: none; }
+    .connector-cyan { stroke: #00D4FF; stroke-width: 2; fill: none; }
+    .connector-purple { stroke: #7B61FF; stroke-width: 2; fill: none; }
+    .connector-dashed { stroke: #71717A; stroke-width: 1.5; fill: none; stroke-dasharray: 6,3; }
+    .arrowhead { fill: #71717A; }
+    .arrowhead-cyan { fill: #00D4FF; }
+    .arrowhead-purple { fill: #7B61FF; }
+  </style>
+  <defs>
+    <marker id="arrowGray" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead"/>
+    </marker>
+    <marker id="arrowCyan" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead-cyan"/>
+    </marker>
+    <marker id="arrowPurple" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead-purple"/>
+    </marker>
+  </defs>
+  <rect width="800" height="450" fill="#FFFFFF" rx="8"/>
+  
+    <text x="400" y="35" text-anchor="middle" class="title">Cloud Migration 6R Strategy</text>
+    <text x="400" y="52" text-anchor="middle" class="subtitle">AWS Migration Framework</text>
+
+    <!-- Source -->
+    <rect x="30" y="100" width="120" height="60" fill="#F4F4F5" stroke="#D4D4D8" rx="8"/>
+    <text x="90" y="128" class="node-text">On-Prem</text>
+    <text x="90" y="143" class="node-sub">Workloads</text>
+
+    <!-- 6 Strategies -->
+    <rect x="200" y="75" width="105" height="55" fill="#00D4FF15" stroke="#00D4FF" rx="8"/>
+    <text x="252" y="100" class="node-text">Rehost</text>
+    <text x="252" y="115" class="node-sub">Lift & Shift</text>
+
+    <rect x="315" y="75" width="105" height="55" fill="#7B61FF15" stroke="#7B61FF" rx="8"/>
+    <text x="367" y="100" class="node-text">Replatform</text>
+    <text x="367" y="115" class="node-sub">Optimize</text>
+
+    <rect x="430" y="75" width="105" height="55" fill="#ECFDF5" stroke="#10B981" rx="8"/>
+    <text x="482" y="100" class="node-text" style="fill:#065F46">Refactor</text>
+    <text x="482" y="115" class="node-sub" style="fill:#065F46">Re-architect</text>
+
+    <rect x="200" y="150" width="105" height="55" fill="#FEF3C7" stroke="#F59E0B" rx="8"/>
+    <text x="252" y="175" class="node-text" style="fill:#92400E">Retire</text>
+    <text x="252" y="190" class="node-sub" style="fill:#92400E">Decommission</text>
+
+    <rect x="315" y="150" width="105" height="55" fill="#F4F4F5" stroke="#D4D4D8" rx="8"/>
+    <text x="367" y="175" class="node-text">Retain</text>
+    <text x="367" y="190" class="node-sub">Keep On-Prem</text>
+
+    <rect x="430" y="150" width="105" height="55" fill="#FFFFFF" stroke="#18181B" rx="8"/>
+    <text x="482" y="175" class="node-text">Repurchase</text>
+    <text x="482" y="190" class="node-sub">SaaS Replace</text>
+
+    <!-- Arrows from source -->
+    <line x1="150" y1="115" x2="200" y2="100" class="connector" marker-end="url(#arrowGray)"/>
+    <line x1="150" y1="125" x2="200" y2="125" class="connector" marker-end="url(#arrowGray)"/>
+    <line x1="150" y1="135" x2="200" y2="175" class="connector" marker-end="url(#arrowGray)"/>
+
+    <!-- Target: Cloud -->
+    <rect x="590" y="95" width="180" height="130" fill="#00D4FF10" stroke="#00D4FF" rx="12"/>
+    <text x="680" y="125" text-anchor="middle" class="node-text">Cloud</text>
+    <text x="680" y="145" text-anchor="middle" class="node-sub">AWS / Azure</text>
+    <text x="680" y="165" text-anchor="middle" class="node-sub">Managed Services</text>
+    <text x="680" y="185" text-anchor="middle" class="node-sub">Scalable Infra</text>
+
+    <!-- Arrows to cloud -->
+    <line x1="305" y1="100" x2="590" y2="120" class="connector-cyan" marker-end="url(#arrowCyan)"/>
+    <line x1="420" y1="100" x2="590" y2="130" class="connector-purple" marker-end="url(#arrowPurple)"/>
+    <line x1="535" y1="100" x2="590" y2="140" class="connector-cyan" marker-end="url(#arrowCyan)"/>
+
+    <!-- Bottom: Decision factors -->
+    <rect x="100" y="280" width="600" height="60" fill="#F4F4F5" stroke="#D4D4D8" rx="8"/>
+    <text x="400" y="305" text-anchor="middle" class="label">Decision Factors</text>
+    <text x="400" y="322" text-anchor="middle" class="node-sub" style="fill:#18181B">Business Value • Technical Complexity • Cost • Timeline • Risk</text>
+
+    <!-- Effort arrows -->
+    <text x="252" y="240" text-anchor="middle" class="label">Low Effort</text>
+    <text x="482" y="240" text-anchor="middle" class="label">High Value</text>
+  
+  <text x="400" y="438" text-anchor="middle" class="copyright">© TechGuru</text>
+</svg>

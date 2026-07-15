@@ -1,0 +1,17 @@
+node_modules
+.next
+out
+test
+coverage
+playwright-report
+.vercel
+.vercel-optimize-run
+.impeccable
+*.log
+*.lock
+*.cache
+.env*
+.vscode
+.idea
+.DS_Store
+Thumbs.db

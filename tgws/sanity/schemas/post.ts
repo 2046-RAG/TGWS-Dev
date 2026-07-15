@@ -74,6 +74,12 @@ export default defineType({
       type: 'boolean',
       initialValue: false,
     }),
+    defineField({
+      name: 'architectureDiagram',
+      type: 'string',
+      title: 'Architecture Diagram SVG',
+      description: 'Filename of SVG in public/images/blog/ (e.g. hci-architecture.svg)',
+    }),
   ],
   orderings: [
     {

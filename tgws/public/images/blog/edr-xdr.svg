@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <style>
+    text { font-family: 'Helvetica Neue', Arial, sans-serif; }
+    .title { font-size: 20px; font-weight: 700; fill: #18181B; }
+    .subtitle { font-size: 12px; fill: #71717A; }
+    .node-text { font-size: 13px; font-weight: 600; fill: #18181B; }
+    .node-sub { font-size: 10px; fill: #71717A; }
+    .label { font-size: 11px; font-weight: 600; fill: #71717A; }
+    .copyright { font-size: 10px; fill: #71717A; }
+    .connector { stroke: #71717A; stroke-width: 1.5; fill: none; }
+    .connector-cyan { stroke: #00D4FF; stroke-width: 2; fill: none; }
+    .connector-purple { stroke: #7B61FF; stroke-width: 2; fill: none; }
+    .connector-dashed { stroke: #71717A; stroke-width: 1.5; fill: none; stroke-dasharray: 6,3; }
+    .arrowhead { fill: #71717A; }
+    .arrowhead-cyan { fill: #00D4FF; }
+    .arrowhead-purple { fill: #7B61FF; }
+  </style>
+  <defs>
+    <marker id="arrowGray" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead"/>
+    </marker>
+    <marker id="arrowCyan" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead-cyan"/>
+    </marker>
+    <marker id="arrowPurple" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead-purple"/>
+    </marker>
+  </defs>
+  <rect width="800" height="450" fill="#FFFFFF" rx="8"/>
+  
+    <text x="400" y="35" text-anchor="middle" class="title">Endpoint Security Architecture</text>
+    <text x="400" y="52" text-anchor="middle" class="subtitle">EDR → XDR → MDR Layered Defense</text>
+
+    <!-- Layer 1: EDR -->
+    <rect x="80" y="80" width="200" height="250" fill="#00D4FF10" stroke="#00D4FF" rx="12"/>
+    <text x="180" y="108" text-anchor="middle" class="label" style="fill:#00D4FF">EDR LAYER</text>
+
+    <rect x="100" y="120" width="160" height="35" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="180" y="143" class="node-sub">Endpoint Detection</text>
+
+    <rect x="100" y="165" width="160" height="35" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="180" y="188" class="node-sub">Real-time Monitoring</text>
+
+    <rect x="100" y="210" width="160" height="35" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="180" y="233" class="node-sub">Threat Containment</text>
+
+    <rect x="100" y="255" width="160" height="35" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="180" y="278" class="node-sub">Forensics</text>
+
+    <!-- Layer 2: XDR -->
+    <rect x="320" y="80" width="200" height="250" fill="#7B61FF10" stroke="#7B61FF" rx="12"/>
+    <text x="420" y="108" text-anchor="middle" class="label" style="fill:#7B61FF">XDR LAYER</text>
+
+    <rect x="340" y="120" width="160" height="35" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="420" y="143" class="node-sub">Cross-Layer Correlation</text>
+
+    <rect x="340" y="165" width="160" height="35" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="420" y="188" class="node-sub">Network + Endpoint</text>
+
+    <rect x="340" y="210" width="160" height="35" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="420" y="233" class="node-sub">Cloud Workload</text>
+
+    <rect x="340" y="255" width="160" height="35" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="420" y="278" class="node-sub">Identity Context</text>
+
+    <!-- Layer 3: MDR -->
+    <rect x="560" y="80" width="200" height="250" fill="#18181B10" stroke="#18181B" rx="12"/>
+    <text x="660" y="108" text-anchor="middle" class="label" style="fill:#18181B">MDR LAYER</text>
+
+    <rect x="580" y="120" width="160" height="35" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="660" y="143" class="node-sub">24/7 SOC Monitoring</text>
+
+    <rect x="580" y="165" width="160" height="35" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="660" y="188" class="node-sub">Expert Analysis</text>
+
+    <rect x="580" y="210" width="160" height="35" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="660" y="233" class="node-sub">Incident Response</text>
+
+    <rect x="580" y="255" width="160" height="35" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="660" y="278" class="node-sub">Threat Hunting</text>
+
+    <!-- Connectors -->
+    <line x1="280" y1="205" x2="320" y2="205" class="connector-cyan" marker-end="url(#arrowCyan)"/>
+    <line x1="520" y1="205" x2="560" y2="205" class="connector-purple" marker-end="url(#arrowPurple)"/>
+
+    <!-- Bottom -->
+    <rect x="150" y="355" width="500" height="40" fill="#F4F4F5" stroke="#D4D4D8" rx="8"/>
+    <text x="400" y="380" text-anchor="middle" class="node-sub" style="fill:#18181B">Each layer adds depth: EDR (endpoints) → XDR (cross-domain) → MDR (human expertise)</text>
+  
+  <text x="400" y="438" text-anchor="middle" class="copyright">© TechGuru</text>
+</svg>

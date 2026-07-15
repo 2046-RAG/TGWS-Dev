@@ -4,7 +4,7 @@ import { locales } from '@/i18n/config';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import CookieConsent from '@/components/ui/CookieConsent';
-import { OrganizationJsonLd } from '@/components/ui/JsonLd';
+import { OrganizationJsonLd, WebSiteJsonLd } from '@/components/ui/JsonLd';
 import ScrollToTop from '@/components/ui/ScrollToTop';
 import ScrollReveal from '@/components/ui/ScrollReveal';
 import type { Metadata } from 'next';
@@ -60,8 +60,8 @@ export default async function LocaleLayout({
             __html: `
               (function() {
                 try {
-                  var theme = localStorage.getItem('theme') || 'system';
-                  var isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                  var stored = localStorage.getItem('theme');
+                  var isDark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
                   if (isDark) document.documentElement.classList.add('dark');
                 } catch(e) {}
               })();
@@ -86,14 +86,23 @@ export default async function LocaleLayout({
             `,
           }}
         />
+        {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
+          <script
+            defer
+            src="https://cloud.umami.is/script.js"
+            data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+          />
+        )}
       </head>
       <body className="bg-[#F4F4F5] dark:bg-[#09090B] text-gray-900 dark:text-gray-100 min-h-screen transition-colors">
+        <a href="#main-content" className="skip-link">Skip to main content</a>
         <NextIntlClientProvider messages={messages}>
           <ScrollToTop />
           <ScrollReveal />
           <OrganizationJsonLd />
+          <WebSiteJsonLd locale={locale} />
           <Navbar />
-          <main className="pt-[73px]">{children}</main>
+          <main id="main-content" className="pt-[73px]">{children}</main>
           <Footer />
           <CookieConsent />
           <button id="back-to-top" className="back-to-top" aria-label="Back to top">

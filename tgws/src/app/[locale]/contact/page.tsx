@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Send, Loader2, MapPin, Mail, Phone } from 'lucide-react';
+import { Send, Loader2, MapPin, Mail, Phone, MessageCircle, Briefcase } from 'lucide-react';
 import Breadcrumb from '@/components/ui/Breadcrumb';
 
 interface FormErrors {
@@ -71,7 +71,7 @@ export default function ContactPage() {
       </a>
 
       <div className="text-center mb-16">
-        <h1 className="section-title text-gray-900">{t('title')}</h1>
+        <h1 className="section-title text-gray-900 dark:text-white">{t('title')}</h1>
         <p className="section-subtitle mx-auto">{t('subtitle')}</p>
       </div>
 
@@ -80,12 +80,12 @@ export default function ContactPage() {
           <form
             onSubmit={handleSubmit}
             noValidate
-            className="bg-white border border-gray-200 rounded-2xl p-8 space-y-6 shadow-sm"
+            className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl p-8 space-y-6 shadow-sm"
             aria-label={t('title')}
           >
             <div className="grid sm:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="name" className="block text-sm text-gray-700 mb-1.5">
+                <label htmlFor="name" className="block text-sm text-gray-700 dark:text-gray-300 mb-1.5">
                   {t('name')} *
                 </label>
                 <input
@@ -97,9 +97,9 @@ export default function ContactPage() {
                   aria-required="true"
                   aria-invalid={!!errors.name}
                   aria-describedby={errors.name ? 'name-error' : undefined}
-                  className={`w-full bg-gray-50 border ${
-                    errors.name ? 'border-red-500' : 'border-gray-200'
-                  } rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-[#00D4FF] focus:border-transparent focus:outline-none transition-colors`}
+                  className={`w-full bg-gray-50 dark:bg-zinc-800 border ${
+                    errors.name ? 'border-red-500' : 'border-gray-200 dark:border-zinc-700'
+                  } rounded-lg px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-[#00D4FF] focus:border-transparent focus:outline-none transition-colors`}
                 />
                 {errors.name && (
                   <p id="name-error" className="mt-1.5 text-sm text-red-500" role="alert">
@@ -109,7 +109,7 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm text-gray-700 mb-1.5">
+                <label htmlFor="email" className="block text-sm text-gray-700 dark:text-gray-300 mb-1.5">
                   {t('email')} *
                 </label>
                 <input
@@ -121,9 +121,9 @@ export default function ContactPage() {
                   aria-required="true"
                   aria-invalid={!!errors.email}
                   aria-describedby={errors.email ? 'email-error' : undefined}
-                  className={`w-full bg-gray-50 border ${
-                    errors.email ? 'border-red-500' : 'border-gray-200'
-                  } rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-[#00D4FF] focus:border-transparent focus:outline-none transition-colors`}
+                  className={`w-full bg-gray-50 dark:bg-zinc-800 border ${
+                    errors.email ? 'border-red-500' : 'border-gray-200 dark:border-zinc-700'
+                  } rounded-lg px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-[#00D4FF] focus:border-transparent focus:outline-none transition-colors`}
                 />
                 {errors.email && (
                   <p id="email-error" className="mt-1.5 text-sm text-red-500" role="alert">
@@ -135,7 +135,7 @@ export default function ContactPage() {
 
             <div className="grid sm:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="company" className="block text-sm text-gray-700 mb-1.5">
+                <label htmlFor="company" className="block text-sm text-gray-700 dark:text-gray-300 mb-1.5">
                   {t('company')}
                 </label>
                 <input
@@ -144,7 +144,7 @@ export default function ContactPage() {
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
                   placeholder={t('companyPlaceholder')}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-[#00D4FF] focus:border-transparent focus:outline-none transition-colors"
+                  className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-[#00D4FF] focus:border-transparent focus:outline-none transition-colors"
                 />
               </div>
 
@@ -158,7 +158,7 @@ export default function ContactPage() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder={t('phonePlaceholder')}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-[#00D4FF] focus:border-transparent focus:outline-none transition-colors"
+                  className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-[#00D4FF] focus:border-transparent focus:outline-none transition-colors"
                 />
               </div>
             </div>
@@ -176,9 +176,9 @@ export default function ContactPage() {
                 aria-required="true"
                 aria-invalid={!!errors.message}
                 aria-describedby={errors.message ? 'message-error' : undefined}
-                className={`w-full bg-gray-50 border ${
-                  errors.message ? 'border-red-500' : 'border-gray-200'
-                } rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-[#00D4FF] focus:border-transparent focus:outline-none transition-colors resize-none`}
+                className={`w-full bg-gray-50 dark:bg-zinc-800 border ${
+                  errors.message ? 'border-red-500' : 'border-gray-200 dark:border-zinc-700'
+                } rounded-lg px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 focus:ring-2 focus:ring-[#00D4FF] focus:border-transparent focus:outline-none transition-colors resize-none`}
               />
               {errors.message && (
                 <p id="message-error" className="mt-1.5 text-sm text-red-500" role="alert">
@@ -221,36 +221,75 @@ export default function ContactPage() {
         </div>
 
         <aside className="space-y-8">
-          <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">{t('offices')}</h2>
+          <div className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">{t('offices')}</h2>
             <div className="space-y-6">
               <div className="flex items-start gap-3">
                 <MapPin size={20} className="text-[#00D4FF] mt-0.5 shrink-0" />
                 <div>
-                  <h3 className="text-gray-900 font-medium">{t('taipei')}</h3>
-                  <p className="text-sm text-gray-600">{t('taipeiAddr')}</p>
+                  <h3 className="text-gray-900 dark:text-white font-medium">{t('taipei')}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('taipeiAddr')}</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <MapPin size={20} className="text-[#7B61FF] mt-0.5 shrink-0" />
                 <div>
-                  <h3 className="text-gray-900 font-medium">{t('hongKong')}</h3>
-                  <p className="text-sm text-gray-600">{t('hongKongAddr')}</p>
+                  <h3 className="text-gray-900 dark:text-white font-medium">{t('hongKong')}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('hongKongAddr')}</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('social')}</h2>
+          <div className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl overflow-hidden shadow-sm">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white p-8 pb-4">{t('mapTitle')}</h2>
+            <div className="relative w-full h-64">
+              <iframe
+                src="https://www.openstreetmap.org/export/embed.html?bbox=121.045%2C14.645%2C121.055%2C14.655&layer=mapnik&marker=14.6497%2C121.0501"
+                className="w-full h-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title={t('mapTitle')}
+              />
+            </div>
+            <a
+              href="https://www.openstreetmap.org/?mlat=14.6497&mlon=121.0501#map=16/14.6497/121.0501"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-center text-sm text-[#00D4FF] hover:underline py-3 min-h-[44px] flex items-center justify-center"
+            >
+              {t('viewLargerMap')}
+            </a>
+          </div>
+
+          <div className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('social')}</h2>
             <div className="space-y-3">
-              <a href={`mailto:${t('emailAddress')}`} className="flex items-center gap-3 py-2 px-1 text-gray-600 hover:text-gray-900 min-h-[44px] transition-colors">
+              <a href={`mailto:${t('emailAddress')}`} className="flex items-center gap-3 py-2 px-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white min-h-[44px] transition-colors">
                 <Mail size={18} className="text-[#00D4FF] shrink-0" />
                 <span className="text-sm">{t('emailAddress')}</span>
               </a>
-              <a href={`tel:${t('phoneNumber').replace(/\s/g, '')}`} className="flex items-center gap-3 py-2 px-1 text-gray-600 hover:text-gray-900 min-h-[44px] transition-colors">
+              <a href={`tel:${t('phoneNumber').replace(/\s/g, '')}`} className="flex items-center gap-3 py-2 px-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white min-h-[44px] transition-colors">
                 <Phone size={18} className="text-[#7B61FF] shrink-0" />
                 <span className="text-sm">{t('phoneNumber')}</span>
+              </a>
+              <a
+                href="https://wa.me/639602825051"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 py-2 px-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white min-h-[44px] transition-colors"
+              >
+                <MessageCircle size={18} className="text-[#22C55E] shrink-0" />
+                <span className="text-sm">{t('whatsappCta')}</span>
+              </a>
+              <a
+                href="https://www.linkedin.com/company/techguru-network-data-solutions"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 py-2 px-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white min-h-[44px] transition-colors"
+              >
+                <Briefcase size={18} className="text-[#0077B5] shrink-0" />
+                <span className="text-sm">{t('linkedin')}</span>
               </a>
             </div>
           </div>

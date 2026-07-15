@@ -1,7 +1,7 @@
 # TechGuru Network & Data Solutions 官网 PRD
 
-**版本：** v1.1  
-**日期：** 2026-07-09  
+**版本：** v1.2  
+**日期：** 2026-07-12  
 **项目名称：** TechGuru Network and Data Solutions 官方网站  
 **域名：** www.techguru-it.asia  
 **部署平台：** Vercel
@@ -11,7 +11,8 @@
 | 版本 | 日期 | 变更 |
 |------|------|------|
 | v1.0 | 2026-06-28 | 初始版本 |
-| v1.1 | 2026-07-09 | 根据实际实现全面更新：修正设计规范(S9)色彩/字体、更新Hero Section(S5)、工单系统(S6)字段/限制、数据模型(S17)新增字段、API设计(S18)路由修正、开放问题(S22)状态更新 |  
+| v1.1 | 2026-07-09 | 根据实际实现全面更新：修正设计规范(S9)色彩/字体、更新Hero Section(S5)、工单系统(S6)字段/限制、数据模型(S17)新增字段、API设计(S18)路由修正、开放问题(S22)状态更新 |
+| v1.2 | 2026-07-12 | Phase 2完成：Product二级页面(/products/build/run/protect + [slug])、Hero文案重写(Build with AI. Run Beyond VMware. Protect Without Borders.)、Solutions Sanity集成、死代码CSS清理 |  
 
 ---
 
@@ -207,13 +208,15 @@
 
 ### 4.1 页面结构
 
+> **更新日期**: 2026-07-15。移除已废弃的 Case Studies 页面，与实际实现对齐。
+
 ```
 Home（首页）
 ├── Hero Section（全屏视频+打字机效果）
 ├── Build/Run/Protect 三维度介绍
+├── AI Journey 三步流程
 ├── VMware替代方案特色板块
-├── 行业解决方案精选
-├── 客户案例 + 数据统计
+├── 社交证明 + 数据统计
 ├── 合作伙伴Logo墙
 └── CTA区域
 
@@ -243,11 +246,6 @@ Solutions（行业解决方案）
 ├── 教育
 └── 政府
 
-Case Studies（案例展示）
-├── 按行业筛选
-├── 按产品筛选
-└── 案例详情页
-
 Blog（新闻博客）
 ├── 文章列表
 ├── 分类筛选
@@ -264,16 +262,27 @@ Support（客户支持）
 ├── 知识库/FAQ
 └── 联系我们
 
-Admin（后台管理）
-├── 工单管理
-├── 用户管理
-└── 内容管理（跳转Sanity）
+VMware Alternative（VMware替代方案）
+├── 替代产品对比
+├── 迁移步骤
+└── CTA
+
+Compare（对比页面）
+├── TechGuru vs 竞争对手
+└── 特性对比表
+
+Help（帮助中心）
+├── FAQ
+└── 联系支持
+
+Privacy Policy（隐私政策）
+Terms of Service（服务条款）
 ```
 
 ### 4.2 导航栏设计
 
 - **Logo：** TechGuru Network & Data Solutions®
-- **导航链接：** Home, Products, Solutions, Case Studies, Blog, About, Support
+- **导航链接：** Home, Products, Solutions, Blog, About, Support
 - **CTA按钮：** Get a Quote / Contact Us
 - **语言切换：** EN / 繁中
 - **移动端：** 汉堡菜单 + 全屏覆盖层
@@ -441,7 +450,7 @@ Hero 底部包含三个故事卡片（Storyline Cards）：
 |----------|------|
 | 产品/服务 | 名称、描述、分类（Build/Run/Protect）、图标 |
 | 行业解决方案 | 行业名称、痛点、方案描述、案例链接 |
-| 案例展示 | 标题、行业、产品、背景、挑战、方案、成果 |
+| ~~案例展示~~ | ~~标题、行业、产品、背景、挑战、方案、成果~~ | **[已废弃]** 2026-07-12 完全删除，Sanity数据保留但前端不再展示 |
 | 博客文章 | 标题、内容（Markdown）、分类、发布日期 |
 | 公司信息 | 简介、发展历程、团队成员、资质证书 |
 | 合作伙伴 | 名称、Logo、链接 |
@@ -517,7 +526,7 @@ Hero 底部包含三个故事卡片（Storyline Cards）：
 | 首页 Build/Run/Protect | 三列产品支柱介绍 | ✅ 已实现 |
 | VMware替代方案 | 独立页面 + 对比表格 | ✅ 已实现 |
 | 行业解决方案 | Tab切换6个行业 | ✅ 已实现 |
-| 案例展示 | 列表+详情页，按行业/产品筛选 | ✅ 已实现 |
+| ~~案例展示~~ | ~~列表+详情页，按行业/产品筛选~~ | **[已废弃]** 2026-07-12 完全删除 |
 | 博客 | 列表+详情页，Markdown渲染 | ✅ 已实现 |
 | 关于我们 | 公司简介页面 | ✅ 已实现 |
 | 联系我们 | 表单 + Odoo CRM同步 | ✅ 已实现 |
@@ -553,6 +562,8 @@ Hero 底部包含三个故事卡片（Storyline Cards）：
 ---
 
 ## [S11] 案例展示
+
+> **[已废弃]** 2026-07-12 完全删除。Case Studies 页面不再展示，Sanity 数据保留但前端不读取。导航栏和 Footer 均已移除入口。
 
 ### 11.1 筛选维度
 
@@ -944,11 +955,11 @@ Hero 底部包含三个故事卡片（Storyline Cards）：
 |---|------|------|------|
 | 1 | Hero视频素材 | ✅ 已解决 | 使用 CloudFront CDN 托管的 MP4 视频 |
 | 2 | 合作伙伴Logo | ✅ 已解决 | 21 个 SVG/PNG 文件已收集在 `public/logos/`（Alibaba Cloud, Arcfra, ByteDance, Cisco, Dell, Fortinet, H3C, Hillstone, HP, Huawei, KVM, Lenovo, Nutanix, Proxmox, Ruijie, Sangfor, Sophos, StarWind, Veeam） |
-| 3 | 案例数据 | ✅ 已解决 | 匿名化+重构为"典型应用场景"（TechGuru 2023年成立，无真实案例） |
-| 4 | 团队照片 | 🔲 待收集 | 需要收集团队成员照片 |
+| 3 | ~~案例数据~~ | **[已废弃]** | ~~匿名化+重构为"典型应用场景"~~ → 2026-07-12 Case Studies 完全删除 |
+| 4 | 团队照片 | 🔲 已放弃 | S42 T12：用户暂不想透露真名 |
 | 5 | 办公地点 | ✅ 已确认 | 10 Rajah Matanda St, corner JP Rizal St, Project 4, Quezon City, 1109 Metro Manila |
-| 6 | 社交媒体账号 | 🔲 待确认 | 用户暂时想不起来，待后续确认 |
-| 7 | 分析工具 | ⚠️ 推荐Umami | 免费开源、2KB script、零维护、天然GDPR合规，待用户最终确认 |
+| 6 | 社交媒体账号 | 🔲 已放弃 | S42 T13：用户暂时想不起来 |
+| 7 | 分析工具 | ✅ 已部署 | Umami(免费开源、2KB script、零维护、天然GDPR合规)，Website ID已配置并部署 |
 | 8 | 工单时区 | ✅ 已解决 | Philippine Time (UTC+8)，已添加PHT后缀 |
 | 9 | 邮件模板 | ✅ 已完成 | 4套：确认/状态/密码/回复通知，FROM: support@techguru-it.asia |
 | 10 | 管理员账号 | ✅ 已解决 | 通过网站/register页面创建Supabase Auth账号即可 |

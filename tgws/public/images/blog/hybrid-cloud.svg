@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <style>
+    text { font-family: 'Helvetica Neue', Arial, sans-serif; }
+    .title { font-size: 20px; font-weight: 700; fill: #18181B; }
+    .subtitle { font-size: 12px; fill: #71717A; }
+    .node-text { font-size: 13px; font-weight: 600; fill: #18181B; }
+    .node-sub { font-size: 10px; fill: #71717A; }
+    .label { font-size: 11px; font-weight: 600; fill: #71717A; }
+    .copyright { font-size: 10px; fill: #71717A; }
+    .connector { stroke: #71717A; stroke-width: 1.5; fill: none; }
+    .connector-cyan { stroke: #00D4FF; stroke-width: 2; fill: none; }
+    .connector-purple { stroke: #7B61FF; stroke-width: 2; fill: none; }
+    .connector-dashed { stroke: #71717A; stroke-width: 1.5; fill: none; stroke-dasharray: 6,3; }
+    .arrowhead { fill: #71717A; }
+    .arrowhead-cyan { fill: #00D4FF; }
+    .arrowhead-purple { fill: #7B61FF; }
+  </style>
+  <defs>
+    <marker id="arrowGray" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead"/>
+    </marker>
+    <marker id="arrowCyan" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead-cyan"/>
+    </marker>
+    <marker id="arrowPurple" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" class="arrowhead-purple"/>
+    </marker>
+  </defs>
+  <rect width="800" height="450" fill="#FFFFFF" rx="8"/>
+  
+    <text x="400" y="35" text-anchor="middle" class="title">Hybrid Cloud Architecture</text>
+    <text x="400" y="52" text-anchor="middle" class="subtitle">On-Premises + AWS / Azure Connected</text>
+
+    <!-- On-Prem -->
+    <rect x="40" y="80" width="300" height="230" fill="#FFFFFF" stroke="#00D4FF" rx="12"/>
+    <text x="190" y="105" text-anchor="middle" class="label" style="fill:#00D4FF">ON-PREMISES</text>
+
+    <rect x="60" y="120" width="120" height="50" fill="#00D4FF15" stroke="#00D4FF" rx="8"/>
+    <text x="120" y="150" class="node-text">VMware</text>
+
+    <rect x="200" y="120" width="120" height="50" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="260" y="150" class="node-text">SAN Storage</text>
+
+    <rect x="60" y="190" width="120" height="50" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="120" y="220" class="node-text">Legacy Apps</text>
+
+    <rect x="200" y="190" width="120" height="50" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="260" y="220" class="node-text">Databases</text>
+
+    <!-- Connection -->
+    <rect x="370" y="130" width="60" height="60" fill="#7B61FF20" stroke="#7B61FF" rx="8"/>
+    <text x="400" y="158" text-anchor="middle" class="node-text" style="font-size:11px">VPN</text>
+    <text x="400" y="173" text-anchor="middle" class="node-sub">/ ExpressRoute</text>
+
+    <line x1="340" y1="160" x2="370" y2="160" class="connector-purple" marker-end="url(#arrowPurple)"/>
+    <line x1="430" y1="160" x2="460" y2="160" class="connector-purple" marker-end="url(#arrowPurple)"/>
+
+    <!-- Cloud -->
+    <rect x="460" y="80" width="310" height="230" fill="#FFFFFF" stroke="#7B61FF" rx="12"/>
+    <text x="615" y="105" text-anchor="middle" class="label" style="fill:#7B61FF">CLOUD (AWS / Azure)</text>
+
+    <rect x="480" y="120" width="130" height="50" fill="#7B61FF15" stroke="#7B61FF" rx="8"/>
+    <text x="545" y="150" class="node-text">Compute</text>
+
+    <rect x="630" y="120" width="120" height="50" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="690" y="150" class="node-text">S3 / Blob</text>
+
+    <rect x="480" y="190" width="130" height="50" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="545" y="220" class="node-text">Containers</text>
+
+    <rect x="630" y="190" width="120" height="50" fill="#FFFFFF" stroke="#D4D4D8" rx="8"/>
+    <text x="690" y="220" class="node-text">Managed DB</text>
+
+    <!-- Bottom: Use Cases -->
+    <rect x="80" y="340" width="200" height="45" fill="#F4F4F5" stroke="#D4D4D8" rx="8"/>
+    <text x="180" y="368" text-anchor="middle" class="node-sub" style="fill:#18181B">Data Residency • Low Latency</text>
+
+    <rect x="310" y="340" width="180" height="45" fill="#F4F4F5" stroke="#D4D4D8" rx="8"/>
+    <text x="400" y="368" text-anchor="middle" class="node-sub" style="fill:#18181B">Burst Capacity • Dev/Test</text>
+
+    <rect x="520" y="340" width="200" height="45" fill="#F4F4F5" stroke="#D4D4D8" rx="8"/>
+    <text x="620" y="368" text-anchor="middle" class="node-sub" style="fill:#18181B">Disaster Recovery • SaaS</text>
+  
+  <text x="400" y="438" text-anchor="middle" class="copyright">© TechGuru</text>
+</svg>

@@ -3,7 +3,6 @@
     "home": "Home",
     "products": "Products",
     "solutions": "Solutions",
-    "caseStudies": "Best Practice",
     "blog": "Blog",
     "about": "About",
     "support": "Tickets",
@@ -22,15 +21,14 @@
     "allIndustries": "All Industries",
     "allPosts": "All Posts",
     "technical": "Technical",
-    "industry": "Industry",
-    "caseStudy": "Case Study"
+    "industry": "Industry"
   },
   "hero": {
     "company": "TechGuru Network & Data Solutions",
-    "tagline": "From AI Workloads to Mission-Critical Infrastructure, We Secure Every Layer.",
+    "tagline": "Build with AI. Run Beyond VMware. Protect Without Borders.",
     "heroLabel": {
       "line1": "TechGuru Network & Data Solutions",
-      "line2": "Build. Run. Protect., Your End-to-End IT Partner"
+      "line2": "Where AI Meets Infrastructure and Security"
     },
     "cta": {
       "solutions": "Explore Solutions",
@@ -39,7 +37,18 @@
       "vmware": "VMware Migration"
     },
     "scrollHint": "Scroll",
-    "scrubHint": "Scrub with mouse"
+    "scrubHint": "Scrub with mouse",
+    "videoSelector": "Video Selector",
+    "videoToggle": "Video",
+    "storyline1Title": "Build. Run. Protect.",
+    "storyline1Sub": "Core Infrastructure",
+    "storyline1Desc": "Full spectrum IT solutions. From AI workloads to mission-critical security.",
+    "storyline2Title": "AI Journey",
+    "storyline2Sub": "Exploring AI Possibilities",
+    "storyline2Desc": "AI Adoption, AIGC, Coding Assistants, Legacy AI, AI Agents.",
+    "storyline3Title": "VMware Alternatives",
+    "storyline3Sub": "Migration & Freedom",
+    "storyline3Desc": "5 proven alternatives. Dual-hypervisor architecture. Zero lock-in."
   },
   "home": {
     "build": "Build",
@@ -103,9 +112,9 @@
     "socialProofStat2Label": "Technology Partners",
     "socialProofStat3": "6",
     "socialProofStat3Label": "Industry Solutions",
-    "socialProofStat4": "3+",
+    "socialProofStat4": "12+",
     "socialProofStat4Label": "Years of Enterprise IT",
-    "conversionTitle": "Ready to Transform Your IT?",
+    "conversionTitle": "Ready to Upgrade Your IT?",
     "conversionDesc": "Tell us your challenges. Our team will map Build, Run, and Protect solutions to your needs, from assessment to deployment.",
     "conversionPrimary": "Get Started Today",
     "conversionSecondary": "Schedule a Demo",
@@ -121,15 +130,27 @@
     "industries": {
       "healthcare": {
         "name": "Healthcare",
-        "description": "Digital transformation for healthcare providers, improving patient outcomes through secure, compliant technology infrastructure."
+        "description": "Technology modernization for healthcare providers, improving patient outcomes through secure, compliant infrastructure."
       },
       "finance": {
         "name": "Finance",
-        "description": "Robust, secure infrastructure for financial institutions, enabling real-time processing and regulatory compliance."
+        "description": "Secure, reliable infrastructure for financial institutions, enabling real-time processing and regulatory compliance."
       },
       "retail": {
         "name": "Retail",
         "description": "Omnichannel retail technology that personalizes customer experiences and optimizes supply chain operations."
+      },
+      "logistics": {
+        "name": "Logistics",
+        "description": "Connected infrastructure for supply chain operations, keeping warehouses, fleets, and offices in sync."
+      },
+      "education": {
+        "name": "Education",
+        "description": "Cost-effective infrastructure for schools and universities, supporting e-learning and campus IT needs."
+      },
+      "government": {
+        "name": "Government",
+        "description": "Secure, reliable infrastructure for government agencies, built for availability and data protection."
       }
     },
     "viewAllSolutions": "View All Solutions",
@@ -147,14 +168,20 @@
     "routing_switching": "Routing & Switching",
     "routing_switchingDesc": "Enterprise routers, managed switches, and network infrastructure for reliable connectivity.",
     "wireless": "Wireless",
-    "wirelessDesc": "Enterprise WiFi access points, controllers, and wireless solutions for seamless connectivity.",
+    "wirelessDesc": "Enterprise WiFi access points, controllers, and wireless solutions for reliable connectivity.",
     "routing_switchingTitle": "Routing & Switching",
-    "routing_switchingStory": "Build a robust network foundation with enterprise-grade routers and switches from H3C, Huawei, Cisco, Ruijie, and Sundray.",
+    "routing_switchingStory": "Build a reliable network foundation with enterprise-grade routers and switches from H3C, Huawei, Cisco, Ruijie, and Sundray.",
     "wirelessTitle": "Wireless",
     "wirelessStory": "Deploy high-performance wireless infrastructure with enterprise APs, controllers, and WiFi 6/7 solutions.",
     "metadata": {
       "title": "TechGuru | Enterprise IT Solutions",
-      "description": "Build, run, and protect your enterprise IT infrastructure. TechGuru provides network, cybersecurity, and data solutions for businesses."
+      "description": "Build, run, and protect your enterprise IT infrastructure. TechGuru provides network, cybersecurity, and data solutions for businesses.",
+      "buildTitle": "Build — AI-Powered Infrastructure",
+      "buildStory": "Leverage AI technology to build modern, intelligent infrastructure for your business.",
+      "runTitle": "Run — Mission-Critical Operations",
+      "runStory": "Reliable infrastructure to run your most critical business operations without downtime.",
+      "protectTitle": "Protect — Enterprise Security",
+      "protectStory": "Comprehensive security solutions to protect your data, network, and business from threats."
     }
   },
   "solutions": {
@@ -342,6 +369,10 @@
       "cta": "Need help with this topic?",
       "ctaDesc": "Our experts can help you implement the right solution for your organization.",
       "ctaBtn": "Contact Us",
+      "copy": "Copy",
+      "copied": "Copied",
+      "featured": "Featured",
+      "teamName": "TechGuru Team",
       "articles": {
         "1": {
           "title": "Building Resilient Hybrid Cloud Architecture",
@@ -548,213 +579,6 @@
       "description": "Learn about TechGuru's mission, team, and journey. Discover our qualifications, partnerships, and commitment to enterprise IT excellence."
     }
   },
-  "caseStudies": {
-    "title": "Industry Best Practice",
-    "subtitle": "Explore how we've helped organizations across industries transform their IT infrastructure.",
-    "readMore": "View Details",
-    "noResults": "No case studies match the selected filters.",
-    "filterIndustry": "Filter by Industry",
-    "filterProduct": "Filter by Product",
-    "metrics": {
-      "team": "Team Size",
-      "results": "Key Results",
-      "duration": "Project Duration"
-    },
-    "filters": {
-      "industry": {
-        "all": "All Industries",
-        "healthcare": "Healthcare",
-        "finance": "Finance",
-        "retail": "Retail",
-        "logistics": "Logistics",
-        "education": "Education",
-        "government": "Government",
-        "manufacturing": "Manufacturing",
-        "other": "Other"
-      },
-      "product": {
-        "all": "All Products",
-        "hybridCloud": "Hybrid Cloud",
-        "security": "Security",
-        "ai": "AI & Data",
-        "networking": "Networking"
-      }
-    },
-    "cases": {
-      "1": {
-        "title": "Regional Hospital Network Cloud Migration",
-        "summary": "Migrated 12 hospitals to a HIPAA-compliant hybrid cloud, reducing IT costs by 35% while improving patient data accessibility."
-      },
-      "2": {
-        "title": "Banking Group Zero Trust Transformation",
-        "summary": "Implemented zero trust security across 200+ branches, reducing breach risk by 60% with real-time threat detection."
-      },
-      "3": {
-        "title": "Retail Chain AI Demand Forecasting",
-        "summary": "Deployed AI-driven inventory management across 500+ stores, reducing stockouts by 40% and improving margins."
-      },
-      "4": {
-        "title": "Logistics Firm Global Network Upgrade",
-        "summary": "Redesigned global network with SD-WAN, achieving 99.99% uptime and 50% faster cross-border data transfer."
-      },
-      "5": {
-        "title": "University E-Learning Platform Scale-Up",
-        "summary": "Built scalable infrastructure supporting 100K+ concurrent users during peak exam periods with zero downtime."
-      },
-      "6": {
-        "title": "Government Agency Legacy Modernization",
-        "summary": "Modernized 20-year-old legacy systems with zero downtime, improving citizen service delivery by 70%."
-      }
-    },
-    "detail": {
-      "backToCases": "Back to Case Studies",
-      "summary": "Summary",
-      "challenge": "Challenge",
-      "solution": "Solution",
-      "results": "Results",
-      "technologies": "Technologies Used",
-      "timeline": "Project Timeline",
-      "cta": "Facing similar challenges?",
-      "ctaDesc": "Let us help you design a tailored solution for your organization.",
-      "ctaBtn": "Get a Quote",
-      "cases": {
-        "1": {
-          "title": "Regional Hospital Network Cloud Migration",
-          "industry": "Healthcare",
-          "product": "Hybrid Cloud",
-          "duration": "6 months",
-          "technologies": [
-            "AWS Hybrid Cloud",
-            "Kubernetes",
-            "Terraform",
-            "Splunk"
-          ],
-          "challenge": "12 regional hospitals struggled with siloed IT systems, rising VMware licensing costs, and HIPAA compliance requirements. Patient data was fragmented across legacy systems, making it difficult to provide coordinated care.",
-          "solution": "Designed a HIPAA-compliant hybrid cloud architecture connecting all 12 hospitals. Implemented Kubernetes for container orchestration, Terraform for infrastructure-as-code, and Splunk for centralized logging and compliance monitoring.",
-          "results": [
-            "35% reduction in IT infrastructure costs",
-            "99.99% uptime achieved across all hospitals",
-            "Unified patient data platform serving 500K+ patients",
-            "HIPAA compliance certification maintained",
-            "60% faster deployment of new clinical applications"
-          ]
-        },
-        "2": {
-          "title": "Banking Group Zero Trust Transformation",
-          "industry": "Finance",
-          "product": "Security",
-          "duration": "9 months",
-          "technologies": [
-            "ZTNA",
-            "EDR",
-            "SIEM",
-            "MFA",
-            "Micro-segmentation"
-          ],
-          "challenge": "A major banking group with 200+ branches faced increasing cyber threats and needed to modernize its security posture. Traditional perimeter-based security was insufficient against sophisticated attacks.",
-          "solution": "Implemented a comprehensive zero trust architecture across all branches and digital channels. Deployed micro-segmentation for network isolation, ZTNA for secure access, and advanced SIEM for real-time threat detection.",
-          "results": [
-            "60% reduction in breach risk",
-            "Real-time threat detection across 200+ branches",
-            "30% reduction in security operational costs",
-            "Compliance with MAS TRM guidelines",
-            "Mean time to detect reduced from 4 hours to 15 minutes"
-          ]
-        },
-        "3": {
-          "title": "Retail Chain AI Demand Forecasting",
-          "industry": "Retail",
-          "product": "AI & Data",
-          "duration": "4 months",
-          "technologies": [
-            "TensorFlow",
-            "Apache Kafka",
-            "Snowflake",
-            "Power BI"
-          ],
-          "challenge": "A retail chain with 500+ stores struggled with inventory management, leading to frequent stockouts and overstock situations. Manual forecasting couldn't keep up with demand fluctuations.",
-          "solution": "Deployed AI-driven demand forecasting using TensorFlow models trained on historical sales data, weather patterns, and local events. Integrated with Apache Kafka for real-time data streaming and Snowflake for analytics.",
-          "results": [
-            "40% reduction in stockouts",
-            "25% decrease in excess inventory",
-            "15% improvement in profit margins",
-            "Real-time inventory visibility across all stores",
-            "Automated replenishment for top 200 SKUs"
-          ]
-        },
-        "4": {
-          "title": "Logistics Firm Global Network Upgrade",
-          "industry": "Logistics",
-          "product": "Networking",
-          "duration": "8 months",
-          "technologies": [
-            "SD-WAN",
-            "MPLS",
-            "Cloudflare",
-            "Palo Alto"
-          ],
-          "challenge": "A global logistics firm experienced frequent network outages and slow cross-border data transfer, impacting real-time shipment tracking and customer service delivery.",
-          "solution": "Redesigned the global network with SD-WAN overlay on existing MPLS infrastructure. Implemented Cloudflare for DDoS protection and edge caching, and Palo Alto for next-gen firewall capabilities.",
-          "results": [
-            "99.99% network uptime achieved",
-            "50% faster cross-border data transfer",
-            "40% reduction in network operational costs",
-            "Real-time tracking visibility across 50+ countries",
-            "Improved customer satisfaction scores by 25%"
-          ]
-        },
-        "5": {
-          "title": "University E-Learning Platform Scale-Up",
-          "industry": "Education",
-          "product": "Hybrid Cloud",
-          "duration": "3 months",
-          "technologies": [
-            "AWS Auto Scaling",
-            "CloudFront",
-            "RDS",
-            "Redis"
-          ],
-          "challenge": "A major university's e-learning platform crashed during peak exam periods with 100K+ concurrent users. The existing on-premise infrastructure couldn't scale to meet demand.",
-          "solution": "Migrated the platform to AWS with auto-scaling architecture. Implemented CloudFront CDN for content delivery, RDS for database scaling, and Redis for session management and caching.",
-          "results": [
-            "Support for 100K+ concurrent users with zero downtime",
-            "Sub-second page load times during peak periods",
-            "70% reduction in infrastructure costs",
-            "99.99% availability during exam seasons",
-            "Seamless integration with existing LMS systems"
-          ]
-        },
-        "6": {
-          "title": "Government Agency Legacy Modernization",
-          "industry": "Government",
-          "product": "Security",
-          "duration": "12 months",
-          "technologies": [
-            "Kubernetes",
-            "Istio",
-            "Keycloak",
-            "Vault"
-          ],
-          "challenge": "A government agency operated 20-year-old legacy systems that were difficult to maintain, security vulnerabilities were mounting, and citizen service delivery was slow and inefficient.",
-          "solution": "Phased modernization approach using Kubernetes for containerization, Istio for service mesh, Keycloak for identity management, and Vault for secrets management. Zero-downtime migration ensured continuous service availability.",
-          "results": [
-            "70% improvement in citizen service delivery speed",
-            "Zero downtime during entire modernization",
-            "90% reduction in security vulnerabilities",
-            "40% reduction in operational costs",
-            "Modern API architecture enabling future digital services"
-          ]
-        }
-      }
-    },
-    "metadata": {
-      "title": "Industry Best Practice | TechGuru",
-      "description": "IT infrastructure best practices and reference architectures across healthcare, finance, retail, logistics, education, and government sectors."
-    },
-    "loadMore": "Load More",
-    "showing": "showing",
-    "remaining": "remaining"
-  },
   "contact": {
     "title": "Get In Touch",
     "subtitle": "Have a question or need a consultation? We'd love to hear from you.",
@@ -783,6 +607,12 @@
     "skipToForm": "Skip to contact form",
     "emailAddress": "Inquiries@techguru-it.asia",
     "phoneNumber": "+63 960 282 5051",
+    "mapTitle": "Our Location",
+    "linkedin": "LinkedIn",
+    "facebook": "Facebook",
+    "whatsapp": "WhatsApp",
+    "whatsappCta": "Chat on WhatsApp",
+    "viewLargerMap": "View larger map",
     "metadata": {
       "title": "Contact Us | TechGuru",
       "description": "Get in touch with TechGuru for enterprise IT solutions. Reach our office in Quezon City, Metro Manila, or send us an inquiry."
@@ -794,6 +624,7 @@
     "build": "Build",
     "run": "Run",
     "protect": "Protect",
+    "aigcTitle": "AI-Generated Content (AIGC)",
     "aigcT2V": "Text-To-Video",
     "aigcT2VDesc": "Generate professional videos from text prompts using Seedance and HappyHorse models.",
     "aigcI2V": "Image-To-Video",
@@ -991,7 +822,13 @@
     "cloudRepatriation": "Cloud Repatriation",
     "metadata": {
       "title": "Products & Services | TechGuru",
-      "description": "Explore TechGuru's comprehensive IT solutions: Build infrastructure, Run operations, and Protect your data with enterprise-grade products."
+      "description": "Explore TechGuru's comprehensive IT solutions: Build infrastructure, Run operations, and Protect your data with enterprise-grade products.",
+      "buildTitle": "Build — AI-Powered Infrastructure",
+      "buildStory": "Leverage AI technology to build modern, intelligent infrastructure for your business.",
+      "runTitle": "Run — Mission-Critical Operations",
+      "runStory": "Reliable infrastructure to run your most critical business operations without downtime.",
+      "protectTitle": "Protect — Enterprise Security",
+      "protectStory": "Comprehensive security solutions to protect your data, network, and business from threats."
     }
   },
   "footer": {
@@ -1012,9 +849,21 @@
     "faq": "FAQ",
     "copyright": "© 2026 TechGuru Network & Data Solutions Inc. All rights reserved.",
     "privacy": "Privacy",
-    "terms": "Terms"
+    "terms": "Terms",
+    "followUs": "Follow Us",
+    "linkedin": "LinkedIn",
+    "facebook": "Facebook",
+    "whatsapp": "WhatsApp",
+    "newsletter": "Stay Updated",
+    "newsletterDesc": "Get the latest IT insights and solutions.",
+    "emailPlaceholder": "Enter your email",
+    "subscribe": "Subscribe"
   },
   "privacy": {
+    "metadata": {
+      "title": "Privacy Policy | TechGuru",
+      "description": "Learn how TechGuru collects, uses, and protects your personal information. Our privacy policy covers data collection, cookies, and your rights."
+    },
     "title": "Privacy Policy",
     "lastUpdated": "Last Updated",
     "section1Title": "Information We Collect",
@@ -1040,6 +889,10 @@
     "backHome": "Back to Home"
   },
   "vmware": {
+    "metadata": {
+      "title": "VMware Alternatives | TechGuru",
+      "description": "Explore proven VMware alternatives: Proxmox VE, Sangfor, Nutanix, StarWind, H3C. Dual-hypervisor migration with zero lock-in."
+    },
     "heroTag": "VMware Alternative",
     "heroTitle": "Break Free from VMware Lock-in",
     "heroSubtitle": "Migrate to cost-effective alternatives with minimal downtime and proven dual-hypervisor migration paths.",
@@ -1124,7 +977,7 @@
     "productService": "Product/Service",
     "subject": "Subject",
     "description": "Description",
-    "attachments": "Attachments (max 10MB)",
+    "attachments": "Attachments (max 50MB)",
     "submitTicket": "Submit Ticket",
     "submitting": "Submitting...",
     "ticketSubmitted": "Ticket Submitted!",
@@ -1156,9 +1009,25 @@
     "build": "Build",
     "run": "Run",
     "protect": "Protect",
-    "attachmentsLabel": "Attachments:"
+    "attachmentsLabel": "Attachments:",
+    "checkEmail": "Check Your Email",
+    "verificationSent": "We sent a verification link to",
+    "noEmail": "Didn receive the email?",
+    "resendEmail": "Resend verification email"
   },
   "support": {
+    "metadata": {
+      "title": "Support Center | TechGuru",
+      "description": "Get help with TechGuru products and services. Submit support tickets, track status, and access our knowledge base."
+    },
+    "metadataLogin": {
+      "title": "Sign In | TechGuru",
+      "description": "Sign in to your TechGuru account to access support tickets and manage your services."
+    },
+    "metadataRegister": {
+      "title": "Create Account | TechGuru",
+      "description": "Create a TechGuru account to submit support tickets and access our customer portal."
+    },
     "dashboard": "Dashboard",
     "supportCenter": "Support Center",
     "customer": "Customer",
@@ -1206,6 +1075,10 @@
     "suggestedSupport": "Support"
   },
   "terms": {
+    "metadata": {
+      "title": "Terms of Service | TechGuru",
+      "description": "Read the terms and conditions for using TechGuru website and services. Understand your rights and obligations."
+    },
     "title": "Terms of Service",
     "lastUpdated": "Last Updated",
     "section1Title": "Acceptance of Terms",
@@ -1225,6 +1098,10 @@
     "backHome": "Back to Home"
   },
   "compare": {
+    "metadata": {
+      "title": "Why Choose TechGuru | TechGuru",
+      "description": "Compare TechGuru with traditional IT vendors. See our advantages in VMware migration, managed security, AIGC capabilities, and multi-vendor support."
+    },
     "title": "TechGuru vs Competitors",
     "subtitle": "See how TechGuru compares to traditional IT vendors across security, infrastructure, and service quality.",
     "heroTag": "Competitive Advantage",
@@ -1331,7 +1208,7 @@
         },
         "5": {
           "title": "AIGC & AI Capabilities",
-          "desc": "From text-to-video to AI coding assistants and legacy system modernization, we bring cutting-edge AI to your business."
+          "desc": "From text-to-video to AI coding assistants and legacy system modernization, we bring advanced AI to your business."
         },
         "6": {
           "title": "Managed Security",

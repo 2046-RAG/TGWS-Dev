@@ -61,7 +61,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
   return (
     <section className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
       <div className="text-center mb-12">
-        <h1 className="section-title text-gray-900">{t('title')}</h1>
+        <h1 className="section-title text-gray-900 dark:text-white">{t('title')}</h1>
         <p className="section-subtitle mx-auto">{t('subtitle')}</p>
       </div>
 
@@ -73,8 +73,8 @@ export default function BlogList({ posts }: { posts: Post[] }) {
             onClick={() => setActiveCategory(cat)}
             className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 ${
               activeCategory === cat
-                ? 'bg-gray-900 text-white shadow-sm'
-                : 'bg-white border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300'
+                ? 'bg-gray-900 dark:bg-white dark:text-gray-900 text-white shadow-sm'
+                : 'bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-zinc-600'
             }`}
           >
             {t(`categories.${cat}`)}
@@ -166,7 +166,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
               style={{ animationDelay: `${index * 0.08}s` }}
             >
               <Link href={`/${locale}/blog/${post.slug?.current}`}>
-                <article className="bg-white border border-gray-200 rounded-xl overflow-hidden group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full">
+                <article className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl overflow-hidden group hover:border-[#00D4FF]/30 hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full">
                   {/* Image with category color accent */}
                   <div className="relative h-44">
                     {post.coverImage ? (
@@ -194,7 +194,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
                       style={{ backgroundColor: categoryColors[post.category] || '#00D4FF' }}
                     />
                     {/* Date badge */}
-                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-lg px-2.5 py-1.5 text-xs font-medium text-gray-700">
+                    <div className="absolute top-3 right-3 bg-white/90 dark:bg-zinc-800/90 backdrop-blur-sm rounded-lg px-2.5 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-200">
                       {formatDate(post.publishedAt)}
                     </div>
                   </div>
@@ -215,24 +215,24 @@ export default function BlogList({ posts }: { posts: Post[] }) {
                       </span>
                     </div>
 
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#00D4FF] transition-colors duration-200">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-[#00D4FF] transition-colors duration-200">
                       {locale === 'zh' ? (post.titleZh || post.title) : post.title}
                     </h3>
 
-                    <p className="text-sm text-gray-500 mb-4 line-clamp-2 flex-1 leading-relaxed">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2 flex-1 leading-relaxed">
                       {locale === 'zh' ? (post.excerptZh || post.excerpt) : post.excerpt}
                     </p>
 
                     {/* Author + Tags */}
-                    <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-zinc-700">
                       <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
-                          <User size={12} className="text-gray-400" />
+                        <div className="w-6 h-6 rounded-full bg-gray-100 dark:bg-zinc-700 flex items-center justify-center">
+                          <User size={12} className="text-gray-400 dark:text-gray-500" />
                         </div>
-                        <span className="text-xs font-medium text-gray-500">{post.author}</span>
+                        <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{post.author}</span>
                       </div>
                       {post.tags && post.tags.length > 0 && (
-                        <div className="flex items-center gap-1 text-xs text-gray-400">
+                        <div className="flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500">
                           <Tag size={11} />
                           <span>{post.tags[0]}</span>
                         </div>
@@ -248,8 +248,8 @@ export default function BlogList({ posts }: { posts: Post[] }) {
 
       {filtered.length === 0 && (
         <div className="text-center py-20">
-          <Calendar size={48} className="mx-auto mb-4 text-gray-300" />
-          <p className="text-gray-500 text-lg">{t('noResults') || 'No posts found for this category.'}</p>
+          <Calendar size={48} className="mx-auto mb-4 text-gray-300 dark:text-zinc-600" />
+          <p className="text-gray-500 dark:text-gray-400 text-lg">{t('noResults') || 'No posts found for this category.'}</p>
         </div>
       )}
     </section>
