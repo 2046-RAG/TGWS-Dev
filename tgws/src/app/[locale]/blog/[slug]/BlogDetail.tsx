@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { ArrowLeft, Share2, Clock, HelpCircle, Star, Copy, Check, Info, AlertTriangle, Lightbulb } from 'lucide-react';
+import { ArrowLeft, Share2, Clock, HelpCircle, Star, Copy, Check, Info, AlertTriangle, Lightbulb, ImageOff } from 'lucide-react';
 import Image from 'next/image';
 import { urlFor } from '@/lib/sanity.image';
 import { useState } from 'react';
@@ -183,8 +183,11 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
   };
 
   const [showShareMenu, setShowShareMenu] = useState(false);
+  const [diagramFailed, setDiagramFailed] = useState(false);
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
   const shareTitle = str(locale === 'zh' ? (post.titleZh || post.title) : post.title);
+  const diagramPath = typeof post.architectureDiagram === 'string' ? post.architectureDiagram.trim() : '';
+  const hasDiagram = diagramPath.length > 0;
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -252,16 +255,27 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
           </div>
         )}
 
-        {/* 架构图 */}
-        {post.architectureDiagram && (
+        {/* 架构图 - 数据缺失时跳过渲染；图片加载失败时显示占位 fallback */}
+        {hasDiagram && !diagramFailed && (
           <div className="mb-8 rounded-2xl overflow-hidden border border-gray-200 bg-gray-50 p-4">
             <Image
-              src={`/images/blog/${post.architectureDiagram}`}
+              src={`/images/blog/${diagramPath}`}
               alt={`${str(post.title)} - Architecture Diagram`}
               width={800}
               height={450}
               className="w-full h-auto"
+              onError={() => setDiagramFailed(true)}
             />
+          </div>
+        )}
+        {hasDiagram && diagramFailed && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="mb-8 rounded-2xl border border-dashed border-gray-300 dark:border-zinc-600 bg-gray-50 dark:bg-zinc-800 p-8 text-center text-sm text-gray-500 dark:text-gray-400 flex items-center justify-center gap-2"
+          >
+            <ImageOff size={16} className="shrink-0" />
+            <span>{t('diagramUnavailable')}</span>
           </div>
         )}
 

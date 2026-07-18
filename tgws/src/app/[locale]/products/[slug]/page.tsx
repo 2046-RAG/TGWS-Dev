@@ -1,7 +1,6 @@
 import { getProductBySlug } from '../product-data';
 import { notFound } from 'next/navigation';
 import Breadcrumb from '@/components/ui/Breadcrumb';
-import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 import ProductDetail from './ProductDetail';
 import { ProductJsonLd } from '@/components/ui/JsonLd';

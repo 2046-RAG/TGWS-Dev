@@ -15,6 +15,7 @@
 :root {
   --font-heading: 'HelveticaNowDisplay-Medium', 'Helvetica Neue', Arial, sans-serif;
   --font-body: 'HelveticaNowDisplayW01-Rg', 'Inter', sans-serif;
+  --color-border: rgba(0, 0, 0, 0.15);
 }
 
 /* ═══ Typography Enhancement ═══ */
@@ -32,7 +33,7 @@ p, li, dd, figcaption {
 
 body {
   background: #F4F4F5;
-  color: #000000;
+  color: var(--color-foreground);
   font-family: var(--font-body);
   -webkit-tap-highlight-color: transparent;
   line-height: 1.6;
@@ -82,7 +83,7 @@ body {
 }
 
 .card {
-  background: #FAFAFA;
+  background: var(--color-surface);
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 16px;
   padding: 24px;
@@ -156,7 +157,7 @@ body {
 
 .btn-secondary {
   background: transparent;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--color-border, rgba(0, 0, 0, 0.15));
   color: #18181B;
   border-radius: 9999px;
   padding: 12px 24px;
@@ -184,7 +185,7 @@ body {
   font-weight: 700;
   line-height: 1.15;
   margin-bottom: 1rem;
-  color: #18181B;
+  color: var(--color-foreground);
   letter-spacing: -0.02em;
 }
 
@@ -669,5 +670,13 @@ textarea:focus-visible {
   .animate-marquee-left,
   .animate-marquee-right {
     animation: none;
+  }
+}
+
+/* ═══ Global Reduced Motion - hard disable all animations/transitions ═══ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
   }
 }

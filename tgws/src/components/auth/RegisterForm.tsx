@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Mail, Lock, User, Loader2, CheckCircle } from 'lucide-react';
 
@@ -15,8 +14,6 @@ export default function RegisterForm() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [registered, setRegistered] = useState(false);
-  const params = useParams();
-  const locale = params.locale as string;
   const supabase = createClient();
 
   const handleRegister = async (e: React.FormEvent) => {

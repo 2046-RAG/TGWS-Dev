@@ -30,7 +30,7 @@ export async function logout(page: Page) {
   }
 }
 
-export async function cleanupTestTickets(page: Page, supabaseKey: string) {
+export async function cleanupTestTickets(_page: Page, supabaseKey: string) {
   // Use Supabase API to delete test tickets
   const response = await fetch('https://kounzhzbzepdpmstlffl.supabase.co/rest/v1/tickets?subject=like.*E2E-TEST-*', {
     method: 'DELETE',

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 
 test.describe('Debug first load issue', () => {
   test('Blog page - check rendered posts count', async ({ page }) => {
@@ -28,7 +28,6 @@ test.describe('Debug first load issue', () => {
 
     // Check if the posts array has data
     const postsData = await page.evaluate(() => {
-      // @ts-expect-error testing data attribute
       const el = document.querySelector('[data-posts]');
       return el ? el.getAttribute('data-posts') : 'no data-posts attribute';
     });

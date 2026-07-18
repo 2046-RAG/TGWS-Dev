@@ -39,6 +39,30 @@ describe('ComparePage', () => {
     expect(screen.getByRole('columnheader', { name: 'compare.table.competitorB' })).toBeInTheDocument();
   });
 
+  it('exposes an accessible name for the comparison table via aria-label', () => {
+    render(<ComparePage />);
+    expect(
+      screen.getByRole('table', { name: 'compare.table.ariaLabel' })
+    ).toBeInTheDocument();
+  });
+
+  it('renders a caption describing the table contents', () => {
+    render(<ComparePage />);
+    const table = screen.getByRole('table');
+    const caption = table.querySelector('caption');
+    expect(caption).not.toBeNull();
+    expect(caption).toHaveTextContent('compare.table.caption');
+  });
+
+  it('marks the TechGuru column header with scope and aria-label for a11y', () => {
+    render(<ComparePage />);
+    const techguruHeader = screen.getByRole('columnheader', {
+      name: 'compare.table.techguru',
+    });
+    expect(techguruHeader).toHaveAttribute('scope', 'col');
+    expect(techguruHeader).toHaveAttribute('aria-label', 'compare.table.techguru');
+  });
+
   it('renders one table row per feature key (7 features)', () => {
     render(<ComparePage />);
     const rows = screen.getAllByRole('row');

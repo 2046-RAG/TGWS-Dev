@@ -7,8 +7,8 @@
 
 # TechGuru Network & Data Solutions 官网 PRD
 
-**版本：** v1.2  
-**日期：** 2026-07-12  
+**版本：** v1.3  
+**日期：** 2026-07-19  
 **项目名称：** TechGuru Network and Data Solutions 官方网站  
 **域名：** www.techguru-it.asia  
 **部署平台：** Vercel
@@ -20,6 +20,7 @@
 | v1.0 | 2026-06-28 | 初始版本 |
 | v1.1 | 2026-07-09 | 根据实际实现全面更新：修正设计规范(S9)色彩/字体、更新Hero Section(S5)、工单系统(S6)字段/限制、数据模型(S17)新增字段、API设计(S18)路由修正、开放问题(S22)状态更新 |
 | v1.2 | 2026-07-12 | Phase 2完成：Product二级页面(/products/build/run/protect + [slug])、Hero文案重写(Build with AI. Run Beyond VMware. Protect Without Borders.)、Solutions Sanity集成、死代码CSS清理 |  
+| v1.3 | 2026-07-19 | Wave 0-4 实现反向同步：S2.5 补 CSRF 双重提交 cookie + rate limit + 文件白名单 + 统一错误响应；S9 补 reset-password 页 + TOC 侧边栏 + 打印样式；S17 补 tickets.idempotency_key + migration 003 RLS policy；S18 补 idempotency_key + 安全机制说明；S22 标记 Wave 0-4 已解决项 + 新增 CSP nonce / coverage 60% 待解决项；M02 补 canonical 要求；M05 补工单详情页 / 幂等键 / 事务安全 / RLS policy |
 
 ---
 
@@ -116,9 +117,9 @@
 | **跨站脚本攻击(XSS)** | 输入过滤、输出编码、CSP内容安全策略、DOMPurify sanitization |
 | **SQL注入** | 参数化查询、ORM（Prisma）、输入验证、最小权限数据库账户 |
 | **点击劫持** | X-Frame-Options: DENY、CSP frame-ancestors |
-| **CSRF攻击** | CSRF Token、SameSite Cookie属性、Referer验证 |
+| **CSRF攻击** | CSRF Token（双重提交 cookie 模式：`csrf-token` cookie + `x-csrf-token` header，timing-safe 比较）、SameSite Cookie 属性、Referer 验证。实现见 `src/lib/csrf.ts` + `src/middleware.ts` |
 | **撞库攻击** | 密码复杂度要求、登录异常检测、邮件通知、IP黑名单 |
-| **文件上传漏洞** | 文件类型白名单、文件大小限制（10MB）、病毒扫描、存储隔离 |
+| **文件上传漏洞** | 文件类型白名单（11 项 MIME：png/jpeg/webp/gif/pdf/text/plain/zip/xls/xlsx/doc/docx）、文件大小限制（10MB）、文件名 sanitize（剥离路径分隔符）、存储隔离、Signed URL（1h TTL，非公开） |
 | **目录遍历** | 路径规范化、访问控制列表、禁止目录列表 |
 | **SSRF攻击** | URL白名单、内网地址过滤、禁用file://协议 |
 
@@ -167,7 +168,26 @@
 | **DKIM** | 邮件域名密钥签名 |
 | **DMARC** | 域名认证报告策略 |
 
-**安全头部配置：**
+#### 2.5.7 安全机制实现状态（2026-07-19 反向同步）
+
+> 本节描述 Wave 1（W1-1 API 安全加固）实际落地的安全机制，作为 S2.5.1 的实现补充。
+
+| 机制 | 实现 | 文件 |
+|------|------|------|
+| **CSRF（双重提交 cookie 模式）** | 服务端通过 `csrf-token` cookie（httpOnly=false，SameSite=lax，Secure in prod，1 年有效期）下发随机 32 字节 token；客户端 JS 读取 cookie 后通过 `x-csrf-token` header 回传；服务端用 timing-safe 字节比较验证 cookie 与 header 一致；对 POST/PUT/PATCH/DELETE `/api/*` 强制校验，缺失或不匹配返回 403 | `src/lib/csrf.ts`、`src/middleware.ts` |
+| **Rate limit（内存 Map）** | `Map<key, {count, resetAt}>`，默认 10 req/60s/IP；按需收紧：`/api/contact` 5 req/min/IP、`/api/auth/reset-password` 5 req/min/IP；超限返回 429 + `Retry-After` header；懒清理过期 entry + 每分钟机会式清扫；无 Redis 共享状态（Vercel 单实例精确，serverless 按实例独立限流） | `src/lib/rate-limit.ts`、`src/app/api/contact/route.ts`、`src/app/api/auth/reset-password/route.ts` |
+| **文件上传白名单** | 11 项 MIME type：`image/png`、`image/jpeg`、`image/webp`、`image/gif`、`application/pdf`、`text/plain`、`application/zip`、`application/vnd.ms-excel`、`application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`、`application/msword`、`application/vnd.openxmlformats-officedocument.wordprocessingml.document`；非白名单 → 415 | `src/app/api/upload/route.ts` |
+| **文件大小限制** | 10MB（`10 * 1024 * 1024`），超出 → 400 `FILE_TOO_LARGE`；与 S2.5.1 表中 "10MB" 一致（原 PRD 误标 50MB，已修正） | `src/app/api/upload/route.ts` |
+| **文件名 sanitize** | `filename.replace(/[\/\\]/g, '_')` 剥离路径分隔符，防目录遍历 | `src/app/api/upload/route.ts` |
+| **附件访问控制** | 上传前先校验 `ticketId` 归属权（`tickets.user_id === auth.uid()`），失败 → 403；存储到 Supabase Storage 后用 `createSignedUrl(1h)` 替代 `getPublicUrl`，附件不公开枚举 | `src/app/api/upload/route.ts` |
+| **统一错误响应格式** | `{ success: false, error: { code, message } }`；不返回原始 Supabase 错误给客户端；服务端用结构化日志（`{timestamp, path, error: {name, message}, ...context}`），日志中 redact user_id 等 PII | 全部 `/api/*` 路由 |
+| **字段长度校验** | `subject ≤ 200`、`description ≤ 800`、`productService ≤ 100`、`comment ≤ 4000`、`idempotency_key ≤ 128` | `src/app/api/tickets/route.ts`、`src/app/api/tickets/[id]/route.ts` |
+| **Enum 校验** | `category ∈ {build, run, protect}`、`status ∈ {open, in_progress, resolved, closed}`、`priority ∈ {low, medium, high, critical}` | 同上 |
+| **PATCH 字段级角色白名单** | 非管理员仅可改 `description` / 追加 `comment`，不可改 `status`/`priority`/`assigned_to`；管理员可改全部字段；违规 → 403 | `src/app/api/tickets/[id]/route.ts` |
+| **路由保护** | `/support/*`（除 `/support/login`、`/support/register`、`/support/reset-password`）未登录 → 302 跳 `/support/login?redirect=...`；已登录访问 `/support/login` / `/support/register` → 跳 `/support` | `src/lib/supabase/middleware.ts`、`src/middleware.ts` |
+| **Cookie 选项合并** | supabase 中间件与 intl 中间件的 cookies + headers 完整合并（保留 httpOnly/secure/sameSite/maxAge 选项，修复之前丢失选项的安全 bug） | `src/middleware.ts` |
+
+#### 2.5.8 安全头部配置
 - `Strict-Transport-Security: max-age=31536000; includeSubDomains`
 - `X-Content-Type-Options: nosniff`
 - `X-Frame-Options: DENY`
@@ -282,16 +302,20 @@
 |------|------|------|
 | 首页 Hero | 鼠标控制视频进度 + 打字机效果 + 三支柱故事卡片 | ✅ 已实现 |
 | 首页 Build/Run/Protect | 三列产品支柱介绍 | ✅ 已实现 |
-| VMware替代方案 | 独立页面 + 对比表格 | ✅ 已实现 |
+| VMware替代方案 | 独立页面 + 对比表格 + `alternates.canonical` + `alternates.languages`（W4-2） | ✅ 已实现 |
 | 行业解决方案 | Tab切换6个行业 | ✅ 已实现 |
 | ~~案例展示~~ | ~~列表+详情页，按行业/产品筛选~~ | **[已废弃]** 2026-07-12 完全删除 |
 | 博客 | 列表+详情页，Markdown渲染 | ✅ 已实现 |
-| 关于我们 | 公司简介页面 | ✅ 已实现 |
+| 关于我们 | 公司简介页面；发展历程/团队/资质三板块从 Sanity 读取（W2-5） | ✅ 已实现 |
 | 联系我们 | 表单 + Odoo CRM同步 | ✅ 已实现 |
-| 工单系统 | 提交+列表+状态管理 | ✅ 已实现 |
-| 发展历程 | 垂直滚动时间线 | 🔲 待实现 |
-| 团队介绍 | 3D翻转卡片 | 🔲 待实现 |
-| 公司资质 | 网格展示 + 灯箱查看 | 🔲 待实现 |
+| 工单系统 | 提交+列表+状态管理；工单详情页 `/support/tickets/[id]`（W1-3） | ✅ 已实现 |
+| 密码重置页 `/support/reset-password` | 设置新密码表单，调用 `supabase.auth.updateUser({password})`（W1-2） | ✅ 已实现 |
+| 隐私政策 / 服务条款 | TOC 侧边栏（桌面）+ 折叠菜单（移动）+ `@media print` 打印样式 + "Print this page" 按钮（W4-4） | ✅ 已实现 |
+| 产品列表 `/products` | `alternates.canonical` 标签避免重复内容（W4-2） | ✅ 已实现 |
+| 产品子分类页 `/products/{build,run,protect}` | 待补 canonical 标签（W2-2.4 跟踪） | 🔲 待补 |
+| 发展历程 | 垂直滚动时间线（左右交替卡片 + 中线圆点），数据源 Sanity `timelineEvent` schema | ✅ 已实现（视觉简化版，原"3D翻转卡片"未实现） |
+| 团队介绍 | 圆形头像卡片网格（非 3D 翻转），数据源 Sanity `teamMember` schema | ✅ 已实现（视觉简化版，原"3D翻转卡片"未实现） |
+| 公司资质 | 4 列网格 + 图标，数据源 Sanity `qualification` schema | ✅ 已实现（视觉简化版，原"灯箱查看"未实现） |
 
 ---
 
@@ -337,7 +361,7 @@
 |------|------|------|------|
 | id | UUID | 主键 | ✅ |
 | user_id | UUID | 外键，关联users表 | ✅ |
-| ticket_number | VARCHAR(20) | 工单编号，自动生成（TG-YYYYMMDD-XXXX） | ✅ |
+| ticket_number | VARCHAR(20) | 工单编号，6 字符 base36 + `TG-` 前缀（如 `TG-A3F9K2`），碰撞重试 3 次（W1-3） | ✅ |
 | category | ENUM | build / run / protect | ✅ |
 | product_service | VARCHAR(100) | 具体产品/服务 | ✅ |
 | subject | VARCHAR(200) | 工单主题 | ✅ |
@@ -346,9 +370,12 @@
 | status | ENUM | open / in_progress / resolved / closed | ✅ |
 | priority | ENUM | low / medium / high / critical | ✅ |
 | assigned_to | UUID | 外键，分配给的管理员 | ✅ |
+| idempotency_key | TEXT | 幂等键，前端生成 UUID v4，跨重试稳定，成功后重置；UNIQUE 部分索引（NULL 允许重复，见 migration 003）；上限 128 字符 | ✅ 迁移003已添加（W1-3） |
+| version | INTEGER | 乐观锁版本号，每次 PATCH +1，PATCH 时校验 `eq('version', currentVersion)` 防并发覆盖 | ✅ |
 | created_at | TIMESTAMP | 创建时间 | ✅ |
 | updated_at | TIMESTAMP | 更新时间 | ✅ |
 | resolved_at | TIMESTAMP | 解决时间 | ✅ |
+| deleted_at | TIMESTAMP | 软删除时间戳（NULL = 未删除，所有查询过滤 `is('deleted_at', null)`） | ✅ |
 
 ### 17.3 工单附件表 (ticket_attachments)
 
@@ -386,12 +413,50 @@
 | odoo_synced | BOOLEAN | 是否已同步到Odoo |
 | created_at | TIMESTAMP | 提交时间 |
 
+### 17.5.1 工单审计日志表 (ticket_audit_log)
+
+> W1-3 引入。记录工单所有状态变更的审计追踪（who/when/what），见 AGENTS.md #17。
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| id | UUID | 主键 |
+| ticket_id | UUID | 外键，关联 tickets 表 |
+| action | VARCHAR(50) | 动作类型：`created` / `status_changed` / `priority_changed` / `assigned` / `description_updated` |
+| old_value | TEXT | 变更前值（JSON 字符串，可为 NULL） |
+| new_value | TEXT | 变更后值（JSON 字符串） |
+| performed_by | UUID | 外键，执行变更的用户 |
+| created_at | TIMESTAMP | 变更时间 |
+
 ### 17.6 数据库迁移文件
 
 | 文件 | 内容 |
 |------|------|
 | `supabase/migrations/001_initial_schema.sql` | 初始表结构（users, tickets, ticket_attachments, ticket_comments, contact_submissions） |
 | `supabase/migrations/002_add_occurred_at.sql` | tickets 表新增 `occurred_at` TIMESTAMP 字段 |
+| `supabase/migrations/003_add_idempotency_key.sql` | tickets 表加 `idempotency_key TEXT` + UNIQUE 部分索引（`WHERE idempotency_key IS NOT NULL`）；为 `ticket_audit_log` / `ticket_attachments` / `ticket_comments` 补 INSERT RLS policy；为 `ticket_comments` / `ticket_attachments` 补管理员 SELECT policy；为 tickets 表补 "管理员可创建工单" INSERT policy（W1-3） |
+
+> **注意**：migration 003 文件已创建但**未自动执行**。需手动运行 `supabase db push` 部署。代码层已做向后兼容处理：若 `idempotency_key` 字段不存在（PostgreSQL `42703` 错误），API 会降级为非幂等插入而不是失败。建议在生产环境尽快应用此迁移以启用完整幂等保护。
+
+### 17.7 RLS Policy 说明（migration 003）
+
+> W1-3 之前 `ticket_audit_log` / `ticket_attachments` / `ticket_comments` 三表**仅依赖默认 SELECT policy**，缺少 INSERT policy，导致 customer 角色无法插入自己工单的审计日志 / 附件 / 评论。migration 003 补全这些 policy。
+
+| 表 | 操作 | Policy | 说明 |
+|----|------|--------|------|
+| `tickets` | INSERT | "Admins can create tickets" | 管理员可代客户创建工单 |
+| `tickets` | INSERT | （已存在）"Customers can create own tickets" | 客户只能 `user_id = auth.uid()` |
+| `tickets` | SELECT | （已存在）"Customers can view own tickets" | 客户只能看自己的工单 |
+| `ticket_audit_log` | INSERT | "Admins can insert audit log" | 管理员可插入任意审计日志 |
+| `ticket_audit_log` | INSERT | "Users can insert audit log for own tickets" | 客户只能为自己的工单插入审计日志 |
+| `ticket_attachments` | INSERT | "Admins can insert attachments for any ticket" | 管理员可为任意工单添加附件 |
+| `ticket_attachments` | INSERT | "Users can insert attachments for own tickets" | 客户只能为自己的工单添加附件 |
+| `ticket_attachments` | SELECT | "Admins can view all attachments" | 管理员可查看所有附件 |
+| `ticket_comments` | INSERT | "Admins can insert comments for any ticket" | 管理员可为任意工单添加评论 |
+| `ticket_comments` | INSERT | "Users can insert comments for own tickets" | 客户只能为自己的工单添加评论 |
+| `ticket_comments` | SELECT | "Admins can view all ticket comments" | 管理员可查看所有评论（含 internal） |
+| `ticket_comments` | SELECT | （已存在）"Customers can view non-internal comments on own tickets" | 客户只能看自己工单的非内部评论 |
+
+> **重要**：所有 policy 均要求 `users.deleted_at IS NULL`（软删除用户无权限）。`tickets.deleted_at IS NULL` 同样在所有外键校验中检查，防止为已删除工单追加记录。
 
 ---
 
@@ -425,22 +490,34 @@
 | 方法 | 路径 | 权限 | 说明 | 状态 |
 |------|------|------|------|------|
 | GET | `/api/tickets` | customer | 获取我的工单列表 | ✅ |
-| POST | `/api/tickets` | customer | 创建工单 | ✅ |
-| GET | `/api/tickets/[id]` | customer | 获取工单详情 | ✅ |
-| PATCH | `/api/tickets/[id]` | admin | 更新工单状态 | ✅ |
+| POST | `/api/tickets` | customer | 创建工单（支持 `idempotency_key` 幂等重试，6 字符 base36 工单号碰撞重试 3 次，事务：insert ticket → insert audit_log → send email；email 失败不回滚工单） | ✅ |
+| GET | `/api/tickets/[id]` | customer/admin | 获取工单详情（含 attachments + comments；customer 仅可见 `is_internal=false` 评论；admin 可见全部） | ✅ |
+| PATCH | `/api/tickets/[id]` | customer/admin | 更新工单：乐观锁 `version` 字段；字段级角色白名单（非 admin 仅可改 `description`/追加 `comment`）；状态变更触发审计日志 + 邮件通知 | ✅ |
+| POST | `/api/tickets/[id]` | admin | 指派工单（向后兼容接口；新代码应优先用 PATCH `assignedTo`） | ✅ |
 | GET | `/api/tickets/stats` | admin | 获取统计报表 | ✅ |
+
+**idempotency_key 字段说明（W1-3 新增）：**
+
+- 前端 `TicketForm.tsx` 在首次提交时生成 UUID v4 作为 `idempotency_key`，作为 `<input type="hidden">` 隐藏字段；
+- 网络重试 / 用户重复点击时复用同一 key（不重新生成）；
+- 后端收到 `idempotency_key` 后先查询是否已有同 key 工单：
+  - 命中 → 返回原工单（响应体加 `idempotent_replay: true` 标记）；
+  - 未命中 → 正常创建，UNIQUE 索引保证并发场景下只有一条插入成功（其他失败者降级为 replay 查询）；
+- 提交成功后前端重置 key，确保下一次"提交新工单"操作生成新 key；
+- key 上限 128 字符，前端校验 + 后端 `validateCreatePayload` 二次校验；
+- 字段缺失时（旧客户端 / migration 003 未应用）API 自动降级为非幂等模式（向后兼容）。
 
 ### 18.3 文件上传接口
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| POST | `/api/upload` | 上传附件（最大 **50MB**，任意格式） |
+| POST | `/api/upload` | 上传附件（最大 **10MB**，11 项 MIME 白名单，见 S2.5.7；先校验 ticket ownership 再上传 Storage；返回 1h TTL Signed URL，非公开） |
 
 ### 18.4 联系表单接口
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| POST | `/api/contact` | 提交联系表单 + 同步Odoo |
+| POST | `/api/contact` | 提交联系表单 + 非阻塞同步 Odoo（`odoo_synced` 回写）；rate limit 5 req/min/IP（W1-1） |
 
 ### 18.5 产品接口
 
@@ -478,14 +555,34 @@
 | 路由文件 | 方法 | 用途 |
 |----------|------|------|
 | `src/app/api/auth/callback/route.ts` | GET | OAuth 回调 |
-| `src/app/api/auth/reset-password/route.ts` | POST | 密码重置 |
-| `src/app/api/contact/route.ts` | POST | 联系表单提交 |
+| `src/app/api/auth/reset-password/route.ts` | POST | 密码重置请求；rate limit 5 req/min/IP（W1-1） |
+| `src/app/api/contact/route.ts` | POST | 联系表单提交；rate limit 5 req/min/IP（W1-1） |
 | `src/app/api/products/route.ts` | GET | Sanity 产品列表 |
 | `src/app/api/revalidate/route.ts` | POST | ISR 重新验证 |
-| `src/app/api/tickets/route.ts` | GET/POST | 工单列表/创建 |
+| `src/app/api/tickets/route.ts` | GET/POST | 工单列表 / 创建（含 `idempotency_key` 幂等，W1-3） |
 | `src/app/api/tickets/stats/route.ts` | GET | 工单统计 |
-| `src/app/api/tickets/[id]/route.ts` | GET/PATCH | 工单详情/更新 |
-| `src/app/api/upload/route.ts` | POST | 文件上传 |
+| `src/app/api/tickets/[id]/route.ts` | GET/PATCH/POST | 工单详情 / 更新（乐观锁 `version`，W1-3）/ 指派 |
+| `src/app/api/upload/route.ts` | POST | 文件上传（10MB + 11 项 MIME 白名单 + Signed URL，W1-1） |
+
+### 18.9 API 安全机制（W1-1 反向同步）
+
+> 本节汇总 Wave 1 W1-1 落地的 API 层安全机制。详细实现见 S2.5.7。
+
+| 机制 | 适用范围 | 配置 |
+|------|---------|------|
+| **CSRF（双重提交 cookie 模式）** | 全部 POST/PUT/PATCH/DELETE `/api/*` 请求 | `csrf-token` cookie + `x-csrf-token` header，timing-safe 比较；缺失或不匹配 → 403 `{ code: 'CSRF_INVALID' }` |
+| **Rate limit（内存 Map）** | `/api/contact`、`/api/auth/reset-password` | 5 req/min/IP，超限 → 429 + `Retry-After` header |
+| **Rate limit（默认）** | 其他 `/api/*` 路由（如未来扩展） | 10 req/min/IP（`rateLimit(key)` 默认参数） |
+| **文件上传白名单** | `/api/upload` | 11 项 MIME type（详见 S2.5.7）；非白名单 → 415；超 10MB → 400 `FILE_TOO_LARGE` |
+| **统一错误响应** | 全部 `/api/*` 路由 | `{ success: false, error: { code, message } }`；不暴露原始 Supabase 错误；服务端结构化日志 + PII redact |
+| **字段长度校验** | `/api/tickets` POST/PATCH | `subject ≤ 200`、`description ≤ 800`、`productService ≤ 100`、`comment ≤ 4000`、`idempotency_key ≤ 128` |
+| **Enum 校验** | `/api/tickets` POST/PATCH | `category ∈ {build, run, protect}`、`status ∈ {open, in_progress, resolved, closed}`、`priority ∈ {low, medium, high, critical}` |
+| **PATCH 字段级角色白名单** | `/api/tickets/[id]` PATCH | customer 仅可改 `description` / 追加 `comment`；admin 可改全部业务字段；违规 → 403 |
+| **乐观锁** | `/api/tickets/[id]` PATCH | `version` 字段，PATCH 时 `eq('version', currentVersion)`；冲突 → 409 `version_conflict` |
+| **Idempotency** | `/api/tickets` POST | `idempotency_key` UNIQUE 部分索引；同 key 重复提交返回原工单 + `idempotent_replay: true` 标记 |
+| **事务补偿** | `/api/tickets` POST | insert ticket → insert audit_log → send email；email 失败不回滚工单（best-effort）；audit_log 失败不回滚工单（best-effort） |
+| **附件访问控制** | `/api/upload` | 先校验 `ticketId` 归属权（`tickets.user_id === auth.uid()`），失败 → 403；返回 Signed URL（1h TTL），不公开 |
+| **路由保护** | `/support/*` | 中间件层；未登录访问受保护路由 → 302 跳 `/support/login?redirect=...` |
 
 ---
 
@@ -629,19 +726,34 @@
 
 ## [S22] 开放问题
 
-> **更新日期**: 2026-07-11
+> **更新日期**: 2026-07-19（Wave 5-2 反向同步）
 
 | # | 问题 | 状态 | 说明 |
 |---|------|------|------|
 | 1 | Hero视频素材 | ✅ 已解决 | 使用 CloudFront CDN 托管的 MP4 视频 |
 | 2 | 合作伙伴Logo | ✅ 已解决 | 21 个 SVG/PNG 文件已收集在 `public/logos/`（Alibaba Cloud, Arcfra, ByteDance, Cisco, Dell, Fortinet, H3C, Hillstone, HP, Huawei, KVM, Lenovo, Nutanix, Proxmox, Ruijie, Sangfor, Sophos, StarWind, Veeam） |
-| 3 | ~~案例数据~~ | **[已废弃 - 2026-07-12 完全删除]** | ~~匿名化+重构为"典型应用场景"~~ → 2026-07-12 Case Studies 完全删除 |
-| 4 | 团队照片 | 🔲 已放弃 | S42 T12：用户暂不想透露真名 |
+| 3 | ~~案例数据~~ | **[已废弃 - 2026-07-12 完全删除]** | ~~匿名化+重构为"典型应用场景"~~ → 2026-07-12 Case Studies 完全删除（W0-3） |
+| 4 | 团队照片 | ✅ 已解决（W2-5） | About 页团队/资质/时间线三板块迁移到 Sanity（`teamMember` / `qualification` / `timelineEvent` schema）；用户暂不想透露真名 → 用 fallback 头像 + i18n 默认姓名；Sanity 数据上传后无需重新部署即可更新 |
 | 5 | 办公地点 | ✅ 已确认 | 10 Rajah Matanda St, corner JP Rizal St, Project 4, Quezon City, 1109 Metro Manila |
-| 6 | 社交媒体账号 | 🔲 已放弃 | S42 T13：用户暂时想不起来 |
+| 6 | 社交媒体账号 | ✅ 已解决（W4-5） | LinkedIn + WhatsApp 已配置；`OrganizationJsonLd.sameAs` 已填 `[LinkedIn_URL, WhatsApp_URL]`；具体链接集中到 `src/lib/config.ts`（`SUPPORT_EMAIL` / `CONTACT_PHONE` / `WHATSAPP_URL` / `LINKEDIN_URL`，W4-4.2） |
 | 7 | 分析工具 | ✅ 已部署 | Umami(免费开源、2KB script、零维护、天然GDPR合规)，Website ID已配置并部署 |
-| 8 | 工单时区 | ✅ 已解决 | Philippine Time (UTC+8)，已添加PHT后缀 |
+| 8 | 工单时区 | ✅ 已解决（W1-3.6） | API 层存储 ISO 8601 字符串（含时区）；前端 `TicketList.tsx` 用 `Intl.DateTimeFormat` 按用户 locale 格式化；移除原硬编码 "PHT" 后缀 |
 | 9 | 邮件模板 | ✅ 已完成 | 4套：确认/状态/密码/回复通知，FROM: support@techguru-it.asia |
 | 10 | 管理员账号 | ✅ 已解决 | 通过网站/register页面创建Supabase Auth账号即可 |
+| 11 | CSRF 防护方案 | ✅ 已解决（W1-1） | 双重提交 cookie 模式（`csrf-token` cookie + `x-csrf-token` header，timing-safe 比较）；对 POST/PUT/PATCH/DELETE `/api/*` 强制校验；实现见 `src/lib/csrf.ts` + `src/middleware.ts` |
+| 12 | API rate limit 方案 | ✅ 已解决（W1-1） | 内存 Map 实现，默认 10 req/min/IP；contact/reset-password 收紧到 5 req/min/IP；超限返回 429 + `Retry-After`；接受 serverless 单实例限制（无 Redis 共享状态）；实现见 `src/lib/rate-limit.ts` |
+| 13 | 文件上传白名单 | ✅ 已解决（W1-1） | 11 项 MIME type 白名单（png/jpeg/webp/gif/pdf/text/plain/zip/xls/xlsx/doc/docx）；10MB 上限；Signed URL 1h TTL；文件名 sanitize；详见 S2.5.7 |
+| 14 | 工单幂等键 | ✅ 已解决（W1-3） | `tickets.idempotency_key` TEXT + UNIQUE 部分索引（migration 003）；前端生成 UUID v4，跨重试稳定；UNIQUE 索引保证并发安全；详见 S17.2 + S18.2 |
+| 15 | RLS INSERT policy 缺失 | ✅ 已解决（W1-3） | migration 003 为 `ticket_audit_log` / `ticket_attachments` / `ticket_comments` 补 INSERT policy；详见 S17.7 |
+| 16 | 工单详情页 | ✅ 已解决（W1-3） | `/support/tickets/[id]` 已实现；含 attachments + comments + admin 状态变更 UI；详见 M05-Tickets.md 6.8 |
+| 17 | 密码重置完整流程 | ✅ 已解决（W1-2） | `/support/reset-password` 页面 + 中间件路由保护 + LoginForm `redirectTo` 修正；详见 M05-Tickets.md 6.2 |
+| 18 | Canonical 标签 | 🟡 部分解决（W4-2） | `/products` 和 `/vmware-alternative` 已加 `alternates.canonical` + `alternates.languages`；`/products/{build,run,protect}` 子分类页待补（W2-2.4 跟踪） |
+| 19 | CSP nonce 方案 | 🔲 待解决（W4-7.2） | 当前 CSP 仍用 `'unsafe-inline'`（style-src）；`next.config.ts` 已留 TODO，需实现 per-request nonce 生成中间件替代 `'unsafe-inline'`；属于 Wave 4 延后项 |
+| 20 | 测试覆盖率 60% 目标 | 🔲 待解决（W3-1.5） | 当前 baseline（2026-07-19）：statements 37.89% / branches 29.59% / functions 32.50% / lines 38.04%；`vitest.config.ts` 已设 pragmatic floor（35/25/30/35）防止回归；提升到 PRD [S21] 目标 60% 需补 HeroSection / MegaMenu / Navbar / Footer / CompareTable / TicketDetailClient / server-component pages / lib/odoo / lib/resend 等测试 |
+| 21 | 产品子分类页 canonical | 🔲 待解决（W2-2.4） | `/products/{build,run,protect}` 三个子分类页未加 `alternates.canonical`，可能与 `/products#build`（Tab 锚点）形成重复内容；待 W2-2.4 决策路由策略后补 |
+| 22 | `vercel.json` 镜像源 | 🔲 待解决（W4-7.3） | `vercel.json` 仍引用 `npmmirror.com` 镜像源；需移除或改用 `regions: ["hkg1"]` 配合中国镜像 |
+| 23 | tsconfig 严格选项 | 🔲 待解决（W4-7.4） | `tsconfig.json` 待补 `noUnusedLocals`、`noUnusedParameters`、`noFallthroughCasesInSwitch`、`forceConsistentCasingInFileNames` |
+| 24 | ESLint 安全规则插件 | 🔲 待解决（W4-7.5） | `eslint.config.mjs` 待补 `eslint-plugin-jsx-a11y`、`eslint-plugin-security` |
+| 25 | Sanity Studio visionTool | 🔲 待解决（W4-7.6） | `sanity.config.ts` 待加 `visionTool` 插件便于 GROQ 调试 |
 
 ---

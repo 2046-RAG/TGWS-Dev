@@ -405,6 +405,7 @@
       "copied": "Copied",
       "featured": "Featured",
       "teamName": "TechGuru Team",
+      "diagramUnavailable": "Architecture diagram unavailable",
       "articles": {
         "1": {
           "title": "Building Resilient Hybrid Cloud Architecture",
@@ -1244,7 +1245,9 @@
       "techguru": "TechGuru",
       "competitorA": "Traditional Vendor",
       "competitorB": "Cloud-Only Provider",
-      "highlight": "Key Advantage"
+      "highlight": "Key Advantage",
+      "caption": "Detailed feature comparison of TechGuru versus traditional vendors and cloud-only providers.",
+      "ariaLabel": "TechGuru competitor comparison table"
     },
     "features": {
       "vmwareMigration": "VMware Migration Support",

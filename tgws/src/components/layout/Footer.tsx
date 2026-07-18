@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
-import { Mail, Phone, Briefcase, MessageCircle } from 'lucide-react';
+import { Mail, Briefcase, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Footer() {

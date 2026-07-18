@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useState } from 'react';
-import { Calendar, ArrowRight, Star, Clock, User, Tag } from 'lucide-react';
+import { Calendar, Star, Clock, User, Tag } from 'lucide-react';
 import Image from 'next/image';
 import { urlFor } from '@/lib/sanity.image';
 

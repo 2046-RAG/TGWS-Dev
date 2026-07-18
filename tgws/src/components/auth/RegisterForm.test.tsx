@@ -102,7 +102,10 @@ describe('RegisterForm', () => {
       expect(mockSignUp).toHaveBeenCalledWith({
         email: 'test@test.com',
         password: 'Abcdef1@',
-        options: { data: { full_name: 'Test User' } },
+        options: {
+          data: { full_name: 'Test User' },
+          emailRedirectTo: `${window.location.origin}/api/auth/callback`,
+        },
       });
     });
   });

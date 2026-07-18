@@ -405,6 +405,7 @@
       "copied": "已複製",
       "featured": "精選",
       "teamName": "TechGuru 團隊",
+      "diagramUnavailable": "架構圖暫時無法顯示",
       "articles": {
         "1": {
           "title": "建構彈性混合雲架構",
@@ -960,7 +961,9 @@
       "techguru": "TechGuru",
       "competitorA": "傳統供應商",
       "competitorB": "雲端供應商",
-      "highlight": "核心優勢"
+      "highlight": "核心優勢",
+      "caption": "TechGuru 與傳統供應商及雲端供應商的功能詳細對比表。",
+      "ariaLabel": "TechGuru 競品對比表格"
     },
     "features": {
       "vmwareMigration": "VMware遷移支持",

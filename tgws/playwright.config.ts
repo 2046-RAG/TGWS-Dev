@@ -4,12 +4,13 @@ export default defineConfig({
   testDir: './e2e',
   timeout: 30000,
   retries: 2,
-  trace: 'on-first-retry',
-  screenshot: 'only-on-failure',
-  video: 'retain-on-failure',
   use: {
     baseURL: 'http://localhost:3000',
     headless: true,
+    // Recording options belong under `use` in Playwright v1.61+ (W0-7/W4-7.7)
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
   },
   webServer: {
     command: 'npm run start',

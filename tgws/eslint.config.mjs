@@ -2,6 +2,12 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 
+// TODO W4-7.5: eslint-plugin-jsx-a11y (735KB) and eslint-plugin-security (145KB)
+// are NOT installed. Both exceed the 50KB new-dependency budget (AGENTS.md #45).
+// Next.js core-web-vitals already enforces a baseline of a11y rules
+// (eslint-plugin-react eslint-plugin-jsx-a11y subset via next/core-web-vitals).
+// Revisit if stricter a11y linting is required.
+
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,

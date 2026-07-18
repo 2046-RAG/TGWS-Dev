@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Check, X, Minus } from 'lucide-react';
+import { Check, X, Minus, Star } from 'lucide-react';
 
 type Category = 'all' | 'security' | 'networking' | 'cloud' | 'ai';
 
@@ -29,19 +29,30 @@ export default function CompareTable({ activeCategory = 'all' }: { activeCategor
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[640px] border-collapse">
+      <table
+        className="w-full min-w-[640px] border-collapse"
+        aria-label={t('table.ariaLabel')}
+      >
+        <caption className="sr-only">{t('table.caption')}</caption>
         <thead>
           <tr className="border-b border-gray-200 dark:border-zinc-700">
-            <th className="text-left py-4 px-4 text-sm font-semibold text-gray-900 dark:text-white w-1/4">
+            <th scope="col" className="text-left py-4 px-4 text-sm font-semibold text-gray-900 dark:text-white w-1/4">
               {t('table.feature')}
             </th>
-            <th className="text-center py-4 px-4 text-sm font-semibold text-white bg-[#00D4FF] rounded-t-xl w-1/4">
-              {t('table.techguru')}
+            <th
+              scope="col"
+              aria-label={t('table.techguru')}
+              className="text-center py-4 px-4 text-sm font-semibold text-white bg-[#00D4FF] rounded-t-xl w-1/4"
+            >
+              <span className="inline-flex items-center justify-center gap-1.5">
+                <Star size={14} className="shrink-0" aria-hidden="true" />
+                {t('table.techguru')}
+              </span>
             </th>
-            <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-zinc-700 w-1/4">
+            <th scope="col" className="text-center py-4 px-4 text-sm font-semibold text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-zinc-700 w-1/4">
               {t('table.competitorA')}
             </th>
-            <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-zinc-800 w-1/4">
+            <th scope="col" className="text-center py-4 px-4 text-sm font-semibold text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-zinc-800 w-1/4">
               {t('table.competitorB')}
             </th>
           </tr>
@@ -78,7 +89,7 @@ export default function CompareTable({ activeCategory = 'all' }: { activeCategor
               </td>
               <td className="py-4 px-4 text-center">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 text-sm">
-                  {t(`features.${feature.key}B`).includes('N/A') || t(`features.${feature.key}B`).includes('不') || t(`features.${feature.key}B`).includes('not') || t(`features.${feature.key}B`).includes('N/A') ? (
+                  {t(`features.${feature.key}B`).includes('N/A') || t(`features.${feature.key}B`).includes('不') || t(`features.${feature.key}B`).includes('not') ? (
                     <X size={14} className="text-red-400 shrink-0" />
                   ) : (
                     <Minus size={14} className="text-gray-400 dark:text-gray-500 shrink-0" />

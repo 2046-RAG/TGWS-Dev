@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 const HeroSection = dynamic(() => import('@/components/hero/HeroSection'));
 import { Code2, Server, Shield, ArrowRight, Check, Zap, Users, Building2, Sparkles, Monitor } from 'lucide-react';
-import { useState, useRef, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
 /* ═══════════════════════════════════════════════
    Partner Logos — Dual-row opposite-scroll marquee
