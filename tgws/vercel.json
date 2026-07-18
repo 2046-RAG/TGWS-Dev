@@ -1,5 +1,6 @@
 {
   "buildCommand": "npx next build --webpack",
+  "installCommand": "npm install",
   "outputDirectory": ".next",
   "framework": "nextjs",
   "regions": ["hkg1"]
