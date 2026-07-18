@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd tgws && npx next build --webpack",
+  "installCommand": "cd tgws && npm install",
+  "outputDirectory": "tgws/.next",
+  "framework": "nextjs",
+  "regions": ["hkg1"]
+}
