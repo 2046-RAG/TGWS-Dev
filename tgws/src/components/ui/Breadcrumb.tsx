@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { ChevronRight } from 'lucide-react';
 
 interface BreadcrumbItem {
@@ -8,14 +10,31 @@ interface BreadcrumbItem {
   href?: string;
 }
 
-export default function Breadcrumb({ items, locale = 'en' }: { items: BreadcrumbItem[]; locale?: string }) {
-  const homeLabel = locale === 'zh' ? '首頁' : 'Home';
+interface BreadcrumbProps {
+  items: BreadcrumbItem[];
+  /**
+   * Optional locale override used to build the home link's URL prefix.
+   * When omitted, the locale is read from the nearest `[locale]` route
+   * segment via `useParams()`. The home label is always resolved through
+   * next-intl (`common.breadcrumb.home`) so it stays in sync with the active
+   * locale context.
+   */
+  locale?: string;
+}
+
+export default function Breadcrumb({ items, locale }: BreadcrumbProps) {
+  const params = useParams();
+  const routeLocale =
+    params && typeof params.locale === 'string' ? params.locale : 'en';
+  const effectiveLocale = locale ?? routeLocale;
+  const t = useTranslations('common.breadcrumb');
+
   return (
     <nav aria-label="Breadcrumb" className="py-4 px-5 sm:px-8 max-w-7xl mx-auto">
       <ol className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
         <li>
-          <Link href={`/${locale}`} className="hover:text-[#00D4FF] transition-colors">
-            {homeLabel}
+          <Link href={`/${effectiveLocale}`} className="hover:text-[#00D4FF] transition-colors">
+            {t('home')}
           </Link>
         </li>
         {items.map((item, index) => (

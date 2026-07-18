@@ -1,4 +1,4 @@
-import { client } from '@/lib/sanity';
+import { client } from '@/lib/sanity.server';
 import BlogList from './BlogList';
 import Breadcrumb from '@/components/ui/Breadcrumb';
 import { getTranslations } from 'next-intl/server';

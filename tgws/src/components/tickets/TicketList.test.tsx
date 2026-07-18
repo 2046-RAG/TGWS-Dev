@@ -10,15 +10,26 @@ vi.mock('next-intl', () => ({
       ticketResolved: 'Resolved',
       ticketClosed: 'Closed',
       noTickets: 'No tickets',
+      submitTicketHint: 'Submit a ticket to get started',
+      openTicket: 'Open ticket',
     };
     return m[key] || key;
   },
+  useLocale: () => 'en',
+}));
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    back: vi.fn(),
+  }),
 }));
 
 describe('TicketList', () => {
   it('shows empty state with no tickets', () => {
     render(<TicketList tickets={[]} />);
-    
+
     expect(screen.getByText('No tickets')).toBeInTheDocument();
     expect(screen.getByText('Submit a ticket to get started')).toBeInTheDocument();
   });
@@ -36,7 +47,7 @@ describe('TicketList', () => {
     ];
 
     render(<TicketList tickets={tickets} />);
-    
+
     expect(screen.getByText('TK-001')).toBeInTheDocument();
     expect(screen.getByText('First ticket')).toBeInTheDocument();
     expect(screen.getByText('Build')).toBeInTheDocument();
@@ -55,7 +66,7 @@ describe('TicketList', () => {
     ];
 
     render(<TicketList tickets={tickets} />);
-    
+
     expect(screen.getByText('In Progress')).toBeInTheDocument();
   });
 
@@ -72,7 +83,7 @@ describe('TicketList', () => {
     ];
 
     render(<TicketList tickets={tickets} />);
-    
+
     expect(screen.getByText('Protect')).toBeInTheDocument();
   });
 });

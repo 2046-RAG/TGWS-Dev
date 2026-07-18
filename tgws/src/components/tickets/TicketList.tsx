@@ -1,7 +1,8 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { format } from 'date-fns';
+import { useLocale } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import { Clock, ArrowRight } from 'lucide-react';
 
 interface Ticket {
@@ -13,33 +14,49 @@ interface Ticket {
   created_at: string;
 }
 
+function formatDateTime(iso: string, locale: string): string {
+  try {
+    const dt = new Date(iso);
+    return new Intl.DateTimeFormat(locale, {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    }).format(dt);
+  } catch {
+    return iso;
+  }
+}
+
 export default function TicketList({ tickets }: { tickets: Ticket[] }) {
-  const t = useTranslations('auth');
+  const t = useTranslations('support');
+  const tAuth = useTranslations('auth');
+  const tList = useTranslations('support.ticketList');
+  const locale = useLocale();
+  const router = useRouter();
 
   const statusConfig: Record<string, { bg: string; text: string; dot: string; label: string }> = {
     open: {
       bg: 'bg-yellow-50',
       text: 'text-yellow-600',
       dot: 'bg-yellow-500',
-      label: t('ticketOpen'),
+      label: tAuth('ticketOpen'),
     },
     in_progress: {
       bg: 'bg-blue-50',
       text: 'text-blue-600',
       dot: 'bg-blue-500',
-      label: t('ticketInProgress'),
+      label: tAuth('ticketInProgress'),
     },
     resolved: {
       bg: 'bg-green-50',
       text: 'text-green-600',
       dot: 'bg-green-500',
-      label: t('ticketResolved'),
+      label: tAuth('ticketResolved'),
     },
     closed: {
       bg: 'bg-gray-100',
       text: 'text-gray-500',
       dot: 'bg-gray-400',
-      label: t('ticketClosed'),
+      label: tAuth('ticketClosed'),
     },
   };
 
@@ -61,11 +78,23 @@ export default function TicketList({ tickets }: { tickets: Ticket[] }) {
         <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <Clock size={28} className="text-gray-400" />
         </div>
-        <p className="text-gray-500 text-lg">{t('noTickets')}</p>
-        <p className="text-gray-600 text-sm mt-2">Submit a ticket to get started</p>
+        <p className="text-gray-500 text-lg">{tAuth('noTickets')}</p>
+        <p className="text-gray-600 text-sm mt-2">{t('submitTicketHint')}</p>
       </div>
     );
   }
+
+  const handleRowClick = (ticketId: string) => {
+    router.push(`/${locale}/support/tickets/${ticketId}`);
+  };
+
+  const handleRowKeyDown = (e: React.KeyboardEvent, ticketId: string) => {
+    // Enter or Space → activate row
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      router.push(`/${locale}/support/tickets/${ticketId}`);
+    }
+  };
 
   return (
     <div className="space-y-3">
@@ -74,7 +103,12 @@ export default function TicketList({ tickets }: { tickets: Ticket[] }) {
         return (
           <div
             key={ticket.id}
-            className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl p-5 hover:shadow-md hover:border-gray-300 dark:hover:border-zinc-600 transition-all duration-200 cursor-pointer group"
+            role="link"
+            tabIndex={0}
+            aria-label={`${tList('openTicket')}: ${ticket.ticket_number} — ${ticket.subject}`}
+            onClick={() => handleRowClick(ticket.id)}
+            onKeyDown={(e) => handleRowKeyDown(e, ticket.id)}
+            className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl p-5 hover:shadow-md hover:border-gray-300 dark:hover:border-zinc-600 transition-all duration-200 cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2"
           >
             <div className="flex items-center justify-between gap-4">
               <div className="flex-1 min-w-0">
@@ -92,7 +126,7 @@ export default function TicketList({ tickets }: { tickets: Ticket[] }) {
                 </div>
                 <h3 className="text-gray-900 dark:text-white font-medium truncate">{ticket.subject}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  {format(new Date(ticket.created_at), 'MMM d, yyyy HH:mm')} PHT
+                  {formatDateTime(ticket.created_at, locale)}
                 </p>
               </div>
 

@@ -955,7 +955,7 @@ Hero 底部包含三个故事卡片（Storyline Cards）：
 |---|------|------|------|
 | 1 | Hero视频素材 | ✅ 已解决 | 使用 CloudFront CDN 托管的 MP4 视频 |
 | 2 | 合作伙伴Logo | ✅ 已解决 | 21 个 SVG/PNG 文件已收集在 `public/logos/`（Alibaba Cloud, Arcfra, ByteDance, Cisco, Dell, Fortinet, H3C, Hillstone, HP, Huawei, KVM, Lenovo, Nutanix, Proxmox, Ruijie, Sangfor, Sophos, StarWind, Veeam） |
-| 3 | ~~案例数据~~ | **[已废弃]** | ~~匿名化+重构为"典型应用场景"~~ → 2026-07-12 Case Studies 完全删除 |
+| 3 | ~~案例数据~~ | **[已废弃 - 2026-07-12 完全删除]** | ~~匿名化+重构为"典型应用场景"~~ → 2026-07-12 Case Studies 完全删除 |
 | 4 | 团队照片 | 🔲 已放弃 | S42 T12：用户暂不想透露真名 |
 | 5 | 办公地点 | ✅ 已确认 | 10 Rajah Matanda St, corner JP Rizal St, Project 4, Quezon City, 1109 Metro Manila |
 | 6 | 社交媒体账号 | 🔲 已放弃 | S42 T13：用户暂时想不起来 |

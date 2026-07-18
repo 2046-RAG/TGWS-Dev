@@ -56,8 +56,13 @@ export default function HeroSection() {
   const targetTimeRef = useRef(0);
   const seekingRef = useRef(false);
 
+  const prefersReducedMotion = typeof window !== 'undefined'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   const fullText = t('tagline');
   const { displayed, done } = useTypewriter(fullText);
+  const typewriterText = prefersReducedMotion ? fullText : displayed;
+  const typewriterDone = prefersReducedMotion ? true : done;
 
   useEffect(() => {
     const timer = setTimeout(() => setShowButtons(true), 400);
@@ -66,6 +71,8 @@ export default function HeroSection() {
 
   // Video mouse scrubbing
   useEffect(() => {
+    if (prefersReducedMotion) return;
+
     const handleSeeked = () => {
       seekingRef.current = false;
     };
@@ -125,7 +132,7 @@ export default function HeroSection() {
       textarea.style.left = '-9999px';
       document.body.appendChild(textarea);
       textarea.select();
-      document.execCommand('copy');
+      try { document.execCommand('copy'); } catch (e) {}
       document.body.removeChild(textarea);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -146,6 +153,8 @@ export default function HeroSection() {
         className="absolute inset-0 w-full h-full object-cover"
         style={{ objectPosition: '70% center' }}
         src={VIDEO_SRC}
+        poster="/images/hero-poster.svg"
+        aria-label="TechGuru brand video showing infrastructure and AI technology"
         muted
         playsInline
         preload="auto"
@@ -172,8 +181,8 @@ export default function HeroSection() {
             className="mb-5 sm:mb-6"
             style={{ fontSize: 'clamp(22px, 5vw, 34px)', lineHeight: 1.3, fontWeight: 800, color: '#fff', minHeight: '54px' }}
           >
-            {displayed}
-            {!done && (
+            {typewriterText}
+            {!typewriterDone && (
               <span
                 className="inline-block w-[2px] h-[1.1em] bg-white align-middle ml-[2px]"
                 style={{ animation: 'blink 1s step-end infinite' }}

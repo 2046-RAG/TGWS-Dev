@@ -85,6 +85,32 @@ export function useAutoSave(
     return () => clearInterval(interval);
   }, [key, intervalMs, version]);
 
+  // Flush on beforeunload: the interval might miss the most recent keystrokes
+  // (e.g. user types within the last 30s window then closes the tab), so we
+  // synchronously persist dataRef.current when the page is about to close.
+  // Synchronous because beforeunload does not wait for async work.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleBeforeUnload = () => {
+      if (Object.keys(dataRef.current).length > 0) {
+        const saveData: AutoSaveData = {
+          ...dataRef.current,
+          __version: version,
+          __timestamp: Date.now(),
+        };
+        try {
+          localStorage.setItem(key, JSON.stringify(saveData));
+        } catch {
+          // Quota / private-mode failures are non-fatal at unload time.
+        }
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [key, version]);
+
   const load = useCallback((): Record<string, unknown> | null => {
     if (typeof window === 'undefined') return null;
     const saved = localStorage.getItem(key);

@@ -1,4 +1,5 @@
 import { client } from '@/lib/sanity.server';
+import { urlFor } from '@/lib/sanity.image';
 import { notFound } from 'next/navigation';
 import BlogDetail from './BlogDetail';
 import type { Metadata } from 'next';
@@ -39,10 +40,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const rawDesc = locale === 'zh' ? (post.excerptZh || post.excerpt) : post.excerpt;
   const title = typeof rawTitle === 'object' ? (rawTitle.en || rawTitle.zh || Object.values(rawTitle)[0] || '') : rawTitle;
   const description = typeof rawDesc === 'object' ? (rawDesc.en || rawDesc.zh || Object.values(rawDesc)[0] || '') : rawDesc;
-  // OG image: use coverImage if Sanity object, else picsum fallback
+  // OG image: use coverImage via urlFor, else default OG image
   const ogImage = post.coverImage && typeof post.coverImage === 'object'
-    ? `https://cdn.sanity.io/images/r6ztl1oq/production/${post.coverImage.asset?._ref?.replace('image-', '').replace('-$', '.') || 'fallback'}.png`
-    : `https://picsum.photos/seed/${slug}/1200/630`;
+    ? urlFor(post.coverImage).width(1200).height(630).url()
+    : 'https://www.techguru-it.asia/images/og-default.png';
   return {
     title: String(title),
     description: String(description),

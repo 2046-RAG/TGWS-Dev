@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import { VENDOR_COLORS, VENDOR_BRAND_NAMES } from '@/lib/vendor-colors';
 import {
   ArrowRight, Shield, DollarSign, Zap, Clock,
   Server, Cloud, RefreshCw, Phone
@@ -16,10 +17,10 @@ export default function VMwareAlternativePage() {
   const tContact = useTranslations('contact');
 
   const solutions = [
-    { key: 'sol1', icon: Server, color: '#E57000', brand: 'Proxmox' },
-    { key: 'sol2', icon: Cloud, color: '#0066CC', brand: 'Sangfor' },
-    { key: 'sol3', icon: RefreshCw, color: '#00A859', brand: 'Nutanix' },
-    { key: 'sol4', icon: Server, color: '#D4213D', brand: 'StarWind' },
+    { key: 'sol1', icon: Server, color: VENDOR_COLORS.proxmox, brand: VENDOR_BRAND_NAMES.proxmox },
+    { key: 'sol2', icon: Cloud, color: VENDOR_COLORS.sangfor, brand: VENDOR_BRAND_NAMES.sangfor },
+    { key: 'sol3', icon: RefreshCw, color: VENDOR_COLORS.nutanix, brand: VENDOR_BRAND_NAMES.nutanix },
+    { key: 'sol4', icon: Server, color: VENDOR_COLORS.starwind, brand: VENDOR_BRAND_NAMES.starwind },
   ];
 
   const steps = [
@@ -38,10 +39,7 @@ export default function VMwareAlternativePage() {
 
   return (
     <div className="min-h-screen bg-[#F4F4F5] dark:bg-zinc-900">
-      <Breadcrumb
-        items={[{ label: t('heroTag') }]}
-        locale={locale}
-      />
+      <Breadcrumb items={[{ label: t('heroTag') }]} />
       {/* Hero Section */}
       <section className="relative py-20 sm:py-32 px-5 sm:px-8 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#7B61FF]/5 to-[#00D4FF]/5" />
@@ -63,12 +61,12 @@ export default function VMwareAlternativePage() {
               >
                 {t('heroCta')} <ArrowRight size={18} />
               </Link>
-              <Link
-                href={`/${locale}/contact`}
+              <a
+                href={`tel:${tContact('phoneNumber').replace(/\s/g, '')}`}
                 className="inline-flex items-center gap-2 py-2 px-1 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white min-h-[44px] transition-colors"
               >
                 <Phone size={16} /> {t('ctaPhone')}
-              </Link>
+              </a>
             </div>
           </div>
         </div>

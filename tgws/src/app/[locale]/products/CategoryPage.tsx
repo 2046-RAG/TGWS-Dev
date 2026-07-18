@@ -4,14 +4,8 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import {
-  Video, Code2, Bot, BrainCircuit, Compass, Server, Cloud, HardDrive,
-  Shield, Lock, MonitorCheck, Network, CloudCog, Bug,
-  AlertTriangle, Settings, Database, RefreshCw, Globe, ShieldCheck,
-  Wifi, Cable, Route, Unplug, Radio, Router, NetworkIcon, ArrowRight,
-} from 'lucide-react';
-
-type TabKey = 'build' | 'run' | 'protect';
+import { Code2, Server, Shield, ArrowRight } from 'lucide-react';
+import { tabColors, slugToI18n, iconMap, runSubgroups, type TabKey } from '@/components/products/shared';
 
 interface Product {
   _id: string;
@@ -24,81 +18,6 @@ interface Product {
   descriptionZh: string;
   features: string[];
 }
-
-const tabColors: Record<TabKey, string> = {
-  build: '#00D4FF',
-  run: '#7B61FF',
-  protect: '#22C55E',
-};
-
-const slugToI18n: Record<string, string> = {
-  'ai-generated-content-aigc': 'aigcTitle',
-  'ai-assisted-coding': 'aigcCoding',
-  'ai-agent-development': 'aiAgent',
-  'enterprise-legacy-system-ai-augmentation': 'legacyAI',
-  'ai-adoption-services': 'aiAdoption',
-  'server-virtualization-platform': 'vmPlatform',
-  'hyper-converged-infrastructure': 'hci',
-  'cloud-migration': 'cloudPlatform',
-  'cloud-repatriation': 'cloudRepatriation',
-  'enterprise-storage-solutions': 'hardware',
-  'managed-hosting-services': 'hosting',
-  'business-continuity-disaster-recovery': 'bcdr',
-  'enterprise-routers': 'enterpriseRouters',
-  'core-switches': 'coreSwitches',
-  'access-switches': 'accessSwitches',
-  'aggregation-switches': 'aggregationSwitches',
-  'enterprise-wireless-ap': 'enterpriseWirelessAP',
-  'wireless-controllers': 'wirelessControllers',
-  'outdoor-wireless-ap': 'outdoorWirelessAP',
-  'wifi-6-7-ap': 'wifi67AP',
-  'next-gen-firewall-ips': 'ngfw',
-  'web-application-firewall': 'waf',
-  'endpoint-detection-response': 'edr',
-  'network-detection-response': 'ndr',
-  'cloud-security': 'cloudSecurity',
-  'sd-wan-load-balancing': 'sdwan',
-  'managed-detection-response': 'mdr',
-  'incident-response': 'incidentResponse',
-};
-
-const iconMap: Record<string, React.ReactNode> = {
-  'ai-generated-content-aigc': <Video size={28} />,
-  'ai-assisted-coding': <Code2 size={28} />,
-  'ai-agent-development': <Bot size={28} />,
-  'enterprise-legacy-system-ai-augmentation': <BrainCircuit size={28} />,
-  'ai-adoption-services': <Compass size={28} />,
-  'server-virtualization-platform': <Server size={28} />,
-  'hyper-converged-infrastructure': <Database size={28} />,
-  'cloud-migration': <Cloud size={28} />,
-  'cloud-repatriation': <RefreshCw size={28} />,
-  'enterprise-storage-solutions': <HardDrive size={28} />,
-  'managed-hosting-services': <Settings size={28} />,
-  'business-continuity-disaster-recovery': <Shield size={28} />,
-  'enterprise-routers': <Route size={28} />,
-  'core-switches': <Cable size={28} />,
-  'access-switches': <Network size={28} />,
-  'aggregation-switches': <Unplug size={28} />,
-  'enterprise-wireless-ap': <Wifi size={28} />,
-  'wireless-controllers': <Radio size={28} />,
-  'outdoor-wireless-ap': <Router size={28} />,
-  'wifi-6-7-ap': <NetworkIcon size={28} />,
-  'next-gen-firewall-ips': <ShieldCheck size={28} />,
-  'web-application-firewall': <Lock size={28} />,
-  'endpoint-detection-response': <MonitorCheck size={28} />,
-  'network-detection-response': <Network size={28} />,
-  'cloud-security': <CloudCog size={28} />,
-  'sd-wan-load-balancing': <Globe size={28} />,
-  'managed-detection-response': <Bug size={28} />,
-  'incident-response': <AlertTriangle size={28} />,
-};
-
-// Run tab subcategory groups
-const runSubgroups = [
-  { key: 'infrastructure', i18nKey: 'compute', slugs: ['server-virtualization-platform', 'hyper-converged-infrastructure', 'cloud-migration', 'cloud-repatriation', 'enterprise-storage-solutions', 'managed-hosting-services', 'business-continuity-disaster-recovery'] },
-  { key: 'routing_switching', i18nKey: 'routing_switching', slugs: ['enterprise-routers', 'core-switches', 'access-switches', 'aggregation-switches'] },
-  { key: 'wireless', i18nKey: 'wireless', slugs: ['enterprise-wireless-ap', 'wireless-controllers', 'outdoor-wireless-ap', 'wifi-6-7-ap'] },
-];
 
 const categoryIcons: Record<TabKey, React.ReactNode> = {
   build: <Code2 size={24} />,
@@ -135,6 +54,7 @@ export default function CategoryPage({
     const slug = product.slug?.current || '';
     const i18nKey = slugToI18n[slug] || '';
     const features = slug ? t.raw('features.' + slug) : null;
+    const Icon = iconMap[slug] || Server;
 
     return (
       <motion.div
@@ -151,7 +71,7 @@ export default function CategoryPage({
             className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
             style={{ backgroundColor: color + '15', color }}
           >
-            {iconMap[slug] || <Server size={28} />}
+            <Icon size={28} />
           </div>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-[#00D4FF] transition-colors duration-200">
             {t(i18nKey || product.title)}
@@ -160,7 +80,7 @@ export default function CategoryPage({
             {Array.isArray(features) ? features.join(' • ') : (product.features?.join(' • ') || '')}
           </p>
           <span className="inline-flex items-center gap-1 text-sm font-medium" style={{ color }}>
-            Learn more <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            {t('learnMore')} <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </span>
         </Link>
       </motion.div>
@@ -222,7 +142,7 @@ export default function CategoryPage({
 
       {filtered.length === 0 && (
         <div className="text-center py-20">
-          <p className="text-gray-500 dark:text-gray-400 text-lg">No products found in this category.</p>
+          <p className="text-gray-500 dark:text-gray-400 text-lg">{t('noProducts')}</p>
         </div>
       )}
 
@@ -232,7 +152,7 @@ export default function CategoryPage({
           href={`/${locale}/products`}
           className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-[#00D4FF] transition-colors"
         >
-          ← View all products
+          ← {t('viewAllProducts')}
         </Link>
       </div>
     </section>

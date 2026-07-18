@@ -1,4 +1,4 @@
-import { client } from '@/lib/sanity';
+import { client } from '@/lib/sanity.server';
 
 export interface VendorSolution {
   vendor: string;

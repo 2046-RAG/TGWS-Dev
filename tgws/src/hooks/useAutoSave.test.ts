@@ -103,15 +103,58 @@ describe('useAutoSave', () => {
   it('clears interval on unmount', () => {
     const data = { test: 'data' };
     const intervalMs = 1000;
-    
+
     const { unmount } = renderHook(() => useAutoSave('test-key', data, intervalMs));
-    
+
     unmount();
-    
+
     act(() => {
       vi.advanceTimersByTime(intervalMs * 3);
     });
-    
+
     expect(localStorageMock.setItem).not.toHaveBeenCalled();
+  });
+
+  it('flushes data to localStorage on beforeunload', () => {
+    const data = { subject: 'hello world' };
+    // Long interval so the only setItem comes from the unload flush.
+    renderHook(() => useAutoSave('test-key', data, 60000));
+
+    // Interval hasn't fired yet — setItem should be empty so far.
+    expect(localStorageMock.setItem).not.toHaveBeenCalled();
+
+    act(() => {
+      window.dispatchEvent(new Event('beforeunload'));
+    });
+
+    expect(localStorageMock.setItem).toHaveBeenCalledWith(
+      'test-key',
+      expect.stringMatching(/"subject":"hello world"/)
+    );
+  });
+
+  it('does not flush on beforeunload when data is empty', () => {
+    renderHook(() => useAutoSave('test-key', {}, 60000));
+
+    act(() => {
+      window.dispatchEvent(new Event('beforeunload'));
+    });
+
+    expect(localStorageMock.setItem).not.toHaveBeenCalled();
+  });
+
+  it('removes beforeunload listener on unmount', () => {
+    const removeSpy = vi.spyOn(window, 'removeEventListener');
+    const { unmount } = renderHook(() =>
+      useAutoSave('test-key', { test: 'data' }, 60000)
+    );
+
+    unmount();
+
+    expect(removeSpy).toHaveBeenCalledWith(
+      'beforeunload',
+      expect.any(Function)
+    );
+    removeSpy.mockRestore();
   });
 });

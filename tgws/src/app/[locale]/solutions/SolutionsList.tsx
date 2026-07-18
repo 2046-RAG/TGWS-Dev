@@ -65,6 +65,7 @@ export default function SolutionsList({ solutions }: SolutionsListProps) {
   const industryKey = industryKeys[active];
   const meta = industryMeta[industryKey] || industryMeta.healthcare;
   const MetricIcon = meta.metricIcon;
+  const Icon = meta.icon;
   const isZh = locale === 'zh';
 
   // Find Sanity data for current industry
@@ -135,7 +136,7 @@ export default function SolutionsList({ solutions }: SolutionsListProps) {
         <div className={`bg-gradient-to-r ${meta.accent} p-8 md:p-12`}>
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ backgroundColor: `${meta.color}20` }}>
-              <meta.icon size={32} style={{ color: meta.color }} />
+              <Icon size={32} style={{ color: meta.color }} />
             </div>
             <div className="flex-1">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>
@@ -155,26 +156,26 @@ export default function SolutionsList({ solutions }: SolutionsListProps) {
           <div className="mb-8 bg-gray-50 dark:bg-zinc-900 rounded-xl p-6 border border-gray-200 dark:border-zinc-700">
             <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2 uppercase tracking-wide">
               <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: meta.color }} />
-              {locale === 'zh' ? '架構圖' : 'Architecture Diagram'}
+              {t('architectureDiagram')}
             </h3>
             <div className="flex justify-center">
               {industryKey === 'healthcare' && (
-                <img src="/images/solutions/healthcare-network.svg" alt="Healthcare Network Architecture" className="max-w-full h-auto" />
+                <img src="/images/solutions/healthcare-network.svg" alt={t('architectures.healthcare')} className="max-w-full h-auto" />
               )}
               {industryKey === 'finance' && (
-                <img src="/images/solutions/finance-security.svg" alt="Finance Security Architecture" className="max-w-full h-auto" />
+                <img src="/images/solutions/finance-security.svg" alt={t('architectures.finance')} className="max-w-full h-auto" />
               )}
               {industryKey === 'retail' && (
-                <img src="/images/solutions/retail-network.svg" alt="Retail Network Architecture" className="max-w-full h-auto" />
+                <img src="/images/solutions/retail-network.svg" alt={t('architectures.retail')} className="max-w-full h-auto" />
               )}
               {industryKey === 'logistics' && (
-                <img src="/images/solutions/logistics-network.svg" alt="Logistics Network Architecture" className="max-w-full h-auto" />
+                <img src="/images/solutions/logistics-network.svg" alt={t('architectures.logistics')} className="max-w-full h-auto" />
               )}
               {industryKey === 'education' && (
-                <img src="/images/solutions/education-network.svg" alt="Education Network Architecture" className="max-w-full h-auto" />
+                <img src="/images/solutions/education-network.svg" alt={t('architectures.education')} className="max-w-full h-auto" />
               )}
               {industryKey === 'government' && (
-                <img src="/images/solutions/government-network.svg" alt="Government Network Architecture" className="max-w-full h-auto" />
+                <img src="/images/solutions/government-network.svg" alt={t('architectures.government')} className="max-w-full h-auto" />
               )}
             </div>
           </div>

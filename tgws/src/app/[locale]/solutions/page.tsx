@@ -1,4 +1,4 @@
-import { client } from '@/lib/sanity';
+import { client } from '@/lib/sanity.server';
 import SolutionsList from './SolutionsList';
 import Breadcrumb from '@/components/ui/Breadcrumb';
 import { getTranslations } from 'next-intl/server';
@@ -33,7 +33,12 @@ async function getSolutions() {
       description,
       descriptionZh,
       challenges,
+      challengesZh,
+      solutionsZh,
       recommendedProducts,
+      recommendedProductsZh,
+      metricLabel,
+      metricLabelZh,
       image
     }`;
     const solutions = await client.fetch(query);

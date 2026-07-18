@@ -30,7 +30,7 @@ export default function TicketForm() {
   const t = useTranslations('auth');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [ticketId, setTicketId] = useState<string | null>(null);
+  const [ticketNumber, setTicketNumber] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +48,58 @@ export default function TicketForm() {
     description: '',
   });
 
-  const { clear, lastSaved } = useAutoSave('ticket-form-draft', formData);
+  // Idempotency key — generated on first submit, kept stable across retries,
+  // reset after a successful submission. Stored in state (not in a ref) so that
+  // hidden-field rendering stays in sync with the value used at submit time.
+  const [idempotencyKey, setIdempotencyKey] = useState<string | null>(null);
+
+  // Draft restore prompt: when a previous draft exists in localStorage, the
+  // hook surfaces it via `restoredDraft` on mount. We ask the user before
+  // merging it back into the form; `discardDraft` clears localStorage so the
+  // prompt doesn't reappear on the next visit.
+  const {
+    clear,
+    lastSaved,
+    restoredDraft,
+    acceptDraft,
+    discardDraft,
+  } = useAutoSave('ticket-form-draft', formData);
+
+  const handleAcceptDraft = () => {
+    if (!restoredDraft) return;
+    setFormData((prev) => ({
+      ...prev,
+      category:
+        typeof restoredDraft.category === 'string'
+          ? restoredDraft.category
+          : prev.category,
+      product:
+        typeof restoredDraft.product === 'string'
+          ? restoredDraft.product
+          : prev.product,
+      productOther:
+        typeof restoredDraft.productOther === 'string'
+          ? restoredDraft.productOther
+          : prev.productOther,
+      occurredAt:
+        typeof restoredDraft.occurredAt === 'string'
+          ? restoredDraft.occurredAt
+          : prev.occurredAt,
+      subject:
+        typeof restoredDraft.subject === 'string'
+          ? restoredDraft.subject
+          : prev.subject,
+      description:
+        typeof restoredDraft.description === 'string'
+          ? restoredDraft.description
+          : prev.description,
+    }));
+    acceptDraft();
+  };
+
+  const handleDiscardDraft = () => {
+    discardDraft();
+  };
 
   // Fetch products from Sanity on mount
   useEffect(() => {
@@ -127,6 +178,23 @@ export default function TicketForm() {
     setLoading(true);
     setError(null);
 
+    // Guard: ensure idempotency key exists before submitting. If for some reason
+    // it isn't ready yet, generate synchronously so retries can reuse it.
+    let keyForThisSubmit = idempotencyKey;
+    if (!keyForThisSubmit) {
+      try {
+        keyForThisSubmit = crypto.randomUUID();
+      } catch {
+        keyForThisSubmit =
+          'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+            const r = (Math.random() * 16) | 0;
+            const v = c === 'x' ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+          });
+      }
+      setIdempotencyKey(keyForThisSubmit);
+    }
+
     const response = await fetch('/api/tickets', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -136,38 +204,57 @@ export default function TicketForm() {
         subject: formData.subject,
         description: formData.description,
         occurredAt: formData.occurredAt ? new Date(formData.occurredAt).toISOString() : null,
+        idempotencyKey: keyForThisSubmit,
       }),
     });
 
     if (!response.ok) {
-      const data = await response.json();
-      setError(data.error || 'Failed to create ticket');
+      let message = 'Failed to create ticket';
+      try {
+        const errData = await response.json();
+        // Unified error format: { success: false, error: { code, message } }
+        message = errData?.error?.message || errData?.error || message;
+      } catch {
+        // response was non-JSON; keep default message
+      }
+      setError(message);
       setLoading(false);
+      // Keep the same idempotency_key so a genuine retry is treated as a replay,
+      // not a new ticket creation.
       return;
     }
 
     const data = await response.json();
     const newTicketId = data.data?.id;
-    setTicketId(newTicketId);
+    const newTicketNumber = data.data?.ticket_number;
+    if (newTicketNumber) setTicketNumber(newTicketNumber);
 
-    // Collect all files: file input + pasted images
-    const allFiles: File[] = [];
-    const fileInputFiles = fileInputRef.current?.files;
-    if (fileInputFiles) {
-      allFiles.push(...Array.from(fileInputFiles));
-    }
-    pastedImages.forEach((img) => allFiles.push(img.file));
+    // Idempotent replay: server returned an existing ticket for this key.
+    // Skip file upload (already done by the first successful submit) to avoid dupes.
+    const isReplay = data.idempotent_replay === true;
+    if (!isReplay) {
+      // Collect all files: file input + pasted images
+      const allFiles: File[] = [];
+      const fileInputFiles = fileInputRef.current?.files;
+      if (fileInputFiles) {
+        allFiles.push(...Array.from(fileInputFiles));
+      }
+      pastedImages.forEach((img) => allFiles.push(img.file));
 
-    if (allFiles.length > 0 && newTicketId) {
-      setUploading(true);
-      const uploaded = await uploadFiles(newTicketId, allFiles);
-      setUploadedFiles(uploaded);
-      setUploading(false);
+      if (allFiles.length > 0 && newTicketId) {
+        setUploading(true);
+        const uploaded = await uploadFiles(newTicketId, allFiles);
+        setUploadedFiles(uploaded);
+        setUploading(false);
+      }
     }
 
     setSuccess(true);
     clear();
     setLoading(false);
+    // Reset idempotency key — a fresh form submission (e.g. user clicks "submit another")
+    // should produce a brand-new ticket, not a replay.
+    setIdempotencyKey(null);
   };
 
   if (success) {
@@ -176,8 +263,10 @@ export default function TicketForm() {
         <CheckCircle size={48} className="text-green-500 mx-auto mb-4" />
         <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{t('ticketSubmitted')}</h3>
         <p className="text-gray-600 dark:text-gray-300">{t('ticketSubmittedDesc')}</p>
-        {ticketId && (
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">{t('ticketNumber')}: {ticketId.slice(0, 8)}</p>
+        {ticketNumber && (
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">
+            {t('ticketNumber')}: <span className="font-mono text-gray-700 dark:text-gray-200">{ticketNumber}</span>
+          </p>
         )}
         {uploadedFiles.length > 0 && (
           <div className="mt-4 text-left">
@@ -219,6 +308,44 @@ export default function TicketForm() {
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">
           {error}
+        </div>
+      )}
+      {/* Restore-draft prompt — surfaced on mount when a previous draft
+          exists in localStorage. Accept merges the draft into the form,
+          discard clears it so the prompt doesn't reappear next visit. */}
+      {restoredDraft && (
+        <div
+          role="dialog"
+          aria-labelledby="restore-draft-title"
+          className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 space-y-3"
+        >
+          <div className="flex items-start gap-2">
+            <CheckCircle size={16} className="text-blue-500 mt-0.5 shrink-0" />
+            <div className="flex-1">
+              <p id="restore-draft-title" className="text-sm font-medium text-blue-900 dark:text-blue-200">
+                {t('restoreDraftTitle')}
+              </p>
+              <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                {t('restoreDraftBody')}
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-2 pl-6">
+            <button
+              type="button"
+              onClick={handleAcceptDraft}
+              className="px-4 py-2 min-h-[36px] rounded-full bg-[#00D4FF] text-white text-xs font-medium hover:bg-[#00B8DB] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2"
+            >
+              {t('restoreDraftAccept')}
+            </button>
+            <button
+              type="button"
+              onClick={handleDiscardDraft}
+              className="px-4 py-2 min-h-[36px] rounded-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-gray-300 text-xs font-medium hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2"
+            >
+              {t('restoreDraftDiscard')}
+            </button>
+          </div>
         </div>
       )}
 
@@ -380,6 +507,12 @@ export default function TicketForm() {
         />
           <p className="text-xs text-gray-600 mt-1">{t('maxFileSize')}</p>
       </div>
+
+      {/* Hidden idempotency key — stable across retries, reset after success.
+          This makes accidental double-submits return the same ticket. */}
+      {idempotencyKey && (
+        <input type="hidden" name="idempotency_key" value={idempotencyKey} readOnly aria-hidden="true" />
+      )}
 
       <button
         type="submit"

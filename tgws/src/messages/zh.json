@@ -182,7 +182,30 @@
       "runStory": "可靠的基础設施，確保您的關鍵業務運營零停機。",
       "protectTitle": "保護 — 企業級安全",
       "protectStory": "全面的安全解決方案，保護您的數據、網路和業務免受威脅。"
-    }
+    },
+    "aiStep2Title": "選擇路徑",
+    "aiPathAigcName": "AIGC",
+    "aiPathAigcDesc": "文本/圖像/視頻生成",
+    "aiPathCodingName": "AI Coding",
+    "aiPathCodingDesc": "開發者AI輔助",
+    "aiPathLegacyName": "Legacy AI",
+    "aiPathLegacyDesc": "現有系統AI賦能",
+    "techPartnersLabel": "技術合作夥伴",
+    "buildAlt": "建構AI工作負載",
+    "runAlt": "運行基礎設施",
+    "protectAlt": "保護系統",
+    "aiAssessmentAlt": "AI評估",
+    "aiPathsAlt": "AI路徑",
+    "aiAgentAlt": "AI代理",
+    "poweredBy": "合作夥伴",
+    "vmwareAltBadge": "VMware替代方案",
+    "vmwareMigrationAlt": "VMware遷移架構",
+    "migrationStep1Title": "評估就緒度",
+    "migrationStep1Desc": "盤點VMware許可、工作負載和依賴",
+    "migrationStep2Title": "邊緣先行",
+    "migrationStep2Desc": "雙Hypervisor架構，非核心業務先行",
+    "migrationStep3Title": "按節奏遷移",
+    "migrationStep3Desc": "驗證後逐步淘汰，保護現有投資"
   },
   "solutions": {
     "title": "行業解決方案",
@@ -319,6 +342,15 @@
     "metadata": {
       "title": "行業解決方案 | TechGuru",
       "description": "為醫療、金融、零售、物流、教育和政府部門量身定制的IT解決方案。與TechGuru一起應對獨特的行業挑戰。"
+    },
+    "architectureDiagram": "架構圖",
+    "architectures": {
+      "healthcare": "醫療網路架構",
+      "finance": "金融安全架構",
+      "retail": "零售網路架構",
+      "logistics": "物流網路架構",
+      "education": "教育網路架構",
+      "government": "政府網路架構"
     }
   },
   "blog": {
@@ -512,12 +544,16 @@
             }
           ]
         }
-      }
+      },
+      "calloutInfo": "關鍵要點",
+      "calloutWarning": "警告",
+      "calloutTip": "專業提示"
     },
     "metadata": {
       "title": "部落格 | TechGuru",
       "description": "TechGuru專家提供的企業網路、網路安全、雲端基礎設施和IT最佳實踐最新見解。"
-    }
+    },
+    "noResults": "此分類下暫無文章。"
   },
   "about": {
     "title": "關於泰谷科技",
@@ -829,7 +865,16 @@
       "runStory": "可靠的基础設施，確保您的關鍵業務運營零停機。",
       "protectTitle": "保護 — 企業級安全",
       "protectStory": "全面的安全解決方案，保護您的數據、網路和業務免受威脅。"
-    }
+    },
+    "learnMore": "了解更多",
+    "noProducts": "此分類下暫無產品。",
+    "viewAllProducts": "查看所有產品",
+    "keyFeatures": "核心功能",
+    "interestedTitle": "對 {title} 感興趣嗎？",
+    "interestedDesc": "獲取針對您基礎設施需求的客製化方案。",
+    "contactUs": "聯絡我們",
+    "relatedVendors": "相關廠商解決方案",
+    "relatedVendorsDesc": "來自我們技術合作夥伴的推薦產品與平台"
   },
   "footer": {
     "products": "產品服務",
@@ -886,7 +931,12 @@
     "section6Body": "您有權存取、更正或刪除您的個人資料。要行使這些權利，請透過以下方式聯繫我們",
     "section7Title": "聯絡方式",
     "section7Body": "有關此隱私權政策的問題，請透過以下方式聯繫我們",
-    "backHome": "← 返回首頁"
+    "backHome": "← 返回首頁",
+    "lastUpdatedDate": "2026年6月30日"
+  },
+  "legal": {
+    "toc": "本頁內容",
+    "print": "列印此頁"
   },
   "compare": {
     "metadata": {
@@ -971,7 +1021,13 @@
     },
     "ctaTitle": "親自體驗差異",
     "ctaDesc": "根據您的基礎設施需求，獲取免費的定制化對比分析。",
-    "ctaBtn": "獲取免費對比"
+    "ctaBtn": "獲取免費對比",
+    "certs": {
+      "authorizedPartner": "授權合作夥伴",
+      "authorizedReseller": "授權經銷商",
+      "channelPartner": "渠道合作夥伴",
+      "certifiedPartner": "認證合作夥伴"
+    }
   },
   "whyUs": {
     "title": "為什麼選擇TechGuru",
@@ -1164,7 +1220,11 @@
     "checkEmail": "檢查你的信箱",
     "verificationSent": "我們已發送驗證連結至",
     "noEmail": "沒有收到驗證信？",
-    "resendEmail": "重新發送驗證信"
+    "resendEmail": "重新發送驗證信",
+    "restoreDraftTitle": "還原草稿？",
+    "restoreDraftBody": "我們發現您上次未儲存的草稿，是否要還原？",
+    "restoreDraftAccept": "還原",
+    "restoreDraftDiscard": "捨棄"
   },
   "support": {
     "metadata": {
@@ -1197,7 +1257,77 @@
     "newTicketDesc": "提交新的支援請求，我們的團隊將為您提供協助。",
     "myTicketsDesc": "查看並追蹤所有支援請求。",
     "created": "建立於",
-    "submitTicketHint": "提交工單以開始使用"
+    "submitTicketHint": "提交工單以開始使用",
+    "offlineIndicator": "離線：顯示快取資料",
+    "resetPassword": {
+      "metadata": {
+        "title": "重設密碼 | TechGuru",
+        "description": "為您的 TechGuru 帳戶設定新密碼。"
+      },
+      "title": "設定新密碼",
+      "subtitle": "為您的帳戶輸入新密碼。",
+      "newPassword": "新密碼",
+      "passwordPlaceholder": "至少 8 個字符，包含字母和數字",
+      "hint": "請使用至少 8 個字符，包含字母和數字。",
+      "confirmPassword": "確認密碼",
+      "confirmPasswordPlaceholder": "請再次輸入新密碼",
+      "mismatch": "密碼不一致",
+      "minLength": "密碼長度至少為 8 個字符",
+      "requireLettersAndNumbers": "密碼須同時包含字母和數字",
+      "submit": "更新密碼",
+      "submitting": "更新中...",
+      "updateFailed": "無法更新密碼，重設連結可能已過期，請重新申請一封重設郵件。",
+      "successTitle": "密碼已更新",
+      "successDesc": "您的密碼已變更，正在跳轉至登入頁面...",
+      "backToLogin": "返回登入"
+    },
+    "ticketList": {
+      "openTicket": "查看工單"
+    },
+    "ticketDetail": {
+      "title": "工單詳情",
+      "backToList": "返回我的工單",
+      "notFound": "找不到工單",
+      "notFoundDesc": "您要查看的工單不存在或已被刪除。",
+      "ticketNumber": "工單編號",
+      "status": "狀態",
+      "priority": "優先級",
+      "category": "類別",
+      "productService": "產品 / 服務",
+      "assignedTo": "負責人",
+      "unassigned": "尚未指派",
+      "created": "建立時間",
+      "updated": "更新時間",
+      "occurredAt": "發生時間",
+      "description": "描述",
+      "attachments": "附件",
+      "noAttachments": "無附件",
+      "download": "下載",
+      "comments": "評論",
+      "noComments": "暫無評論",
+      "addComment": "新增評論",
+      "commentPlaceholder": "撰寫您的評論...",
+      "submitComment": "送出評論",
+      "submitting": "送出中...",
+      "internalNote": "內部備註（僅管理員可見）",
+      "internalNotePlaceholder": "撰寫僅管理員可見的內部備註...",
+      "changeStatus": "變更狀態",
+      "changePriority": "變更優先級",
+      "statusOpen": "待處理",
+      "statusInProgress": "處理中",
+      "statusResolved": "已解決",
+      "statusClosed": "已關閉",
+      "priorityLow": "低",
+      "priorityMedium": "中",
+      "priorityHigh": "高",
+      "priorityCritical": "緊急",
+      "statusUpdated": "狀態已更新",
+      "commentAdded": "評論已新增",
+      "errorTitle": "發生錯誤",
+      "loadingTicket": "載入工單中...",
+      "viewAsAdmin": "以管理員身分檢視",
+      "replyFromSupport": "支援團隊"
+    }
   },
   "error": {
     "title": "發生錯誤",
@@ -1301,7 +1431,8 @@
     "section6Body": "本條款受菲律賓共和國法律管轄。任何爭議應在奎松市、馬尼拉大都會的法院解決。",
     "section7Title": "聯絡方式",
     "section7Body": "有關本服務條款的問題，請透過以下方式聯繫我們",
-    "backHome": "← 返回首頁"
+    "backHome": "← 返回首頁",
+    "lastUpdatedDate": "2026年6月30日"
   },
   "help": {
     "title": "幫助中心",
@@ -1316,6 +1447,9 @@
     },
     "noResults": "未找到相關結果",
     "noResultsHint": "請嘗試其他搜尋關鍵字或按分類瀏覽。",
+    "noResultsQuery": "未找到「{query}」相關結果",
+    "noFaqsInCategory": "{category}暫無常見問題",
+    "noFaqsInCategoryHint": "請嘗試瀏覽其他分類或聯絡我們的團隊。",
     "ctaTitle": "仍需要幫助？",
     "ctaDesc": "找不到您需要的答案？我們的團隊隨時為您提供協助。",
     "ctaContact": "聯絡我們",
@@ -1395,6 +1529,23 @@
     "metadata": {
       "title": "幫助中心 | TechGuru",
       "description": "查找有關TechGuru產品、技術支援、帳單管理的常見問題解答。"
+    }
+  },
+  "common": {
+    "breadcrumb": {
+      "home": "首頁"
+    },
+    "cookieConsent": {
+      "ariaLabel": "Cookie 同意",
+      "message": "我們僅使用必要Cookie，無追蹤。",
+      "privacyPolicy": "隱私權政策",
+      "accept": "接受"
+    },
+    "error": {
+      "title": "出現問題",
+      "description": "發生意外錯誤。請嘗試以下操作。",
+      "tryAgain": "再試一次",
+      "backToHome": "返回首頁"
     }
   }
 }

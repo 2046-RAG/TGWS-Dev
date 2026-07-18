@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Search, Headphones, BookOpen, CreditCard, Shield, MessageCircle } from 'lucide-react';
 import FAQAccordion from '@/components/ui/FAQAccordion';
@@ -11,6 +11,8 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 
 const categories = ['all', 'product', 'technical', 'account', 'billing'] as const;
 type Category = (typeof categories)[number];
+
+const SEARCH_DEBOUNCE_MS = 300;
 
 const categoryIcons: Record<Category, React.ReactNode> = {
   all: <BookOpen size={18} />,
@@ -24,8 +26,18 @@ export default function HelpPage() {
   const t = useTranslations('help');
   const params = useParams();
   const locale = params.locale as string;
+  const [searchInput, setSearchInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<Category>('all');
+
+  // Debounce search input: only update searchQuery (which drives filtering)
+  // after 300ms of inactivity. Prevents re-rendering the FAQ list on every keystroke.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchQuery(searchInput);
+    }, SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   const faqItems = useMemo(() => {
     const items: { category: Category; question: string; answer: string }[] = [];
@@ -99,8 +111,8 @@ export default function HelpPage() {
   return (
     <>
       <FAQJsonLd items={faqItems.map(item => ({ question: item.question, answer: item.answer }))} />
-      <BreadcrumbJsonLd items={[{ name: 'Help', url: `/${locale}/help` }]} locale={locale} />
-      <Breadcrumb items={[{ label: 'Help' }]} />
+      <BreadcrumbJsonLd items={[{ name: t('title'), url: `/${locale}/help` }]} locale={locale} />
+      <Breadcrumb items={[{ label: t('title') }]} />
       <section className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
       <div className="text-center mb-12">
         <h1 className="section-title text-gray-900 dark:text-white">{t('title')}</h1>
@@ -113,8 +125,8 @@ export default function HelpPage() {
           <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
             type="search"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
             placeholder={t('searchPlaceholder')}
             aria-label={t('searchPlaceholder')}
             className="w-full pl-11 pr-4 py-3.5 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-[#00D4FF] focus:border-transparent focus:outline-none transition-colors shadow-sm text-[15px]"
@@ -147,8 +159,21 @@ export default function HelpPage() {
         ) : (
           <div className="text-center py-16 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl shadow-sm">
             <Search size={40} className="mx-auto text-gray-300 mb-4" />
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{t('noResults')}</h2>
-            <p className="text-sm text-gray-500">{t('noResultsHint')}</p>
+            {searchQuery.trim() ? (
+              <>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  {t('noResultsQuery', { query: searchQuery.trim() })}
+                </h2>
+                <p className="text-sm text-gray-500">{t('noResultsHint')}</p>
+              </>
+            ) : (
+              <>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  {t('noFaqsInCategory', { category: categoryLabels[activeCategory] })}
+                </h2>
+                <p className="text-sm text-gray-500">{t('noFaqsInCategoryHint')}</p>
+              </>
+            )}
           </div>
         )}
       </div>

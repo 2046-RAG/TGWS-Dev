@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter, useParams } from 'next/navigation';
-import Breadcrumb from '@/components/ui/Breadcrumb';
+import { useOfflineCache } from '@/hooks/useOfflineCache';
 import TicketForm from '@/components/tickets/TicketForm';
 import TicketList from '@/components/tickets/TicketList';
 import Link from 'next/link';
@@ -16,6 +16,7 @@ import {
   ChevronRight,
   User,
   Headphones,
+  WifiOff,
 } from 'lucide-react';
 
 interface Ticket {
@@ -34,48 +35,61 @@ export default function SupportPage() {
   const router = useRouter();
   const params = useParams();
   const locale = params.locale as string;
-  const [tickets, setTickets] = useState<Ticket[]>([]);
-  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const supabase = createClient();
 
+  // Middleware enforces authentication for /support/* routes, so we can assume
+  // the user is logged in here. We only fetch the user to display their email
+  // and to gate the tickets fetcher.
   useEffect(() => {
-    const checkUser = async () => {
+    const load = async () => {
       const { data: { user: authUser } } = await supabase.auth.getUser();
       setUser(authUser);
-
-      if (!authUser) {
-        router.push(`/${locale}/support/login`);
-        return;
-      }
-
-      if (authUser) {
-        const response = await fetch('/api/tickets');
-        if (response.ok) {
-          const result = await response.json();
-          setTickets(result.data || []);
-        }
-      }
-      setLoading(false);
     };
 
-    checkUser();
-  }, [supabase, router, locale]);
+    load();
+  }, [supabase]);
+
+  // Tickets are loaded through useOfflineCache so the page degrades gracefully
+  // when the network is unavailable: cached tickets stay visible with a
+  // staleness indicator instead of the page blanking out.
+  //
+  // The fetcher throws while `user` is unresolved so the hook doesn't
+  // overwrite the cache with an empty 401 response. Once `user` lands the
+  // fetcher identity changes and the effect re-runs with the real fetch.
+  const ticketsFetcher = useCallback(async (): Promise<Ticket[]> => {
+    if (!user) {
+      throw new Error('user-not-ready');
+    }
+    const response = await fetch('/api/tickets');
+    if (!response.ok) {
+      throw new Error(`tickets-fetch-${response.status}`);
+    }
+    const result = await response.json();
+    return (result.data || []) as Ticket[];
+  }, [user]);
+
+  const { data: cachedTickets, isStale } = useOfflineCache<Ticket[]>(
+    'tickets-cache',
+    ticketsFetcher
+  );
+
+  // user being null only happens briefly while supabase.auth.getUser()
+  // resolves; render nothing during that window rather than a flash of the
+  // stale-cache banner (which would be misleading because we haven't even
+  // attempted a fetch yet).
+  const showOfflineBanner = user !== null && isStale && cachedTickets !== null;
+  const tickets = cachedTickets || [];
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     router.push(`/${locale}/support/login`);
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#F4F4F5] flex items-center justify-center">
-        <div className="inline-block w-10 h-10 border-3 border-gray-300 border-t-[#00D4FF] rounded-full animate-spin" />
-      </div>
-    );
-  }
-
+  // Middleware guarantees authentication; user is only null briefly while
+  // supabase.auth.getUser() resolves on the client. Render nothing during
+  // that brief window instead of a full-screen loading spinner.
   if (!user) {
     return null;
   }
@@ -193,6 +207,16 @@ export default function SupportPage() {
 
         {/* Content */}
         <div className="p-6 lg:p-8 max-w-6xl mx-auto">
+          {showOfflineBanner && (
+            <div
+              role="status"
+              aria-live="polite"
+              className="mb-6 flex items-center gap-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg px-4 py-3 text-sm text-yellow-800 dark:text-yellow-200"
+            >
+              <WifiOff size={16} className="shrink-0" />
+              <span>{s('offlineIndicator')}</span>
+            </div>
+          )}
           {activeTab === 'dashboard' && (
             <div>
               <div className="mb-8">

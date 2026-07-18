@@ -4,12 +4,8 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import {
-  Video, Code2, Bot, BrainCircuit, Compass, Server, Cloud, HardDrive,
-  Shield, Lock, MonitorCheck, Network, CloudCog, Bug,
-  AlertTriangle, Settings, Database, RefreshCw, Globe, ShieldCheck,
-  Wifi, Cable, Route, Unplug, Radio, Router, NetworkIcon, ArrowRight, Check, Building2,
-} from 'lucide-react';
+import { Server, ArrowRight, Check, Building2 } from 'lucide-react';
+import { tabColors, slugToI18n, iconMap, type TabKey } from '@/components/products/shared';
 
 interface VendorSolution {
   vendor: string;
@@ -30,74 +26,6 @@ interface Product {
   features: string[];
   relatedVendors?: VendorSolution[];
 }
-
-const tabColors: Record<string, string> = {
-  build: '#00D4FF',
-  run: '#7B61FF',
-  protect: '#22C55E',
-};
-
-const slugToI18n: Record<string, string> = {
-  'ai-generated-content-aigc': 'aigcTitle',
-  'ai-assisted-coding': 'aigcCoding',
-  'ai-agent-development': 'aiAgent',
-  'enterprise-legacy-system-ai-augmentation': 'legacyAI',
-  'ai-adoption-services': 'aiAdoption',
-  'server-virtualization-platform': 'vmPlatform',
-  'hyper-converged-infrastructure': 'hci',
-  'cloud-migration': 'cloudPlatform',
-  'cloud-repatriation': 'cloudRepatriation',
-  'enterprise-storage-solutions': 'hardware',
-  'managed-hosting-services': 'hosting',
-  'business-continuity-disaster-recovery': 'bcdr',
-  'enterprise-routers': 'enterpriseRouters',
-  'core-switches': 'coreSwitches',
-  'access-switches': 'accessSwitches',
-  'aggregation-switches': 'aggregationSwitches',
-  'enterprise-wireless-ap': 'enterpriseWirelessAP',
-  'wireless-controllers': 'wirelessControllers',
-  'outdoor-wireless-ap': 'outdoorWirelessAP',
-  'wifi-6-7-ap': 'wifi67AP',
-  'next-gen-firewall-ips': 'ngfw',
-  'web-application-firewall': 'waf',
-  'endpoint-detection-response': 'edr',
-  'network-detection-response': 'ndr',
-  'cloud-security': 'cloudSecurity',
-  'sd-wan-load-balancing': 'sdwan',
-  'managed-detection-response': 'mdr',
-  'incident-response': 'incidentResponse',
-};
-
-const iconMap: Record<string, React.ReactNode> = {
-  'ai-generated-content-aigc': <Video size={32} />,
-  'ai-assisted-coding': <Code2 size={32} />,
-  'ai-agent-development': <Bot size={32} />,
-  'enterprise-legacy-system-ai-augmentation': <BrainCircuit size={32} />,
-  'ai-adoption-services': <Compass size={32} />,
-  'server-virtualization-platform': <Server size={32} />,
-  'hyper-converged-infrastructure': <Database size={32} />,
-  'cloud-migration': <Cloud size={32} />,
-  'cloud-repatriation': <RefreshCw size={32} />,
-  'enterprise-storage-solutions': <HardDrive size={32} />,
-  'managed-hosting-services': <Settings size={32} />,
-  'business-continuity-disaster-recovery': <Shield size={32} />,
-  'enterprise-routers': <Route size={32} />,
-  'core-switches': <Cable size={32} />,
-  'access-switches': <Network size={32} />,
-  'aggregation-switches': <Unplug size={32} />,
-  'enterprise-wireless-ap': <Wifi size={32} />,
-  'wireless-controllers': <Radio size={32} />,
-  'outdoor-wireless-ap': <Router size={32} />,
-  'wifi-6-7-ap': <NetworkIcon size={32} />,
-  'next-gen-firewall-ips': <ShieldCheck size={32} />,
-  'web-application-firewall': <Lock size={32} />,
-  'endpoint-detection-response': <MonitorCheck size={32} />,
-  'network-detection-response': <Network size={32} />,
-  'cloud-security': <CloudCog size={32} />,
-  'sd-wan-load-balancing': <Globe size={32} />,
-  'managed-detection-response': <Bug size={32} />,
-  'incident-response': <AlertTriangle size={32} />,
-};
 
 const vendorColors: Record<string, string> = {
   bytedance: '#FE2C55',
@@ -133,11 +61,12 @@ export default function ProductDetail({ product }: { product: Product }) {
   const locale = params.locale as string;
   const slug = product.slug?.current || '';
   const i18nKey = slugToI18n[slug] || '';
-  const color = tabColors[product.category] || '#00D4FF';
+  const color = tabColors[product.category as TabKey] || '#00D4FF';
   const features = t.raw('features.' + slug);
   const isZh = locale === 'zh';
   const description = isZh ? (product.descriptionZh || product.description) : product.description;
   const relatedVendors = product.relatedVendors || [];
+  const Icon = iconMap[slug] || Server;
 
   return (
     <section className="py-20 px-5 sm:px-8 max-w-5xl mx-auto">
@@ -153,7 +82,7 @@ export default function ProductDetail({ product }: { product: Product }) {
             className="w-16 h-16 rounded-2xl flex items-center justify-center"
             style={{ backgroundColor: color + '15', color }}
           >
-            {iconMap[slug] || <Server size={32} />}
+            <Icon size={32} />
           </div>
           <div>
             <span
@@ -180,7 +109,7 @@ export default function ProductDetail({ product }: { product: Product }) {
           transition={{ duration: 0.4, delay: 0.1 }}
           className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl p-8 mb-12"
         >
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Key Features</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">{t('keyFeatures')}</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             {features.map((feature: string, i: number) => (
               <div key={i} className="flex items-start gap-3">
@@ -204,13 +133,13 @@ export default function ProductDetail({ product }: { product: Product }) {
         transition={{ duration: 0.4, delay: 0.2 }}
         className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-zinc-800 dark:to-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-2xl p-8 text-center mb-12"
       >
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Interested in {t(i18nKey || product.title)}?</h3>
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">Get a customized proposal for your infrastructure needs.</p>
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('interestedTitle', { title: t(i18nKey || product.title) })}</h3>
+        <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">{t('interestedDesc')}</p>
         <Link
           href={`/${locale}/contact`}
           className="btn-primary inline-flex items-center gap-2 text-sm"
         >
-          Contact Us <ArrowRight size={16} />
+          {t('contactUs')} <ArrowRight size={16} />
         </Link>
       </motion.div>
 
@@ -221,9 +150,9 @@ export default function ProductDetail({ product }: { product: Product }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.3 }}
         >
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Related Vendor Solutions</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('relatedVendors')}</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-            Recommended products and platforms from our technology partners
+            {t('relatedVendorsDesc')}
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {relatedVendors.map((v, i) => {

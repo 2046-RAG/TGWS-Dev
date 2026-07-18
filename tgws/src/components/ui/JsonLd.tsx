@@ -29,7 +29,10 @@ export function OrganizationJsonLd() {
       telephone: '+63-960-282-5051',
       contactType: 'sales',
     },
-    sameAs: [],
+    sameAs: [
+      'https://www.linkedin.com/company/techguru-network-data-solutions',
+      'https://wa.me/639602825051',
+    ],
   };
 
   return <JsonLd data={org} />;
@@ -74,7 +77,7 @@ export function ArticleJsonLd({
     '@type': 'Article',
     headline: title,
     description,
-    image: image || 'https://picsum.photos/seed/techguru/1200/630',
+    image: image || 'https://www.techguru-it.asia/images/og-default.png',
     url,
     datePublished,
     dateModified: dateModified || datePublished,
@@ -153,23 +156,12 @@ export function ProductJsonLd({
     name,
     description,
     url,
-    image: image || 'https://picsum.photos/seed/techguru-product/1200/630',
+    image: image || 'https://www.techguru-it.asia/images/og-default.png',
     brand: {
       '@type': 'Organization',
       name: brand || 'TechGuru',
     },
     ...(category && { category }),
-    offers: {
-      '@type': 'Offer',
-      availability: 'https://schema.org/InStock',
-      priceCurrency: 'USD',
-      price: '0',
-      priceValidUntil: '2027-12-31',
-      seller: {
-        '@type': 'Organization',
-        name: 'TechGuru Network & Data Solutions',
-      },
-    },
   };
 
   return <JsonLd data={product} />;
@@ -182,14 +174,6 @@ export function WebSiteJsonLd({ locale }: { locale: string }) {
     '@type': 'WebSite',
     name: 'TechGuru Network & Data Solutions',
     url: `${baseUrl}/${locale}`,
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${baseUrl}/${locale}/blog?q={search_term_string}`,
-      },
-      'query-input': 'required name=search_term_string',
-    },
   };
 
   return <JsonLd data={site} />;

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#09090B"/>
+  <rect x="0" y="0" width="1200" height="8" fill="#00D4FF"/>
+  <rect x="0" y="622" width="1200" height="8" fill="#00D4FF"/>
+  <text x="80" y="280" font-family="Helvetica, Arial, sans-serif" font-size="72" font-weight="700" fill="#FAFAFA">TechGuru</text>
+  <text x="80" y="360" font-family="Helvetica, Arial, sans-serif" font-size="36" font-weight="400" fill="#A1A1AA">Network &amp; Data Solutions</text>
+  <text x="80" y="430" font-family="Helvetica, Arial, sans-serif" font-size="28" font-weight="300" fill="#00D4FF">Build. Run. Protect.</text>
+  <circle cx="1080" cy="120" r="40" fill="none" stroke="#00D4FF" stroke-width="3" opacity="0.6"/>
+  <circle cx="1080" cy="120" r="20" fill="#00D4FF" opacity="0.3"/>
+  <line x1="80" y1="500" x2="1120" y2="500" stroke="#27272A" stroke-width="1"/>
+  <text x="80" y="545" font-family="Helvetica, Arial, sans-serif" font-size="20" font-weight="400" fill="#71717A">www.techguru-it.asia</text>
+</svg>

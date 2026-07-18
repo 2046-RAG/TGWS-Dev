@@ -18,8 +18,9 @@ interface PartnerLogo {
   src: string;
 }
 
-function PartnerLogos({ locale, partners }: { locale: string; partners: PartnerLogo[] }) {
+function PartnerLogos({ partners }: { partners: PartnerLogo[] }) {
   const [paused, setPaused] = useState(false);
+  const t = useTranslations('home');
 
   const handleMouseEnter = useCallback(() => setPaused(true), []);
   const handleMouseLeave = useCallback(() => setPaused(false), []);
@@ -51,7 +52,7 @@ function PartnerLogos({ locale, partners }: { locale: string; partners: PartnerL
     <div className="py-8 sm:py-10 overflow-hidden bg-[#F4F4F5] dark:bg-zinc-900">
       <div className="text-center mb-5">
         <span className="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wider">
-          {locale === 'zh' ? '技術合作夥伴' : 'Technology Partners'}
+          {t('techPartnersLabel')}
         </span>
       </div>
       <div
@@ -168,7 +169,7 @@ export default function HomePage() {
               <div className="relative h-48 md:h-full min-h-[280px]">
                 <Image
                   src="/images/products/real/aigc.jpg"
-                  alt="Build AI workloads"
+                  alt={t('buildAlt')}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
@@ -214,7 +215,7 @@ export default function HomePage() {
                 <div className="relative w-full sm:w-2/5 h-40 sm:h-auto">
                   <Image
                     src="/images/products/real/virtualization.jpg"
-                    alt="Run infrastructure"
+                    alt={t('runAlt')}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
@@ -252,7 +253,7 @@ export default function HomePage() {
                 <div className="relative w-full sm:w-2/5 h-40 sm:h-auto">
                   <Image
                     src="/images/products/real/firewall.jpg"
-                    alt="Protect systems"
+                    alt={t('protectAlt')}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
@@ -301,7 +302,7 @@ export default function HomePage() {
                 <div className="relative h-32">
                   <Image
                     src="/images/products/real/ai-adoption.jpg"
-                    alt="AI Assessment"
+                    alt={t('aiAssessmentAlt')}
                     fill
                     className="object-cover"
                   />
@@ -327,7 +328,7 @@ export default function HomePage() {
                 <div className="relative h-32">
                   <Image
                     src="/images/products/real/aigc.jpg"
-                    alt="AI Paths"
+                    alt={t('aiPathsAlt')}
                     fill
                     className="object-cover"
                   />
@@ -338,13 +339,13 @@ export default function HomePage() {
                 </div>
                 <div className="p-5">
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 group-hover:text-[#00D4FF] transition-colors">
-                    {locale === 'zh' ? '選擇路徑' : 'Choose Path'}
+                    {t('aiStep2Title')}
                   </h3>
                   <div className="space-y-2">
                     {[
-                      { name: 'AIGC', desc: locale === 'zh' ? '文本/圖像/視頻生成' : 'Text, Image, Video', icon: '🎨' },
-                      { name: 'AI Coding', desc: locale === 'zh' ? '開發者AI輔助' : 'Developer AI Tools', icon: '💻' },
-                      { name: 'Legacy AI', desc: locale === 'zh' ? '現有系統AI賦能' : 'Legacy System AI', icon: '🔄' },
+                      { name: t('aiPathAigcName'), desc: t('aiPathAigcDesc'), icon: '🎨' },
+                      { name: t('aiPathCodingName'), desc: t('aiPathCodingDesc'), icon: '💻' },
+                      { name: t('aiPathLegacyName'), desc: t('aiPathLegacyDesc'), icon: '🔄' },
                     ].map((path) => (
                       <div key={path.name} className="flex items-center gap-3 px-3 py-2 rounded-lg bg-gray-50 dark:bg-zinc-800 hover:bg-[#00D4FF]/5 dark:hover:bg-[#00D4FF]/10 transition-colors">
                         <span className="text-lg">{path.icon}</span>
@@ -365,7 +366,7 @@ export default function HomePage() {
                 <div className="relative h-32">
                   <Image
                     src="/images/products/real/ai-agent.jpg"
-                    alt="AI Agent"
+                    alt={t('aiAgentAlt')}
                     fill
                     className="object-cover"
                   />
@@ -388,7 +389,7 @@ export default function HomePage() {
 
           {/* Partner Logos */}
           <div className="flex justify-center gap-8 items-center opacity-50">
-            <span className="text-xs font-medium text-gray-400 dark:text-gray-500">{locale === 'zh' ? '合作伙伴' : 'Powered by'}</span>
+            <span className="text-xs font-medium text-gray-400 dark:text-gray-500">{t('poweredBy')}</span>
             <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">Alibaba Cloud Bailian</span>
             <span className="text-gray-300 dark:text-zinc-600">|</span>
             <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">ByteDance Volcengine</span>
@@ -408,7 +409,7 @@ export default function HomePage() {
               {/* Header */}
               <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white/80 text-sm font-medium mb-4 w-fit">
                 <Monitor size={16} />
-                <span>VMware Alternatives</span>
+                <span>{t('vmwareAltBadge')}</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3" style={{ fontFamily: 'var(--font-heading)' }}>
                 {t('vmwareTitle')}
@@ -423,7 +424,7 @@ export default function HomePage() {
                 <div className="bg-white/5 rounded-xl p-4 border border-white/10">
                   <img
                     src="/images/architecture/vmware-migration.svg"
-                    alt="VMware Migration Architecture"
+                    alt={t('vmwareMigrationAlt')}
                     className="w-full h-auto opacity-90"
                   />
                 </div>
@@ -431,9 +432,9 @@ export default function HomePage() {
                 {/* Migration Steps */}
                 <div className="space-y-4">
                   {[
-                    { step: '1', title: locale === 'zh' ? '評估就緒度' : 'Assess Readiness', desc: locale === 'zh' ? '盤點VMware許可、工作負載和依賴' : 'Audit licenses, workloads, dependencies' },
-                    { step: '2', title: locale === 'zh' ? '邊緣先行' : 'Start at Edge', desc: locale === 'zh' ? '雙Hypervisor架構，非核心業務先行' : 'Dual-hypervisor, non-critical first' },
-                    { step: '3', title: locale === 'zh' ? '按節奏遷移' : 'Migrate on Schedule', desc: locale === 'zh' ? '驗證後逐步淘汰，保護現有投資' : 'Validate, phase out, preserve investments' },
+                    { step: '1', title: t('migrationStep1Title'), desc: t('migrationStep1Desc') },
+                    { step: '2', title: t('migrationStep2Title'), desc: t('migrationStep2Desc') },
+                    { step: '3', title: t('migrationStep3Title'), desc: t('migrationStep3Desc') },
                   ].map((item) => (
                     <div key={item.step} className="flex items-start gap-4 bg-white/5 rounded-xl p-4 border border-white/10 hover:border-[#00D4FF]/30 transition-colors">
                       <div className="w-8 h-8 rounded-lg bg-[#00D4FF]/20 flex items-center justify-center shrink-0">
@@ -501,7 +502,7 @@ export default function HomePage() {
         </div>
 
         {/* Partner logos - dual-row scrolling marquee */}
-        <PartnerLogos locale={locale} partners={partners} />
+        <PartnerLogos partners={partners} />
 
         {/* Final CTA */}
         <div className="py-14 sm:py-20 px-5 sm:px-8">

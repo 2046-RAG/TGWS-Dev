@@ -1,0 +1,59 @@
+{
+  "generatedAt": "2026-07-18T18:06:05.595Z",
+  "scannedFiles": 49,
+  "skippedFiles": [
+    {
+      "file": "src/app/[locale]/about/page.tsx",
+      "reason": "W2-5 scope"
+    },
+    {
+      "file": "src/app/[locale]/blog/[slug]/page.tsx",
+      "reason": "blog page.tsx (future wave)"
+    },
+    {
+      "file": "src/app/[locale]/layout.tsx",
+      "reason": "locale layout metadata (W4-scope)"
+    },
+    {
+      "file": "src/app/[locale]/products/[slug]/page.tsx",
+      "reason": "product page.tsx (future wave)"
+    },
+    {
+      "file": "src/app/layout.tsx",
+      "reason": "root layout metadata (W4-scope)"
+    },
+    {
+      "file": "src/components/hero/HeroSection.tsx",
+      "reason": "W0-5 scope (hero a11y)"
+    },
+    {
+      "file": "src/components/layout/Navbar.tsx",
+      "reason": "navbar aria-label (future wave)"
+    },
+    {
+      "file": "src/components/tickets/TicketForm.tsx",
+      "reason": "W1-3/W2-4 scope"
+    },
+    {
+      "file": "src/components/ui/JsonLd.tsx",
+      "reason": "SEO structured data (English by design)"
+    },
+    {
+      "file": "src/components/ui/LanguageSwitcher.tsx",
+      "reason": "intentional locale toggle"
+    },
+    {
+      "file": "src/components/ui/Tooltip.tsx",
+      "reason": "generic tooltip aria-label (future wave)"
+    }
+  ],
+  "hardcodedCount": 0,
+  "hardcoded": [],
+  "keyConsistency": {
+    "valid": true,
+    "enKeys": 923,
+    "zhKeys": 923,
+    "missingInZh": [],
+    "missingInEn": []
+  }
+}

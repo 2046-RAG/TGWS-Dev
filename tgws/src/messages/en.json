@@ -182,7 +182,30 @@
       "runStory": "Reliable infrastructure to run your most critical business operations without downtime.",
       "protectTitle": "Protect — Enterprise Security",
       "protectStory": "Comprehensive security solutions to protect your data, network, and business from threats."
-    }
+    },
+    "aiStep2Title": "Choose Path",
+    "aiPathAigcName": "AIGC",
+    "aiPathAigcDesc": "Text, Image, Video",
+    "aiPathCodingName": "AI Coding",
+    "aiPathCodingDesc": "Developer AI Tools",
+    "aiPathLegacyName": "Legacy AI",
+    "aiPathLegacyDesc": "Legacy System AI",
+    "techPartnersLabel": "Technology Partners",
+    "buildAlt": "Build AI workloads",
+    "runAlt": "Run infrastructure",
+    "protectAlt": "Protect systems",
+    "aiAssessmentAlt": "AI Assessment",
+    "aiPathsAlt": "AI Paths",
+    "aiAgentAlt": "AI Agent",
+    "poweredBy": "Powered by",
+    "vmwareAltBadge": "VMware Alternatives",
+    "vmwareMigrationAlt": "VMware Migration Architecture",
+    "migrationStep1Title": "Assess Readiness",
+    "migrationStep1Desc": "Audit licenses, workloads, dependencies",
+    "migrationStep2Title": "Start at Edge",
+    "migrationStep2Desc": "Dual-hypervisor, non-critical first",
+    "migrationStep3Title": "Migrate on Schedule",
+    "migrationStep3Desc": "Validate, phase out, preserve investments"
   },
   "solutions": {
     "title": "Industry Solutions",
@@ -319,6 +342,15 @@
     "metadata": {
       "title": "Industry Solutions | TechGuru",
       "description": "Tailored IT solutions for healthcare, finance, retail, logistics, education, and government sectors. Address unique industry challenges with TechGuru."
+    },
+    "architectureDiagram": "Architecture Diagram",
+    "architectures": {
+      "healthcare": "Healthcare Network Architecture",
+      "finance": "Finance Security Architecture",
+      "retail": "Retail Network Architecture",
+      "logistics": "Logistics Network Architecture",
+      "education": "Education Network Architecture",
+      "government": "Government Network Architecture"
     }
   },
   "blog": {
@@ -512,12 +544,16 @@
             }
           ]
         }
-      }
+      },
+      "calloutInfo": "Key Takeaway",
+      "calloutWarning": "Warning",
+      "calloutTip": "Pro Tip"
     },
     "metadata": {
       "title": "Blog | TechGuru",
       "description": "Latest insights on enterprise networking, cybersecurity, cloud infrastructure, and IT best practices from TechGuru experts."
-    }
+    },
+    "noResults": "No posts found for this category."
   },
   "about": {
     "title": "About TechGuru",
@@ -829,7 +865,16 @@
       "runStory": "Reliable infrastructure to run your most critical business operations without downtime.",
       "protectTitle": "Protect — Enterprise Security",
       "protectStory": "Comprehensive security solutions to protect your data, network, and business from threats."
-    }
+    },
+    "learnMore": "Learn more",
+    "noProducts": "No products found in this category.",
+    "viewAllProducts": "View all products",
+    "keyFeatures": "Key Features",
+    "interestedTitle": "Interested in {title}?",
+    "interestedDesc": "Get a customized proposal for your infrastructure needs.",
+    "contactUs": "Contact Us",
+    "relatedVendors": "Related Vendor Solutions",
+    "relatedVendorsDesc": "Recommended products and platforms from our technology partners"
   },
   "footer": {
     "products": "Products",
@@ -886,7 +931,8 @@
     "section6Body": "You have the right to access, correct, or delete your personal data. To exercise these rights, please contact us at",
     "section7Title": "Contact",
     "section7Body": "For questions about this Privacy Policy, please contact us at",
-    "backHome": "Back to Home"
+    "backHome": "Back to Home",
+    "lastUpdatedDate": "June 30, 2026"
   },
   "vmware": {
     "metadata": {
@@ -1013,7 +1059,11 @@
     "checkEmail": "Check Your Email",
     "verificationSent": "We sent a verification link to",
     "noEmail": "Didn receive the email?",
-    "resendEmail": "Resend verification email"
+    "resendEmail": "Resend verification email",
+    "restoreDraftTitle": "Restore draft?",
+    "restoreDraftBody": "We found an unsaved draft from your previous session. Would you like to restore it?",
+    "restoreDraftAccept": "Restore",
+    "restoreDraftDiscard": "Discard"
   },
   "support": {
     "metadata": {
@@ -1046,7 +1096,77 @@
     "newTicketDesc": "Submit a new support request and our team will assist you.",
     "myTicketsDesc": "View and track all your support requests.",
     "created": "Created",
-    "submitTicketHint": "Submit a ticket to get started"
+    "submitTicketHint": "Submit a ticket to get started",
+    "offlineIndicator": "Offline: showing cached data",
+    "resetPassword": {
+      "metadata": {
+        "title": "Reset Password | TechGuru",
+        "description": "Set a new password for your TechGuru account."
+      },
+      "title": "Set New Password",
+      "subtitle": "Enter a new password for your account.",
+      "newPassword": "New Password",
+      "passwordPlaceholder": "Min 8 chars, letters and numbers",
+      "hint": "Use at least 8 characters with letters and numbers.",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Re-enter your new password",
+      "mismatch": "Passwords do not match",
+      "minLength": "Password must be at least 8 characters",
+      "requireLettersAndNumbers": "Password must contain both letters and numbers",
+      "submit": "Update Password",
+      "submitting": "Updating...",
+      "updateFailed": "Unable to update password. The reset link may have expired. Please request a new one.",
+      "successTitle": "Password Updated",
+      "successDesc": "Your password has been changed. Redirecting to sign in...",
+      "backToLogin": "Back to Sign In"
+    },
+    "ticketList": {
+      "openTicket": "Open ticket"
+    },
+    "ticketDetail": {
+      "title": "Ticket Detail",
+      "backToList": "Back to My Tickets",
+      "notFound": "Ticket not found",
+      "notFoundDesc": "The ticket you are looking for does not exist or has been removed.",
+      "ticketNumber": "Ticket Number",
+      "status": "Status",
+      "priority": "Priority",
+      "category": "Category",
+      "productService": "Product / Service",
+      "assignedTo": "Assigned To",
+      "unassigned": "Unassigned",
+      "created": "Created",
+      "updated": "Updated",
+      "occurredAt": "Occurred At",
+      "description": "Description",
+      "attachments": "Attachments",
+      "noAttachments": "No attachments",
+      "download": "Download",
+      "comments": "Comments",
+      "noComments": "No comments yet",
+      "addComment": "Add a Comment",
+      "commentPlaceholder": "Write your comment...",
+      "submitComment": "Submit Comment",
+      "submitting": "Submitting...",
+      "internalNote": "Internal Note (admins only)",
+      "internalNotePlaceholder": "Write an internal note visible to admins only...",
+      "changeStatus": "Change Status",
+      "changePriority": "Change Priority",
+      "statusOpen": "Open",
+      "statusInProgress": "In Progress",
+      "statusResolved": "Resolved",
+      "statusClosed": "Closed",
+      "priorityLow": "Low",
+      "priorityMedium": "Medium",
+      "priorityHigh": "High",
+      "priorityCritical": "Critical",
+      "statusUpdated": "Status updated",
+      "commentAdded": "Comment added",
+      "errorTitle": "Something went wrong",
+      "loadingTicket": "Loading ticket...",
+      "viewAsAdmin": "Viewing as admin",
+      "replyFromSupport": "Support Team"
+    }
   },
   "error": {
     "title": "Something went wrong",
@@ -1095,7 +1215,12 @@
     "section6Body": "These terms are governed by the laws of the Republic of the Philippines. Any disputes shall be resolved in the courts of Quezon City, Metro Manila.",
     "section7Title": "Contact",
     "section7Body": "For questions about these Terms of Service, please contact us at",
-    "backHome": "Back to Home"
+    "backHome": "Back to Home",
+    "lastUpdatedDate": "June 30, 2026"
+  },
+  "legal": {
+    "toc": "On this page",
+    "print": "Print this page"
   },
   "compare": {
     "metadata": {
@@ -1180,7 +1305,13 @@
     },
     "ctaTitle": "See the Difference for Yourself",
     "ctaDesc": "Request a free comparison tailored to your infrastructure needs.",
-    "ctaBtn": "Request Free Comparison"
+    "ctaBtn": "Request Free Comparison",
+    "certs": {
+      "authorizedPartner": "Authorized Partner",
+      "authorizedReseller": "Authorized Reseller",
+      "channelPartner": "Channel Partner",
+      "certifiedPartner": "Certified Partner"
+    }
   },
   "whyUs": {
     "title": "Why Choose TechGuru",
@@ -1316,6 +1447,9 @@
     },
     "noResults": "No results found",
     "noResultsHint": "Try a different search term or browse by category.",
+    "noResultsQuery": "No results for '{query}'",
+    "noFaqsInCategory": "No FAQs in {category} yet",
+    "noFaqsInCategoryHint": "Try browsing another category or contact our team for help.",
     "ctaTitle": "Still need help?",
     "ctaDesc": "Can't find what you're looking for? Our team is ready to assist you.",
     "ctaContact": "Contact Us",
@@ -1395,6 +1529,23 @@
     "metadata": {
       "title": "Help Center | TechGuru",
       "description": "Find answers to common questions about TechGuru products, technical support, account management, and billing."
+    }
+  },
+  "common": {
+    "breadcrumb": {
+      "home": "Home"
+    },
+    "cookieConsent": {
+      "ariaLabel": "Cookie consent",
+      "message": "We use essential cookies only. No tracking.",
+      "privacyPolicy": "Privacy Policy",
+      "accept": "Accept"
+    },
+    "error": {
+      "title": "Something went wrong",
+      "description": "An unexpected error occurred. Please try the actions below.",
+      "tryAgain": "Try Again",
+      "backToHome": "Back to Home"
     }
   }
 }

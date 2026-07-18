@@ -76,10 +76,11 @@ function CodeBlock({ code, language }: { code: string; language?: string }) {
 
 // Callout组件
 function CalloutBox({ type, children }: { type: 'info' | 'warning' | 'tip'; children: React.ReactNode }) {
+  const t = useTranslations('blog.detail');
   const styles = {
-    info: { bg: 'bg-blue-50', border: 'border-blue-500', text: 'text-blue-700', icon: Info, label: 'Key Takeaway' },
-    warning: { bg: 'bg-amber-50', border: 'border-amber-500', text: 'text-amber-700', icon: AlertTriangle, label: 'Warning' },
-    tip: { bg: 'bg-green-50', border: 'border-green-500', text: 'text-green-700', icon: Lightbulb, label: 'Pro Tip' },
+    info: { bg: 'bg-blue-50', border: 'border-blue-500', text: 'text-blue-700', icon: Info, labelKey: 'calloutInfo' as const },
+    warning: { bg: 'bg-amber-50', border: 'border-amber-500', text: 'text-amber-700', icon: AlertTriangle, labelKey: 'calloutWarning' as const },
+    tip: { bg: 'bg-green-50', border: 'border-green-500', text: 'text-green-700', icon: Lightbulb, labelKey: 'calloutTip' as const },
   };
 
   const s = styles[type];
@@ -89,7 +90,7 @@ function CalloutBox({ type, children }: { type: 'info' | 'warning' | 'tip'; chil
     <div className={`my-6 p-4 rounded-xl border-l-4 ${s.bg} ${s.border}`}>
       <div className={`flex items-center gap-2 ${s.text} font-medium mb-2`}>
         <Icon size={18} />
-        {s.label}
+        {t(s.labelKey)}
       </div>
       <div className={`${s.text.replace('700', '800')}`}>{children}</div>
     </div>
@@ -214,7 +215,7 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
   }, 0) || 0;
   const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
-  const ogImage = post.coverImage || `https://picsum.photos/seed/${str(post.slug?.current || 'blog')}/1200/630`;
+  const ogImage = post.coverImage || 'https://www.techguru-it.asia/images/og-default.png';
 
   return (
     <section className="py-12 sm:py-20 px-5 sm:px-8 max-w-4xl mx-auto">

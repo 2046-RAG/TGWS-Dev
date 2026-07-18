@@ -80,10 +80,10 @@ describe('Performance Baseline', () => {
   });
 
   // ── Schema completeness ───────────────────────────────────
-  it('has all 7 Sanity schemas registered', () => {
-    // Check that schema files exist
+  it('has all 6 Sanity schemas registered', () => {
+    // Check that schema files exist (caseStudy removed 2026-07-12)
     const schemaDir = 'sanity/schemas';
-    const required = ['product.ts', 'caseStudy.ts', 'post.ts', 'solution.ts', 'faq.ts', 'partner.ts', 'teamMember.ts'];
+    const required = ['product.ts', 'post.ts', 'solution.ts', 'faq.ts', 'partner.ts', 'teamMember.ts'];
     for (const file of required) {
       expect(fs.existsSync(path.join(schemaDir, file))).toBe(true);
     }

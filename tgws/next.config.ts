@@ -6,6 +6,7 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig: NextConfig = {
   async redirects() {
     return [
+      // TODO: 30天后删除此重定向（2026-07-12 + 30天 = 2026-08-11）
       {
         source: '/:locale/case-studies',
         destination: '/:locale/blog',
@@ -27,10 +28,6 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: '*.supabase.co',
-      },
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos',
       },
     ],
     formats: ['image/avif', 'image/webp'],

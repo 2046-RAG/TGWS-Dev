@@ -120,7 +120,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
                   {featuredPost.featured && (
                     <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-500 text-white">
                       <Star size={12} className="fill-current" />
-                      {t('featured') || 'Featured'}
+                      {t('featured')}
                     </span>
                   )}
                 </div>
@@ -249,7 +249,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
       {filtered.length === 0 && (
         <div className="text-center py-20">
           <Calendar size={48} className="mx-auto mb-4 text-gray-300 dark:text-zinc-600" />
-          <p className="text-gray-500 dark:text-gray-400 text-lg">{t('noResults') || 'No posts found for this category.'}</p>
+          <p className="text-gray-500 dark:text-gray-400 text-lg">{t('noResults')}</p>
         </div>
       )}
     </section>

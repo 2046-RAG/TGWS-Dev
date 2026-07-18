@@ -72,19 +72,19 @@ export default function ComparePage() {
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">{t('partnerCertifications')}</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {[
-            { vendor: 'Sangfor', cert: 'Authorized Partner', color: '#00A8E8' },
-            { vendor: 'Fortinet', cert: 'Authorized Reseller', color: '#EE2E24' },
-            { vendor: 'Nutanix', cert: 'Channel Partner', color: '#000000' },
-            { vendor: 'Ruijie', cert: 'Certified Partner', color: '#0066CC' },
-            { vendor: 'Huawei', cert: 'Certified Partner', color: '#CF0A2C' },
-            { vendor: 'Sundray', cert: 'Authorized Partner', color: '#FF6600' },
+            { vendor: 'Sangfor', certKey: 'authorizedPartner', color: '#00A8E8' },
+            { vendor: 'Fortinet', certKey: 'authorizedReseller', color: '#EE2E24' },
+            { vendor: 'Nutanix', certKey: 'channelPartner', color: '#000000' },
+            { vendor: 'Ruijie', certKey: 'certifiedPartner', color: '#0066CC' },
+            { vendor: 'Huawei', certKey: 'certifiedPartner', color: '#CF0A2C' },
+            { vendor: 'Sundray', certKey: 'authorizedPartner', color: '#FF6600' },
           ].map((item) => (
             <div key={item.vendor} className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl p-5 text-center">
               <div className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center text-white font-bold text-lg" style={{ backgroundColor: item.color }}>
                 {item.vendor.charAt(0)}
               </div>
               <p className="font-medium text-gray-900 dark:text-white text-sm">{item.vendor}</p>
-              <p className="text-xs text-gray-400">{item.cert}</p>
+              <p className="text-xs text-gray-400">{t(`certs.${item.certKey}`)}</p>
             </div>
           ))}
         </div>
