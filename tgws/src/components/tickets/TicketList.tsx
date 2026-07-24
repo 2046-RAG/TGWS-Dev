@@ -18,27 +18,27 @@ export default function TicketList({ tickets }: { tickets: Ticket[] }) {
 
   const statusConfig: Record<string, { bg: string; text: string; dot: string; label: string }> = {
     open: {
-      bg: 'bg-yellow-50',
-      text: 'text-yellow-600',
-      dot: 'bg-yellow-500',
+      bg: 'bg-yellow-50 dark:bg-yellow-900/20',
+      text: 'text-yellow-600 dark:text-yellow-400',
+      dot: 'bg-yellow-500 dark:bg-yellow-400',
       label: t('ticketOpen'),
     },
     in_progress: {
-      bg: 'bg-blue-50',
-      text: 'text-blue-600',
-      dot: 'bg-blue-500',
+      bg: 'bg-blue-50 dark:bg-blue-900/20',
+      text: 'text-blue-600 dark:text-blue-400',
+      dot: 'bg-blue-500 dark:bg-blue-400',
       label: t('ticketInProgress'),
     },
     resolved: {
-      bg: 'bg-green-50',
-      text: 'text-green-600',
-      dot: 'bg-green-500',
+      bg: 'bg-green-50 dark:bg-green-900/20',
+      text: 'text-green-600 dark:text-green-400',
+      dot: 'bg-green-500 dark:bg-green-400',
       label: t('ticketResolved'),
     },
     closed: {
-      bg: 'bg-gray-100',
-      text: 'text-gray-500',
-      dot: 'bg-gray-400',
+      bg: 'bg-gray-100 dark:bg-zinc-700',
+      text: 'text-gray-500 dark:text-gray-400',
+      dot: 'bg-gray-400 dark:bg-gray-500',
       label: t('ticketClosed'),
     },
   };
@@ -52,17 +52,17 @@ export default function TicketList({ tickets }: { tickets: Ticket[] }) {
   const categoryColors: Record<string, string> = {
     build: 'bg-[#00D4FF]/10 text-[#00D4FF] border-[#00D4FF]/20',
     run: 'bg-[#7B61FF]/10 text-[#7B61FF] border-[#7B61FF]/20',
-    protect: 'bg-green-50 text-green-600 border-green-200',
+    protect: 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800',
   };
 
   if (tickets.length === 0) {
     return (
       <div className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl p-12 text-center shadow-sm">
-        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <Clock size={28} className="text-gray-400" />
+        <div className="w-16 h-16 bg-gray-100 dark:bg-zinc-700 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Clock size={28} className="text-gray-400 dark:text-gray-500" />
         </div>
-        <p className="text-gray-500 text-lg">{t('noTickets')}</p>
-        <p className="text-gray-600 text-sm mt-2">Submit a ticket to get started</p>
+        <p className="text-gray-500 dark:text-gray-400 text-lg">{t('noTickets')}</p>
+        <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">Submit a ticket to get started</p>
       </div>
     );
   }
@@ -80,12 +80,12 @@ export default function TicketList({ tickets }: { tickets: Ticket[] }) {
             <div className="flex items-center justify-between gap-4">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-xs text-gray-500 font-mono bg-gray-100 px-2 py-0.5 rounded">
+                  <span className="text-xs text-gray-500 dark:text-gray-400 font-mono bg-gray-100 dark:bg-zinc-700 px-2 py-0.5 rounded">
                     {ticket.ticket_number}
                   </span>
                   <span
                     className={`text-xs font-medium px-2 py-0.5 rounded border ${
-                      categoryColors[ticket.category] || 'bg-gray-100 text-gray-600 border-gray-200'
+                      categoryColors[ticket.category] || 'bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-zinc-700'
                     }`}
                   >
                     {categoryLabels[ticket.category] || ticket.category}
@@ -106,7 +106,7 @@ export default function TicketList({ tickets }: { tickets: Ticket[] }) {
                 </div>
                 <ArrowRight
                   size={16}
-                  className="text-gray-300 group-hover:text-gray-600 transition-colors"
+                  className="text-gray-300 dark:text-zinc-500 group-hover:text-gray-600 dark:group-hover:text-zinc-400 transition-colors"
                 />
               </div>
             </div>

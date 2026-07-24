@@ -26,13 +26,11 @@ function applyTheme(mode: ThemeMode) {
   document.documentElement.classList.toggle('dark', theme === 'dark');
 }
 
-const MODE_CYCLE: ThemeMode[] = ['auto', 'light', 'dark'];
-
-const MODE_CONFIG: Record<ThemeMode, { icon: typeof Sun; label: string; title: string }> = {
-  auto: { icon: Monitor, label: 'Theme: auto (follows system)', title: 'Auto mode' },
-  light: { icon: Sun, label: 'Theme: light', title: 'Light mode' },
-  dark: { icon: Moon, label: 'Theme: dark', title: 'Dark mode' },
-};
+const MODES: { key: ThemeMode; icon: typeof Sun; label: string; title: string }[] = [
+  { key: 'auto', icon: Monitor, label: 'Auto', title: 'Follow system preference' },
+  { key: 'light', icon: Sun, label: 'Light', title: 'Light mode' },
+  { key: 'dark', icon: Moon, label: 'Dark', title: 'Dark mode' },
+];
 
 export default function DarkModeToggle() {
   const [mode, setMode] = useState<ThemeMode>('auto');
@@ -50,39 +48,37 @@ export default function DarkModeToggle() {
     applyTheme(initial);
     setMounted(true);
 
-    // Listen for system preference changes when in auto mode
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
     const handler = () => {
-      const currentMode = getStoredMode();
-      if (currentMode === 'auto') {
-        applyTheme('auto');
-      }
+      if (getStoredMode() === 'auto') applyTheme('auto');
     };
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
   }, []);
 
-  const cycleTheme = () => {
-    const currentIndex = MODE_CYCLE.indexOf(mode);
-    const nextMode = MODE_CYCLE[(currentIndex + 1) % MODE_CYCLE.length];
-    applyAndStore(nextMode);
-  };
-
   if (!mounted) {
-    return <div className="w-11 h-11" />;
+    return <div className="flex gap-1" />;
   }
 
-  const config = MODE_CONFIG[mode];
-  const Icon = config.icon;
-
   return (
-    <button
-      onClick={cycleTheme}
-      className="w-11 h-11 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-      aria-label={config.label}
-      title={config.title}
-    >
-      <Icon size={16} className={mode === 'dark' ? 'text-gray-200' : 'text-gray-700'} />
-    </button>
+    <div className="flex gap-1" role="radiogroup" aria-label="Theme selector">
+      {MODES.map(({ key, icon: Icon, title }) => (
+        <button
+          key={key}
+          onClick={() => applyAndStore(key)}
+          role="radio"
+          aria-checked={mode === key}
+          aria-label={`Theme: ${key}`}
+          title={title}
+          className={`w-9 h-9 rounded-full flex items-center justify-center border transition-colors ${
+            mode === key
+              ? 'border-[#00D4FF] bg-[#00D4FF]/10 text-[#00D4FF]'
+              : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+          }`}
+        >
+          <Icon size={14} />
+        </button>
+      ))}
+    </div>
   );
 }

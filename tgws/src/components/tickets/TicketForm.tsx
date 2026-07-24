@@ -205,7 +205,7 @@ export default function TicketForm() {
   }, {} as Record<string, SanityProduct[]>);
 
   const charCount = formData.description.length;
-  const charColor = charCount >= DESCRIPTION_MAX ? 'text-red-500' : charCount >= 750 ? 'text-orange-500' : 'text-gray-400';
+  const charColor = charCount >= DESCRIPTION_MAX ? 'text-red-500' : charCount >= 750 ? 'text-orange-500' : 'text-gray-400 dark:text-gray-500';
 
   return (
     <form onSubmit={handleSubmit} className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl p-8 space-y-6 shadow-sm">
@@ -217,14 +217,14 @@ export default function TicketForm() {
         </div>
       )}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-sm text-red-700 dark:text-red-400">
           {error}
         </div>
       )}
 
       {/* 1. Category */}
       <div>
-        <label htmlFor="ticket-category" className="block text-sm text-gray-700 mb-2">
+        <label htmlFor="ticket-category" className="block text-sm text-gray-700 dark:text-gray-200 mb-2">
           {t('category')} *
         </label>
         <select
@@ -244,7 +244,7 @@ export default function TicketForm() {
 
       {/* 2. Product/Service — dropdown from Sanity + "Other" */}
       <div>
-        <label htmlFor="ticket-product" className="block text-sm text-gray-700 mb-2">
+        <label htmlFor="ticket-product" className="block text-sm text-gray-700 dark:text-gray-200 mb-2">
           {t('productService')} *
         </label>
         <select
@@ -279,7 +279,7 @@ export default function TicketForm() {
 
       {/* 3. Problem Occurrence Time */}
       <div>
-        <label htmlFor="ticket-occurred-at" className="block text-sm text-gray-700 mb-2">
+        <label htmlFor="ticket-occurred-at" className="block text-sm text-gray-700 dark:text-gray-200 mb-2">
           {t('occurredAt')} *
         </label>
         <input
@@ -296,7 +296,7 @@ export default function TicketForm() {
 
       {/* 4. Subject */}
       <div>
-        <label htmlFor="ticket-subject" className="block text-sm text-gray-700 mb-2">
+        <label htmlFor="ticket-subject" className="block text-sm text-gray-700 dark:text-gray-200 mb-2">
           {t('subject')} *
         </label>
         <input
@@ -314,7 +314,7 @@ export default function TicketForm() {
 
       {/* 5. Description with 800 char limit + counter */}
       <div>
-        <label htmlFor="ticket-description" className="block text-sm text-gray-700 mb-2">
+        <label htmlFor="ticket-description" className="block text-sm text-gray-700 dark:text-gray-200 mb-2">
           {t('description')} *
         </label>
         <textarea
@@ -335,24 +335,24 @@ export default function TicketForm() {
 
       {/* 6. Paste Screenshot area */}
       <div>
-        <label className="block text-sm text-gray-700 mb-2">
+        <label className="block text-sm text-gray-700 dark:text-gray-200 mb-2">
           {t('screenshots')}
         </label>
         <div
           ref={pasteAreaRef}
           onPaste={handlePaste}
           onClick={handlePasteAreaClick}
-          className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-[#00D4FF] hover:bg-gray-50 transition-colors"
+          className="border-2 border-dashed border-gray-300 dark:border-zinc-600 rounded-lg p-6 text-center cursor-pointer hover:border-[#00D4FF] hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
         >
-          <ImageIcon size={24} className="mx-auto text-gray-400 mb-2" />
-          <p className="text-sm text-gray-500">{t('pasteScreenshot')}</p>
-            <p className="text-xs text-gray-600 mt-1">{t('orClickToUpload')}</p>
+          <ImageIcon size={24} className="mx-auto text-gray-400 dark:text-gray-500 mb-2" />
+          <p className="text-sm text-gray-500 dark:text-gray-400">{t('pasteScreenshot')}</p>
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">{t('orClickToUpload')}</p>
         </div>
         {pastedImages.length > 0 && (
           <div className="flex flex-wrap gap-3 mt-3">
             {pastedImages.map((img, i) => (
               <div key={i} className="relative group">
-                <Image src={img.preview} alt={`Screenshot ${i + 1}`} width={80} height={80} unoptimized className="object-cover rounded-lg border border-gray-200" />
+                <Image src={img.preview} alt={`Screenshot ${i + 1}`} width={80} height={80} unoptimized className="object-cover rounded-lg border border-gray-200 dark:border-zinc-700" />
                 <button
                   type="button"
                   onClick={(e) => { e.stopPropagation(); removePastedImage(i); }}
@@ -368,7 +368,7 @@ export default function TicketForm() {
 
       {/* 7. File Attachments — any format, max 50MB */}
       <div>
-        <label htmlFor="ticket-attachments" className="block text-sm text-gray-700 mb-2">
+        <label htmlFor="ticket-attachments" className="block text-sm text-gray-700 dark:text-gray-200 mb-2">
           {t('attachments')}
         </label>
         <input
@@ -376,9 +376,9 @@ export default function TicketForm() {
           id="ticket-attachments"
           type="file"
           multiple
-          className="w-full text-gray-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:bg-gray-100 file:text-gray-700 file:hover:bg-gray-200 file:cursor-pointer"
+          className="w-full text-gray-600 dark:text-gray-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:bg-gray-100 dark:file:bg-zinc-700 file:text-gray-700 dark:file:text-gray-200 file:hover:bg-gray-200 dark:file:hover:bg-zinc-600 file:cursor-pointer"
         />
-          <p className="text-xs text-gray-600 mt-1">{t('maxFileSize')}</p>
+          <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">{t('maxFileSize')}</p>
       </div>
 
       <button

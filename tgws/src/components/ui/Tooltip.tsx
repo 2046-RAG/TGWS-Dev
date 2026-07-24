@@ -40,7 +40,7 @@ export default function Tooltip({ content, children, side = 'top' }: TooltipProp
       {children ?? (
         <button
           type="button"
-          className="text-gray-400 hover:text-[#00D4FF] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 rounded"
+          className="text-gray-400 dark:text-gray-500 hover:text-[#00D4FF] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 rounded"
           tabIndex={0}
           aria-label="More information"
         >
