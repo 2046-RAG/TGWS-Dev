@@ -94,7 +94,9 @@ export default function Footer() {
               <p className="text-sm text-[#22C55E]">{t('subscribe')}!</p>
             ) : (
               <form onSubmit={handleSubscribe} className="flex gap-2">
+                <label htmlFor="footer-newsletter-email" className="sr-only">{t('emailPlaceholder')}</label>
                 <input
+                  id="footer-newsletter-email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}

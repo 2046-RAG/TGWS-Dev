@@ -38,6 +38,9 @@ export default function MegaMenu({ items, activePath }: MegaMenuProps) {
             className="relative"
             onMouseEnter={() => item.children && handleEnter(item.key)}
             onMouseLeave={handleLeave}
+            onFocus={() => item.children && handleEnter(item.key)}
+            onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) handleLeave(); }}
+            onKeyDown={(e) => { if (e.key === 'Escape') handleLeave(); }}
           >
             <Link
               href={item.href}

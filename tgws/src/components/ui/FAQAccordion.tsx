@@ -24,6 +24,7 @@ export default function FAQAccordion({ items }: FAQAccordionProps) {
       {items.map((item, index) => (
         <div key={index}>
           <button
+            id={`faq-question-${index}`}
             onClick={() => toggle(index)}
             className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-inset min-h-[56px]"
             aria-expanded={openIndex === index}
