@@ -15,7 +15,14 @@ export async function middleware(request: NextRequest) {
   const supabaseResponse = await updateSession(request);
 
   supabaseResponse.cookies.getAll().forEach(cookie => {
-    intlResponse.cookies.set(cookie.name, cookie.value);
+    intlResponse.cookies.set(cookie.name, cookie.value, {
+      httpOnly: cookie.httpOnly,
+      secure: cookie.secure,
+      sameSite: cookie.sameSite,
+      path: cookie.path,
+      maxAge: cookie.maxAge,
+      domain: cookie.domain,
+    });
   });
 
   return intlResponse;

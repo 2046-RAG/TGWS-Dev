@@ -19,6 +19,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
   }
 
+  if (typeof name === 'string' && name.length > 100) {
+    return NextResponse.json({ error: 'Name must be 100 characters or less' }, { status: 400 });
+  }
+
+  if (typeof message === 'string' && message.length > 5000) {
+    return NextResponse.json({ error: 'Message must be 5000 characters or less' }, { status: 400 });
+  }
+
   const supabase = await createClient();
 
   const { error: dbError } = await supabase

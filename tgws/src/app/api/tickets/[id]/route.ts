@@ -89,6 +89,15 @@ export async function PATCH(
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
+  const VALID_STATUSES = ['open', 'in_progress', 'resolved', 'closed'];
+  const VALID_PRIORITIES = ['low', 'medium', 'high', 'critical'];
+  if (body.status && !VALID_STATUSES.includes(body.status)) {
+    return NextResponse.json({ error: 'Invalid status value' }, { status: 400 });
+  }
+  if (body.priority && !VALID_PRIORITIES.includes(body.priority)) {
+    return NextResponse.json({ error: 'Invalid priority value' }, { status: 400 });
+  }
+
   const { data, error } = await supabase
     .from('tickets')
     .update({

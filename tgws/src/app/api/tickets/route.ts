@@ -19,6 +19,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
   }
 
+  const VALID_CATEGORIES = ['build', 'run', 'protect'];
+  if (!VALID_CATEGORIES.includes(category)) {
+    return NextResponse.json({ error: 'Invalid category' }, { status: 400 });
+  }
+
+  if (typeof subject !== 'string' || subject.length > 200) {
+    return NextResponse.json({ error: 'Subject must be a string up to 200 characters' }, { status: 400 });
+  }
+
+  if (typeof description !== 'string' || description.length > 800) {
+    return NextResponse.json({ error: 'Description must be a string up to 800 characters' }, { status: 400 });
+  }
+
   const ticketNumber = `TG-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
 
   const { data, error } = await supabase
