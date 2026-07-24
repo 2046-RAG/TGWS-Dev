@@ -61,7 +61,15 @@ export default async function LocaleLayout({
               (function() {
                 try {
                   var stored = localStorage.getItem('theme');
-                  var isDark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  var isDark;
+                  if (stored === 'light') {
+                    isDark = false;
+                  } else if (stored === 'dark') {
+                    isDark = true;
+                  } else {
+                    // 'auto' or null/undefined — follow system preference
+                    isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  }
                   if (isDark) document.documentElement.classList.add('dark');
                 } catch(e) {}
               })();

@@ -37,6 +37,9 @@ export default function Footer() {
               <li><Link href={`/${locale}/solutions?tab=healthcare`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('healthcare')}</Link></li>
               <li><Link href={`/${locale}/solutions?tab=finance`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('finance')}</Link></li>
               <li><Link href={`/${locale}/solutions?tab=retail`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('retail')}</Link></li>
+              <li><Link href={`/${locale}/solutions?tab=logistics`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('logistics')}</Link></li>
+              <li><Link href={`/${locale}/solutions?tab=education`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('education')}</Link></li>
+              <li><Link href={`/${locale}/solutions?tab=government`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('government')}</Link></li>
             </ul>
           </div>
           <div>

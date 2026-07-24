@@ -515,7 +515,7 @@ Hero 底部包含三个故事卡片（Storyline Cards）：
 - **微交互**：悬停时 `translateY(-2px)` 升起 + 青色边框光晕
 - **渐进增强**：内容无需 JS 即可见，动画通过 `.js-loaded` 类增强
 - **无障碍优先**：WCAG 2.1 AA 合规，`prefers-reduced-motion` 禁用所有动画
-- **浅色主题为主**，通过 CSS `@media (prefers-color-scheme: dark)` 自动适配暗色模式（无手动切换）
+- **浅色主题为主**，通过 CSS `@media (prefers-color-scheme: dark)` 自动适配暗色模式，同时提供3态手动切换按钮（Auto/Light/Dark）支持用户覆盖系统偏好
 - **品牌个性**: 专业的企业IT，非初创风格、非玩具感
 
 ### 9.4 关键页面特效
@@ -684,6 +684,8 @@ Hero 底部包含三个故事卡片（Storyline Cards）：
 | created_at | TIMESTAMP | 创建时间 | ✅ |
 | updated_at | TIMESTAMP | 更新时间 | ✅ |
 | resolved_at | TIMESTAMP | 解决时间 | ✅ |
+| version | INTEGER | 乐观锁版本号，默认1 | ✅ |
+| deleted_at | TIMESTAMP | 软删除时间戳 | ✅ |
 
 ### 17.3 工单附件表 (ticket_attachments)
 
@@ -727,6 +729,18 @@ Hero 底部包含三个故事卡片（Storyline Cards）：
 |------|------|
 | `supabase/migrations/001_initial_schema.sql` | 初始表结构（users, tickets, ticket_attachments, ticket_comments, contact_submissions） |
 | `supabase/migrations/002_add_occurred_at.sql` | tickets 表新增 `occurred_at` TIMESTAMP 字段 |
+
+### 17.7 工单审计日志表 (ticket_audit_log)
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| id | UUID | 主键 |
+| ticket_id | UUID | 外键，关联tickets表 |
+| action | VARCHAR(50) | 操作类型（created / status_changed / assigned） |
+| old_value | TEXT | 变更前的值（JSON） |
+| new_value | TEXT | 变更后的值（JSON） |
+| performed_by | UUID | 外键，关联users表 |
+| performed_at | TIMESTAMP | 操作时间，默认NOW() |
 
 ---
 
