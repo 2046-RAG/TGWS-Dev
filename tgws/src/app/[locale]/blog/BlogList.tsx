@@ -3,8 +3,8 @@
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { useState } from 'react';
-import { Calendar, ArrowRight, Star, Clock, User, Tag } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { Calendar, ArrowRight, Star, Clock, User, Tag, Search, X } from 'lucide-react';
 import Image from 'next/image';
 import { urlFor } from '@/lib/sanity.image';
 
@@ -37,8 +37,24 @@ export default function BlogList({ posts }: { posts: Post[] }) {
   const params = useParams();
   const locale = params.locale as string;
   const [activeCategory, setActiveCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const filtered = activeCategory === 'all' ? posts : posts.filter((p) => p.category === activeCategory);
+  // Filter by category and search
+  const filtered = useMemo(() => {
+    let result = activeCategory === 'all' ? posts : posts.filter((p) => p.category === activeCategory);
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(p => {
+        const title = (locale === 'zh' ? p.titleZh : p.title).toLowerCase();
+        const excerpt = (locale === 'zh' ? p.excerptZh : p.excerpt).toLowerCase();
+        const tags = (p.tags || []).join(' ').toLowerCase();
+        return title.includes(query) || excerpt.includes(query) || tags.includes(query);
+      });
+    }
+
+    return result;
+  }, [posts, activeCategory, searchQuery, locale]);
   const featuredPost = filtered.find(p => p.featured) || filtered[0];
   const remainingPosts = filtered.filter(p => p._id !== featuredPost?._id);
 
@@ -81,6 +97,42 @@ export default function BlogList({ posts }: { posts: Post[] }) {
           </button>
         ))}
       </div>
+
+      {/* Search Box */}
+      <div className="max-w-md mx-auto mb-10">
+        <div className="relative">
+          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={t('searchPlaceholder')}
+            className="w-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-full pl-11 pr-10 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors"
+            >
+              <X size={16} />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* No Results Message */}
+      {searchQuery && filtered.length === 0 && (
+        <div className="text-center py-12">
+          <Search size={48} className="mx-auto text-gray-300 dark:text-gray-600 mb-4" />
+          <p className="text-gray-500 dark:text-gray-400 text-lg">{t('noResults')}</p>
+          <button
+            onClick={() => setSearchQuery('')}
+            className="mt-4 text-[#00D4FF] hover:underline"
+          >
+            Clear search
+          </button>
+        </div>
+      )}
 
       {/* Featured Post - Full Width Editorial Hero */}
       {featuredPost && (

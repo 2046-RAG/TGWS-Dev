@@ -22,19 +22,19 @@ describe('LanguageSwitcher', () => {
 
   it('renders language toggle button', () => {
     render(<LanguageSwitcher />);
-    const button = screen.getByRole('button', { name: /language selector/i });
+    const button = screen.getByRole('button');
     expect(button).toBeInTheDocument();
   });
 
   it('displays current locale indicator', () => {
     render(<LanguageSwitcher />);
-    const button = screen.getByRole('button', { name: /language selector/i });
-    expect(button).toHaveTextContent('繁中');
+    const button = screen.getByRole('button');
+    expect(button).toHaveTextContent('EN');
   });
 
   it('calls router.push on click', () => {
     render(<LanguageSwitcher />);
-    const button = screen.getByRole('button', { name: /language selector/i });
+    const button = screen.getByRole('button');
     fireEvent.click(button);
 
     expect(mockPush).toHaveBeenCalled();

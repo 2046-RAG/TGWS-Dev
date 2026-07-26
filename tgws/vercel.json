@@ -1,0 +1,6 @@
+{
+  "buildCommand": "npx next build --webpack",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "installCommand": "npm install --registry https://registry.npmmirror.com"
+}

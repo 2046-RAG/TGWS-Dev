@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import RegisterForm from './RegisterForm';
 
@@ -102,7 +102,10 @@ describe('RegisterForm', () => {
       expect(mockSignUp).toHaveBeenCalledWith({
         email: 'test@test.com',
         password: 'Abcdef1@',
-        options: { data: { full_name: 'Test User' } },
+        options: {
+          data: { full_name: 'Test User' },
+          emailRedirectTo: expect.stringContaining('/api/auth/callback'),
+        },
       });
     });
   });
@@ -122,21 +125,26 @@ describe('RegisterForm', () => {
   });
 
   it('shows loading state during registration', async () => {
-    let resolve: (v: unknown) => void;
-    mockSignUp.mockImplementation(() => new Promise(r => { resolve = r; }));
+    let resolvePromise: (value: unknown) => void;
+    mockSignUp.mockImplementation(() => new Promise(r => { resolvePromise = r; }));
 
     render(<RegisterForm />);
     fireEvent.change(screen.getByLabelText(/Full Name/i), { target: { value: 'Test' } });
     fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'test@test.com' } });
     fireEvent.change(document.getElementById('register-password')!, { target: { value: 'Abcdef1@' } });
     fireEvent.change(document.getElementById('register-confirm')!, { target: { value: 'Abcdef1@' } });
-    fireEvent.click(screen.getByRole('button', { name: /Create Account/i }));
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /Create Account/i }));
+    });
 
     await waitFor(() => {
       expect(screen.getByText('Creating account...')).toBeInTheDocument();
     });
 
-    resolve!({ error: null });
+    await act(async () => {
+      resolvePromise!({ error: null });
+    });
   });
 
   it('accepts valid password with uppercase, lowercase, and number', async () => {

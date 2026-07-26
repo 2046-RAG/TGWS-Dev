@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import LoginForm from './LoginForm';
 
@@ -130,18 +130,23 @@ describe('LoginForm', () => {
   });
 
   it('shows loading state during sign in', async () => {
-    let resolve: (v: unknown) => void;
-    mockSignInWithPassword.mockImplementation(() => new Promise(r => { resolve = r; }));
+    let resolvePromise: (value: unknown) => void;
+    mockSignInWithPassword.mockImplementation(() => new Promise(r => { resolvePromise = r; }));
 
     render(<LoginForm />);
     fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'test@test.com' } });
     fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: 'pass' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Sign In',  }));
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+    });
 
     await waitFor(() => {
       expect(screen.getByText('Signing in...')).toBeInTheDocument();
     });
 
-    resolve!({ error: null });
+    await act(async () => {
+      resolvePromise!({ error: null });
+    });
   });
 });

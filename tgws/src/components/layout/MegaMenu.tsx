@@ -78,7 +78,7 @@ export default function MegaMenu({ items, activePath }: MegaMenuProps) {
                           {child.label}
                         </div>
                         {child.desc && (
-                          <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-1">
+                          <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed">
                             {child.desc}
                           </div>
                         )}

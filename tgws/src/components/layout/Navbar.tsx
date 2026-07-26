@@ -5,16 +5,19 @@ import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
-import DarkModeToggle from '@/components/ui/DarkModeToggle';
+import ThemeToggle from '@/components/ui/ThemeToggle';
+import UserMenu from '@/components/ui/UserMenu';
+import GlobalSearch from '@/components/ui/GlobalSearch';
 import MegaMenu from './MegaMenu';
+import { Search } from 'lucide-react';
 
 export default function Navbar() {
   const t = useTranslations('nav');
-  const auth = useTranslations('auth');
   const home = useTranslations('home');
   const locale = useLocale();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const megaMenuItems = [
     {
@@ -60,8 +63,8 @@ export default function Navbar() {
       label: t('support'),
       href: `/${locale}/support`,
       children: [
-        { label: auth('signIn'), href: `/${locale}/support/login`, desc: '' },
-        { label: auth('createAccount'), href: `/${locale}/support/register`, desc: '' },
+        { label: t('signIn'), href: `/${locale}/support/login`, desc: '' },
+        { label: t('createAccount'), href: `/${locale}/support/register`, desc: '' },
       ],
     },
   ];
@@ -97,9 +100,7 @@ export default function Navbar() {
           <MegaMenu items={megaMenuItems} activePath={pathname} />
         </div>
 
-        <div className="hidden md:flex items-center gap-4">
-          <LanguageSwitcher />
-          <DarkModeToggle />
+        <div className="hidden md:flex items-center gap-3">
           <Link
             href={`/${locale}/contact`}
             className={`nav-link relative text-[14px] font-medium tracking-[-0.01em] py-1 transition-colors duration-200 ${
@@ -113,7 +114,21 @@ export default function Navbar() {
               <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#00D4FF]" />
             )}
           </Link>
+          <div className="w-px h-6 bg-gray-200 dark:bg-zinc-700" />
+          <button
+            onClick={() => setSearchOpen(true)}
+            className="w-9 h-9 rounded-lg flex items-center justify-center border border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors"
+            title="Search"
+          >
+            <Search size={16} className="text-gray-600 dark:text-gray-300" />
+          </button>
+          <LanguageSwitcher />
+          <ThemeToggle />
+          <UserMenu />
         </div>
+
+        {/* Global Search Modal */}
+        <GlobalSearch isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
 
         <button
           className="md:hidden flex flex-col gap-[5px] p-2 w-11 h-11 items-center justify-center"
@@ -145,6 +160,16 @@ export default function Navbar() {
         }`}
       >
         <div className="flex flex-col items-start px-8 py-8 gap-8">
+          <button
+            onClick={() => {
+              setMobileOpen(false);
+              setSearchOpen(true);
+            }}
+            className="flex items-center gap-3 text-[32px] font-medium text-black dark:text-white hover:text-[#00D4FF] transition-colors duration-200"
+          >
+            <Search size={24} />
+            Search
+          </button>
           <Link
             href={`/${locale}`}
             className="text-[32px] font-medium text-black dark:text-white hover:text-[#00D4FF] transition-colors duration-200"
@@ -184,8 +209,12 @@ export default function Navbar() {
           >
             {t('contact')}
           </Link>
-          <div className="mt-4">
-            <LanguageSwitcher />
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-zinc-700 space-y-3">
+            <div className="flex items-center gap-3">
+              <LanguageSwitcher />
+              <ThemeToggle />
+            </div>
+            <UserMenu />
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -8,6 +8,21 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid secret' }, { status: 401 });
   }
 
+  // Revalidate all locale pages
+  const paths = [
+    '/en/about',
+    '/zh/about',
+    '/en/about/timeline',
+    '/zh/about/timeline',
+    '/en/home',
+    '/zh/home',
+    '/',
+  ];
+
+  paths.forEach(path => revalidatePath(path));
+
+  // Also revalidate layout to catch any shared components
   revalidatePath('/', 'layout');
-  return NextResponse.json({ revalidated: true });
+
+  return NextResponse.json({ revalidated: true, paths });
 }

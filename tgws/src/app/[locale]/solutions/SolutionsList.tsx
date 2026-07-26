@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import {
   Heart,
@@ -17,6 +17,8 @@ import {
   TrendingUp,
   Users,
   Lock,
+  Search,
+  X,
 } from 'lucide-react';
 
 const industryMeta: Record<string, {
@@ -61,11 +63,24 @@ export default function SolutionsList({ solutions }: SolutionsListProps) {
   const params = useParams();
   const locale = params.locale as string;
   const [active, setActive] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
+  const isZh = locale === 'zh';
 
-  const industryKey = industryKeys[active];
+  // Filter industries based on search
+  const filteredIndustries = useMemo(() => {
+    if (!searchQuery.trim()) return industryKeys;
+
+    const query = searchQuery.toLowerCase();
+    return industryKeys.filter(key => {
+      const name = t(`industries.${key}.name`).toLowerCase();
+      const desc = t(`industries.${key}.description`).toLowerCase();
+      return name.includes(query) || desc.includes(query);
+    });
+  }, [searchQuery, t]);
+
+  const industryKey = filteredIndustries[active] || industryKeys[0];
   const meta = industryMeta[industryKey] || industryMeta.healthcare;
   const MetricIcon = meta.metricIcon;
-  const isZh = locale === 'zh';
 
   // Find Sanity data for current industry
   const sanityData = solutions.find(s => s.industry === industryKey);
@@ -126,6 +141,45 @@ export default function SolutionsList({ solutions }: SolutionsListProps) {
           );
         })}
       </div>
+
+      {/* Search Box */}
+      <div className="max-w-md mx-auto mb-10">
+        <div className="relative">
+          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setActive(0);
+            }}
+            placeholder={t('searchPlaceholder')}
+            className="w-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-full pl-11 pr-10 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors"
+            >
+              <X size={16} />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* No Results Message */}
+      {searchQuery && filteredIndustries.length === 0 && (
+        <div className="text-center py-12">
+          <Search size={48} className="mx-auto text-gray-300 dark:text-gray-600 mb-4" />
+          <p className="text-gray-500 dark:text-gray-400 text-lg">{t('noResults')}</p>
+          <button
+            onClick={() => setSearchQuery('')}
+            className="mt-4 text-[#00D4FF] hover:underline"
+          >
+            Clear search
+          </button>
+        </div>
+      )}
 
       {/* Industry Content */}
       <div

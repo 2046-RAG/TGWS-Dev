@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Send, Loader2, MapPin, Mail, Phone, MessageCircle, Briefcase } from 'lucide-react';
+import { Send, Loader2, MapPin, Mail, Phone, MessageCircle, Briefcase, QrCode } from 'lucide-react';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import QRCode from '@/components/ui/QRCode';
 
 interface FormErrors {
   name?: string;
@@ -291,6 +292,19 @@ export default function ContactPage() {
                 <Briefcase size={18} className="text-[#0077B5] shrink-0" />
                 <span className="text-sm">{t('linkedin')}</span>
               </a>
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('scanToConnect')}</h2>
+            <div className="flex flex-col items-center gap-4">
+              <div className="flex items-center gap-4">
+                <div className="text-center">
+                  <QRCode value="https://wa.me/639602825051" size={120} alt="WhatsApp QR Code" />
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">WhatsApp</p>
+                </div>
+              </div>
+              <p className="text-sm text-gray-500 dark:text-gray-400 text-center">{t('scanQrHint')}</p>
             </div>
           </div>
         </aside>

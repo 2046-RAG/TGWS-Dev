@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import TicketForm from './TicketForm';
 
@@ -47,7 +47,9 @@ describe('TicketForm', () => {
   });
 
   it('renders all form fields', async () => {
-    render(<TicketForm />);
+    await act(async () => {
+      render(<TicketForm />);
+    });
 
     expect(screen.getByLabelText('Category *')).toBeInTheDocument();
     expect(screen.getByLabelText('Product *')).toBeInTheDocument();
@@ -59,21 +61,27 @@ describe('TicketForm', () => {
   });
 
   it('renders paste screenshot area', async () => {
-    render(<TicketForm />);
+    await act(async () => {
+      render(<TicketForm />);
+    });
 
     expect(screen.getByText('Paste screenshot here')).toBeInTheDocument();
     expect(screen.getByText('or click to upload')).toBeInTheDocument();
   });
 
   it('shows 800 char limit on description', async () => {
-    render(<TicketForm />);
+    await act(async () => {
+      render(<TicketForm />);
+    });
 
     const counter = screen.getByText('0/800');
     expect(counter).toBeInTheDocument();
   });
 
   it('category select has 3 options plus placeholder', async () => {
-    render(<TicketForm />);
+    await act(async () => {
+      render(<TicketForm />);
+    });
 
     const select = screen.getByLabelText('Category *');
     const options = select.querySelectorAll('option');
@@ -137,13 +145,17 @@ describe('TicketForm', () => {
     fireEvent.change(screen.getByLabelText('Subject *'), { target: { value: 'Test Subject' } });
     fireEvent.change(screen.getByLabelText('Description *'), { target: { value: 'Test Description' } });
 
-    fireEvent.submit(screen.getByRole('button', { name: 'Submit' }));
+    await act(async () => {
+      fireEvent.submit(screen.getByRole('button', { name: 'Submit' }));
+    });
 
     await waitFor(() => {
       expect(screen.getByText('Submitting...')).toBeInTheDocument();
     });
 
-    resolveFetch!({ ok: true, json: () => Promise.resolve({ success: true, data: { id: 'test-id' } }) });
+    await act(async () => {
+      resolveFetch!({ ok: true, json: () => Promise.resolve({ success: true, data: { id: 'test-id' } }) });
+    });
 
     await waitFor(() => {
       expect(screen.queryByText('Submitting...')).not.toBeInTheDocument();
@@ -151,7 +163,9 @@ describe('TicketForm', () => {
   });
 
   it('shows Other input when product is __other__', async () => {
-    render(<TicketForm />);
+    await act(async () => {
+      render(<TicketForm />);
+    });
     // This test verifies the Other input appears when __other__ is selected
     // The exact label text depends on i18n mock, so we skip detailed assertions
     expect(true).toBe(true);

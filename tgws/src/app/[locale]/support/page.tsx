@@ -279,7 +279,41 @@ export default function SupportPage() {
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{s('viewMyTickets')}</h1>
                 <p className="text-gray-500 dark:text-gray-300">{s('myTicketsDesc')}</p>
               </div>
-              <TicketList tickets={tickets} />
+              <TicketList
+                tickets={tickets}
+                isAdmin={true}
+                onBatchStatusUpdate={async (ids, status) => {
+                  await fetch('/api/tickets/stats', {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ids, status }),
+                  });
+                  // Refresh tickets
+                  const response = await fetch('/api/tickets');
+                  if (response.ok) {
+                    const result = await response.json();
+                    setTickets(result.data || []);
+                  }
+                }}
+                onExport={(data) => {
+                  const headers = ['Ticket #', 'Subject', 'Status', 'Category', 'Created'];
+                  const rows = data.map(t => [
+                    t.ticket_number,
+                    t.subject,
+                    t.status,
+                    t.category,
+                    new Date(t.created_at).toISOString(),
+                  ]);
+                  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+                  const blob = new Blob([csv], { type: 'text/csv' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `tickets-${new Date().toISOString().split('T')[0]}.csv`;
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }}
+              />
             </div>
           )}
         </div>

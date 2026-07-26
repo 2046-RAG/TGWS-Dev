@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,7 +10,7 @@ import {
   Video, Code2, Bot, BrainCircuit, Compass, Server, Cloud, HardDrive,
   Shield, Lock, MonitorCheck, Network, CloudCog, Bug,
   AlertTriangle, Settings, Database, RefreshCw, Globe, ShieldCheck,
-  Wifi, Cable, Route, Unplug, Radio, Router, NetworkIcon, ArrowRight
+  Wifi, Cable, Route, Unplug, Radio, Router, NetworkIcon, ArrowRight, Search, X
 } from 'lucide-react';
 
 type TabKey = 'build' | 'run' | 'protect';
@@ -154,6 +154,7 @@ export default function ProductsList({ products }: { products: Product[] }) {
 
   const initialTab = (searchParams.get('category') as TabKey) || 'build';
   const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleTabChange = useCallback((tab: TabKey) => {
     setActiveTab(tab);
@@ -162,7 +163,22 @@ export default function ProductsList({ products }: { products: Product[] }) {
     router.replace(`?${params.toString()}`, { scroll: false });
   }, [searchParams, router]);
 
-  const filtered = products.filter(p => p.category === activeTab);
+  // Filter products by category and search query
+  const filtered = useMemo(() => {
+    let result = products.filter(p => p.category === activeTab);
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(p => {
+        const title = (t(`features.${p.slug?.current}.0`) || p.title).toLowerCase();
+        const description = (locale === 'zh' ? p.descriptionZh : p.description).toLowerCase();
+        const slug = (p.slug?.current || '').toLowerCase().replace(/-/g, ' ');
+        return title.includes(query) || description.includes(query) || slug.includes(query);
+      });
+    }
+
+    return result;
+  }, [products, activeTab, searchQuery, t, locale]);
 
   // Group products by subcategory for Run tab (single pass with Set lookup)
   const groupedRun: { key: string; i18nKey: string; slugs: string[]; products: Product[] }[] = [];
@@ -278,6 +294,28 @@ export default function ProductsList({ products }: { products: Product[] }) {
         ))}
       </div>
 
+      {/* Search Box */}
+      <div className="max-w-md mx-auto mb-8">
+        <div className="relative">
+          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={t('searchPlaceholder')}
+            className="w-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-full pl-11 pr-10 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors"
+            >
+              <X size={16} />
+            </button>
+          )}
+        </div>
+      </div>
+
       <motion.div
         key={activeTab + '-desc'}
         initial={{ opacity: 0, y: -10 }}
@@ -304,6 +342,20 @@ export default function ProductsList({ products }: { products: Product[] }) {
           </div>
         </div>
       </motion.div>
+
+      {/* No Results Message */}
+      {searchQuery && filtered.length === 0 && (
+        <div className="text-center py-12">
+          <Search size={48} className="mx-auto text-gray-300 dark:text-gray-600 mb-4" />
+          <p className="text-gray-500 dark:text-gray-400 text-lg">{t('noResults')}</p>
+          <button
+            onClick={() => setSearchQuery('')}
+            className="mt-4 text-[#00D4FF] hover:underline"
+          >
+            Clear search
+          </button>
+        </div>
+      )}
 
       <AnimatePresence mode="wait">
         <motion.div
