@@ -255,8 +255,8 @@ async function searchTavily(query: string): Promise<{ results: ExternalResult[];
       return { results, answer };
     }
 
-    // 注入 TechGuru 上下文，确保 Tavily 从企业IT角度回答
-    const enrichedQuery = `TechGuru Network & Data Solutions (enterprise IT solutions company in the Philippines, covering Build/Run/Protect pillars — virtualization, HCI, cloud, security, networking): ${query}`;
+    // 注入 TechGuru 上下文 — 只描述公司定位，不把搜索词列为业务
+    const enrichedQuery = `For TechGuru Network & Data Solutions (enterprise IT solutions company in the Philippines specializing in virtualization, HCI, cloud infrastructure, cybersecurity, and networking): explain what "${query}" means in enterprise IT context, its use cases, and how it relates to infrastructure solutions.`;
 
     const response = await fetch('https://api.tavily.com/search', {
       method: 'POST',
@@ -369,13 +369,14 @@ function generateAiSummary(
     }
   }
 
-  // Section 3: 外部来源摘要（过滤噪音域名和 hashtag）
+  // Section 3: 外部来源摘要（过滤噪音域名和自引用）
   if (externalResults.length > 0) {
-    // 过滤掉 LinkedIn、Twitter 等社交媒体来源
+    // 过滤社交媒体 + TechGuru 自己的网站（自引用无意义）
+    const blockedDomains = ['linkedin', 'twitter', 'facebook', 'youtube',
+      'techguru-it.asia', 'techguru.net', 'techguru.co.in'];
     const qualitySources = externalResults.filter(r => {
       const domain = r.url.replace(/^https?:\/\//, '').split('/')[0].toLowerCase();
-      return !domain.includes('linkedin') && !domain.includes('twitter') &&
-             !domain.includes('facebook') && !domain.includes('youtube');
+      return !blockedDomains.some(bd => domain.includes(bd));
     });
 
     if (qualitySources.length > 0) {

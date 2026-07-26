@@ -614,6 +614,22 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                   </div>
                 )}
 
+                {/* Capability Gap Alert — 放在摘要和结果之间，更显眼 */}
+                {results.capabilityGap?.detected && !leadSubmitted && (
+                  <div className="mb-6 p-5 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-xl border border-amber-200 dark:border-amber-800">
+                    <h3 className="text-base font-semibold text-amber-800 dark:text-amber-200 mb-1.5">
+                      We&apos;d like to help
+                    </h3>
+                    <p className="text-amber-700 dark:text-amber-300 text-sm mb-3">
+                      {results.capabilityGap.gapDescription}
+                    </p>
+                    <p className="text-amber-600 dark:text-amber-400 text-xs mb-3">
+                      Leave your contact info and our team will reach out within 48 hours.
+                    </p>
+                    <LeadForm onSubmit={handleLeadSubmit} onCancel={() => setShowLeadForm(false)} />
+                  </div>
+                )}
+
                 {/* Internal Results */}
                 {results.internalResults.length > 0 && (
                   <div className="mb-6">
@@ -678,21 +694,6 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                         </a>
                       ))}
                     </div>
-                  </div>
-                )}
-
-                {/* Capability Gap Alert */}
-                {results.capabilityGap?.detected && !leadSubmitted && (
-                  <div className="p-6 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-xl border border-amber-200 dark:border-amber-800">
-                    <h3 className="text-lg font-semibold text-amber-800 dark:text-amber-200 mb-2">
-                      We&apos;d like to help
-                    </h3>
-                    <p className="text-amber-700 dark:text-amber-300 text-sm mb-4">
-                      We noticed you&apos;re looking for something we don&apos;t currently offer. 
-                      Leave your contact info and our team will reach out within 48 hours 
-                      to discuss how we can help.
-                    </p>
-                    <LeadForm onSubmit={handleLeadSubmit} onCancel={() => setShowLeadForm(false)} />
                   </div>
                 )}
 
