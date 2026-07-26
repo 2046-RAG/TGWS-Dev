@@ -313,77 +313,111 @@ function deduplicateResults(
   return { internal, external: uniqueExternal };
 }
 
-// 生成AI摘要 — 融合站内+外部多源数据，结构化输出
+// 生成AI摘要 — 融合站内+外部，结构化且可读
 function generateAiSummary(
   query: string,
   tavilyAnswer: string,
   internalResults: SearchResult[],
   externalResults: ExternalResult[]
 ): string {
-  const parts: string[] = [];
+  const sections: string[] = [];
 
-  // Section 1: 站内匹配 — 作为主事实源
+  // Section 1: 站内匹配概览 — 按类型分组统计
   if (internalResults.length > 0) {
-    const topItems = internalResults.slice(0, 5);
-    const items = topItems.map(r => {
-      const typeLabel = r.type === 'product' ? 'Product' : r.type === 'solution' ? 'Solution' : r.type === 'blog' ? 'Article' : 'FAQ';
-      return `• [${typeLabel}] ${r.title} — ${r.description.substring(0, 100)}`;
-    }).join('\n');
-    parts.push(`What TechGuru offers for "${query}":\n${items}`);
+    const byType = {
+      product: internalResults.filter(r => r.type === 'product'),
+      solution: internalResults.filter(r => r.type === 'solution'),
+      blog: internalResults.filter(r => r.type === 'blog'),
+      faq: internalResults.filter(r => r.type === 'faq'),
+    };
+
+    const summaryParts: string[] = [];
+    if (byType.product.length > 0) {
+      summaryParts.push(`${byType.product.length} product(s) including ${byType.product[0].title}`);
+    }
+    if (byType.solution.length > 0) {
+      summaryParts.push(`${byType.solution.length} solution(s) including ${byType.solution[0].title}`);
+    }
+    if (byType.blog.length > 0) {
+      summaryParts.push(`${byType.blog.length} article(s) covering ${query}`);
+    }
+    if (byType.faq.length > 0) {
+      summaryParts.push(`${byType.faq.length} FAQ(s)`);
+    }
+
+    sections.push(`TechGuru has ${internalResults.length} resources for "${query}": ${summaryParts.join(', ')}.`);
   }
 
-  // Section 2: 外部知识 — 从 Tavily/CSE 综合提炼，不是直接透传
-  const externalInsights: string[] = [];
-
-  // 从 Tavily answer 提炼关键事实（去掉通用废话，保留技术事实）
+  // Section 2: 从 Tavily 提炼关键技术洞察（不是透传，而是提取）
   if (tavilyAnswer && tavilyAnswer.length > 30) {
-    // 提取 Tavily 回答中的关键句（含技术术语的句子）
-    const techSentences = tavilyAnswer
+    const sentences = tavilyAnswer
       .split(/[.。!！?？]/)
       .map(s => s.trim())
-      .filter(s => s.length > 20 && s.length < 300);
+      .filter(s => s.length > 15 && s.length < 250);
+
+    // 只保留含技术关键词的句子，过滤营销/通用废话
+    const techKeywords = ['architecture', 'platform', 'solution', 'deploy', 'implement', 'security',
+      'virtualization', 'cloud', 'network', 'infrastructure', 'performance', 'migration',
+      'backup', 'recovery', 'monitor', 'automat', 'integrat', 'scalab', 'redundan'];
+    const techSentences = sentences.filter(s => {
+      const lower = s.toLowerCase();
+      return techKeywords.some(kw => lower.includes(kw));
+    });
 
     if (techSentences.length > 0) {
-      externalInsights.push(techSentences.slice(0, 3).join('. ') + '.');
+      sections.push(`Key insight: ${techSentences[0]}.`);
     }
   }
 
-  // 从外部搜索结果补充关键链接
+  // Section 3: 外部来源摘要（过滤噪音域名和 hashtag）
   if (externalResults.length > 0) {
-    const topExternal = externalResults.slice(0, 3);
-    const sources = topExternal.map(r => `• ${r.title} (${r.url.replace(/^https?:\/\//, '').split('/')[0]})`).join('\n');
-    externalInsights.push(`Top web sources:\n${sources}`);
+    // 过滤掉 LinkedIn、Twitter 等社交媒体来源
+    const qualitySources = externalResults.filter(r => {
+      const domain = r.url.replace(/^https?:\/\//, '').split('/')[0].toLowerCase();
+      return !domain.includes('linkedin') && !domain.includes('twitter') &&
+             !domain.includes('facebook') && !domain.includes('youtube');
+    });
+
+    if (qualitySources.length > 0) {
+      const top = qualitySources.slice(0, 3);
+      const sourceList = top.map(r => {
+        const domain = r.url.replace(/^https?:\/\//, '').split('/')[0];
+        return `${r.title} (${domain})`;
+      }).join(' · ');
+      sections.push(`See also: ${sourceList}`);
+    }
   }
 
-  if (externalInsights.length > 0) {
-    parts.push(`Industry insights:\n${externalInsights.join('\n')}`);
+  if (sections.length === 0) {
+    return `No results found for "${query}". Try different keywords or browse our Products and Solutions.`;
   }
 
-  // 如果什么都没找到
-  if (parts.length === 0) {
-    return `No specific results found for "${query}". Try adjusting your search terms or browse our Products and Solutions pages.`;
-  }
-
-  return parts.join('\n\n');
+  return sections.join('\n\n');
 }
 
-// 检测能力缺口
+// 检测能力缺口 — 智能检测：站内结果少于阈值时触发
 async function detectCapabilityGap(
   query: string,
   internalResults: SearchResult[]
 ): Promise<{ detected: boolean; gapDescription: string | null }> {
-  if (internalResults.length < 2) {
-    const productKeywords = ['产品', '解决方案', '服务', '方案', 'product', 'solution', 'service'];
-    const isProductQuery = productKeywords.some(kw => query.toLowerCase().includes(kw));
-    
-    if (isProductQuery && internalResults.length === 0) {
-      return {
-        detected: true,
-        gapDescription: `用户搜索"${query}"，但当前公司未提供相关产品或解决方案`,
-      };
+  // 当站内结果少于3条时，认为可能存在能力缺口
+  if (internalResults.length <= 2) {
+    // 排除通用搜索词（这些词搜不到是正常的）
+    const genericTerms = ['about', 'contact', 'login', 'home', 'help', 'faq', 'search',
+      '關於', '聯絡', '登入', '首頁', '說明', '搜尋'];
+    const queryLower = query.toLowerCase().trim();
+    if (genericTerms.some(t => queryLower === t || queryLower.includes(t))) {
+      return { detected: false, gapDescription: null };
     }
+
+    return {
+      detected: true,
+      gapDescription: internalResults.length === 0
+        ? `No existing resources found for "${query}". This may represent a gap in TechGuru's current offerings.`
+        : `Only ${internalResults.length} result(s) found for "${query}". TechGuru may have limited coverage in this area.`,
+    };
   }
-  
+
   return { detected: false, gapDescription: null };
 }
 

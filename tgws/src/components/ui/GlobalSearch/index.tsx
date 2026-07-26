@@ -93,6 +93,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
   const [suggestions, setSuggestions] = useState<{ id: string; title: string; description: string; url: string; type: string; pillar?: string }[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -196,6 +197,21 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
       document.body.style.overflow = '';
     };
   }, [isOpen, onClose]);
+
+  // Debounced auto-search: 输入完毕 500ms 后自动触发搜索
+  useEffect(() => {
+    if (!query.trim() || query.trim().length < 2) {
+      setResults(null);
+      return;
+    }
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      handleSearch();
+    }, 500);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [query]);
 
   // 处理图片上传
   const handleImageUpload = useCallback((file: File) => {
@@ -560,66 +576,36 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                 {results.aiSummary && (
                   <div className="mb-6 rounded-xl border border-[#00D4FF]/20 overflow-hidden">
                     {results.aiSummary.split('\n\n').map((section, sIdx) => {
-                      const isInternal = section.startsWith('What TechGuru offers');
-                      const lines = section.split('\n');
-                      const title = lines[0];
-                      const items = lines.slice(1).filter(l => l.trim());
+                      const isInternal = section.startsWith('TechGuru has');
+                      const isInsight = section.startsWith('Key insight');
+                      const isSources = section.startsWith('See also');
 
                       return (
                         <div
                           key={sIdx}
                           className={`p-4 ${
-                            isInternal
-                              ? 'bg-[#00D4FF]/5'
-                              : 'bg-[#7B61FF]/5'
+                            isInternal ? 'bg-[#00D4FF]/5' :
+                            isInsight ? 'bg-[#F59E0B]/5' :
+                            'bg-[#7B61FF]/5'
                           }`}
                         >
                           <div className="flex items-start gap-3">
-                            <Sparkles size={18} className={`mt-0.5 shrink-0 ${
-                              isInternal ? 'text-[#00D4FF]' : 'text-[#7B61FF]'
+                            <Sparkles size={16} className={`mt-0.5 shrink-0 ${
+                              isInternal ? 'text-[#00D4FF]' :
+                              isInsight ? 'text-[#F59E0B]' :
+                              'text-[#7B61FF]'
                             }`} />
                             <div className="flex-1 min-w-0">
-                              <p className={`text-xs font-semibold uppercase tracking-wider mb-2 ${
-                                isInternal ? 'text-[#00D4FF]' : 'text-[#7B61FF]'
+                              <p className={`text-[11px] font-semibold uppercase tracking-wider mb-1.5 ${
+                                isInternal ? 'text-[#00D4FF]' :
+                                isInsight ? 'text-[#F59E0B]' :
+                                'text-[#7B61FF]'
                               }`}>
-                                {isInternal ? 'TechGuru Solutions' : 'Industry Insights'}
+                                {isInternal ? 'TechGuru Resources' :
+                                 isInsight ? 'Key Insight' :
+                                 'External Sources'}
                               </p>
-                              {items.map((item, iIdx) => {
-                                // 解析 [Type] Title — Description 格式
-                                const match = item.match(/^•\s*\[(\w+)\]\s*(.+)/);
-                                if (match) {
-                                  const [, type, rest] = match;
-                                  const dashIdx = rest.indexOf(' — ');
-                                  const itemTitle = dashIdx > 0 ? rest.substring(0, dashIdx) : rest;
-                                  const itemDesc = dashIdx > 0 ? rest.substring(dashIdx + 3) : '';
-                                  return (
-                                    <div key={iIdx} className="flex items-start gap-2 py-1">
-                                      <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded mt-0.5 shrink-0 ${
-                                        type === 'Product' ? 'bg-[#00D4FF]/10 text-[#00D4FF]' :
-                                        type === 'Solution' ? 'bg-[#7B61FF]/10 text-[#7B61FF]' :
-                                        type === 'Article' ? 'bg-[#22C55E]/10 text-[#22C55E]' :
-                                        'bg-[#F59E0B]/10 text-[#F59E0B]'
-                                      }`}>
-                                        {type}
-                                      </span>
-                                      <p className="text-sm text-gray-900 dark:text-white font-medium">{itemTitle}</p>
-                                    </div>
-                                  );
-                                }
-                                // 普通文本行（来源链接等）
-                                if (item.startsWith('•')) {
-                                  const sourceText = item.replace(/^•\s*/, '');
-                                  const urlMatch = sourceText.match(/(.+?)\s*\((.+)\)/);
-                                  return (
-                                    <p key={iIdx} className="text-xs text-gray-500 dark:text-gray-400 py-0.5 pl-2">
-                                      {urlMatch ? (
-                                        <span><span className="text-gray-700 dark:text-gray-300">{urlMatch[1]}</span> <span className="text-gray-400">{urlMatch[2]}</span></span>
-                                      ) : sourceText}
-                                    </p>
-                                  );
-                                }
-                                return <p key={iIdx} className="text-sm text-gray-600 dark:text-gray-300">{item}</p>;
-                              })}
+                              <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{section}</p>
                             </div>
                           </div>
                         </div>
