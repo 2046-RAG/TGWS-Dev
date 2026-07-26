@@ -319,6 +319,7 @@ const BLOCKED_DOMAINS = new Set([
   'linkedin.com', 'twitter.com', 'facebook.com', 'youtube.com',
   'techguru-it.asia', 'techguru.net', 'techguru.co.in',
   'pinterest.com', 'reddit.com', 'medium.com', 'quora.com',
+  'synetcom.asia', 'virtana.com', 'paessler.com', 'scalecomputing.com', 'datacore.com',
 ]);
 
 // 过滤低质量外部结果
@@ -399,7 +400,8 @@ List exactly 2-3 URLs from this allowed list ONLY: oracle.com, wikipedia.org, ib
 
     if (!response.ok) {
       console.error('Gemini API error:', response.statusText);
-      return generateFallbackSummary(query, internalResults, externalResults);
+      const fallback = generateFallbackSummary(query, internalResults, externalResults);
+      return postProcessAiSummary(fallback, query, internalResults, externalResults);
     }
 
     const data = await response.json();
