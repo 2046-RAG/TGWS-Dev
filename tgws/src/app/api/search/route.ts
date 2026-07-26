@@ -361,7 +361,7 @@ async function generateAiSummary(
 
   const prompt = `You are TechGuru Network & Data Solutions' search AI assistant. TechGuru is an enterprise IT solutions company in the Philippines specializing in Build (AI, cloud), Run (virtualization, HCI, hosting), and Protect (security, networking).
 
-A user searched for: "${query}"
+User searched: "${query}"
 
 INTERNAL RESOURCES from TechGuru:
 ${internalContext || '(none)'}
@@ -370,23 +370,16 @@ EXTERNAL REFERENCES:
 ${externalContext || '(none)'}
 ${tavilyContext}
 
-BLOCKED domains (never recommend these): ema.ai, solytics-partners.com, tungstenautomation.com, techguru-it.asia, techguru.net
-
-Generate a response in this EXACT format with ALL 3 sections required:
+You MUST output EXACTLY these 3 sections in order. Every section is REQUIRED:
 
 [RESOURCES]
-1-2 sentences summarizing what TechGuru offers for this query. If no internal resources exist, say "TechGuru doesn't currently have dedicated resources for this topic."
+State how many TechGuru resources match and list the top 1-2 by name. If zero, write "TechGuru doesn't currently have dedicated resources for this topic."
 
 [INSIGHT]
-1-2 sentences of the most useful, actionable knowledge about this topic in enterprise IT context. Be specific, technical, and directly relevant to the search query. NOT a generic definition — explain WHY it matters for enterprise infrastructure.
+Write 1-2 sentences explaining what "${query}" means for enterprise IT infrastructure, why it matters, and how companies evaluate or deploy it. Be specific and actionable — NOT a dictionary definition.
 
 [SOURCES]
-List up to 3 most authoritative external domains ONLY from the allowed list: oracle.com, wikipedia.org, ibm.com, microsoft.com, cisco.com, aws.amazon.com, cloud.google.com, vmware.com, nutanix.com, gartner.com, forrester.com, techtarget.com. Do NOT include blocked domains.
-
-Rules:
-- Be factual and specific, not generic marketing copy
-- [INSIGHT] must directly relate to the search query AND enterprise IT — explain practical implications
-- Keep total response under 200 words`;
+List exactly 2-3 URLs from this allowed list ONLY: oracle.com, wikipedia.org, ibm.com, microsoft.com, cisco.com, aws.amazon.com, cloud.google.com, vmware.com, nutanix.com, gartner.com, forrester.com, techtarget.com, arxiv.org, nist.gov. NEVER use any other domain.`;
 
   try {
     const response = await fetch(
@@ -412,13 +405,90 @@ Rules:
     const data = await response.json();
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
     if (text && text.length > 20) {
-      return text.trim();
+      return postProcessAiSummary(text.trim(), query, internalResults, externalResults);
     }
   } catch (error) {
     console.error('Gemini error:', error);
   }
 
   return generateFallbackSummary(query, internalResults, externalResults);
+}
+
+// 后处理 Gemini 输出：补齐缺失 section、过滤黑名单域名
+function postProcessAiSummary(
+  raw: string,
+  query: string,
+  internalResults: SearchResult[],
+  externalResults: ExternalResult[]
+): string {
+  const sections: string[] = [];
+  const parsed = { RESOURCES: '', INSIGHT: '', SOURCES: '' };
+
+  // 解析 Gemini 输出
+  const parts = raw.split(/\n?\[(\w+)\]\n?/);
+  for (let i = 1; i < parts.length; i += 2) {
+    const tag = parts[i].toUpperCase();
+    const content = (parts[i + 1] || '').trim();
+    if (tag in parsed && content) {
+      parsed[tag as keyof typeof parsed] = content;
+    }
+  }
+
+  // Section 1: RESOURCES — 必须存在
+  if (parsed.RESOURCES) {
+    sections.push(`[RESOURCES]\n${parsed.RESOURCES}`);
+  } else if (internalResults.length > 0) {
+    const top = internalResults.slice(0, 2).map(r => r.title).join(', ');
+    sections.push(`[RESOURCES]\nTechGuru has ${internalResults.length} resource(s) for "${query}": ${top}.`);
+  } else {
+    sections.push(`[RESOURCES]\nTechGuru doesn't currently have dedicated resources for "${query}".`);
+  }
+
+  // Section 2: INSIGHT — 必须存在
+  if (parsed.INSIGHT) {
+    sections.push(`[INSIGHT]\n${parsed.INSIGHT}`);
+  } else {
+    // 从 Tavily answer 中提取一句有价值的洞察
+    const fallbackInsight = `For enterprise IT, "${query}" is relevant to infrastructure planning and technology evaluation. Contact TechGuru to discuss how this applies to your environment.`;
+    sections.push(`[INSIGHT]\n${fallbackInsight}`);
+  }
+
+  // Section 3: SOURCES — 过滤黑名单域名
+  if (parsed.SOURCES) {
+    const allowedDomains = new Set([
+      'oracle.com', 'wikipedia.org', 'ibm.com', 'microsoft.com', 'cisco.com',
+      'aws.amazon.com', 'cloud.google.com', 'vmware.com', 'nutanix.com',
+      'gartner.com', 'forrester.com', 'techtarget.com', 'arxiv.org', 'nist.gov',
+    ]);
+    const lines = parsed.SOURCES.split('\n').filter(line => {
+      const domainMatch = line.match(/\(([^)]+)\)/);
+      if (!domainMatch) return true;
+      const domain = domainMatch[1].toLowerCase().replace(/^www\./, '');
+      return allowedDomains.has(domain);
+    });
+    if (lines.length > 0) {
+      sections.push(`[SOURCES]\n${lines.join('\n')}`);
+    }
+  }
+
+  // 如果连 SOURCES 都被过滤光了，从外部结果补
+  if (!sections.some(s => s.includes('[SOURCES]'))) {
+    const qualityExternal = externalResults.filter(r => {
+      const domain = r.url.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0].toLowerCase();
+      const allowedDomains = ['oracle.com', 'wikipedia.org', 'ibm.com', 'microsoft.com', 'cisco.com',
+        'aws.amazon.com', 'cloud.google.com', 'vmware.com', 'nutanix.com', 'gartner.com', 'forrester.com', 'techtarget.com'];
+      return allowedDomains.some(d => domain.endsWith(d));
+    }).slice(0, 3);
+    if (qualityExternal.length > 0) {
+      const sourceLines = qualityExternal.map(r => {
+        const domain = r.url.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+        return `- ${r.title} (${domain})`;
+      });
+      sections.push(`[SOURCES]\n${sourceLines.join('\n')}`);
+    }
+  }
+
+  return sections.join('\n\n');
 }
 
 // Fallback: 无 Gemini 时的简单摘要
