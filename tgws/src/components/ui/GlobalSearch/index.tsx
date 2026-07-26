@@ -556,16 +556,75 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
             {/* Results */}
             {!isSearching && results && (
               <>
-                {/* AI Summary */}
+                {/* AI Summary — 结构化渲染 */}
                 {results.aiSummary && (
-                  <div className="mb-6 p-4 bg-gradient-to-r from-[#00D4FF]/10 to-[#7B61FF]/10 rounded-xl border border-[#00D4FF]/20">
-                    <div className="flex items-start gap-3">
-                      <Sparkles size={20} className="text-[#00D4FF] mt-0.5 shrink-0" />
-                      <div>
-                        <p className="text-sm font-medium text-gray-900 dark:text-white mb-1">AI Summary</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">{results.aiSummary}</p>
-                      </div>
-                    </div>
+                  <div className="mb-6 rounded-xl border border-[#00D4FF]/20 overflow-hidden">
+                    {results.aiSummary.split('\n\n').map((section, sIdx) => {
+                      const isInternal = section.startsWith('What TechGuru offers');
+                      const lines = section.split('\n');
+                      const title = lines[0];
+                      const items = lines.slice(1).filter(l => l.trim());
+
+                      return (
+                        <div
+                          key={sIdx}
+                          className={`p-4 ${
+                            isInternal
+                              ? 'bg-[#00D4FF]/5'
+                              : 'bg-[#7B61FF]/5'
+                          }`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <Sparkles size={18} className={`mt-0.5 shrink-0 ${
+                              isInternal ? 'text-[#00D4FF]' : 'text-[#7B61FF]'
+                            }`} />
+                            <div className="flex-1 min-w-0">
+                              <p className={`text-xs font-semibold uppercase tracking-wider mb-2 ${
+                                isInternal ? 'text-[#00D4FF]' : 'text-[#7B61FF]'
+                              }`}>
+                                {isInternal ? 'TechGuru Solutions' : 'Industry Insights'}
+                              </p>
+                              {items.map((item, iIdx) => {
+                                // 解析 [Type] Title — Description 格式
+                                const match = item.match(/^•\s*\[(\w+)\]\s*(.+)/);
+                                if (match) {
+                                  const [, type, rest] = match;
+                                  const dashIdx = rest.indexOf(' — ');
+                                  const itemTitle = dashIdx > 0 ? rest.substring(0, dashIdx) : rest;
+                                  const itemDesc = dashIdx > 0 ? rest.substring(dashIdx + 3) : '';
+                                  return (
+                                    <div key={iIdx} className="flex items-start gap-2 py-1">
+                                      <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded mt-0.5 shrink-0 ${
+                                        type === 'Product' ? 'bg-[#00D4FF]/10 text-[#00D4FF]' :
+                                        type === 'Solution' ? 'bg-[#7B61FF]/10 text-[#7B61FF]' :
+                                        type === 'Article' ? 'bg-[#22C55E]/10 text-[#22C55E]' :
+                                        'bg-[#F59E0B]/10 text-[#F59E0B]'
+                                      }`}>
+                                        {type}
+                                      </span>
+                                      <p className="text-sm text-gray-900 dark:text-white font-medium">{itemTitle}</p>
+                                    </div>
+                                  );
+                                }
+                                // 普通文本行（来源链接等）
+                                if (item.startsWith('•')) {
+                                  const sourceText = item.replace(/^•\s*/, '');
+                                  const urlMatch = sourceText.match(/(.+?)\s*\((.+)\)/);
+                                  return (
+                                    <p key={iIdx} className="text-xs text-gray-500 dark:text-gray-400 py-0.5 pl-2">
+                                      {urlMatch ? (
+                                        <span><span className="text-gray-700 dark:text-gray-300">{urlMatch[1]}</span> <span className="text-gray-400">{urlMatch[2]}</span></span>
+                                      ) : sourceText}
+                                    </p>
+                                  );
+                                }
+                                return <p key={iIdx} className="text-sm text-gray-600 dark:text-gray-300">{item}</p>;
+                              })}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
 

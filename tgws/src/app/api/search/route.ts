@@ -242,25 +242,28 @@ async function searchGoogleCSE(query: string): Promise<ExternalResult[]> {
   return results;
 }
 
-// Tavily搜索
+// Tavily搜索 — query 注入 TechGuru 业务上下文
 async function searchTavily(query: string): Promise<{ results: ExternalResult[]; answer: string }> {
   const results: ExternalResult[] = [];
   let answer = '';
-  
+
   try {
     const apiKey = process.env.TAVILY_API_KEY;
-    
+
     if (!apiKey) {
       console.log('Tavily not configured, skipping');
       return { results, answer };
     }
+
+    // 注入 TechGuru 上下文，确保 Tavily 从企业IT角度回答
+    const enrichedQuery = `TechGuru Network & Data Solutions (enterprise IT solutions company in the Philippines, covering Build/Run/Protect pillars — virtualization, HCI, cloud, security, networking): ${query}`;
 
     const response = await fetch('https://api.tavily.com/search', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         api_key: apiKey,
-        query: query,
+        query: enrichedQuery,
         search_depth: 'advanced',
         include_answer: true,
         include_raw_content: false,
@@ -310,27 +313,58 @@ function deduplicateResults(
   return { internal, external: uniqueExternal };
 }
 
-// 生成AI摘要（融合多源数据）
+// 生成AI摘要 — 融合站内+外部多源数据，结构化输出
 function generateAiSummary(
   query: string,
   tavilyAnswer: string,
   internalResults: SearchResult[],
   externalResults: ExternalResult[]
 ): string {
-  // 如果有Tavily AI摘要，优先使用
-  if (tavilyAnswer && tavilyAnswer.length > 50) {
-    return tavilyAnswer;
-  }
-  
-  // 否则生成基于站内结果的摘要
+  const parts: string[] = [];
+
+  // Section 1: 站内匹配 — 作为主事实源
   if (internalResults.length > 0) {
-    const topResults = internalResults.slice(0, 3);
-    const titles = topResults.map(r => r.title).join('、');
-    return `TechGuru提供以下${query}相关解决方案：${titles}。我们的解决方案涵盖产品、方案和技术支持，帮助企业构建、运行和保护IT基础设施。`;
+    const topItems = internalResults.slice(0, 5);
+    const items = topItems.map(r => {
+      const typeLabel = r.type === 'product' ? 'Product' : r.type === 'solution' ? 'Solution' : r.type === 'blog' ? 'Article' : 'FAQ';
+      return `• [${typeLabel}] ${r.title} — ${r.description.substring(0, 100)}`;
+    }).join('\n');
+    parts.push(`What TechGuru offers for "${query}":\n${items}`);
   }
-  
-  // 默认摘要
-  return `TechGuru提供全面的${query}相关解决方案，包括产品、服务和技术支持。`;
+
+  // Section 2: 外部知识 — 从 Tavily/CSE 综合提炼，不是直接透传
+  const externalInsights: string[] = [];
+
+  // 从 Tavily answer 提炼关键事实（去掉通用废话，保留技术事实）
+  if (tavilyAnswer && tavilyAnswer.length > 30) {
+    // 提取 Tavily 回答中的关键句（含技术术语的句子）
+    const techSentences = tavilyAnswer
+      .split(/[.。!！?？]/)
+      .map(s => s.trim())
+      .filter(s => s.length > 20 && s.length < 300);
+
+    if (techSentences.length > 0) {
+      externalInsights.push(techSentences.slice(0, 3).join('. ') + '.');
+    }
+  }
+
+  // 从外部搜索结果补充关键链接
+  if (externalResults.length > 0) {
+    const topExternal = externalResults.slice(0, 3);
+    const sources = topExternal.map(r => `• ${r.title} (${r.url.replace(/^https?:\/\//, '').split('/')[0]})`).join('\n');
+    externalInsights.push(`Top web sources:\n${sources}`);
+  }
+
+  if (externalInsights.length > 0) {
+    parts.push(`Industry insights:\n${externalInsights.join('\n')}`);
+  }
+
+  // 如果什么都没找到
+  if (parts.length === 0) {
+    return `No specific results found for "${query}". Try adjusting your search terms or browse our Products and Solutions pages.`;
+  }
+
+  return parts.join('\n\n');
 }
 
 // 检测能力缺口
