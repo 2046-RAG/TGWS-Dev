@@ -370,21 +370,22 @@ EXTERNAL REFERENCES:
 ${externalContext || '(none)'}
 ${tavilyContext}
 
-Generate a concise, helpful response in this EXACT format (3 sections separated by double newline):
+BLOCKED domains (never recommend these): ema.ai, solytics-partners.com, tungstenautomation.com, techguru-it.asia, techguru.net
+
+Generate a response in this EXACT format with ALL 3 sections required:
 
 [RESOURCES]
 1-2 sentences summarizing what TechGuru offers for this query. If no internal resources exist, say "TechGuru doesn't currently have dedicated resources for this topic."
 
 [INSIGHT]
-1-2 sentences of the most useful, actionable knowledge about this topic in enterprise IT context. Be specific and technical — no generic filler.
+1-2 sentences of the most useful, actionable knowledge about this topic in enterprise IT context. Be specific, technical, and directly relevant to the search query. NOT a generic definition — explain WHY it matters for enterprise infrastructure.
 
 [SOURCES]
-List up to 3 most authoritative external sources with domain names.
+List up to 3 most authoritative external domains ONLY from the allowed list: oracle.com, wikipedia.org, ibm.com, microsoft.com, cisco.com, aws.amazon.com, cloud.google.com, vmware.com, nutanix.com, gartner.com, forrester.com, techtarget.com. Do NOT include blocked domains.
 
 Rules:
 - Be factual and specific, not generic marketing copy
-- If TechGuru has no resources, say so honestly — don't fabricate
-- Focus on enterprise IT relevance, not academic definitions
+- [INSIGHT] must directly relate to the search query AND enterprise IT — explain practical implications
 - Keep total response under 200 words`;
 
   try {
