@@ -411,7 +411,9 @@ List exactly 2-3 URLs from this allowed list ONLY: oracle.com, wikipedia.org, ib
     console.error('Gemini error:', error);
   }
 
-  return generateFallbackSummary(query, internalResults, externalResults);
+  // Fallback 也经过 postProcessAiSummary 保证三段格式 + 域名过滤
+  const fallback = generateFallbackSummary(query, internalResults, externalResults);
+  return postProcessAiSummary(fallback, query, internalResults, externalResults);
 }
 
 // 后处理 Gemini 输出：补齐缺失 section、过滤黑名单域名
