@@ -82,7 +82,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [results, setResults] = useState<SearchResponse['data'] | null>(null);
   const [isSearching, setIsSearching] = useState(false);
-  const [showFilters, setShowFilters] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState<Filters>({
     contentType: [],
     pillar: [],
@@ -572,47 +572,44 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
             {/* Results */}
             {!isSearching && results && (
               <>
-                {/* AI Summary — 结构化渲染 */}
-                {results.aiSummary && (
-                  <div className="mb-6 rounded-xl border border-[#00D4FF]/20 overflow-hidden">
-                    {results.aiSummary.split('\n\n').map((section, sIdx) => {
-                      const isInternal = section.startsWith('TechGuru has');
-                      const isInsight = section.startsWith('Key insight');
-                      const isSources = section.startsWith('See also');
-
-                      return (
-                        <div
-                          key={sIdx}
-                          className={`p-4 ${
-                            isInternal ? 'bg-[#00D4FF]/5' :
-                            isInsight ? 'bg-[#F59E0B]/5' :
-                            'bg-[#7B61FF]/5'
-                          }`}
-                        >
+                {/* AI Summary — 解析 Gemini 结构化输出 */}
+                {results.aiSummary && (() => {
+                  // 解析 [RESOURCES] / [INSIGHT] / [SOURCES] 格式
+                  const sections: { label: string; color: string; bg: string; content: string }[] = [];
+                  const parts = results.aiSummary.split(/\n?\[(\w+)\]\n?/);
+                  for (let i = 1; i < parts.length; i += 2) {
+                    const tag = parts[i].toUpperCase();
+                    const content = (parts[i + 1] || '').trim();
+                    if (!content) continue;
+                    if (tag === 'RESOURCES') {
+                      sections.push({ label: 'TechGuru Resources', color: 'text-[#00D4FF]', bg: 'bg-[#00D4FF]/5', content });
+                    } else if (tag === 'INSIGHT') {
+                      sections.push({ label: 'AI Insight', color: 'text-[#F59E0B]', bg: 'bg-[#F59E0B]/5', content });
+                    } else if (tag === 'SOURCES') {
+                      sections.push({ label: 'Sources', color: 'text-[#7B61FF]', bg: 'bg-[#7B61FF]/5', content });
+                    }
+                  }
+                  // 如果 Gemini 返回了非结构化文本，整个作为一个 section
+                  if (sections.length === 0 && results.aiSummary.length > 20) {
+                    sections.push({ label: 'AI Summary', color: 'text-[#00D4FF]', bg: 'bg-[#00D4FF]/5', content: results.aiSummary });
+                  }
+                  if (sections.length === 0) return null;
+                  return (
+                    <div className="mb-6 rounded-xl border border-gray-200 dark:border-zinc-700 overflow-hidden">
+                      {sections.map((s, idx) => (
+                        <div key={idx} className={`p-4 ${s.bg} ${idx > 0 ? 'border-t border-gray-100 dark:border-zinc-700/50' : ''}`}>
                           <div className="flex items-start gap-3">
-                            <Sparkles size={16} className={`mt-0.5 shrink-0 ${
-                              isInternal ? 'text-[#00D4FF]' :
-                              isInsight ? 'text-[#F59E0B]' :
-                              'text-[#7B61FF]'
-                            }`} />
+                            <Sparkles size={16} className={`mt-0.5 shrink-0 ${s.color}`} />
                             <div className="flex-1 min-w-0">
-                              <p className={`text-[11px] font-semibold uppercase tracking-wider mb-1.5 ${
-                                isInternal ? 'text-[#00D4FF]' :
-                                isInsight ? 'text-[#F59E0B]' :
-                                'text-[#7B61FF]'
-                              }`}>
-                                {isInternal ? 'TechGuru Resources' :
-                                 isInsight ? 'Key Insight' :
-                                 'External Sources'}
-                              </p>
-                              <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{section}</p>
+                              <p className={`text-[11px] font-semibold uppercase tracking-wider mb-1.5 ${s.color}`}>{s.label}</p>
+                              <div className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed whitespace-pre-line">{s.content}</div>
                             </div>
                           </div>
                         </div>
-                      );
-                    })}
-                  </div>
-                )}
+                      ))}
+                    </div>
+                  );
+                })()}
 
                 {/* Capability Gap Alert — 放在摘要和结果之间，更显眼 */}
                 {results.capabilityGap?.detected && !leadSubmitted && (

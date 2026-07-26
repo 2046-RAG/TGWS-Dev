@@ -313,87 +313,134 @@ function deduplicateResults(
   return { internal, external: uniqueExternal };
 }
 
-// 生成AI摘要 — 融合站内+外部，结构化且可读
-function generateAiSummary(
+// 低质量/广告域名黑名单
+const BLOCKED_DOMAINS = new Set([
+  'ema.ai', 'solytics-partners.com', 'tungstenautomation.com',
+  'linkedin.com', 'twitter.com', 'facebook.com', 'youtube.com',
+  'techguru-it.asia', 'techguru.net', 'techguru.co.in',
+  'pinterest.com', 'reddit.com', 'medium.com', 'quora.com',
+]);
+
+// 过滤低质量外部结果
+function filterExternalResults(results: ExternalResult[]): ExternalResult[] {
+  return results.filter(r => {
+    const domain = r.url.replace(/^https?:\/\//, '').split('/')[0].toLowerCase();
+    // 过滤黑名单
+    if (BLOCKED_DOMAINS.has(domain)) return false;
+    // 过滤标题含广告特征的
+    const spamPatterns = ['sponsored', 'ad ', 'advertisement', 'buy now', 'click here', 'limited offer'];
+    if (spamPatterns.some(p => r.title.toLowerCase().includes(p))) return false;
+    return true;
+  });
+}
+
+// 用 Gemini 生成真正的 AI 融合摘要
+async function generateAiSummary(
   query: string,
   tavilyAnswer: string,
   internalResults: SearchResult[],
   externalResults: ExternalResult[]
+): Promise<string> {
+  const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
+  if (!apiKey) {
+    // Fallback: 无 Gemini key 时用简单拼接
+    return generateFallbackSummary(query, internalResults, externalResults);
+  }
+
+  // 构建上下文：站内结果 + Tavily洞察 + 外部来源
+  const internalContext = internalResults.slice(0, 5).map(r =>
+    `[${r.type}] ${r.title}: ${r.description.substring(0, 150)}`
+  ).join('\n');
+
+  const externalContext = externalResults.slice(0, 5).map(r => {
+    const domain = r.url.replace(/^https?:\/\//, '').split('/')[0];
+    return `- ${r.title} (${domain}): ${r.description.substring(0, 120)}`;
+  }).join('\n');
+
+  const tavilyContext = tavilyAnswer ? `\nExternal AI answer: ${tavilyAnswer.substring(0, 500)}` : '';
+
+  const prompt = `You are TechGuru Network & Data Solutions' search AI assistant. TechGuru is an enterprise IT solutions company in the Philippines specializing in Build (AI, cloud), Run (virtualization, HCI, hosting), and Protect (security, networking).
+
+A user searched for: "${query}"
+
+INTERNAL RESOURCES from TechGuru:
+${internalContext || '(none)'}
+
+EXTERNAL REFERENCES:
+${externalContext || '(none)'}
+${tavilyContext}
+
+Generate a concise, helpful response in this EXACT format (3 sections separated by double newline):
+
+[RESOURCES]
+1-2 sentences summarizing what TechGuru offers for this query. If no internal resources exist, say "TechGuru doesn't currently have dedicated resources for this topic."
+
+[INSIGHT]
+1-2 sentences of the most useful, actionable knowledge about this topic in enterprise IT context. Be specific and technical — no generic filler.
+
+[SOURCES]
+List up to 3 most authoritative external sources with domain names.
+
+Rules:
+- Be factual and specific, not generic marketing copy
+- If TechGuru has no resources, say so honestly — don't fabricate
+- Focus on enterprise IT relevance, not academic definitions
+- Keep total response under 200 words`;
+
+  try {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 400,
+          },
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      console.error('Gemini API error:', response.statusText);
+      return generateFallbackSummary(query, internalResults, externalResults);
+    }
+
+    const data = await response.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (text && text.length > 20) {
+      return text.trim();
+    }
+  } catch (error) {
+    console.error('Gemini error:', error);
+  }
+
+  return generateFallbackSummary(query, internalResults, externalResults);
+}
+
+// Fallback: 无 Gemini 时的简单摘要
+function generateFallbackSummary(
+  query: string,
+  internalResults: SearchResult[],
+  externalResults: ExternalResult[]
 ): string {
-  const sections: string[] = [];
-
-  // Section 1: 站内匹配概览 — 按类型分组统计
+  const parts: string[] = [];
   if (internalResults.length > 0) {
-    const byType = {
-      product: internalResults.filter(r => r.type === 'product'),
-      solution: internalResults.filter(r => r.type === 'solution'),
-      blog: internalResults.filter(r => r.type === 'blog'),
-      faq: internalResults.filter(r => r.type === 'faq'),
-    };
-
-    const summaryParts: string[] = [];
-    if (byType.product.length > 0) {
-      summaryParts.push(`${byType.product.length} product(s) including ${byType.product[0].title}`);
-    }
-    if (byType.solution.length > 0) {
-      summaryParts.push(`${byType.solution.length} solution(s) including ${byType.solution[0].title}`);
-    }
-    if (byType.blog.length > 0) {
-      summaryParts.push(`${byType.blog.length} article(s) covering ${query}`);
-    }
-    if (byType.faq.length > 0) {
-      summaryParts.push(`${byType.faq.length} FAQ(s)`);
-    }
-
-    sections.push(`TechGuru has ${internalResults.length} resources for "${query}": ${summaryParts.join(', ')}.`);
+    const top = internalResults.slice(0, 3).map(r => r.title).join(', ');
+    parts.push(`[RESOURCES]\nTechGuru has ${internalResults.length} resource(s) for "${query}": ${top}.`);
+  } else {
+    parts.push(`[RESOURCES]\nTechGuru doesn't currently have dedicated resources for "${query}".`);
   }
-
-  // Section 2: 从 Tavily 提炼关键技术洞察（不是透传，而是提取）
-  if (tavilyAnswer && tavilyAnswer.length > 30) {
-    const sentences = tavilyAnswer
-      .split(/[.。!！?？]/)
-      .map(s => s.trim())
-      .filter(s => s.length > 15 && s.length < 250);
-
-    // 只保留含技术关键词的句子，过滤营销/通用废话
-    const techKeywords = ['architecture', 'platform', 'solution', 'deploy', 'implement', 'security',
-      'virtualization', 'cloud', 'network', 'infrastructure', 'performance', 'migration',
-      'backup', 'recovery', 'monitor', 'automat', 'integrat', 'scalab', 'redundan'];
-    const techSentences = sentences.filter(s => {
-      const lower = s.toLowerCase();
-      return techKeywords.some(kw => lower.includes(kw));
-    });
-
-    if (techSentences.length > 0) {
-      sections.push(`Key insight: ${techSentences[0]}.`);
-    }
-  }
-
-  // Section 3: 外部来源摘要（过滤噪音域名和自引用）
   if (externalResults.length > 0) {
-    // 过滤社交媒体 + TechGuru 自己的网站（自引用无意义）
-    const blockedDomains = ['linkedin', 'twitter', 'facebook', 'youtube',
-      'techguru-it.asia', 'techguru.net', 'techguru.co.in'];
-    const qualitySources = externalResults.filter(r => {
-      const domain = r.url.replace(/^https?:\/\//, '').split('/')[0].toLowerCase();
-      return !blockedDomains.some(bd => domain.includes(bd));
-    });
-
-    if (qualitySources.length > 0) {
-      const top = qualitySources.slice(0, 3);
-      const sourceList = top.map(r => {
-        const domain = r.url.replace(/^https?:\/\//, '').split('/')[0];
-        return `${r.title} (${domain})`;
-      }).join(' · ');
-      sections.push(`See also: ${sourceList}`);
-    }
+    const sources = externalResults.slice(0, 3).map(r => {
+      const domain = r.url.replace(/^https?:\/\//, '').split('/')[0];
+      return `${r.title} (${domain})`;
+    }).join('\n- ');
+    parts.push(`[SOURCES]\n- ${sources}`);
   }
-
-  if (sections.length === 0) {
-    return `No results found for "${query}". Try different keywords or browse our Products and Solutions.`;
-  }
-
-  return sections.join('\n\n');
+  return parts.join('\n\n');
 }
 
 // 检测能力缺口 — 智能检测：站内结果少于阈值时触发
@@ -451,10 +498,13 @@ export async function POST(request: NextRequest) {
     const capabilityGap = await detectCapabilityGap(searchQuery, internalResults);
 
     // 去重：移除站外结果中与站内重复的
-    const { internal, external } = deduplicateResults(internalResults, [...cseResults, ...tavilyData.results]);
+    const { internal, external: rawExternal } = deduplicateResults(internalResults, [...cseResults, ...tavilyData.results]);
 
-    // 生成AI摘要（融合多源数据）
-    const aiSummary = generateAiSummary(searchQuery, tavilyData.answer, internal, external);
+    // 过滤低质量/广告外部结果
+    const external = filterExternalResults(rawExternal);
+
+    // 用 Gemini 生成真正的 AI 融合摘要
+    const aiSummary = await generateAiSummary(searchQuery, tavilyData.answer, internal, external);
 
     // 构建响应
     const response = {
