@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { Search, X, Camera, Filter, Sparkles, Package, Building2, FileText, HelpCircle, ExternalLink, ArrowRight, Loader2 } from 'lucide-react';
+import { Search, X, Camera, Filter, Sparkles, Package, Building2, FileText, HelpCircle, ExternalLink, ArrowRight, Loader2, TrendingUp, Zap } from 'lucide-react';
+import { client } from '@/lib/sanity';
 
 interface SearchResult {
   id: string;
@@ -81,7 +82,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [results, setResults] = useState<SearchResponse['data'] | null>(null);
   const [isSearching, setIsSearching] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilters, setShowFilters] = useState(true);
   const [filters, setFilters] = useState<Filters>({
     contentType: [],
     pillar: [],
@@ -89,14 +90,98 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
   });
   const [showLeadForm, setShowLeadForm] = useState(false);
   const [leadSubmitted, setLeadSubmitted] = useState(false);
+  const [suggestions, setSuggestions] = useState<{ id: string; title: string; description: string; url: string; type: string; pillar?: string }[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
+      setShowFilters(true);
     }
   }, [isOpen]);
+
+  // Fetch trending suggestions when modal opens (only when query is empty)
+  useEffect(() => {
+    if (!isOpen || query.trim()) return;
+
+    const fetchSuggestions = async () => {
+      try {
+        const data = await client.fetch<{
+          products: { _id: string; title: string; slug: { current: string }; description?: string; category?: string; _type: string }[];
+          solutions: { _id: string; title: string; slug: { current: string }; description?: string; industry?: string; _type: string }[];
+          blogs: { _id: string; title: string; slug: { current: string }; description?: string; excerpt?: string; _type: string }[];
+        }>(
+          `{
+            "products": *[_type == "product" && !(_id in path("drafts.**"))] | order(_createdAt desc)[0...3],
+            "solutions": *[_type == "solution" && !(_id in path("drafts.**"))] | order(_createdAt desc)[0...2],
+            "blogs": *[_type == "post" && !(_id in path("drafts.**"))] | order(publishedAt desc)[0...2]
+          }`,
+        );
+        const all: { id: string; title: string; description: string; url: string; type: string; pillar?: string }[] = [];
+        const seen = new Set<string>();
+
+        // Always include VMware Alternatives as top suggestion
+        all.push({
+          id: 'vmware-alternatives',
+          title: 'VMware Alternatives',
+          description: '5 proven alternatives with dual-hypervisor architecture. Zero lock-in migration.',
+          url: `/${locale}/vmware-alternatives`,
+          type: 'solution',
+          pillar: 'run',
+        });
+        seen.add('vmware-alternatives');
+
+        if (data) {
+          for (const item of [...(data.products || []), ...(data.solutions || []), ...(data.blogs || [])]) {
+            if (all.length >= 6) break;
+            const slug = item.slug?.current;
+            if (!slug || seen.has(slug)) continue;
+            seen.add(slug);
+            let url = '';
+            let type = 'product';
+            let pillar: string | undefined;
+            if (item._type === 'product') {
+              url = `/${locale}/products/${slug}`;
+              type = 'product';
+              pillar = (item as { category?: string }).category;
+            } else if (item._type === 'solution') {
+              url = `/${locale}/solutions/${slug}`;
+              type = 'solution';
+              pillar = (item as { industry?: string }).industry;
+            } else {
+              url = `/${locale}/blog/${slug}`;
+              type = 'blog';
+            }
+            all.push({
+              id: item._id,
+              title: item.title || '',
+              description: item.description || (item as { excerpt?: string }).excerpt || '',
+              url,
+              type,
+              pillar,
+            });
+          }
+        }
+
+        setSuggestions(all);
+      } catch {
+        // Graceful fallback — suggestions are non-critical
+        setSuggestions([
+          {
+            id: 'vmware-alternatives',
+            title: 'VMware Alternatives',
+            description: '5 proven alternatives with dual-hypervisor architecture. Zero lock-in.',
+            url: `/${locale}/vmware-alternatives`,
+            type: 'solution',
+            pillar: 'run',
+          },
+        ]);
+      }
+    };
+
+    fetchSuggestions();
+  }, [isOpen, query, locale]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -406,6 +491,65 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
               <div className="flex items-center justify-center py-12">
                 <Loader2 size={24} className="animate-spin text-[#00D4FF]" />
                 <span className="ml-3 text-gray-500">Searching...</span>
+              </div>
+            )}
+
+            {/* Suggestions — shown when no query and no results */}
+            {!isSearching && !results && !query.trim() && suggestions.length > 0 && (
+              <div>
+                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3 flex items-center gap-2">
+                  <TrendingUp size={14} className="text-[#7B61FF]" />
+                  Trending &amp; Recommended
+                </h3>
+                <div className="space-y-2">
+                  {suggestions.map((item, idx) => (
+                    <button
+                      key={item.id}
+                      onClick={() => handleResultClick(item.url)}
+                      className="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors text-left group border border-transparent hover:border-gray-200 dark:hover:border-zinc-700"
+                    >
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
+                        item.type === 'product' ? 'bg-[#00D4FF]/10' :
+                        item.type === 'solution' ? 'bg-[#7B61FF]/10' :
+                        'bg-[#22C55E]/10'
+                      }`}>
+                        {idx === 0 ? (
+                          <Zap size={16} className="text-[#F59E0B]" />
+                        ) : (
+                          getResultIcon(item.type)
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-[#00D4FF] transition-colors">
+                            {item.title}
+                          </p>
+                          {idx === 0 && (
+                            <span className="px-1.5 py-0.5 text-[10px] font-medium bg-[#F59E0B]/10 text-[#F59E0B] rounded">
+                              Popular
+                            </span>
+                          )}
+                          {item.pillar && (
+                            <span className={`px-1.5 py-0.5 text-[10px] font-medium rounded ${
+                              item.pillar === 'build' ? 'bg-[#00D4FF]/10 text-[#00D4FF]' :
+                              item.pillar === 'run' ? 'bg-[#7B61FF]/10 text-[#7B61FF]' :
+                              'bg-[#22C55E]/10 text-[#22C55E]'
+                            }`}>
+                              {item.pillar.charAt(0).toUpperCase() + item.pillar.slice(1)}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
+                          {item.description}
+                        </p>
+                      </div>
+                      <ArrowRight size={16} className="text-gray-300 group-hover:text-[#00D4FF] transition-colors shrink-0" />
+                    </button>
+                  ))}
+                </div>
+                <p className="mt-4 text-xs text-gray-400 dark:text-gray-500 text-center">
+                  Type a search query or upload an image to find more results
+                </p>
               </div>
             )}
 
