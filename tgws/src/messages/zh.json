@@ -21,7 +21,9 @@
     "allIndustries": "所有行業",
     "allPosts": "所有文章",
     "technical": "技術文章",
-    "industry": "行業動態"
+    "industry": "行業動態",
+    "signIn": "登入",
+    "createAccount": "建立帳戶"
   },
   "hero": {
     "company": "泰谷網數科技",
@@ -187,6 +189,8 @@
   "solutions": {
     "title": "行業解決方案",
     "subtitle": "針對您行業工作負載需求配置的企業級IT基礎設施。",
+    "searchPlaceholder": "搜尋行業...",
+    "noResults": "未找到符合搜尋條件的行業。",
     "painPoints": "痛點分析",
     "ourSolutions": "基礎設施需求",
     "featuredProducts": "AI應用",
@@ -335,6 +339,8 @@
       "case-study": "最佳實踐",
       "industry": "行業"
     },
+    "searchPlaceholder": "搜尋文章...",
+    "noResults": "未找到符合搜尋條件的文章。",
     "articles": {
       "1": {
         "title": "混合雲架構設計實戰指南",
@@ -524,53 +530,65 @@
     "intro": "成立於2023年，泰谷網數科技為亞洲企業提供IT基礎設施解決方案。我們與領先技術供應商合作，協助企業構建、承載和保護其關鍵系統。",
     "timeline": {
       "title": "發展歷程",
+      "page_title": "發展歷程",
+      "page_subtitle": "從三位IT老兵的小團隊，到亞洲領先的解決方案整合商——探索塑造TechGuru的每個里程碑。",
+      "no_events": "暫無時間軸事件，請稍後再查看。",
+      "view_all": "查看完整時間軸",
+      "preview_hint": "點擊上方探索我們完整的發展歷程和詳細里程碑。",
+      "year": "年份",
       "events": [
-        "2023年：泰谷科技在馬尼拉成立，由三位擁有5-10年企業銷售和售前經驗的IT老兵創辦。",
-        "2023年：取得Sangfor、Fortinet和H3C合作夥伴資格，啟動基礎架構和安全產品組合。",
-        "2024年：擴展廠商生態至Nutanix、Sophos、Hillstone、阿里雲和華為。團隊成長至10人。",
-        "2024年：推出VMware替代方案，提供Proxmox VE、Sangfor HCI和Nutanix AHV遷移路徑。",
-        "2025年：透過阿里雲百煉和字節跳動火山引擎合作夥伴關係引入AI能力。推出AIGC和AI落地服務。",
-        "2025年：擴展至20+合作夥伴，涵蓋超融合、安全、網路、雲端和AI。服務菲律賓及東南亞客戶。"
-      ]
+        "2020年：泰谷科技在馬尼拉成立，由三位來自頂尖網路安全、雲端和數通公司的IT資深專家創辦，平均從業12-15年。",
+        "2021年：取得Sangfor、Fortinet和H3C核心合作夥伴資格。啟動首個企業安全和基礎設施項目。",
+        "2022年：擴展廠商生態至Nutanix、Sophos、Hillstone和阿里雲。團隊成長至10人。",
+        "2023年：博通收購VMware後，聯合Sangfor、H3C和Proxmox VE推出VMware替代方案，提供高性價比遷移路徑。",
+        "2024年：透過阿里雲百煉和字節跳動火山引擎合作夥伴關係，引入AIGC和AI Agent開發能力。",
+        "2025年：合作夥伴擴展至25+，涵蓋構建(Build)、承載(Run)、保護(Protect)全棧。服務菲律賓及東南亞200+客戶。"
+      ],
+      "stats": {
+        "founded": "成立年份",
+        "vendors": "合作夥伴",
+        "team": "團隊成員",
+        "clients": "服務客戶"
+      }
     },
     "team": {
       "title": "我們的團隊",
       "members": {
         "0": {
-          "name": "Marco Reyes",
-          "role": "CEO兼銷售總監",
-          "bio": "10年以上企業IT銷售經驗。與亞洲主要廠商和企業客戶建立深厚關係。"
+          "name": "Regil De Claro",
+          "role": "董事總經理",
+          "bio": "17年IT行業經驗。曾任深信服Sangfor銷售總監、銳捷Ruijie大客戶經理。專精企業銷售、售前諮詢和通路合作夥伴管理。"
         },
         "1": {
-          "name": "Rafael Santos",
-          "role": "CTO兼解決方案架構師",
-          "bio": "10年以上IT基礎設施售前經驗。專精超融合、雲端遷移和安全架構。"
+          "name": "聯合創始人",
+          "role": "首席技術官",
+          "bio": "15年以上網路安全和基礎設施經驗。曾任頂尖安全廠商技術主管。"
         },
         "2": {
-          "name": "Adrian Mendoza",
-          "role": "業務發展副總裁",
-          "bio": "8年以上IT通路和合作夥伴管理經驗。專注廠商生態拓展和企業客戶開發。"
+          "name": "聯合創始人",
+          "role": "首席營運官",
+          "bio": "12年以上雲端計算和虛擬化經驗。曾任領先雲端供應商解決方案架構師。"
         }
       }
     },
     "qualifications": {
-      "title": "廠商合作夥伴",
+      "title": "技術合作夥伴",
       "items": {
-        "0": {
+        "infrastructure": {
           "title": "基礎架構與虛擬化",
-          "description": "Sangfor、Nutanix、H3C、華為、聯想、Dell、HPE，超融合、伺服器、儲存和虛擬化平台。"
+          "description": "Sangfor HCI、Nutanix、H3C、華為、聯想、Dell、HP、Arcfra、StarWind。超融合、伺服器、儲存和VMware替代平台。"
         },
-        "1": {
+        "security": {
           "title": "網路與安全",
-          "description": "Fortinet、Sophos、Hillstone、Ruijie、Prolink，次世代防火牆、EDR、NDR、SD-WAN、交換機和無線。"
+          "description": "Fortinet次世代防火牆、Sophos EDR、Hillstone、Ruijie。防火牆、EDR、NDR、SD-WAN、交換機和無線解決方案。"
         },
-        "2": {
+        "cloud": {
           "title": "雲端與AI",
-          "description": "阿里雲、字節跳動火山引擎，AIGC流程、AI平台部署和託管雲服務。"
+          "description": "阿里雲、字節跳動火山引擎、Proxmox VE、KVM/QEMU。AIGC、AI Agent開發和託管雲服務。"
         },
-        "3": {
-          "title": "專項解決方案",
-          "description": "四方繼保，電力保護和變電站自動化。Proxmox VE，開源虛擬化。"
+        "specialized": {
+          "title": "數據保護與備份",
+          "description": "Veeam、StarWind。備份即服務、災難恢復和業務連續性解決方案。"
         }
       }
     },
@@ -613,6 +631,8 @@
     "whatsapp": "WhatsApp",
     "whatsappCta": "在WhatsApp上聊天",
     "viewLargerMap": "查看地圖",
+    "scanToConnect": "掃碼聯繫",
+    "scanQrHint": "掃描二維碼開始WhatsApp對話",
     "metadata": {
       "title": "聯絡我們 | TechGuru",
       "description": "與TechGuru聯繫，獲取企業IT解決方案。聯繫我們在Quezon City, Metro Manila的辦公室，或發送詢問。"
@@ -671,6 +691,8 @@
     "runStory": "當您需要極致性能和可靠性來運行工作負載時，這些產品提供統一的基礎架構。從虛擬化到超融合再到雲平台和業務連續性保障。",
     "protectTitle": "Protect，守護每一個層面",
     "protectStory": "當您需要全方位安全保障時，這些產品守護您的每一個層面。從邊界防火牆到端點檢測再到雲安全和託管安全檢測與響應。",
+    "searchPlaceholder": "搜尋產品...",
+    "noResults": "未找到符合搜尋條件的產品。",
     "features": {
       "ai-generated-content-aigc": [
         "文字轉影片 (Seedance, HappyHorse)",
@@ -865,30 +887,79 @@
   "privacy": {
     "metadata": {
       "title": "隱私權政策 | TechGuru",
-      "description": "了解TechGuru如何收集、使用和保護您的個人資訊。我們的隱私權政策涵蓋資料收集、Cookie和您的權利。"
+      "description": "了解TechGuru如何收集、使用和保護您的個人資訊。我們的隱私權政策涵蓋資料收集、Cookie、GDPR合規和您的權利。"
     },
     "title": "隱私權政策",
     "lastUpdated": "最後更新",
-    "section1Title": "我們收集的資訊",
-    "section1Body": "當您造訪我們的網站、提交聯絡表單或建立支援帳戶時，我們可能會收集您的姓名、電子郵件地址、公司名稱、電話號碼，以及您在訊息或工單中提供的任何資訊。",
-    "section2Title": "我們如何使用您的資訊",
-    "section2Body": "我們使用您的資訊來：",
-    "section2Items": [
-      "回應您的詢問並提供客戶支援",
-      "處理和管理您的支援工單",
-      "發送與您請求相關的交易郵件",
-      "改進我們的網站和服務"
+    "intro": "泰谷網數科技（TechGuru Network & Data Solutions Inc.）（以下簡稱「TechGuru」、「我們」）致力於保護您的隱私。本隱私權政策說明當您在造訪我們的網站和使用我們的服務時，我們如何收集、使用、揭露和保護您的資訊。",
+    "section1Title": "1. 我們收集的資訊",
+    "section1Body": "我們可能以各種方式收集關於您的資訊，包括：",
+    "section1Items": [
+      "個人資料：姓名、電子郵件地址、公司名稱、電話號碼，以及您在聯絡表單或支援工單中提供的任何資訊",
+      "使用資料：IP位址、瀏覽器類型、作業系統、造訪的頁面、在頁面上花費的時間以及其他診斷資料",
+      "Cookie資料：我們使用Cookie和類似的追蹤技術來追蹤我們服務上的活動並保存某些資訊"
     ],
-    "section3Title": "資料儲存與安全",
-    "section3Body": "您的資料使用業界標準加密和存取控制安全儲存。我們實施適當的技術和組織措施，保護您的個人資訊免受未經授權的存取、變更、揭露或毀損。",
-    "section4Title": "第三方服務",
-    "section4Body": "我們使用值得信賴的第三方服務進行託管、內容管理和郵件傳送。這些供應商受合約約束保護您的資料，僅用於我們指定的目的。",
-    "section5Title": "Cookies",
-    "section5Body": "我們的網站使用必要的Cookie進行身份驗證和工作階段管理。未經您的明確同意，我們不會使用追蹤Cookie。",
-    "section6Title": "您的權利",
-    "section6Body": "您有權存取、更正或刪除您的個人資料。要行使這些權利，請透過以下方式聯繫我們",
-    "section7Title": "聯絡方式",
-    "section7Body": "有關此隱私權政策的問題，請透過以下方式聯繫我們",
+    "section2Title": "2. 我們如何使用您的資訊",
+    "section2Body": "我們將收集的資料用於各種目的：",
+    "section2Items": [
+      "提供和維護我們的服務",
+      "通知您關於我們服務的變更",
+      "當您選擇時，允許您參與互動功能",
+      "提供客戶支援",
+      "收集分析或有價值的資訊，以便我們改進服務",
+      "監控服務的使用情況",
+      "偵測、預防和解決技術問題",
+      "履行您提供資訊的任何其他目的"
+    ],
+    "section3Title": "3. 資料儲存與安全",
+    "section3Body": "您的資料安全對我們很重要。我們努力使用商業上可接受的手段來保護您的個人資訊，但網際網路或電子儲存方法的傳輸方法並非100%安全。我們實施適當的技術和組織措施來保護您的個人資料，包括：",
+    "section3Items": [
+      "傳輸中（TLS/SSL）和靜止資料的加密",
+      "定期安全評估和滲透測試",
+      "存取控制和身份驗證機制",
+      "定期備份和災難恢復程序"
+    ],
+    "section4Title": "4. 資料保留",
+    "section4Body": "我們將僅在本隱私權政策所述目的所需的期限內保留您的個人資料。我們將在遵守法律義務、解決爭議和執行法律協議和政策的範圍內保留和使用您的個人資料。",
+    "section5Title": "5. 國際資料傳輸",
+    "section5Body": "您的資訊可能會被轉移至並維護在您所在州、省、國家或其他政府管轄區以外的電腦上，那裡的資料保護法律可能與您管轄區的不同。如果您位於菲律賓境外，請注意我們會將資料轉移到菲律賓並在那裡處理。",
+    "section6Title": "6. 第三方服務",
+    "section6Body": "我們可能會僱用第三方公司和個人來促進我們的服務、代表我們提供服務、執行服務相關功能或協助我們分析服務的使用情況。這些第三方僅有權代表我們執行這些任務，並有義務不揭露或將其用於任何其他目的。我們目前的第三方服務提供商包括：",
+    "section6Items": [
+      "Vercel（託管和CDN）",
+      "Sanity（內容管理）",
+      "Supabase（資料庫和身份驗證）",
+      "Resend（郵件傳送）"
+    ],
+    "section7Title": "7. Cookies政策",
+    "section7Body": "我們使用Cookie和類似的追蹤技術來追蹤我們服務上的活動並保存某些資訊。Cookie是包含少量資料的檔案，其中可能包括匿名唯一識別碼。您可以指示您的瀏覽器拒絕所有Cookie或在傳送Cookie時發出通知。",
+    "section7Items": [
+      "必要Cookie：身份驗證和安全性所需",
+      "功能性Cookie：記住您的偏好設定",
+      "分析Cookie：幫助我們了解訪客如何與網站互動（僅在您同意的情況下）"
+    ],
+    "section8Title": "8. 您的資料保護權利（GDPR）",
+    "section8Body": "如果您是歐洲經濟區（EEA）的居民，您在GDPR下擁有某些資料保護權利。我們採取合理步驟來允許您更正、修改、刪除或限制使用您的個人資料。您擁有以下權利：",
+    "section8Items": [
+      "存取權：您有權要求個人資料的副本",
+      "更正權：您有權要求更正不準確的資料",
+      "刪除權：您有權在某些條件下要求刪除您的個人資料",
+      "限制處理權：您有權在某些條件下要求限制處理",
+      "資料可攜權：您有權要求將您的資料轉移給另一個組織",
+      "反對權：您有權在某些條件下反對我們處理您的個人資料"
+    ],
+    "section9Title": "9. 加州隱私權利（CCPA）",
+    "section9Body": "如果您是加州居民，根據加州消費者隱私法案（CCPA），您對您的個人資訊擁有特定權利。您有權知道我們收集、使用和揭露關於您的哪些個人資訊。您也有權要求刪除您的個人資訊。",
+    "section10Title": "10. 兒童隱私",
+    "section10Body": "我們的服務並非針對18歲以下的個人。我們不會故意收集18歲以下兒童的個人資訊。如果我們發現我們收集了18歲以下兒童的個人資料，我們將採取措施刪除該資訊。",
+    "section11Title": "11. 隱私政策的變更",
+    "section11Body": "我們可能會不時更新我們的隱私政策。我們將透過在本頁面上發佈新的隱私政策並更新「最後更新」日期來通知您任何變更。建議您定期查看本隱私政策以了解任何變更。",
+    "section12Title": "12. 聯絡我們",
+    "section12Items": [
+      "電子郵件：Inquiries@techguru-it.asia",
+      "電話：+63 960 282 5051",
+      "地址：10 Rajah Matanda St, corner JP Rizal St, Project 4, Quezon City, 1109 Metro Manila, Philippines"
+    ],
     "backHome": "← 返回首頁"
   },
   "compare": {
@@ -1140,6 +1211,8 @@
     "status": "狀態",
     "createdAt": "建立時間",
     "noTickets": "暫無工單",
+    "searchTickets": "搜尋工單...",
+    "noTicketsFound": "未找到符合搜尋條件的工單。",
     "ticketOpen": "待處理",
     "ticketInProgress": "處理中",
     "ticketResolved": "已解決",
@@ -1201,6 +1274,35 @@
     "myTicketsDesc": "查看並追蹤所有支援請求。",
     "created": "建立於",
     "submitTicketHint": "提交工單以開始使用"
+  },
+  "admin": {
+    "adminDashboard": "管理員控制面板",
+    "dashboardDesc": "所有支援工單和系統指標的概覽。",
+    "totalTickets": "工單總數",
+    "openTickets": "待處理工單",
+    "inProgress": "處理中",
+    "resolved": "已解決",
+    "priorityDistribution": "優先級分佈",
+    "categoryDistribution": "類別分佈",
+    "critical": "緊急",
+    "high": "高",
+    "medium": "中",
+    "low": "低",
+    "avgResponseTime": "平均回應時間",
+    "days": "天",
+    "avgResponseDesc": "首次回應的平均時間",
+    "resolutionRate": "解決率",
+    "resolutionDesc": "已解決或關閉的工單",
+    "criticalTickets": "緊急工單",
+    "criticalDesc": "需要立即處理的工單",
+    "recentTickets": "最近的工單",
+    "viewAll": "查看全部",
+    "ticketNumber": "工單編號",
+    "subject": "主題",
+    "status": "狀態",
+    "priority": "優先級",
+    "created": "建立時間",
+    "noTickets": "暫無工單"
   },
   "error": {
     "title": "發生錯誤",
@@ -1286,24 +1388,72 @@
   "terms": {
     "metadata": {
       "title": "服務條款 | TechGuru",
-      "description": "閱讀使用TechGuru網站和服務的條款和條件。了解您的權利和義務。"
+      "description": "閱讀使用TechGuru網站和服務的條款和條件。了解您的權利、義務和法律協議。"
     },
     "title": "服務條款",
     "lastUpdated": "最後更新",
-    "section1Title": "接受條款",
-    "section1Body": "使用TechGuru網站和服務即表示您同意受本服務條款的約束。如不同意其中任何部分，請勿使用我們的服務。",
-    "section2Title": "服務內容",
-    "section2Body": "TechGuru提供IT基礎設施解決方案，包括硬體、軟體授權、雲端服務、託管服務和顧問諮詢。服務可用性和定價可能不另行通知地進行調整。",
-    "section3Title": "用戶帳戶",
-    "section3Body": "您有責任維護帳戶憑證的機密性，並對帳戶下的所有活動負責。如發現任何未經授權的使用，請立即通知我們。",
-    "section4Title": "智慧財產權",
-    "section4Body": "本網站上的所有內容，包括文字、圖形、標誌和軟體，均為TechGuru或其授權方的財產，受智慧財產權法律保護。",
-    "section5Title": "責任限制",
-    "section5Body": "TechGuru不對因使用我們的服務而產生的任何間接、偶然、特殊或後果性損害承擔責任。我們的總責任不超過您為特定服務支付的金額。",
-    "section6Title": "管轄法律",
-    "section6Body": "本條款受菲律賓共和國法律管轄。任何爭議應在奎松市、馬尼拉大都會的法院解決。",
-    "section7Title": "聯絡方式",
-    "section7Body": "有關本服務條款的問題，請透過以下方式聯繫我們",
+    "intro": "歡迎使用泰谷網數科技（TechGuru Network & Data Solutions Inc.）（以下簡稱「TechGuru」、「我們」）。本服務條款（「條款」） governs 您對我們網站、產品和服務（「服務」）的存取和使用。存取或使用我們的服務即表示您同意受這些條款的約束。",
+    "section1Title": "1. 接受條款",
+    "section1Body": "使用TechGuru網站和服務即表示您同意受本服務條款的約束。如不同意其中任何部分，請勿使用我們的服務。我們保留隨時修改這些條款的權利，修改後的條款一經發佈即立即生效。",
+    "section2Title": "2. 服務描述",
+    "section2Body": "TechGuru提供IT基礎設施解決方案，包括但不限于：",
+    "section2Items": [
+      "硬體採購和部署",
+      "軟體授權和實施",
+      "雲端服務和遷移",
+      "託管服務和支援",
+      "IT諮詢和顧問服務",
+      "網路安全解決方案",
+      "AI和AIGC實施服務"
+    ],
+    "section3Title": "3. 用戶帳戶",
+    "section3Body": "要存取我們服務的某些功能，您可能需要建立帳戶。您同意：",
+    "section3Items": [
+      "在註冊期間提供準確、最新和完整的信息",
+      "維護並及時更新您的帳戶信息",
+      "維護密碼的安全性，並接受未經授權存取的所有風險",
+      "如發現任何未經授權使用您的帳戶，請立即通知我們",
+      "對您帳戶下發生的所有活動負責"
+    ],
+    "section4Title": "4. 智慧財產權",
+    "section4Body": "本網站上的所有內容，包括但不限于文字、圖形、標誌、圖示、圖片、音訊剪輯、影片剪輯、資料彙編和軟體，均為TechGuru或其內容供應商的財產，受國際版權法保護。本網站上所有內容的彙編是TechGuru的獨有財產。",
+    "section5Title": "5. 可接受使用政策",
+    "section5Body": "您同意不：",
+    "section5Items": [
+      "將我們的服務用於任何非法目的或違反任何地方、州、國家或國際法律",
+      "嘗試未經授權存取我們服務的任何部分或連接到我們服務的任何系統或網路",
+      "干擾或中斷我們的服務或連接到我們服務的伺服器或網路",
+      "使用任何機器人、蜘蛛或其他自動化方式存取我們的服務，除非獲得我們的書面同意",
+      "透過我們的服務傳播任何病毒、蠕蟲或其他惡意代碼"
+    ],
+    "section6Title": "6. 付款條款",
+    "section6Body": "對於付費服務，您同意按照當時生效的費用、收費和計費條款支付所有費用。所有付款義務不可取消，所有已支付的費用不可退還。",
+    "section7Title": "7. 保密性",
+    "section7Body": "各方同意嚴格保密對方的機密信息，未經披露方事先書面同意，不得向第三方披露。此義務在這些條款終止後仍然有效。",
+    "section8Title": "8. 責任限制",
+    "section8Body": "在適用法律允許的最大範圍內，TechGuru不對任何間接、偶然、特殊、後果性或懲罰性損害，或任何利潤或收入損失承擔責任，無論是直接或間接產生的，或任何數據、使用、商譽或其他無形資產損失：",
+    "section8Items": [
+      "您使用或無法使用我們的服務",
+      "對我們伺服器和/或其中存儲的任何個人信息的任何未經授權的存取或使用",
+      "對我們服務的任何傳輸中斷或停止",
+      "透過我們服務傳播的任何錯誤、病毒或類似內容"
+    ],
+    "section9Title": "9. 賠償",
+    "section9Body": "您同意 defending、indemnify 並 hold harmless TechGuru、其官員、董事、員工和代理，使其免受因以下原因引起的任何索賠、責任、損害、損失和費用（包括但不限於合理的律師費和會計費）：",
+    "section10Title": "10. 終止",
+    "section10Body": "我們可能會立即終止或暫停您對我們服務的存取，恕不另行通知或承擔責任，原因包括但不限于您違反這些條款。終止後，您使用我們服務的權利將立即停止。",
+    "section11Title": "11. 管轄法律",
+    "section11Body": "本條款受菲律賓共和國法律管轄，不考慮其法律衝突規定。因本條款引起或與之相關的任何爭議應提交奎松市、馬尼拉大都會法院的專屬管轄。",
+    "section12Title": "12. 可分割性",
+    "section12Body": "如果本條款的任何條款被法院認定為無效或不可執行，本條款的其餘條款將繼續有效。這些條款構成我們之間關於服務的完整協議，並取代我們之間可能存在的任何先前協議。",
+    "section13Title": "13. 條款變更",
+    "section13Body": "我們保留自行決定修改或替換這些條款的權利。如果修訂是重大的，我們將嘗試在新條款生效前至少提供30天通知。什麼構成重大變更將由我們自行決定。",
+    "section14Title": "14. 聯絡我們",
+    "section14Items": [
+      "電子郵件：Inquiries@techguru-it.asia",
+      "電話：+63 960 282 5051",
+      "地址：10 Rajah Matanda St, corner JP Rizal St, Project 4, Quezon City, 1109 Metro Manila, Philippines"
+    ],
     "backHome": "← 返回首頁"
   },
   "help": {

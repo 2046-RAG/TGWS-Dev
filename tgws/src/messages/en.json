@@ -21,7 +21,9 @@
     "allIndustries": "All Industries",
     "allPosts": "All Posts",
     "technical": "Technical",
-    "industry": "Industry"
+    "industry": "Industry",
+    "signIn": "Sign In",
+    "createAccount": "Create Account"
   },
   "hero": {
     "company": "TechGuru Network & Data Solutions",
@@ -187,6 +189,8 @@
   "solutions": {
     "title": "Industry Solutions",
     "subtitle": "Enterprise IT infrastructure configured for your industry's specific workload demands.",
+    "searchPlaceholder": "Search industries...",
+    "noResults": "No industries found matching your search.",
     "painPoints": "Pain Points",
     "ourSolutions": "Infrastructure Needs",
     "featuredProducts": "AI Applications",
@@ -335,6 +339,8 @@
       "case-study": "Best Practice",
       "industry": "Industry"
     },
+    "searchPlaceholder": "Search articles...",
+    "noResults": "No articles found matching your search.",
     "articles": {
       "1": {
         "title": "Hybrid Cloud Architecture Design Guide",
@@ -524,53 +530,65 @@
     "intro": "Founded in 2023, TechGuru Network & Data Solutions delivers IT infrastructure solutions across Asia. We partner with leading technology providers to help businesses build, run, and protect their critical systems.",
     "timeline": {
       "title": "Our Journey",
+      "page_title": "Our Journey",
+      "page_subtitle": "From a small team of IT veterans to a leading solutions integrator — discover the milestones that shaped TechGuru.",
+      "no_events": "No timeline events found. Please check back later.",
+      "view_all": "View Full Timeline",
+      "preview_hint": "Click above to explore our complete journey with detailed milestones.",
+      "year": "Year",
       "events": [
-        "2023: TechGuru founded in Manila by three IT veterans with 5-10 years of enterprise sales and pre-sales experience.",
-        "2023: Secured partnerships with Sangfor, Fortinet, and H3C. Launched core infrastructure and security portfolio.",
-        "2024: Expanded vendor ecosystem to Nutanix, Sophos, Hillstone, Alibaba Cloud, and Huawei. Grew team to 10.",
-        "2024: Launched VMware alternative program with Proxmox VE, Sangfor HCI, and Nutanix AHV migration paths.",
-        "2025: Added AI capabilities through Alibaba Cloud Bailian and ByteDance Volcengine partnerships. Introduced AIGC and AI Adoption services.",
-        "2025: Expanded to 20+ vendor partnerships covering HCI, security, networking, cloud, and AI. Serving clients across Philippines and Southeast Asia."
-      ]
+        "2020: TechGuru founded in Manila by three IT veterans with 12-15 years of enterprise experience from top cybersecurity, cloud, and networking companies.",
+        "2021: Secured core partnerships with Sangfor, Fortinet, and H3C. Launched first enterprise security and infrastructure projects.",
+        "2022: Expanded vendor ecosystem to Nutanix, Sophos, Hillstone, and Alibaba Cloud. Grew team to 10 members.",
+        "2023: Following Broadcom's acquisition of VMware, launched VMware Alternative Program with Sangfor, H3C, and Proxmox VE as cost-effective migration paths.",
+        "2024: Introduced AIGC and AI Agent development capabilities through Alibaba Cloud Bailian and ByteDance Volcengine partnerships.",
+        "2025: Expanded to 25+ vendor partnerships covering Build, Run, and Protect. Serving 200+ clients across Philippines and Southeast Asia."
+      ],
+      "stats": {
+        "founded": "Founded",
+        "vendors": "Vendor Partners",
+        "team": "Team Members",
+        "clients": "Clients Served"
+      }
     },
     "team": {
       "title": "Our Team",
       "members": {
         "0": {
-          "name": "Marco Reyes",
-          "role": "CEO & Sales Director",
-          "bio": "10+ years in enterprise IT sales. Deep relationships with major vendors and enterprise clients across Asia."
+          "name": "Regil De Claro",
+          "role": "Managing Director",
+          "bio": "17 years of IT industry experience. Former Sales Director at Sangfor and Key Account Manager at Ruijie. Expert in enterprise sales, pre-sales consulting, and channel partner management."
         },
         "1": {
-          "name": "Rafael Santos",
-          "role": "CTO & Solutions Architect",
-          "bio": "10+ years in IT infrastructure pre-sales. Expert in HCI, cloud migration, and security architecture."
+          "name": "Co-Founder",
+          "role": "Chief Technology Officer",
+          "bio": "15+ years in cybersecurity and network infrastructure. Former technical lead at top-tier security vendors."
         },
         "2": {
-          "name": "Adrian Mendoza",
-          "role": "VP of Business Development",
-          "bio": "8+ years in IT channel and partner management. Specializes in vendor ecosystem expansion and enterprise client acquisition."
+          "name": "Co-Founder",
+          "role": "Chief Operating Officer",
+          "bio": "12+ years in cloud computing and virtualization. Former solutions architect at leading cloud providers."
         }
       }
     },
     "qualifications": {
-      "title": "Vendor Partnerships",
+      "title": "Technology Partners",
       "items": {
-        "0": {
+        "infrastructure": {
           "title": "Infrastructure & Virtualization",
-          "description": "Sangfor, Nutanix, H3C, Huawei, Lenovo, Dell, HPE, HCI, servers, storage, and virtualization platforms."
+          "description": "Sangfor HCI, Nutanix, H3C, Huawei, Lenovo, Dell, HP, Arcfra, StarWind. HCI, servers, storage, and VMware alternative platforms."
         },
-        "1": {
+        "security": {
           "title": "Network & Security",
-          "description": "Fortinet, Sophos, Hillstone, Ruijie, Prolink, NGFW, EDR, NDR, SD-WAN, switches, and wireless."
+          "description": "Fortinet NGFW, Sophos EDR, Hillstone, Ruijie. Firewalls, EDR, NDR, SD-WAN, switches, and wireless solutions."
         },
-        "2": {
+        "cloud": {
           "title": "Cloud & AI",
-          "description": "Alibaba Cloud, ByteDance Volcengine, AIGC pipelines, AI platform deployment, and managed cloud services."
+          "description": "Alibaba Cloud, ByteDance Volcengine, Proxmox VE, KVM/QEMU. AIGC, AI Agent development, and managed cloud services."
         },
-        "3": {
-          "title": "Specialized Solutions",
-          "description": "Sifang (北京四方继保), power protection and substation automation. Proxmox VE, open-source virtualization."
+        "specialized": {
+          "title": "Data Protection & Backup",
+          "description": "Veeam, StarWind. Backup-as-a-Service, disaster recovery, and business continuity solutions."
         }
       }
     },
@@ -613,6 +631,8 @@
     "whatsapp": "WhatsApp",
     "whatsappCta": "Chat on WhatsApp",
     "viewLargerMap": "View larger map",
+    "scanToConnect": "Scan to Connect",
+    "scanQrHint": "Scan the QR code to start a WhatsApp conversation",
     "metadata": {
       "title": "Contact Us | TechGuru",
       "description": "Get in touch with TechGuru for enterprise IT solutions. Reach our office in Quezon City, Metro Manila, or send us an inquiry."
@@ -671,6 +691,8 @@
     "runStory": "When you need extreme performance and reliability to run your workloads, these products provide the unified infrastructure. From virtualization to hyper-converged to cloud platforms to business continuity.",
     "protectTitle": "Protect, Secure Every Layer",
     "protectStory": "When you need comprehensive security across your entire stack, these products protect every layer. From perimeter firewalls to endpoint detection to cloud security to managed detection and response.",
+    "searchPlaceholder": "Search products...",
+    "noResults": "No products found matching your search.",
     "features": {
       "ai-generated-content-aigc": [
         "Text-to-video (Seedance, HappyHorse)",
@@ -865,30 +887,80 @@
   "privacy": {
     "metadata": {
       "title": "Privacy Policy | TechGuru",
-      "description": "Learn how TechGuru collects, uses, and protects your personal information. Our privacy policy covers data collection, cookies, and your rights."
+      "description": "Learn how TechGuru collects, uses, and protects your personal information. Our privacy policy covers data collection, cookies, GDPR compliance, and your rights."
     },
     "title": "Privacy Policy",
     "lastUpdated": "Last Updated",
-    "section1Title": "Information We Collect",
-    "section1Body": "When you visit our website, submit a contact form, or create a support account, we may collect personal information including your name, email address, company name, phone number, and any information you provide in messages or support tickets.",
-    "section2Title": "How We Use Your Information",
-    "section2Body": "We use your information to:",
-    "section2Items": [
-      "Respond to your inquiries and provide customer support",
-      "Process and manage your support tickets",
-      "Send transactional emails related to your requests",
-      "Improve our website and services"
+    "intro": "TechGuru Network & Data Solutions Inc. (&quot;TechGuru,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.",
+    "section1Title": "1. Information We Collect",
+    "section1Body": "We may collect information about you in various ways, including:",
+    "section1Items": [
+      "Personal Data: Name, email address, company name, phone number, and any information you provide in contact forms or support tickets",
+      "Usage Data: IP address, browser type, operating system, pages visited, time spent on pages, and other diagnostic data",
+      "Cookies Data: We use cookies and similar tracking technologies to track activity on our service and hold certain information"
     ],
-    "section3Title": "Data Storage & Security",
-    "section3Body": "Your data is stored securely using industry-standard encryption and access controls. We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.",
-    "section4Title": "Third-Party Services",
-    "section4Body": "We use trusted third-party services for hosting, content management, and email delivery. These providers are contractually obligated to protect your data and use it only for the purposes we specify.",
-    "section5Title": "Cookies",
-    "section5Body": "Our website uses essential cookies for authentication and session management. We do not use tracking cookies without your explicit consent.",
-    "section6Title": "Your Rights",
-    "section6Body": "You have the right to access, correct, or delete your personal data. To exercise these rights, please contact us at",
-    "section7Title": "Contact",
-    "section7Body": "For questions about this Privacy Policy, please contact us at",
+    "section2Title": "2. How We Use Your Information",
+    "section2Body": "We use the collected data for various purposes:",
+    "section2Items": [
+      "To provide and maintain our services",
+      "To notify you about changes to our services",
+      "To allow you to participate in interactive features when you choose to do so",
+      "To provide customer support",
+      "To gather analysis or valuable information so that we can improve our services",
+      "To monitor the usage of our services",
+      "To detect, prevent, and address technical issues",
+      "To fulfill any other purpose for which you provide it"
+    ],
+    "section3Title": "3. Data Storage & Security",
+    "section3Body": "The security of your data is important to us. We strive to use commercially acceptable means of protecting your personal information, but no method of transmission over the Internet or method of electronic storage is 100% secure. We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction, including:",
+    "section3Items": [
+      "Encryption of data in transit (TLS/SSL) and at rest",
+      "Regular security assessments and penetration testing",
+      "Access controls and authentication mechanisms",
+      "Regular backups and disaster recovery procedures"
+    ],
+    "section4Title": "4. Data Retention",
+    "section4Body": "We will retain your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use your Personal Data to the extent necessary to comply with our legal obligations, resolve disputes, and enforce our legal agreements and policies.",
+    "section5Title": "5. International Data Transfers",
+    "section5Body": "Your information may be transferred to — and maintained on — computers located outside of your state, province, country, or other governmental jurisdiction where the data protection laws may differ from those of your jurisdiction. If you are located outside the Philippines, please note that we transfer data to the Philippines and process it there.",
+    "section6Title": "6. Third-Party Services",
+    "section6Body": "We may employ third-party companies and individuals to facilitate our services, provide services on our behalf, perform service-related functions, or assist us in analyzing how our services are used. These third parties have access to your Personal Data only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose. Our current third-party providers include:",
+    "section6Items": [
+      "Vercel (Hosting and CDN)",
+      "Sanity (Content Management)",
+      "Supabase (Database and Authentication)",
+      "Resend (Email Delivery)"
+    ],
+    "section7Title": "7. Cookies Policy",
+    "section7Body": "We use cookies and similar tracking technologies to track activity on our service and hold certain information. Cookies are files with a small amount of data which may include an anonymous unique identifier. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent.",
+    "section7Items": [
+      "Essential Cookies: Required for authentication and security",
+      "Functional Cookies: Remember your preferences and settings",
+      "Analytics Cookies: Help us understand how visitors interact with our website (only with your consent)"
+    ],
+    "section8Title": "8. Your Data Protection Rights (GDPR)",
+    "section8Body": "If you are a resident of the European Economic Area (EEA), you have certain data protection rights under GDPR. We aim to take reasonable steps to allow you to correct, amend, delete, or limit the use of your Personal Data. You have the following rights:",
+    "section8Items": [
+      "Right of Access: You have the right to request copies of your personal data",
+      "Right to Rectification: You have the right to request correction of inaccurate data",
+      "Right to Erasure: You have the right to request deletion of your personal data under certain conditions",
+      "Right to Restrict Processing: You have the right to request restriction of processing under certain conditions",
+      "Right to Data Portability: You have the right to request transfer of your data to another organization",
+      "Right to Object: You have the right to object to our processing of your personal data under certain conditions"
+    ],
+    "section9Title": "9. California Privacy Rights (CCPA)",
+    "section9Body": "If you are a California resident, you have specific rights regarding your personal information under the California Consumer Privacy Act (CCPA). You have the right to know what personal information we collect, use, and disclose about you. You also have the right to request deletion of your personal information.",
+    "section10Title": "10. Children's Privacy",
+    "section10Body": "Our services are not directed to individuals under the age of 18. We do not knowingly collect personal information from children under 18. If we become aware that we have collected personal data from a child under 18, we will take steps to delete that information.",
+    "section11Title": "11. Changes to This Privacy Policy",
+    "section11Body": "We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the &quot;Last Updated&quot; date. You are advised to review this Privacy Policy periodically for any changes.",
+    "section12Title": "12. Contact Us",
+    "section12Body": "If you have any questions about this Privacy Policy, please contact us:",
+    "section12Items": [
+      "Email: Inquiries@techguru-it.asia",
+      "Phone: +63 960 282 5051",
+      "Address: 10 Rajah Matanda St, corner JP Rizal St, Project 4, Quezon City, 1109 Metro Manila, Philippines"
+    ],
     "backHome": "Back to Home"
   },
   "vmware": {
@@ -989,6 +1061,8 @@
     "status": "Status",
     "createdAt": "Created At",
     "noTickets": "No tickets yet",
+    "searchTickets": "Search tickets...",
+    "noTicketsFound": "No tickets found matching your search.",
     "ticketOpen": "Open",
     "ticketInProgress": "In Progress",
     "ticketResolved": "Resolved",
@@ -1051,6 +1125,35 @@
     "created": "Created",
     "submitTicketHint": "Submit a ticket to get started"
   },
+  "admin": {
+    "adminDashboard": "Admin Dashboard",
+    "dashboardDesc": "Overview of all support tickets and system metrics.",
+    "totalTickets": "Total Tickets",
+    "openTickets": "Open Tickets",
+    "inProgress": "In Progress",
+    "resolved": "Resolved",
+    "priorityDistribution": "Priority Distribution",
+    "categoryDistribution": "Category Distribution",
+    "critical": "Critical",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low",
+    "avgResponseTime": "Avg Response Time",
+    "days": "days",
+    "avgResponseDesc": "Average time to first response",
+    "resolutionRate": "Resolution Rate",
+    "resolutionDesc": "Tickets resolved or closed",
+    "criticalTickets": "Critical Tickets",
+    "criticalDesc": "Tickets requiring immediate attention",
+    "recentTickets": "Recent Tickets",
+    "viewAll": "View All",
+    "ticketNumber": "Ticket #",
+    "subject": "Subject",
+    "status": "Status",
+    "priority": "Priority",
+    "created": "Created",
+    "noTickets": "No tickets found"
+  },
   "error": {
     "title": "Something went wrong",
     "description": "An unexpected error occurred. Please try again or contact our support team.",
@@ -1080,24 +1183,73 @@
   "terms": {
     "metadata": {
       "title": "Terms of Service | TechGuru",
-      "description": "Read the terms and conditions for using TechGuru website and services. Understand your rights and obligations."
+      "description": "Read the terms and conditions for using TechGuru website and services. Understand your rights, obligations, and legal agreements."
     },
     "title": "Terms of Service",
     "lastUpdated": "Last Updated",
-    "section1Title": "Acceptance of Terms",
-    "section1Body": "By accessing and using the TechGuru website and services, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, please do not use our services.",
-    "section2Title": "Services",
-    "section2Body": "TechGuru provides IT infrastructure solutions including hardware, software licensing, cloud services, managed services, and consulting. Service availability and pricing are subject to change without notice.",
-    "section3Title": "User Accounts",
-    "section3Body": "You are responsible for maintaining the confidentiality of your account credentials and for all activities under your account. Notify us immediately of any unauthorized use.",
-    "section4Title": "Intellectual Property",
-    "section4Body": "All content on this website, including text, graphics, logos, and software, is the property of TechGuru or its licensors and is protected by intellectual property laws.",
-    "section5Title": "Limitation of Liability",
-    "section5Body": "TechGuru shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our services. Our total liability shall not exceed the amount paid for the specific service in question.",
-    "section6Title": "Governing Law",
-    "section6Body": "These terms are governed by the laws of the Republic of the Philippines. Any disputes shall be resolved in the courts of Quezon City, Metro Manila.",
-    "section7Title": "Contact",
-    "section7Body": "For questions about these Terms of Service, please contact us at",
+    "intro": "Welcome to TechGuru Network & Data Solutions Inc. (&quot;TechGuru,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;). These Terms of Service (&quot;Terms&quot;) govern your access to and use of our website, products, and services (&quot;Services&quot;). By accessing or using our Services, you agree to be bound by these Terms.",
+    "section1Title": "1. Acceptance of Terms",
+    "section1Body": "By accessing and using the TechGuru website and services, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, please do not use our services. We reserve the right to modify these terms at any time, and such modifications shall be effective immediately upon posting.",
+    "section2Title": "2. Description of Services",
+    "section2Body": "TechGuru provides IT infrastructure solutions including but not limited to:",
+    "section2Items": [
+      "Hardware procurement and deployment",
+      "Software licensing and implementation",
+      "Cloud services and migration",
+      "Managed services and support",
+      "IT consulting and advisory services",
+      "Cybersecurity solutions",
+      "AI and AIGC implementation services"
+    ],
+    "section3Title": "3. User Accounts",
+    "section3Body": "To access certain features of our Services, you may be required to create an account. You agree to:",
+    "section3Items": [
+      "Provide accurate, current, and complete information during registration",
+      "Maintain and promptly update your account information",
+      "Maintain the security of your password and accept all risks of unauthorized access",
+      "Notify us immediately of any unauthorized use of your account",
+      "Accept responsibility for all activities that occur under your account"
+    ],
+    "section4Title": "4. Intellectual Property",
+    "section4Body": "All content on this website, including but not limited to text, graphics, logos, icons, images, audio clips, video clips, data compilations, and software, is the property of TechGuru or its content suppliers and is protected by international copyright laws. The compilation of all content on this site is the exclusive property of TechGuru.",
+    "section5Title": "5. Acceptable Use Policy",
+    "section5Body": "You agree not to:",
+    "section5Items": [
+      "Use our Services for any unlawful purpose or in violation of any local, state, national, or international law",
+      "Attempt to gain unauthorized access to any portion of our Services or any systems or networks connected to our Services",
+      "Interfere with or disrupt our Services or servers or networks connected to our Services",
+      "Use any robot, spider, or other automated means to access our Services without our express written permission",
+      "Transmit any viruses, worms, or other malicious code through our Services"
+    ],
+    "section6Title": "6. Payment Terms",
+    "section6Body": "For paid services, you agree to pay all fees or charges to your account in accordance with the fees, charges, and billing terms in effect at the time a fee or charge is due and payable. All payment obligations are non-cancelable and all fees paid are non-refundable.",
+    "section7Title": "7. Confidentiality",
+    "section7Body": "Each party agrees to hold the other party&apos;s Confidential Information in strict confidence and not to disclose such information to third parties without the prior written consent of the disclosing party. This obligation shall survive the termination of these Terms.",
+    "section8Title": "8. Limitation of Liability",
+    "section8Body": "To the maximum extent permitted by applicable law, TechGuru shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses resulting from:",
+    "section8Items": [
+      "Your use or inability to use our Services",
+      "Any unauthorized access to or use of our servers and/or any personal information stored therein",
+      "Any interruption or cessation of transmission to or from our Services",
+      "Any bugs, viruses, or the like that may be transmitted to or through our Services by any third party"
+    ],
+    "section9Title": "9. Indemnification",
+    "section9Body": "You agree to defend, indemnify, and hold harmless TechGuru, its officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, and expenses, including without limitation reasonable legal and accounting fees, arising out of or in any way connected with your access to or use of our Services or your violation of these Terms.",
+    "section10Title": "10. Termination",
+    "section10Body": "We may terminate or suspend your access to our Services immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach these Terms. Upon termination, your right to use our Services will immediately cease.",
+    "section11Title": "11. Governing Law",
+    "section11Body": "These Terms shall be governed by and construed in accordance with the laws of the Republic of the Philippines, without regard to its conflict of law provisions. Any disputes arising under or in connection with these Terms shall be subject to the exclusive jurisdiction of the courts of Quezon City, Metro Manila.",
+    "section12Title": "12. Severability",
+    "section12Body": "If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect. These Terms constitute the entire agreement between us regarding our Services, and supersede and replace any prior agreements we might have had between us regarding the Services.",
+    "section13Title": "13. Changes to Terms",
+    "section13Body": "We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will try to provide at least 30 days&apos; notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.",
+    "section14Title": "14. Contact Us",
+    "section14Body": "If you have any questions about these Terms, please contact us:",
+    "section14Items": [
+      "Email: Inquiries@techguru-it.asia",
+      "Phone: +63 960 282 5051",
+      "Address: 10 Rajah Matanda St, corner JP Rizal St, Project 4, Quezon City, 1109 Metro Manila, Philippines"
+    ],
     "backHome": "Back to Home"
   },
   "compare": {

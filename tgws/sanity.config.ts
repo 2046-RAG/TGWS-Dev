@@ -7,6 +7,8 @@ import post from './sanity/schemas/post';
 import faq from './sanity/schemas/faq';
 import partner from './sanity/schemas/partner';
 import teamMember from './sanity/schemas/teamMember';
+import timelineEvent from './sanity/schemas/timelineEvent';
+import qualification from './sanity/schemas/qualification';
 
 export default defineConfig({
   name: 'techguru',
@@ -14,5 +16,5 @@ export default defineConfig({
   projectId: 'r6ztl1oq',
   dataset: 'production',
   plugins: [structureTool()],
-  schema: { types: [product, solution, caseStudy, post, faq, partner, teamMember] }
+  schema: { types: [product, solution, caseStudy, post, faq, partner, teamMember, timelineEvent, qualification] }
 });
