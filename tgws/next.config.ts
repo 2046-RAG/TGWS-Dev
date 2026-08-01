@@ -1,7 +1,9 @@
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
-const withNextIntl = createNextIntlPlugin();
+// Explicit path: next-intl's default resolution (./i18n/request) can fail on
+// Vercel when the file lives under src/ (it expects ./(src/)i18n/request).
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const nextConfig: NextConfig = {
   async redirects() {
