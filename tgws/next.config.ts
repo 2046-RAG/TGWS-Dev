@@ -1,15 +1,7 @@
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
-import { existsSync } from 'node:fs';
-import path from 'node:path';
 
-// Vercel may load next.config.ts with cwd = repo root (even with
-// rootDirectory=tgws), so './src/i18n/request.ts' can miss. Probe for the
-// file relative to the current working directory and fall back to the
-// tgws-prefixed location when running from the repo root.
-const requestConfig = ['./src/i18n/request.ts', './tgws/src/i18n/request.ts']
-  .find((p) => existsSync(path.resolve(process.cwd(), p)));
-const withNextIntl = createNextIntlPlugin(requestConfig ?? './src/i18n/request.ts');
+const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   async redirects() {
