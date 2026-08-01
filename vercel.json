@@ -2,5 +2,5 @@
   "buildCommand": "cd tgws && npx next build --webpack",
   "outputDirectory": "tgws/.next",
   "framework": "nextjs",
-  "installCommand": "cd tgws && npm install"
+  "installCommand": "cd tgws && npm ci"
 }
