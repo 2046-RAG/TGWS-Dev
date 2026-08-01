@@ -1,4 +1,5 @@
 import { client } from '@/lib/sanity';
+import { logServiceError } from '@/lib/errors';
 import BlogList from './BlogList';
 import Breadcrumb from '@/components/ui/Breadcrumb';
 import { getTranslations } from 'next-intl/server';
@@ -42,16 +43,22 @@ async function getPosts() {
     const posts = await client.fetch(query);
     return posts || [];
   } catch (error) {
-    console.error('Failed to fetch posts:', error);
+    logServiceError({ service: 'Sanity', operation: 'getPosts', error });
     return [];
   }
 }
 
-export default async function BlogPage() {
+export default async function BlogPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'blog' });
   const posts = await getPosts();
   return (
     <>
-      <Breadcrumb items={[{ label: 'Blog' }]} />
+      <Breadcrumb items={[{ label: t('title') }]} />
       <BlogList posts={posts} />
     </>
   );

@@ -3,8 +3,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { Search, X, Camera, Filter, Sparkles, Package, Building2, FileText, HelpCircle, ExternalLink, ArrowRight, Loader2, TrendingUp, Zap } from 'lucide-react';
+import { Search, X, Camera, Filter, Sparkles, ArrowRight, Loader2, Package, Building2, FileText, HelpCircle, ExternalLink } from 'lucide-react';
 import { client } from '@/lib/sanity';
+import { logServiceError, trackEvent } from '@/lib/errors';
+import SearchFiltersPanel from './SearchFiltersPanel';
+import SearchResults from './SearchResults';
 
 interface SearchResult {
   id: string;
@@ -38,6 +41,9 @@ interface SearchResponse {
     internalResults: SearchResult[];
     externalResults: ExternalResult[];
     capabilityGap: CapabilityGap;
+    metadata?: {
+      externalSourcesAvailable?: boolean;
+    };
   };
 }
 
@@ -51,28 +57,6 @@ interface GlobalSearchProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
-const contentTypeOptions = [
-  { value: 'product', label: 'Products', icon: Package },
-  { value: 'solution', label: 'Solutions', icon: Building2 },
-  { value: 'blog', label: 'Blog', icon: FileText },
-  { value: 'faq', label: 'FAQ', icon: HelpCircle },
-];
-
-const pillarOptions = [
-  { value: 'build', label: 'Build', color: '#00D4FF' },
-  { value: 'run', label: 'Run', color: '#7B61FF' },
-  { value: 'protect', label: 'Protect', color: '#22C55E' },
-];
-
-const industryOptions = [
-  { value: 'healthcare', label: 'Healthcare' },
-  { value: 'finance', label: 'Finance' },
-  { value: 'retail', label: 'Retail' },
-  { value: 'logistics', label: 'Logistics' },
-  { value: 'education', label: 'Education' },
-  { value: 'government', label: 'Government' },
-];
 
 export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
   const router = useRouter();
@@ -90,6 +74,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
   });
   const [showLeadForm, setShowLeadForm] = useState(false);
   const [leadSubmitted, setLeadSubmitted] = useState(false);
+  const [externalSourcesAvailable, setExternalSourcesAvailable] = useState(false);
   const [suggestions, setSuggestions] = useState<{ id: string; title: string; description: string; url: string; type: string; pillar?: string }[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -198,20 +183,45 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
     };
   }, [isOpen, onClose]);
 
-  // Debounced auto-search: 输入完毕 500ms 后自动触发搜索
-  useEffect(() => {
-    if (!query.trim() || query.trim().length < 2) {
-      setResults(null);
-      return;
+  // 执行搜索
+  const handleSearch = useCallback(async () => {
+    if (!query.trim() && !imageFile) return;
+
+    setIsSearching(true);
+    setResults(null);
+
+    try {
+      const response = await fetch('/api/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: query.trim(),
+          type: imageFile ? 'image' : 'text',
+          imageData: imagePreview,
+          filters: Object.values(filters).some(f => f.length > 0) ? filters : undefined,
+          locale,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setResults(data.data);
+        setExternalSourcesAvailable(data.data.metadata?.externalSourcesAvailable ?? false);
+        trackEvent('search_performed', {
+          query: query.trim(),
+          results: data.data.internalResults.length + data.data.externalResults.length,
+          gap: data.data.capabilityGap?.detected ? '1' : '0',
+        });
+        if (data.data.capabilityGap?.detected) {
+          setShowLeadForm(true);
+        }
+      }
+    } catch (error) {
+      logServiceError({ service: 'GlobalSearch', operation: 'search', error });
+    } finally {
+      setIsSearching(false);
     }
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      handleSearch();
-    }, 500);
-    return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-    };
-  }, [query]);
+  }, [query, imageFile, imagePreview, filters, locale]);
 
   // 处理图片上传
   const handleImageUpload = useCallback((file: File) => {
@@ -271,39 +281,17 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
     }
   };
 
-  // 执行搜索
-  const handleSearch = useCallback(async () => {
-    if (!query.trim() && !imageFile) return;
-
-    setIsSearching(true);
-    setResults(null);
-
-    try {
-      const response = await fetch('/api/search', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          query: query.trim(),
-          type: imageFile ? 'image' : 'text',
-          imageData: imagePreview,
-          filters: Object.values(filters).some(f => f.length > 0) ? filters : undefined,
-          locale,
-        }),
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        setResults(data.data);
-        if (data.data.capabilityGap?.detected) {
-          setShowLeadForm(true);
-        }
-      }
-    } catch (error) {
-      console.error('Search error:', error);
-    } finally {
-      setIsSearching(false);
-    }
-  }, [query, imageFile, imagePreview, filters, locale]);
+  // Debounced auto-search: 输入完毕 500ms 后自动触发搜索
+  useEffect(() => {
+    if (!query.trim() || query.trim().length < 2) return;
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      handleSearch();
+    }, 500);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [query, handleSearch]);
 
   // 提交线索
   const handleLeadSubmit = async (leadData: { name: string; email: string; phone?: string; company?: string }) => {
@@ -322,9 +310,10 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
       if (data.success) {
         setLeadSubmitted(true);
         setShowLeadForm(false);
+        trackEvent('lead_submitted', { query, gap: results?.capabilityGap?.gapDescription ? '1' : '0' });
       }
     } catch (error) {
-      console.error('Lead submit error:', error);
+      logServiceError({ service: 'GlobalSearch', operation: 'leadSubmit', error });
     }
   };
 
@@ -358,7 +347,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm" onClick={onClose}>
+    <div role="dialog" aria-modal="true" aria-label="Search" className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm" onClick={onClose}>
       <div
         className="absolute inset-x-0 top-0 max-h-[90vh] bg-white dark:bg-zinc-900 shadow-2xl flex flex-col"
         onClick={(e) => e.stopPropagation()}
@@ -436,353 +425,23 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
             )}
 
             {/* Filters Panel */}
-            {showFilters && (
-              <div className="mt-4 p-4 bg-gray-50 dark:bg-zinc-800 rounded-xl space-y-4">
-                <div>
-                  <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">Content Type</p>
-                  <div className="flex flex-wrap gap-2">
-                    {contentTypeOptions.map(opt => (
-                      <button
-                        key={opt.value}
-                        onClick={() => toggleFilter('contentType', opt.value)}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm transition-colors ${
-                          filters.contentType.includes(opt.value)
-                            ? 'bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30'
-                            : 'bg-white dark:bg-zinc-700 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-zinc-600'
-                        }`}
-                      >
-                        <opt.icon size={14} />
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">Product Pillar</p>
-                  <div className="flex flex-wrap gap-2">
-                    {pillarOptions.map(opt => (
-                      <button
-                        key={opt.value}
-                        onClick={() => toggleFilter('pillar', opt.value)}
-                        className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
-                          filters.pillar.includes(opt.value)
-                            ? 'text-white'
-                            : 'bg-white dark:bg-zinc-700 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-zinc-600'
-                        }`}
-                        style={filters.pillar.includes(opt.value) ? { backgroundColor: opt.color } : {}}
-                      >
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">Industry</p>
-                  <div className="flex flex-wrap gap-2">
-                    {industryOptions.map(opt => (
-                      <button
-                        key={opt.value}
-                        onClick={() => toggleFilter('industry', opt.value)}
-                        className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
-                          filters.industry.includes(opt.value)
-                            ? 'bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30'
-                            : 'bg-white dark:bg-zinc-700 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-zinc-600'
-                        }`}
-                      >
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
+            {showFilters && <SearchFiltersPanel filters={filters} onToggle={toggleFilter} />}
           </div>
         </div>
 
         {/* Search Results */}
-        <div className="flex-1 overflow-y-auto">
-          <div className="max-w-4xl mx-auto px-4 py-6">
-            {/* Loading State */}
-            {isSearching && (
-              <div className="flex items-center justify-center py-12">
-                <Loader2 size={24} className="animate-spin text-[#00D4FF]" />
-                <span className="ml-3 text-gray-500">Searching...</span>
-              </div>
-            )}
-
-            {/* Suggestions — shown when no query and no results */}
-            {!isSearching && !results && !query.trim() && suggestions.length > 0 && (
-              <div>
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3 flex items-center gap-2">
-                  <TrendingUp size={14} className="text-[#7B61FF]" />
-                  Trending &amp; Recommended
-                </h3>
-                <div className="space-y-2">
-                  {suggestions.map((item, idx) => (
-                    <button
-                      key={item.id}
-                      onClick={() => handleResultClick(item.url)}
-                      className="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors text-left group border border-transparent hover:border-gray-200 dark:hover:border-zinc-700"
-                    >
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
-                        item.type === 'product' ? 'bg-[#00D4FF]/10' :
-                        item.type === 'solution' ? 'bg-[#7B61FF]/10' :
-                        'bg-[#22C55E]/10'
-                      }`}>
-                        {idx === 0 ? (
-                          <Zap size={16} className="text-[#F59E0B]" />
-                        ) : (
-                          getResultIcon(item.type)
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <p className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-[#00D4FF] transition-colors">
-                            {item.title}
-                          </p>
-                          {idx === 0 && (
-                            <span className="px-1.5 py-0.5 text-[10px] font-medium bg-[#F59E0B]/10 text-[#F59E0B] rounded">
-                              Popular
-                            </span>
-                          )}
-                          {item.pillar && (
-                            <span className={`px-1.5 py-0.5 text-[10px] font-medium rounded ${
-                              item.pillar === 'build' ? 'bg-[#00D4FF]/10 text-[#00D4FF]' :
-                              item.pillar === 'run' ? 'bg-[#7B61FF]/10 text-[#7B61FF]' :
-                              'bg-[#22C55E]/10 text-[#22C55E]'
-                            }`}>
-                              {item.pillar.charAt(0).toUpperCase() + item.pillar.slice(1)}
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
-                          {item.description}
-                        </p>
-                      </div>
-                      <ArrowRight size={16} className="text-gray-300 group-hover:text-[#00D4FF] transition-colors shrink-0" />
-                    </button>
-                  ))}
-                </div>
-                <p className="mt-4 text-xs text-gray-400 dark:text-gray-500 text-center">
-                  Type a search query or upload an image to find more results
-                </p>
-              </div>
-            )}
-
-            {/* Results */}
-            {!isSearching && results && (
-              <>
-                {/* AI Summary — 解析 Gemini 结构化输出 */}
-                {results.aiSummary && (() => {
-                  // 解析 [RESOURCES] / [INSIGHT] / [SOURCES] 格式
-                  const sections: { label: string; color: string; bg: string; content: string }[] = [];
-                  const parts = results.aiSummary.split(/\n?\[(\w+)\]\n?/);
-                  for (let i = 1; i < parts.length; i += 2) {
-                    const tag = parts[i].toUpperCase();
-                    const content = (parts[i + 1] || '').trim();
-                    if (!content) continue;
-                    if (tag === 'RESOURCES') {
-                      sections.push({ label: 'TechGuru Resources', color: 'text-[#00D4FF]', bg: 'bg-[#00D4FF]/5', content });
-                    } else if (tag === 'INSIGHT') {
-                      sections.push({ label: 'AI Insight', color: 'text-[#F59E0B]', bg: 'bg-[#F59E0B]/5', content });
-                    } else if (tag === 'SOURCES') {
-                      sections.push({ label: 'Sources', color: 'text-[#7B61FF]', bg: 'bg-[#7B61FF]/5', content });
-                    }
-                  }
-                  // 如果 Gemini 返回了非结构化文本，整个作为一个 section
-                  if (sections.length === 0 && results.aiSummary.length > 20) {
-                    sections.push({ label: 'AI Summary', color: 'text-[#00D4FF]', bg: 'bg-[#00D4FF]/5', content: results.aiSummary });
-                  }
-                  if (sections.length === 0) return null;
-                  return (
-                    <div className="mb-6 rounded-xl border border-gray-200 dark:border-zinc-700 overflow-hidden">
-                      {sections.map((s, idx) => (
-                        <div key={idx} className={`p-4 ${s.bg} ${idx > 0 ? 'border-t border-gray-100 dark:border-zinc-700/50' : ''}`}>
-                          <div className="flex items-start gap-3">
-                            <Sparkles size={16} className={`mt-0.5 shrink-0 ${s.color}`} />
-                            <div className="flex-1 min-w-0">
-                              <p className={`text-[11px] font-semibold uppercase tracking-wider mb-1.5 ${s.color}`}>{s.label}</p>
-                              <div className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed whitespace-pre-line">{s.content}</div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  );
-                })()}
-
-                {/* Capability Gap Alert — 放在摘要和结果之间，更显眼 */}
-                {results.capabilityGap?.detected && !leadSubmitted && (
-                  <div className="mb-6 p-5 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-xl border border-amber-200 dark:border-amber-800">
-                    <h3 className="text-base font-semibold text-amber-800 dark:text-amber-200 mb-1.5">
-                      We&apos;d like to help
-                    </h3>
-                    <p className="text-amber-700 dark:text-amber-300 text-sm mb-3">
-                      {results.capabilityGap.gapDescription}
-                    </p>
-                    <p className="text-amber-600 dark:text-amber-400 text-xs mb-3">
-                      Leave your contact info and our team will reach out within 48 hours.
-                    </p>
-                    <LeadForm onSubmit={handleLeadSubmit} onCancel={() => setShowLeadForm(false)} />
-                  </div>
-                )}
-
-                {/* Internal Results */}
-                {results.internalResults.length > 0 && (
-                  <div className="mb-6">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3 flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-[#00D4FF]" />
-                      TechGuru ({results.internalResults.length} results)
-                    </h3>
-                    <div className="space-y-2">
-                      {results.internalResults.map(result => (
-                        <button
-                          key={result.id}
-                          onClick={() => handleResultClick(result.url)}
-                          className="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors text-left group border border-transparent hover:border-gray-200 dark:hover:border-zinc-700"
-                        >
-                          <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-zinc-700 flex items-center justify-center shrink-0">
-                            {getResultIcon(result.type)}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-[#00D4FF] transition-colors">
-                              {result.title}
-                            </p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
-                              {result.description}
-                            </p>
-                          </div>
-                          <ArrowRight size={16} className="text-gray-300 group-hover:text-[#00D4FF] transition-colors shrink-0" />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* External Results */}
-                {results.externalResults.length > 0 && (
-                  <div className="mb-6">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3 flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-[#7B61FF]" />
-                      From the Web ({results.externalResults.length} results)
-                    </h3>
-                    <div className="space-y-2">
-                      {results.externalResults.map(result => (
-                        <a
-                          key={result.id}
-                          href={result.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors text-left group border border-transparent hover:border-gray-200 dark:hover:border-zinc-700"
-                        >
-                          <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-zinc-700 flex items-center justify-center shrink-0">
-                            <ExternalLink size={16} className="text-gray-500" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-[#00D4FF] transition-colors">
-                              {result.title}
-                            </p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
-                              {result.description}
-                            </p>
-                            <p className="text-xs text-gray-400 mt-1">{result.url}</p>
-                          </div>
-                          <ArrowRight size={16} className="text-gray-300 group-hover:text-[#00D4FF] transition-colors shrink-0" />
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Lead Submitted */}
-                {leadSubmitted && (
-                  <div className="p-6 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800 text-center">
-                    <p className="text-green-700 dark:text-green-300 font-medium">
-                      Thank you! Our team will contact you within 48 hours.
-                    </p>
-                  </div>
-                )}
-
-                {/* Empty State */}
-                {!isSearching && results && results.internalResults.length === 0 && results.externalResults.length === 0 && (
-                  <div className="text-center py-12">
-                    <Search size={48} className="mx-auto text-gray-300 dark:text-gray-600 mb-4" />
-                    <p className="text-gray-500 dark:text-gray-400">No results found</p>
-                    <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">Try different keywords or filters</p>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </div>
+        <SearchResults
+          results={results}
+          isSearching={isSearching}
+          query={query}
+          externalSourcesAvailable={externalSourcesAvailable}
+          leadSubmitted={leadSubmitted}
+          onResultClick={handleResultClick}
+          onLeadSubmit={handleLeadSubmit}
+          onLeadCancel={() => setShowLeadForm(false)}
+          getResultIcon={getResultIcon}
+        />
       </div>
     </div>
-  );
-}
-
-// Lead Form Component
-function LeadForm({ onSubmit, onCancel }: { onSubmit: (data: { name: string; email: string; phone?: string; company?: string }) => void; onCancel: () => void }) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [company, setCompany] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (name && email) {
-      onSubmit({ name, email, phone, company });
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Your name *"
-        required
-        className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-zinc-600 rounded-lg focus:border-[#00D4FF] focus:ring-1 focus:ring-[#00D4FF] outline-none"
-      />
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email address *"
-        required
-        className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-zinc-600 rounded-lg focus:border-[#00D4FF] focus:ring-1 focus:ring-[#00D4FF] outline-none"
-      />
-      <div className="grid grid-cols-2 gap-3">
-        <input
-          type="tel"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          placeholder="Phone (optional)"
-          className="px-3 py-2 text-sm border border-gray-200 dark:border-zinc-600 rounded-lg focus:border-[#00D4FF] focus:ring-1 focus:ring-[#00D4FF] outline-none"
-        />
-        <input
-          type="text"
-          value={company}
-          onChange={(e) => setCompany(e.target.value)}
-          placeholder="Company (optional)"
-          className="px-3 py-2 text-sm border border-gray-200 dark:border-zinc-600 rounded-lg focus:border-[#00D4FF] focus:ring-1 focus:ring-[#00D4FF] outline-none"
-        />
-      </div>
-      <div className="flex gap-2">
-        <button
-          type="submit"
-          className="flex-1 px-4 py-2 bg-[#00D4FF] text-white text-sm font-medium rounded-lg hover:bg-[#00B8E6] transition-colors"
-        >
-          Submit
-        </button>
-        <button
-          type="button"
-          onClick={onCancel}
-          className="px-4 py-2 border border-gray-200 dark:border-zinc-600 text-gray-600 dark:text-gray-300 text-sm rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
-        >
-          Cancel
-        </button>
-      </div>
-    </form>
   );
 }

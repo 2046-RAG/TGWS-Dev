@@ -2,7 +2,7 @@ import https from 'https';
 
 const PROJECT_ID = 'r6ztl1oq';
 const DATASET = 'production';
-const TOKEN = 'REPLACED_SANITY_TOKEN';
+const TOKEN = `${process.env.SANITY_API_TOKEN}`;
 
 const NEW_DESCRIPTION = 'Want AIGC but can\'t justify the GPU investment? Access enterprise-grade text-to-video, image-to-video, text-to-image, and text-to-speech through our managed partnerships with ByteDance (Seedance, Jimeng) and Alibaba Cloud (HappyHorse, Wan, CosyVoice).';
 

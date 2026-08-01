@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter, useParams } from 'next/navigation';
@@ -22,14 +22,11 @@ import {
 
 interface TicketStats {
   total: number;
-  open: number;
-  inProgress: number;
-  resolved: number;
-  closed: number;
-  critical: number;
-  high: number;
-  medium: number;
-  low: number;
+  byStatus: Record<string, number>;
+  byCategory: Record<string, number>;
+  byPriority: Record<string, number>;
+  avgAgeDays: number;
+  recent: Ticket[];
 }
 
 interface Ticket {
@@ -43,22 +40,15 @@ interface Ticket {
   assigned_to: string | null;
 }
 
-interface CategoryStats {
-  build: number;
-  run: number;
-  protect: number;
-}
-
-export default function AdminDashboardPage() {
-  const t = useTranslations('admin');
+export default function AdminDashboardPage() {  const t = useTranslations('admin');
   const s = useTranslations('support');
   const router = useRouter();
   const params = useParams();
   const locale = params.locale as string;
-  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [stats, setStats] = useState<TicketStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<{ id: string; email?: string; role?: string } | null>(null);
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
     const checkAdmin = async () => {
@@ -70,11 +60,11 @@ export default function AdminDashboardPage() {
         return;
       }
 
-      // Fetch all tickets for admin
+      // Fetch aggregated stats for admin
       const response = await fetch('/api/tickets/stats');
       if (response.ok) {
         const result = await response.json();
-        setTickets(result.data || []);
+        setStats(result.data || null);
       }
       setLoading(false);
     };
@@ -94,50 +84,36 @@ export default function AdminDashboardPage() {
     return null;
   }
 
-  // Calculate statistics
-  const stats: TicketStats = {
-    total: tickets.length,
-    open: tickets.filter(t => t.status === 'open').length,
-    inProgress: tickets.filter(t => t.status === 'in_progress').length,
-    resolved: tickets.filter(t => t.status === 'resolved').length,
-    closed: tickets.filter(t => t.status === 'closed').length,
-    critical: tickets.filter(t => t.priority === 'critical').length,
-    high: tickets.filter(t => t.priority === 'high').length,
-    medium: tickets.filter(t => t.priority === 'medium').length,
-    low: tickets.filter(t => t.priority === 'low').length,
-  };
+  // Derived statistics from the aggregated stats payload
+  const statsTotal = stats?.total ?? 0;
+  const byStatus = stats?.byStatus ?? {};
+  const byCategory = stats?.byCategory ?? {};
+  const byPriority = stats?.byPriority ?? {};
+  const recentTickets = stats?.recent ?? [];
 
-  const categoryStats: CategoryStats = {
-    build: tickets.filter(t => t.category === 'build').length,
-    run: tickets.filter(t => t.category === 'run').length,
-    protect: tickets.filter(t => t.category === 'protect').length,
-  };
+  const count = (map: Record<string, number>, key: string) => map[key] ?? 0;
 
-  // Recent tickets (last 5)
-  const recentTickets = tickets
-    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-    .slice(0, 5);
-
-  // Calculate response time (simplified - days since creation)
-  const avgResponseTime = tickets.length > 0
-    ? Math.round(tickets.reduce((acc, t) => {
-        const created = new Date(t.created_at);
-        const now = new Date();
-        return acc + (now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24);
-      }, 0) / tickets.length)
-    : 0;
+  const openCount = count(byStatus, 'open');
+  const inProgressCount = count(byStatus, 'in_progress');
+  const resolvedCount = count(byStatus, 'resolved');
+  const closedCount = count(byStatus, 'closed');
+  const criticalCount = count(byPriority, 'critical');
+  const highCount = count(byPriority, 'high');
+  const mediumCount = count(byPriority, 'medium');
+  const lowCount = count(byPriority, 'low');
+  const avgAgeDays = stats?.avgAgeDays ?? 0;
 
   const statCards = [
-    { label: t('totalTickets'), value: stats.total, icon: Ticket, color: 'text-[#00D4FF]', bg: 'bg-[#00D4FF]/10' },
-    { label: t('openTickets'), value: stats.open, icon: AlertCircle, color: 'text-yellow-500', bg: 'bg-yellow-500/10' },
-    { label: t('inProgress'), value: stats.inProgress, icon: Clock, color: 'text-blue-500', bg: 'bg-blue-500/10' },
-    { label: t('resolved'), value: stats.resolved, icon: CheckCircle, color: 'text-green-500', bg: 'bg-green-500/10' },
+    { label: t('totalTickets'), value: statsTotal, icon: Ticket, color: 'text-[#00D4FF]', bg: 'bg-[#00D4FF]/10' },
+    { label: t('openTickets'), value: openCount, icon: AlertCircle, color: 'text-yellow-500', bg: 'bg-yellow-500/10' },
+    { label: t('inProgress'), value: inProgressCount, icon: Clock, color: 'text-blue-500', bg: 'bg-blue-500/10' },
+    { label: t('resolved'), value: resolvedCount, icon: CheckCircle, color: 'text-green-500', bg: 'bg-green-500/10' },
   ];
 
   return (
     <div className="min-h-screen bg-[#F4F4F5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumb items={[{ label: 'Support', href: `/${locale}/support` }, { label: 'Admin Dashboard' }]} locale={locale} />
+        <Breadcrumb items={[{ label: s('supportCenter'), href: `/${locale}/support` }, { label: t('adminDashboard') }]} locale={locale} />
 
         {/* Header */}
         <div className="mb-8">
@@ -172,10 +148,10 @@ export default function AdminDashboardPage() {
             </div>
             <div className="space-y-4">
               {[
-                { label: t('critical'), value: stats.critical, color: 'bg-red-500', percent: stats.total > 0 ? Math.round((stats.critical / stats.total) * 100) : 0 },
-                { label: t('high'), value: stats.high, color: 'bg-orange-500', percent: stats.total > 0 ? Math.round((stats.high / stats.total) * 100) : 0 },
-                { label: t('medium'), value: stats.medium, color: 'bg-yellow-500', percent: stats.total > 0 ? Math.round((stats.medium / stats.total) * 100) : 0 },
-                { label: t('low'), value: stats.low, color: 'bg-green-500', percent: stats.total > 0 ? Math.round((stats.low / stats.total) * 100) : 0 },
+                { label: t('critical'), value: criticalCount, color: 'bg-red-500', percent: statsTotal > 0 ? Math.round((criticalCount / statsTotal) * 100) : 0 },
+                { label: t('high'), value: highCount, color: 'bg-orange-500', percent: statsTotal > 0 ? Math.round((highCount / statsTotal) * 100) : 0 },
+                { label: t('medium'), value: mediumCount, color: 'bg-yellow-500', percent: statsTotal > 0 ? Math.round((mediumCount / statsTotal) * 100) : 0 },
+                { label: t('low'), value: lowCount, color: 'bg-green-500', percent: statsTotal > 0 ? Math.round((lowCount / statsTotal) * 100) : 0 },
               ].map((item, i) => (
                 <div key={i}>
                   <div className="flex items-center justify-between mb-2">
@@ -198,9 +174,9 @@ export default function AdminDashboardPage() {
             </div>
             <div className="space-y-4">
               {[
-                { label: 'Build', value: categoryStats.build, color: 'bg-[#00D4FF]' },
-                { label: 'Run', value: categoryStats.run, color: 'bg-[#7B61FF]' },
-                { label: 'Protect', value: categoryStats.protect, color: 'bg-[#22C55E]' },
+                { label: 'Build', value: count(byCategory, 'build'), color: 'bg-[#00D4FF]' },
+                { label: 'Run', value: count(byCategory, 'run'), color: 'bg-[#7B61FF]' },
+                { label: 'Protect', value: count(byCategory, 'protect'), color: 'bg-[#22C55E]' },
               ].map((item, i) => (
                 <div key={i}>
                   <div className="flex items-center justify-between mb-2">
@@ -208,7 +184,7 @@ export default function AdminDashboardPage() {
                     <span className="text-sm font-medium text-gray-900 dark:text-white">{item.value}</span>
                   </div>
                   <div className="w-full h-2 bg-gray-100 dark:bg-zinc-700 rounded-full overflow-hidden">
-                    <div className={`h-full ${item.color} rounded-full`} style={{ width: `${stats.total > 0 ? (item.value / stats.total) * 100 : 0}%` }} />
+                    <div className={`h-full ${item.color} rounded-full`} style={{ width: `${statsTotal > 0 ? (item.value / statsTotal) * 100 : 0}%` }} />
                   </div>
                 </div>
               ))}
@@ -225,7 +201,7 @@ export default function AdminDashboardPage() {
               </div>
               <h3 className="font-semibold text-gray-900 dark:text-white">{t('avgResponseTime')}</h3>
             </div>
-            <p className="text-3xl font-bold text-gray-900 dark:text-white">{avgResponseTime} {t('days')}</p>
+            <p className="text-3xl font-bold text-gray-900 dark:text-white">{avgAgeDays} {t('days')}</p>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('avgResponseDesc')}</p>
           </div>
 
@@ -237,7 +213,7 @@ export default function AdminDashboardPage() {
               <h3 className="font-semibold text-gray-900 dark:text-white">{t('resolutionRate')}</h3>
             </div>
             <p className="text-3xl font-bold text-gray-900 dark:text-white">
-              {stats.total > 0 ? Math.round(((stats.resolved + stats.closed) / stats.total) * 100) : 0}%
+              {statsTotal > 0 ? Math.round(((resolvedCount + closedCount) / statsTotal) * 100) : 0}%
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('resolutionDesc')}</p>
           </div>
@@ -249,7 +225,7 @@ export default function AdminDashboardPage() {
               </div>
               <h3 className="font-semibold text-gray-900 dark:text-white">{t('criticalTickets')}</h3>
             </div>
-            <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.critical}</p>
+            <p className="text-3xl font-bold text-gray-900 dark:text-white">{criticalCount}</p>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('criticalDesc')}</p>
           </div>
         </div>

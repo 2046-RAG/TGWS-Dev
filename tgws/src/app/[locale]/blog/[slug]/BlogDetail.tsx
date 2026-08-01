@@ -214,7 +214,9 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
   }, 0) || 0;
   const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
-  const ogImage = post.coverImage || `https://picsum.photos/seed/${str(post.slug?.current || 'blog')}/1200/630`;
+  const ogImage = post.coverImage
+    ? urlFor(post.coverImage).width(1200).height(630).url()
+    : 'https://www.techguru-it.asia/logos/techguru-logo.png';
 
   return (
     <section className="py-12 sm:py-20 px-5 sm:px-8 max-w-4xl mx-auto">

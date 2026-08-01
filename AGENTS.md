@@ -30,7 +30,7 @@ This project follows **Specs-driven Development**. The PRD is the canonical sour
 | [S8] | CMS内容管理 - Sanity配置 | Integration |
 | [S9] | 设计规范 - 色彩、字体、特效 | Design |
 | [S10] | 行业解决方案 | Content |
-| [S11] | 案例展示 | Content |
+| [S11] | ~~案例展示~~（已废弃 2026-07-12） | Deprecated |
 | [S12] | 新闻博客 | Feature |
 | [S13] | 联系我们 | Feature |
 | [S14] | 关于我们 | Content |
@@ -94,7 +94,6 @@ src/
 │   │   ├── home/               # Home page components
 │   │   ├── products/           # Products listing
 │   │   ├── solutions/          # Industry solutions (6 industries)
-│   │   ├── case-studies/       # Case studies + [slug] detail
 │   │   ├── blog/               # Blog listing + [slug] detail
 │   │   ├── about/              # About us
 │   │   ├── contact/            # Contact form
@@ -210,7 +209,7 @@ src/
 - **Professional**: Enterprise IT — not a startup, not a toy
 - **Progressive enhancement**: Content visible without JS; animations are enhancement
 - **Accessibility-first**: WCAG 2.1 AA compliance throughout
-- **Light theme primary**: Auto dark mode via `prefers-color-scheme: dark`, no manual toggle
+- **Light theme primary**: Auto dark mode via `prefers-color-scheme: dark`, with manual toggle fallback
 
 ### Color Tokens (from globals.css)
 
@@ -237,7 +236,7 @@ src/
 3. **Card hover**: `translateY(-2px)` with cyan border glow — respects `prefers-reduced-motion`
 4. **Focus rings**: `box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #00D4FF` (double ring)
 5. **Touch targets**: 44px minimum on mobile (WCAG 2.5.8)
-6. **Dark mode**: Automatic via `prefers-color-scheme: dark` — no manual toggle
+6. **Dark mode**: Automatic via `prefers-color-scheme: dark`, manual toggle available via DarkModeToggle
 7. **Form inputs**: Consistent `bg-gray-50 border-gray-200 rounded-lg` with `focus:border-[#00D4FF]`
 8. **Icons**: Lucide React, sizes 14–32px depending on context
 9. **Progressive enhancement**: Content visible without JS; animations are enhancement via `.js-loaded` class

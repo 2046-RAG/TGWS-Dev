@@ -71,13 +71,13 @@ export default function LoginForm() {
   return (
     <form onSubmit={resetMode ? handleResetPassword : handleLogin} className="space-y-6" aria-label={resetMode ? t('resetPassword') : t('signIn')}>
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-4 py-3 text-red-600 dark:text-red-400 text-sm">
+        <div id="login-error" role="alert" className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-4 py-3 text-red-600 dark:text-red-400 text-sm">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg px-4 py-3 text-green-600 dark:text-green-400 text-sm">
+        <div role="status" className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg px-4 py-3 text-green-600 dark:text-green-400 text-sm">
           {success}
         </div>
       )}
@@ -94,6 +94,9 @@ export default function LoginForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            aria-required="true"
+            aria-invalid={error ? 'true' : undefined}
+            aria-describedby={error ? 'login-error' : undefined}
             autoComplete="email"
             spellCheck={false}
             className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-600 rounded-lg pl-10 pr-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
@@ -115,6 +118,9 @@ export default function LoginForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            aria-required="true"
+            aria-invalid={error ? 'true' : undefined}
+            aria-describedby={error ? 'login-error' : undefined}
             minLength={8}
             autoComplete="current-password"
             className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-600 rounded-lg pl-10 pr-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useSyncExternalStore } from 'react';
 import { Sun, Moon, Monitor } from 'lucide-react';
 
 type ThemeMode = 'auto' | 'light' | 'dark';
@@ -32,9 +32,19 @@ const MODES: { key: ThemeMode; icon: typeof Sun; label: string; title: string }[
   { key: 'dark', icon: Moon, label: 'Dark', title: 'Dark mode' },
 ];
 
+// Returns true only after hydration completes; SSR renders false so the
+// placeholder markup matches the server, then the real control mounts.
+const emptySubscribe = () => () => {};
+
 export default function DarkModeToggle() {
-  const [mode, setMode] = useState<ThemeMode>('auto');
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
+  // Lazy init reads localStorage only on first client render; SSR yields 'auto'
+  // without touching localStorage, so server/client markup stays consistent.
+  const [mode, setMode] = useState<ThemeMode>(() => getStoredMode());
 
   const applyAndStore = useCallback((newMode: ThemeMode) => {
     setMode(newMode);
@@ -43,10 +53,7 @@ export default function DarkModeToggle() {
   }, []);
 
   useEffect(() => {
-    const initial = getStoredMode();
-    setMode(initial);
-    applyTheme(initial);
-    setMounted(true);
+    applyTheme(mode);
 
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
     const handler = () => {
@@ -54,7 +61,7 @@ export default function DarkModeToggle() {
     };
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
-  }, []);
+  }, [mode]);
 
   if (!mounted) {
     return <div className="flex gap-1" />;

@@ -1,446 +1,141 @@
 {
-  "architectureTemplates": [
+  "title": "Enterprise Website Architecture",
+  "subtitle": "Modern Headless Stack Design",
+  "version": "2.0",
+  "layers": [
     {
-      "id": "healthcare-his-modernization",
-      "industry": "healthcare",
-      "title": "Hospital Information System Modernization",
-      "slug": "healthcare-his-modernization",
-      "businessChallenge": "Regional hospital chain (500+ beds) running legacy HIS on aging hardware faces: unplanned downtime costing $50K/hour, inability to scale for peak patient loads, fragmented vendor support across 8 different systems, and non-compliance with HIPAA data protection requirements. Current SAN storage reaching capacity limits with no path to scale.",
-      "solutionArchitecture": {
-        "overview": "Hyper-converged infrastructure with integrated security and disaster recovery for unified hospital IT operations",
-        "components": [
-          {
-            "layer": "compute",
-            "vendor": "Sangfor",
-            "product": "Sangfor HCI",
-            "role": "Primary compute and storage platform",
-            "specification": "3-node cluster, 768GB RAM per node, all-flash NVMe storage, 99.999% availability SLA"
-          },
-          {
-            "layer": "security",
-            "vendor": "Fortinet",
-            "product": "FortiGate 600E NGFW",
-            "role": "Network security and HIPAA compliance enforcement",
-            "specification": "2x active-passive HA pair, IPS/IDS, SSL inspection, micro-segmentation for medical devices"
-          },
-          {
-            "layer": "backup",
-            "vendor": "Sangfor",
-            "product": "Sangfor HCI",
-            "role": "Disaster recovery and ransomware protection",
-            "specification": "RPO < 15 minutes, RTO < 1 hour, immutable backups, air-gapped recovery"
-          },
-          {
-            "layer": "monitoring",
-            "vendor": "Fortinet",
-            "product": "FortiAnalyzer",
-            "role": "Centralized logging and compliance reporting",
-            "specification": "Automated HIPAA compliance reports, 7-year log retention, real-time threat correlation"
-          }
-        ],
-        "architectureDiagram": {
-          "description": "Three-tier architecture with HCI nodes hosting VMs for HIS/EHR applications, Fortinet security perimeter protecting east-west traffic between medical devices and patient data, replicated DR site for business continuity",
-          "dataFlow": "Medical devices → Fortinet micro-segmentation → Sangfor HCI (EHR/HIS VMs) → Encrypted replication → DR site"
-        }
-      },
-      "keyBenefits": [
-        {
-          "metric": "downtime_reduction",
-          "value": "99.99%",
-          "description": "System availability improved from 99.5% to 99.99%"
-        },
-        {
-          "metric": "cost_savings",
-          "value": "40%",
-          "description": "Annual IT infrastructure costs reduced through consolidation"
-        },
-        {
-          "metric": "recovery_time",
-          "value": "<1 hour",
-          "description": "Disaster recovery time objective for critical systems"
-        },
-        {
-          "metric": "compliance",
-          "value": "HIPAA",
-          "description": "Full compliance achieved with automated audit reporting"
-        }
+      "id": "client",
+      "name": "CLIENT LAYER",
+      "icon": "🖥️",
+      "description": "Next.js App Router + React 19",
+      "components": [
+        {"name": "Frontend App", "tech": "Next.js 16", "icon": "⚛️"},
+        {"name": "UI Framework", "tech": "React 19 + TypeScript", "icon": "🎨"},
+        {"name": "Styling", "tech": "Tailwind CSS v4", "icon": "🖌️"},
+        {"name": "Animations", "tech": "Framer Motion", "icon": "✨"},
+        {"name": "i18n", "tech": "next-intl", "icon": "🌐"}
       ],
-      "deploymentTimeline": "8 weeks",
-      "caseStudyRef": "healthcare-his-001"
+      "designPhilosophy": [
+        "Progressive Enhancement",
+        "Mobile-First Responsive",
+        "Accessibility (WCAG 2.1 AA)",
+        "Dark Mode Support"
+      ]
     },
     {
-      "id": "finance-enterprise-workloads",
-      "industry": "finance",
-      "title": "Financial Enterprise Workload Modernization",
-      "slug": "finance-enterprise-workloads",
-      "businessChallenge": "Regional financial institution with 200+ branches needs to modernize enterprise support systems. Challenges include: fragmented CRM across departments causing missed cross-sell opportunities, manual report generation taking 2 weeks monthly, paper-based cheque processing and document workflows delaying operations, and legacy branch office infrastructure with high maintenance costs.",
-      "solutionArchitecture": {
-        "overview": "Unified enterprise infrastructure for CRM, Cheque Image System, Document Management, and branch office operations — excluding core banking and trading systems",
-        "components": [
-          {
-            "layer": "compute",
-            "vendor": "Nutanix",
-            "product": "NX Series HCI",
-            "role": "Enterprise application platform (CRM, Cheque Image System, Document Management, reporting)",
-            "specification": "4-node cluster, 768GB RAM total, Nutanix AOS, hosts CRM/Cheque Imaging/DMS/reporting workloads"
-          },
-          {
-            "layer": "security",
-            "vendor": "Fortinet",
-            "product": "FortiGate 1800F",
-            "role": "Branch connectivity and enterprise application security",
-            "specification": "HA pair at DC, SD-WAN for 200 branches, SSL inspection for cloud apps"
-          },
-          {
-            "layer": "virtualization",
-            "vendor": "Proxmox",
-            "product": "Proxmox VE",
-            "role": "Development, testing, and departmental workloads",
-            "specification": "6-node cluster for UAT/dev, report generation, analytics sandbox"
-          },
-          {
-            "layer": "backup",
-            "vendor": "Sangfor",
-            "product": "Sangfor HCI",
-            "role": "Enterprise data protection and compliance archival",
-            "specification": "RPO < 1 hour, RTO < 4 hours, 7-year retention for regulatory compliance"
-          }
-        ],
-        "architectureDiagram": {
-          "description": "Nutanix HCI hosting enterprise applications (CRM, Cheque Image System, Document Management, reporting), Fortinet SD-WAN connecting branches with centralized security, Proxmox for dev/test isolation, Sangfor DR for business continuity",
-          "dataFlow": "Branch staff → Fortinet SD-WAN → Nutanix (CRM/Cheque Imaging/DMS) → Proxmox (Reports/Dev) → Sangfor (Backup/Archive)"
-        }
-      },
-      "keyBenefits": [
-        {
-          "metric": "crm_efficiency",
-          "value": "3x",
-          "description": "Cross-sell conversion rate improvement through unified customer view"
-        },
-        {
-          "metric": "report_generation",
-          "value": "80%",
-          "description": "Reduction in monthly report preparation time"
-        },
-        {
-          "metric": "cheque_processing",
-          "value": "5x",
-          "description": "Cheque image capture and processing speed improvement"
-        },
-        {
-          "metric": "document_retrieval",
-          "value": "10x",
-          "description": "Document search and retrieval speed with digital DMS"
-        },
-        {
-          "metric": "branch_it_costs",
-          "value": "30%",
-          "description": "Reduction in branch office IT maintenance costs"
-        }
+      "id": "ai-search",
+      "name": "AI-POWERED SEARCH",
+      "icon": "🔍",
+      "description": "Multi-modal intelligent search",
+      "components": [
+        {"name": "Text Search", "tech": "Query Parser", "icon": "📝"},
+        {"name": "Image Search", "tech": "Multi-modal AI", "icon": "🖼️"},
+        {"name": "Internal Search", "tech": "GROQ Queries", "icon": "🏠"},
+        {"name": "External Search", "tech": "Google + AI API", "icon": "🌐"},
+        {"name": "AI Consolidation", "tech": "LLM Integration", "icon": "🤖"}
       ],
-      "deploymentTimeline": "10 weeks",
-      "caseStudyRef": "finance-enterprise-001",
-      "note": "Excludes core banking and trading systems — focuses on enterprise support workloads only"
+      "designPhilosophy": [
+        "Semantic Understanding",
+        "Result Consolidation",
+        "Capability Gap Detection",
+        "Lead Generation Loop"
+      ]
     },
     {
-      "id": "retail-ecommerce-platform",
-      "industry": "retail",
-      "title": "Omnichannel E-Commerce Platform",
-      "slug": "retail-ecommerce-omnichannel",
-      "businessChallenge": "National retail chain with 500+ stores needs unified e-commerce platform handling flash sales (10x normal traffic). Current challenges: site crashes during promotions costing $2M/hour, inventory sync delays between online/offline channels, POS system vulnerabilities, and inability to scale for seasonal peaks.",
-      "solutionArchitecture": {
-        "overview": "Scalable cloud-native architecture with edge security and automated scaling for high-traffic retail operations",
-        "components": [
-          {
-            "layer": "compute",
-            "vendor": "Nutanix",
-            "product": "Nutanix NC-series",
-            "role": "Primary e-commerce platform hosting",
-            "specification": "8-node cluster with Nutanix Flow for microsegmentation, auto-scaling to 500+ VMs"
-          },
-          {
-            "layer": "security",
-            "vendor": "Fortinet",
-            "product": "FortiWeb 400E",
-            "role": "Web application firewall and DDoS protection",
-            "specification": "WAF for e-commerce applications, bot protection, PCI DSS compliant, 10Gbps throughput"
-          },
-          {
-            "layer": "edge",
-            "vendor": "Fortinet",
-            "product": "FortiGate 100F",
-            "role": "Store-level security and SD-WAN",
-            "specification": "500x distributed to stores, zero-touch provisioning, local internet breakout"
-          },
-          {
-            "layer": "backup",
-            "vendor": "Sangfor",
-            "product": "Sangfor HCI + aStor",
-            "role": "Store-level data protection and POS backup",
-            "specification": "Local HCI at flagship stores for POS resilience, cloud-tiered backup"
-          }
-        ],
-        "architectureDiagram": {
-          "description": "Centralized e-commerce platform on Nutanix with Fortinet edge security at each store, auto-scaling groups for flash sale capacity, PCI DSS isolated network segments for payment processing",
-          "dataFlow": "Customer → FortiWeb WAF → Nutanix (E-commerce) → Inventory DB → FortiGate (Store POS) → Cloud Backup"
-        }
-      },
-      "keyBenefits": [
-        {
-          "metric": "scalability",
-          "value": "10x",
-          "description": "Handle 10x traffic spikes during flash sales without degradation"
-        },
-        {
-          "metric": "availability",
-          "value": "99.95%",
-          "description": "Zero downtime during peak shopping seasons"
-        },
-        {
-          "metric": "cost_reduction",
-          "value": "35%",
-          "description": "Infrastructure costs through consolidation and automation"
-        },
-        {
-          "metric": "security",
-          "value": "PCI DSS",
-          "description": "Full compliance with automated vulnerability scanning"
-        }
+      "id": "api",
+      "name": "API GATEWAY",
+      "icon": "⚙️",
+      "description": "Next.js API Routes",
+      "components": [
+        {"name": "Auth Routes", "tech": "OAuth + JWT", "icon": "🔐"},
+        {"name": "Search API", "tech": "Multi-source", "icon": "🔍"},
+        {"name": "CRUD APIs", "tech": "REST Endpoints", "icon": "📡"},
+        {"name": "File Upload", "tech": "Multipart Handler", "icon": "📁"},
+        {"name": "Webhooks", "tech": "ISR Revalidation", "icon": "🔄"}
       ],
-      "deploymentTimeline": "10 weeks",
-      "caseStudyRef": "retail-ecommerce-001"
+      "designPhilosophy": [
+        "RESTful Design",
+        "Input Validation",
+        "Error Handling",
+        "Rate Limiting"
+      ]
     },
     {
-      "id": "logistics-supply-chain",
-      "industry": "logistics",
-      "title": "Global Supply Chain Management System",
-      "slug": "logistics-supply-chain-management",
-      "businessChallenge": "International logistics company with 200+ warehouses needs real-time visibility across global supply chain. Current issues: 15-minute inventory data delays causing stockouts, customs documentation vulnerabilities, unreliable warehouse systems in emerging markets, and no unified tracking across ocean/air/ground transport.",
-      "solutionArchitecture": {
-        "overview": "Distributed infrastructure with edge computing for warehouse operations and centralized security for global connectivity",
-        "components": [
-          {
-            "layer": "compute",
-            "vendor": "Sangfor",
-            "product": "Sangfor HCI",
-            "role": "Regional data center compute for supply chain applications",
-            "specification": "12-node cluster across 3 regions, cross-region replication, 500TB total storage"
-          },
-          {
-            "layer": "security",
-            "vendor": "Fortinet",
-            "product": "FortiGate 600E + FortiSwitch",
-            "role": "Global network security and warehouse segmentation",
-            "specification": "HQ pair + regional pairs, VLAN segmentation per warehouse zone, IoT device security"
-          },
-          {
-            "layer": "edge",
-            "vendor": "Proxmox",
-            "product": "Proxmox VE (edge nodes)",
-            "role": "Warehouse-level local compute and caching",
-            "specification": "200x lightweight Proxmox nodes at warehouses for local WMS, offline capability"
-          },
-          {
-            "layer": "networking",
-            "vendor": "Fortinet",
-            "product": "FortiGate 40F + FortiAP",
-            "role": "Warehouse wireless and IoT connectivity",
-            "specification": "Secure WiFi for scanners/devices, IoT segmentation, local breakout"
-          }
-        ],
-        "architectureDiagram": {
-          "description": "Hub-and-spoke architecture with regional Sangfor HCI clusters serving supply chain applications, Proxmox edge nodes at warehouses for local operations, Fortinet security mesh connecting all sites with encrypted tunnels",
-          "dataFlow": "Warehouse (Proxmox) → Fortinet VPN → Regional HCI → Global SCM Application → FortiGate (Customs/Security)"
-        }
-      },
-      "keyBenefits": [
-        {
-          "metric": "visibility",
-          "value": "Real-time",
-          "description": "Real-time inventory visibility across all warehouses globally"
-        },
-        {
-          "metric": "latency",
-          "value": "<100ms",
-          "description": "Local processing latency at warehouse edge nodes"
-        },
-        {
-          "metric": "uptime",
-          "value": "99.9%",
-          "description": "Warehouse operations continue during WAN outages"
-        },
-        {
-          "metric": "cost",
-          "value": "25%",
-          "description": "Reduced WAN bandwidth costs through edge caching"
-        }
+      "id": "data",
+      "name": "DATA LAYER",
+      "icon": "🗄️",
+      "description": "Multi-service data architecture",
+      "components": [
+        {"name": "Content CMS", "tech": "Sanity Studio", "icon": "📝"},
+        {"name": "Database", "tech": "Supabase PostgreSQL", "icon": "🗃️"},
+        {"name": "Authentication", "tech": "Supabase Auth", "icon": "🔐"},
+        {"name": "File Storage", "tech": "Supabase Storage", "icon": "📦"},
+        {"name": "Email Service", "tech": "Resend API", "icon": "📧"}
       ],
-      "deploymentTimeline": "16 weeks (phased rollout)",
-      "caseStudyRef": "logistics-supply-001"
+      "designPhilosophy": [
+        "Headless Architecture",
+        "Real-time Sync",
+        "Row Level Security",
+        "Serverless Ready"
+      ]
     },
     {
-      "id": "education-digital-campus",
-      "industry": "education",
-      "title": "Digital Campus Infrastructure",
-      "slug": "education-digital-campus",
-      "businessChallenge": "University with 30,000 students needs modernized IT infrastructure for hybrid learning. Challenges: LMS crashes during exam periods (10x load), fragmented systems across 50 departments, no unified identity management, student data privacy concerns (GDPR/FERPA), and limited IT staff supporting complex environment.",
-      "solutionArchitecture": {
-        "overview": "Unified infrastructure platform with self-service capabilities and automated security for educational operations",
-        "components": [
-          {
-            "layer": "compute",
-            "vendor": "Nutanix",
-            "product": "Nutanix HCI + Prism Central",
-            "role": "Centralized management for all campus workloads",
-            "specification": "10-node cluster, Prism Central for unified management, supports LMS/Moodle, student portal, research computing"
-          },
-          {
-            "layer": "security",
-            "vendor": "Fortinet",
-            "product": "FortiGate 200F + FortiClient",
-            "role": "Campus security and endpoint protection",
-            "specification": "Perimeter security, NAC for 30K devices, SSL VPN for remote access, FERPA compliance"
-          },
-          {
-            "layer": "virtualization",
-            "vendor": "Proxmox",
-            "product": "Proxmox VE",
-            "role": "Department-level development and research workloads",
-            "specification": "20 department clusters for CS/engineering labs, container workloads for research"
-          },
-          {
-            "layer": "backup",
-            "vendor": "Sangfor",
-            "product": "Sangfor Cloud Platform",
-            "role": "Campus-wide data protection",
-            "specification": "Automated backup for all student/faculty data, GDPR-compliant data lifecycle"
-          }
-        ],
-        "architectureDiagram": {
-          "description": "Centralized Nutanix cluster for core academic applications, distributed Proxmox clusters for departmental use cases, Fortinet security perimeter with NAC for campus-wide device authentication",
-          "dataFlow": "Students/Faculty → FortiGate/NAC → Nutanix (LMS/Portal) → Proxmox (Dept Labs) → Sangfor (Backup/DR)"
-        }
-      },
-      "keyBenefits": [
-        {
-          "metric": "scalability",
-          "value": "3x",
-          "description": "Handle 3x exam period traffic without performance degradation"
-        },
-        {
-          "metric": "management",
-          "value": "80%",
-          "description": "Reduction in IT management overhead through unified platform"
-        },
-        {
-          "metric": "self_service",
-          "value": "Yes",
-          "description": "Faculty can self-provision VMs for research without IT tickets"
-        },
-        {
-          "metric": "compliance",
-          "value": "GDPR/FERPA",
-          "description": "Automated data protection and privacy compliance"
-        }
+      "id": "external",
+      "name": "EXTERNAL SERVICES",
+      "icon": "🔌",
+      "description": "Third-party integrations",
+      "components": [
+        {"name": "Hosting", "tech": "Vercel Edge", "icon": "☁️"},
+        {"name": "Search APIs", "tech": "Google + Tavily", "icon": "🔍"},
+        {"name": "AI Services", "tech": "Gemini + Vision", "icon": "🤖"},
+        {"name": "Email", "tech": "Resend", "icon": "📧"},
+        {"name": "Analytics", "tech": "Vercel Analytics", "icon": "📊"}
       ],
-      "deploymentTimeline": "14 weeks",
-      "caseStudyRef": "education-campus-001"
+      "designPhilosophy": [
+        "Free Tier First",
+        "Failover Support",
+        "Minimal Dependencies"
+      ]
     },
     {
-      "id": "government-e-services",
-      "industry": "government",
-      "title": "Digital Government Services Platform",
-      "slug": "government-e-services-platform",
-      "businessChallenge": "Municipal government serving 2M citizens needs to digitize 200+ government services. Current state: paper-based processes causing 4-week processing times, citizen portal on legacy platform unable to scale, security vulnerabilities in citizen data handling, no single sign-on across departments, and compliance with government security standards (ISO 27001).",
-      "solutionArchitecture": {
-        "overview": "Secure government cloud platform with multi-department isolation and citizen identity management",
-        "components": [
-          {
-            "layer": "compute",
-            "vendor": "Sangfor",
-            "product": "Sangfor HCI + Cloud Platform",
-            "role": "Government private cloud for all e-services",
-            "specification": "16-node cluster across 2 data centers, multi-tenant isolation per department, 99.999% availability"
-          },
-          {
-            "layer": "security",
-            "vendor": "Fortinet",
-            "product": "FortiGate 3000E + FortiAnalyzer",
-            "role": "Government-grade security and compliance monitoring",
-            "specification": "HA pair at each DC, SSL inspection, DLP for citizen data, automated ISO 27001 reporting"
-          },
-          {
-            "layer": "identity",
-            "vendor": "Fortinet",
-            "product": "FortiAuthenticator",
-            "role": "Centralized citizen and employee identity management",
-            "specification": "SSO for 200+ applications, MFA for internal staff, citizen digital ID integration"
-          },
-          {
-            "layer": "backup",
-            "vendor": "Nutanix",
-            "product": "Nutanix Mine + Prism",
-            "role": "Mission-critical data protection and long-term archival",
-            "specification": "Cross-DC replication, 7-year archival for compliance, immutable backup for ransomware protection"
-          }
-        ],
-        "architectureDiagram": {
-          "description": "Dual-data-center government cloud with Sangfor HCI hosting department-specific tenants, Fortinet security stack providing zero-trust access, centralized identity platform for citizens and employees",
-          "dataFlow": "Citizen Portal → FortiAuthenticator → FortiGate (Security) → Sangfor HCI (Dept Tenant) → Nutanix Mine (Backup)"
-        }
-      },
-      "keyBenefits": [
-        {
-          "metric": "processing_time",
-          "value": "80%",
-          "description": "Reduction in service processing time from weeks to hours"
-        },
-        {
-          "metric": "citizen_satisfaction",
-          "value": "4.5/5",
-          "description": "Citizen satisfaction rating for digital services"
-        },
-        {
-          "metric": "availability",
-          "value": "99.999%",
-          "description": "Mission-critical availability for 24/7 citizen services"
-        },
-        {
-          "metric": "security",
-          "value": "ISO 27001",
-          "description": "Full compliance with government security standards"
-        }
+      "id": "deployment",
+      "name": "DEPLOYMENT",
+      "icon": "🚀",
+      "description": "Vercel Platform",
+      "components": [
+        {"name": "Edge Network", "tech": "Global CDN", "icon": "🌍"},
+        {"name": "Serverless", "tech": "Edge Functions", "icon": "⚡"},
+        {"name": "Static Gen", "tech": "ISR/SSG", "icon": "📄"},
+        {"name": "Analytics", "tech": "Web Vitals", "icon": "📈"}
       ],
-      "deploymentTimeline": "20 weeks (phased by department)",
-      "caseStudyRef": "government-eservices-001"
+      "designPhilosophy": [
+        "Zero Config Deploy",
+        "Automatic Scaling",
+        "Preview Deployments"
+      ]
     }
   ],
-  "metadata": {
-    "version": "1.0.0",
-    "generatedAt": "2025-07-04T00:00:00Z",
-    "totalTemplates": 6,
-    "industries": ["healthcare", "finance", "retail", "logistics", "education", "government"],
-    "vendors": {
-      "Sangfor": ["HCI", "aCloud DR", "aBackup", "Cloud Platform"],
-      "Fortinet": ["FortiGate", "FortiWeb", "FortiAnalyzer", "FortiSIEM", "FortiAuthenticator", "FortiClient", "FortiSwitch", "FortiAP"],
-      "Nutanix": ["NX Series HCI", "NC-series", "Prism Central", "Nutanix Mine", "AOS"],
-      "Proxmox": ["Proxmox VE"]
-    },
-    "schemaMapping": {
-      "architectureTemplate": {
-        "type": "document",
-        "fields": {
-          "id": "string",
-          "industry": "string",
-          "title": "string",
-          "slug": "slug",
-          "businessChallenge": "text",
-          "solutionArchitecture": "object",
-          "keyBenefits": "array",
-          "deploymentTimeline": "string",
-          "caseStudyRef": "reference"
-        }
-      }
-    }
-  }
+  "techStack": {
+    "frontend": ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS v4"],
+    "animation": ["Framer Motion"],
+    "cms": ["Sanity (Headless)"],
+    "database": ["Supabase (PostgreSQL)"],
+    "auth": ["Supabase Auth"],
+    "hosting": ["Vercel (Edge + Serverless)"],
+    "email": ["Resend"],
+    "search": ["Sanity GROQ", "Google CSE", "Tavily API", "Gemini AI"],
+    "testing": ["Vitest", "Playwright", "React Testing Library"],
+    "cicd": ["Vercel Git Integration"]
+  },
+  "designPrinciples": [
+    "Headless Architecture - Decouple content from presentation",
+    "Multi-modal AI - Text and image search with intelligent consolidation",
+    "Event-Driven - Real-time updates and capability gap detection",
+    "Serverless First - Zero infrastructure management",
+    "Free Tier Priority - Maximize free service usage",
+    "Accessibility - WCAG 2.1 AA compliance",
+    "Performance - Core Web Vitals optimization",
+    "Security - OWASP Top 10 protection"
+  ],
+  "socialMediaText": "🏗️ Full-Stack Enterprise Website Architecture\n\nBuilt with modern headless stack:\n• Frontend: Next.js 16 + React 19\n• CMS: Sanity (Headless)\n• Database: Supabase PostgreSQL\n• Search: AI-powered multi-modal\n• Hosting: Vercel Edge Network\n\nKey Features:\n✅ Real-time CMS updates\n✅ AI-powered search with image support\n✅ Multi-language support\n✅ Event-driven notifications\n✅ Capability gap detection\n\n#WebDev #NextJS #HeadlessCMS #TypeScript #AI"
 }

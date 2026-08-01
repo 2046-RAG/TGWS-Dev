@@ -115,66 +115,6 @@ describe('Sanity Data Integrity', () => {
     });
   });
 
-  // ── Case Studies ────────────────────────────────────────────
-  describe('Case Studies', () => {
-    it('each case study has title, slug, clientName, and content', async () => {
-      sanityMock.fetch.mockResolvedValue([
-        {
-          _id: 'cs1',
-          title: 'Healthcare Digital Transformation',
-          slug: { current: 'healthcare-digital-transformation' },
-          clientName: 'Acme Hospital',
-          content: [{ _type: 'block', children: [{ _type: 'span', text: 'Content' }] }],
-        },
-        {
-          _id: 'cs2',
-          title: 'Finance Cloud Migration',
-          slug: { current: 'finance-cloud-migration' },
-          clientName: 'Bank Corp',
-          content: [{ _type: 'block', children: [{ _type: 'span', text: 'Content' }] }],
-        },
-      ]);
-
-      const query = `*[_type == "caseStudy"] { _id, title, slug, clientName, content }`;
-      const caseStudies = await client.fetch(query);
-
-      const errors = reportFailures('caseStudy', caseStudies, ['title', 'slug', 'clientName', 'content']);
-      expect(errors).toEqual([]);
-    });
-
-    it('each case study has non-empty clientName', async () => {
-      sanityMock.fetch.mockResolvedValue([
-        { _id: 'cs1', clientName: 'Acme Hospital' },
-        { _id: 'cs2', clientName: 'Bank Corp' },
-      ]);
-
-      const query = `*[_type == "caseStudy"] { _id, clientName }`;
-      const caseStudies = await client.fetch(query);
-
-      const empty = caseStudies
-        .filter((cs: Record<string, unknown>) => !cs.clientName || (cs.clientName as string).trim() === '')
-        .map((cs: Record<string, unknown>) => `[caseStudy] _id="${cs._id}" has empty clientName`);
-
-      expect(empty).toEqual([]);
-    });
-
-    it('each case study has content as non-empty array', async () => {
-      sanityMock.fetch.mockResolvedValue([
-        { _id: 'cs1', content: [{ _type: 'block' }] },
-        { _id: 'cs2', content: [{ _type: 'block' }] },
-      ]);
-
-      const query = `*[_type == "caseStudy"] { _id, content }`;
-      const caseStudies = await client.fetch(query);
-
-      const empty = caseStudies
-        .filter((cs: Record<string, unknown>) => !Array.isArray(cs.content) || (cs.content as unknown[]).length === 0)
-        .map((cs: Record<string, unknown>) => `[caseStudy] _id="${cs._id}" has empty or missing content`);
-
-      expect(empty).toEqual([]);
-    });
-  });
-
   // ── Solutions ───────────────────────────────────────────────
   describe('Solutions', () => {
     it('each solution has title and description', async () => {

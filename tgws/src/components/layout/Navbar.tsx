@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
@@ -19,6 +19,16 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
+  // Close the mobile menu on Escape (AUDIT-160).
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [mobileOpen]);
+
   const megaMenuItems = [
     {
       key: 'products',
@@ -28,6 +38,8 @@ export default function Navbar() {
         { label: t('build'), href: `/${locale}/products#build`, desc: home('buildDesc') },
         { label: t('run'), href: `/${locale}/products#run`, desc: home('runDesc') },
         { label: t('protect'), href: `/${locale}/products#protect`, desc: home('protectDesc') },
+        { label: 'VMware Alternatives', href: `/${locale}/vmware-alternative`, desc: locale === 'zh' ? '替代方案与TCO对比' : 'Alternatives & TCO comparison' },
+        { label: 'TCO Calculator', href: `/${locale}/vmware-alternative#tco-calculator`, desc: locale === 'zh' ? '对比VMware/Sangfor/Nutanix' : 'Compare VMware vs Sangfor vs Nutanix' },
       ],
     },
     {
@@ -155,6 +167,9 @@ export default function Navbar() {
       </div>
 
       <div
+        role={mobileOpen ? 'dialog' : undefined}
+        aria-modal={mobileOpen ? 'true' : undefined}
+        aria-label={mobileOpen ? t('home') : undefined}
         className={`md:hidden fixed inset-0 top-[73px] glass-nav z-40 transition-opacity duration-300 ${
           mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
@@ -190,7 +205,7 @@ export default function Navbar() {
                 <div className="flex flex-wrap gap-2 mt-2">
                   {item.children.map((child) => (
                     <Link
-                      key={child.href}
+                      key={`${item.key}-${child.label}`}
                       href={child.href}
                       className="text-sm text-gray-600 dark:text-gray-400 hover:text-[#00D4FF] py-1 px-2 rounded-lg min-h-[44px] inline-flex items-center transition-colors duration-200"
                       onClick={() => setMobileOpen(false)}

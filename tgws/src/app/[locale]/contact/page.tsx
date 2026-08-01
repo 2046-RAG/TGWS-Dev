@@ -62,7 +62,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <Breadcrumb items={[{ label: 'Contact Us' }]} />
+      <Breadcrumb items={[{ label: t('title') }]} />
       <section className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
         <a
           href="#contact-form"

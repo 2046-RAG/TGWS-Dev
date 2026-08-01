@@ -23,7 +23,6 @@ export function useAutoSave(
   const { intervalMs = 30000, restoreOnMount = true, version = 1 } = opts;
 
   const dataRef = useRef(data);
-  const restoredDraftRef = useRef<Record<string, unknown> | null>(null);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [restoredDraft, setRestoredDraft] = useState<Record<string, unknown> | null>(null);
 
@@ -31,15 +30,9 @@ export function useAutoSave(
     dataRef.current = data;
   }, [data]);
 
-  // Sync restoredDraftRef to state
-  useEffect(() => {
-    if (restoredDraftRef.current) {
-      setRestoredDraft(restoredDraftRef.current);
-      restoredDraftRef.current = null;
-    }
-  }, []);
-
-  // Restore draft on mount
+  // Restore draft on mount. SetState in a mount-only effect is safe here —
+  // it runs once on the client after hydration (AUDIT-198: the previous
+  // ref+sync-effect split never transferred the draft to state).
   useEffect(() => {
     if (typeof window === 'undefined' || !restoreOnMount) return;
 
@@ -55,8 +48,8 @@ export function useAutoSave(
           const draftData = { ...parsed };
           delete draftData.__version;
           delete draftData.__timestamp;
-          // Use ref to avoid setState in effect
-          restoredDraftRef.current = draftData;
+          // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional mount-time draft restore from localStorage
+          setRestoredDraft(draftData);
         } else if (parsed.__version !== version) {
           // Version mismatch, discard old draft
           localStorage.removeItem(key);

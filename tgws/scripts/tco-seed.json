@@ -1,0 +1,132 @@
+{
+  "_type": "tcoCalculator",
+  "title": "TCO Calculator Config",
+  "serviceFeeRate": 0.15,
+  "disclaimer": "VMware/Nutanix pricing based on published list prices. Sangfor pricing is estimated and fuzzed for display. Actual costs vary by deployment. Contact TechGuru for a formal assessment.",
+  "lastUpdated": "2026-07-30",
+  "scenarios": [
+    {
+      "name": "Server Virtualization",
+      "nameZh": "服务器虚拟化",
+      "slug": { "_type": "slug", "current": "server-virtualization" },
+      "description": "Standard hypervisor virtualization for server consolidation.",
+      "descriptionZh": "标准服务器虚拟化整合。",
+      "order": 1,
+      "bundles": [
+        {
+          "vendor": "vmware",
+          "bundleName": "VVF",
+          "bundleNameZh": "vSphere Foundation",
+          "pricingModel": "subscription_per_core",
+          "pricePerCore": 150,
+          "includedModules": ["vSphere Enterprise Plus", "vSAN (0.25 TiB/core)", "Aria Suite Standard"],
+          "isEstimated": false,
+          "notes": "16 cores/CPU minimum. Includes Broadcom Maintenance."
+        },
+        {
+          "vendor": "sangfor",
+          "bundleName": "aSV Enterprise",
+          "bundleNameZh": "aSV 企业版",
+          "pricingModel": "buyout_per_cpu",
+          "listPricePerCPU": 3700,
+          "serviceFeeRate": 0.15,
+          "includedModules": ["aSV (Hypervisor)", "aNET (SDN)", "SkyOps-Standard (free)", "SCP-Standard (free)"],
+          "isEstimated": true,
+          "notes": "Perpetual license. 15% annual service fee."
+        },
+        {
+          "vendor": "nutanix",
+          "bundleName": "NCI Pro",
+          "bundleNameZh": "NCI 专业版",
+          "pricingModel": "subscription_per_core",
+          "pricePerCore": 433,
+          "includedModules": ["NCI (Hypervisor)", "NCM (Management)"],
+          "isEstimated": false,
+          "notes": "Per core/year subscription."
+        }
+      ]
+    },
+    {
+      "name": "Software-Defined Data Center (SDDC)",
+      "nameZh": "软件定义数据中心",
+      "slug": { "_type": "slug", "current": "sddc" },
+      "description": "Full SDDC stack with hypervisor, SDN, and SDS.",
+      "descriptionZh": "完整软件定义数据中心方案。",
+      "order": 2,
+      "bundles": [
+        {
+          "vendor": "vmware",
+          "bundleName": "VVF",
+          "bundleNameZh": "vSphere Foundation",
+          "pricingModel": "subscription_per_core",
+          "pricePerCore": 150,
+          "includedModules": ["vSphere Enterprise Plus", "vSAN (0.25 TiB/core)", "Aria Suite Standard"],
+          "isEstimated": false,
+          "notes": "Same base as Server Virtualization. Add vSAN expansion for full SDDC."
+        },
+        {
+          "vendor": "sangfor",
+          "bundleName": "SDDC",
+          "bundleNameZh": "SDDC 方案",
+          "pricingModel": "buyout_per_cpu",
+          "listPricePerCPU": 6460,
+          "serviceFeeRate": 0.15,
+          "includedModules": ["aSV (Hypervisor)", "aNet (SDN)", "aSAN (SDS)", "SkyOps-Standard (free)", "SCP-Standard (free)"],
+          "isEstimated": true,
+          "notes": "Perpetual license. 15% annual service fee."
+        },
+        {
+          "vendor": "nutanix",
+          "bundleName": "NCP Pro",
+          "bundleNameZh": "NCP 专业版",
+          "pricingModel": "subscription_per_core",
+          "pricePerCore": 549,
+          "includedModules": ["NCI (Hypervisor)", "NCM (Management)", "NCP/Flow (Networking)"],
+          "isEstimated": false,
+          "notes": "NCI + NCM + NCP. Per core/year."
+        }
+      ]
+    },
+    {
+      "name": "Private/Hybrid Cloud Platform",
+      "nameZh": "全栈私有云/混合云平台",
+      "slug": { "_type": "slug", "current": "private-hybrid-cloud" },
+      "description": "Full-stack private cloud, extensible to hybrid cloud.",
+      "descriptionZh": "全栈私有云，可扩展为混合云平台。",
+      "order": 3,
+      "bundles": [
+        {
+          "vendor": "vmware",
+          "bundleName": "VCF",
+          "bundleNameZh": "Cloud Foundation",
+          "pricingModel": "subscription_per_core",
+          "pricePerCore": 350,
+          "includedModules": ["vSphere Enterprise Plus", "vSAN (1 TiB/core)", "NSX Networking", "HCX Enterprise", "Aria Suite Enterprise", "SDDC Manager", "Data Services Manager"],
+          "isEstimated": false,
+          "notes": "16 cores/CPU minimum. Includes Broadcom Maintenance."
+        },
+        {
+          "vendor": "sangfor",
+          "bundleName": "Private Cloud",
+          "bundleNameZh": "私有云方案",
+          "pricingModel": "buyout_per_cpu",
+          "listPricePerCPU": 11300,
+          "serviceFeeRate": 0.15,
+          "includedModules": ["aSV (Hypervisor)", "aNET (SDN)", "aSAN (SDS)", "SKE (Security)", "SkyOps-standard", "SCP-Enterprise"],
+          "isEstimated": true,
+          "notes": "Perpetual license. 15% annual service fee."
+        },
+        {
+          "vendor": "nutanix",
+          "bundleName": "NCP Ultimate",
+          "bundleNameZh": "NCP 旗舰版",
+          "pricingModel": "subscription_per_core",
+          "pricePerCore": 723,
+          "includedModules": ["NCI (Hypervisor)", "NCM (Management)", "NCP/Flow (Networking) - Full Features"],
+          "isEstimated": false,
+          "notes": "Full-featured NCP. Per core/year."
+        }
+      ]
+    }
+  ]
+}

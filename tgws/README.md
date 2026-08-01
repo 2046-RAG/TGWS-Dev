@@ -48,7 +48,6 @@ tgws/
 │   │   │   ├── page.tsx        # Home
 │   │   │   ├── products/       # Products
 │   │   │   ├── solutions/      # Industry solutions
-│   │   │   ├── case-studies/   # Case studies
 │   │   │   ├── blog/           # Blog
 │   │   │   ├── about/          # About us
 │   │   │   ├── support/        # Support/tickets

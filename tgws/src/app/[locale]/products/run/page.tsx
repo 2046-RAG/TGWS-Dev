@@ -19,11 +19,17 @@ export async function generateMetadata({
   };
 }
 
-export default async function RunPage() {
+export default async function RunPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'products' });
   const products = await getAllProducts();
   return (
     <>
-      <Breadcrumb items={[{ label: 'Products', href: '/products' }, { label: 'Run' }]} />
+      <Breadcrumb items={[{ label: t('title'), href: '/products' }, { label: t('runTitle') }]} />
       <CategoryPage category="run" products={products} />
     </>
   );

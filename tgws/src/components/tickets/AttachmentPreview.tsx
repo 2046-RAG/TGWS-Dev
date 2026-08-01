@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Download, FileText, Image, File, X, ExternalLink } from 'lucide-react';
 
 interface Attachment {
@@ -54,6 +54,16 @@ function isPDF(fileType: string): boolean {
 
 export default function AttachmentPreview({ attachments, onRemove, showRemove = false }: AttachmentPreviewProps) {
   const [previewFile, setPreviewFile] = useState<Attachment | null>(null);
+
+  // Close the preview modal on Escape (AUDIT-161).
+  useEffect(() => {
+    if (!previewFile) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setPreviewFile(null);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [previewFile]);
 
   if (attachments.length === 0) {
     return null;
@@ -126,6 +136,9 @@ export default function AttachmentPreview({ attachments, onRemove, showRemove = 
       {/* Preview Modal */}
       {previewFile && (
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={previewFile.file_name}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
           onClick={() => setPreviewFile(null)}
         >
@@ -163,6 +176,7 @@ export default function AttachmentPreview({ attachments, onRemove, showRemove = 
                   src={previewFile.file_url}
                   className="w-full h-[70vh] border-0 rounded-lg"
                   title={previewFile.file_name}
+                  sandbox=""
                 />
               ) : (
                 <div className="text-center py-12">

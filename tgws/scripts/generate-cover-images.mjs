@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 
 const PROJECT_ID = 'r6ztl1oq';
 const DATASET = 'production';
-const TOKEN = 'REPLACED_SANITY_TOKEN';
+const TOKEN = `${process.env.SANITY_API_TOKEN}`;
 
 const categoryColors = {
   technical: { bg: '#1a1a2e', text: '#00D4FF', accent: '#16213e' },

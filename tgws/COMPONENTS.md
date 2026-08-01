@@ -51,8 +51,8 @@
 | ContactPage | `src/app/[locale]/contact/ContactPage.tsx` | Page | Contact form with client-side validation |
 | BlogList | `src/app/[locale]/blog/BlogList.tsx` | Page | Blog listing from Sanity |
 | BlogDetail | `src/app/[locale]/blog/[slug]/BlogDetail.tsx` | Page | Blog article detail |
-| CaseStudiesList | `src/app/[locale]/case-studies/CaseStudiesList.tsx` | Page | Case studies listing |
-| CaseStudyDetail | `src/app/[locale]/case-studies/[slug]/CaseStudyDetail.tsx` | Page | Case study detail |
+| CaseStudiesList | ~~`src/app/[locale]/case-studies/CaseStudiesList.tsx`~~ | Page | ~~已废弃 2026-07-12~~ |
+| CaseStudyDetail | ~~`src/app/[locale]/case-studies/[slug]/CaseStudyDetail.tsx`~~ | Page | ~~已废弃 2026-07-12~~ |
 | ProductsList | `src/app/[locale]/products/ProductsList.tsx` | Page | Products listing |
 | SolutionsList | `src/app/[locale]/solutions/SolutionsList.tsx` | Page | Industry solutions listing |
 

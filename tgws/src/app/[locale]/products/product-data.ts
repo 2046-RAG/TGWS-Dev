@@ -1,4 +1,5 @@
 import { client } from '@/lib/sanity';
+import { logServiceError } from '@/lib/errors';
 
 export interface VendorSolution {
   vendor: string;
@@ -51,7 +52,7 @@ export async function getAllProducts(): Promise<Product[]> {
     const products = await client.fetch(PRODUCT_QUERY);
     return products || [];
   } catch (error) {
-    console.error('Failed to fetch products:', error);
+    logServiceError({ service: 'Sanity', operation: 'getAllProducts', error });
     return [];
   }
 }
@@ -61,7 +62,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     const product = await client.fetch(PRODUCT_BY_SLUG_QUERY, { slug });
     return product || null;
   } catch (error) {
-    console.error('Failed to fetch product:', error);
+    logServiceError({ service: 'Sanity', operation: 'getProductBySlug', error, extra: { slug } });
     return null;
   }
 }

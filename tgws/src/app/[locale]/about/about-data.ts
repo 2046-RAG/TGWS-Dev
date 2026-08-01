@@ -1,4 +1,5 @@
 import { client } from '@/lib/sanity';
+import { logServiceError } from '@/lib/errors';
 
 export interface TeamMember {
   _id: string;
@@ -61,7 +62,7 @@ export async function getTeamMembers(): Promise<TeamMember[]> {
     const members = await client.fetch(TEAM_QUERY);
     return members || [];
   } catch (error) {
-    console.error('Failed to fetch team members:', error);
+    logServiceError({ service: 'Sanity', operation: 'getTeamMembers', error });
     return [];
   }
 }
@@ -71,7 +72,7 @@ export async function getQualifications(): Promise<Qualification[]> {
     const qualifications = await client.fetch(QUALIFICATIONS_QUERY);
     return qualifications || [];
   } catch (error) {
-    console.error('Failed to fetch qualifications:', error);
+    logServiceError({ service: 'Sanity', operation: 'getQualifications', error });
     return [];
   }
 }

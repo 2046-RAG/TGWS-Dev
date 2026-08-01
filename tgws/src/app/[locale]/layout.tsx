@@ -1,37 +1,62 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
-import { locales } from '@/i18n/config';
+import { locales, defaultLocale } from '@/i18n/config';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import CookieConsent from '@/components/ui/CookieConsent';
 import { OrganizationJsonLd, WebSiteJsonLd } from '@/components/ui/JsonLd';
 import ScrollToTop from '@/components/ui/ScrollToTop';
 import ScrollReveal from '@/components/ui/ScrollReveal';
+import HashScroll from '@/components/ui/HashScroll';
+import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import '../globals.css';
 
-export const metadata: Metadata = {
-  title: {
-    default: 'TechGuru | Network & Data Solutions',
-    template: '%s | TechGuru',
-  },
-  description:
-    'Enterprise network infrastructure, cybersecurity, and data solutions. Build, run, and protect your IT environment with TechGuru.',
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    siteName: 'TechGuru',
-    title: 'TechGuru | Network & Data Solutions',
-    description:
-      'Enterprise network infrastructure, cybersecurity, and data solutions. Build, run, and protect your IT environment with TechGuru.',
-  },
-  twitter: {
-    card: 'summary_large_image',
-  },
-};
-
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+
+  // Reject unknown locale segments with a proper 404 instead of rendering
+  // lang="fr" with missing messages (AUDIT-106).
+  if (!locales.includes(locale as (typeof locales)[number])) {
+    notFound();
+  }
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.techguru-it.asia';
+  const otherLocales = locales.filter((l) => l !== locale);
+
+  return {
+    title: {
+      default: 'TechGuru | Network & Data Solutions',
+      template: '%s | TechGuru',
+    },
+    description:
+      'Enterprise network infrastructure, cybersecurity, and data solutions. Build, run, and protect your IT environment with TechGuru.',
+    alternates: {
+      canonical: `/${locale}`,
+      languages: Object.fromEntries(
+        otherLocales.map((l) => [l, `${siteUrl}/${l}`]),
+      ) as Record<string, string> & { 'x-default'?: string },
+    },
+    openGraph: {
+      type: 'website',
+      locale: locale === 'zh' ? 'zh_TW' : 'en_US',
+      siteName: 'TechGuru',
+      title: 'TechGuru | Network & Data Solutions',
+      description:
+        'Enterprise network infrastructure, cybersecurity, and data solutions. Build, run, and protect your IT environment with TechGuru.',
+    },
+    twitter: {
+      card: 'summary_large_image',
+    },
+  };
 }
 
 export default async function LocaleLayout({
@@ -107,6 +132,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <ScrollToTop />
           <ScrollReveal />
+          <HashScroll />
           <OrganizationJsonLd />
           <WebSiteJsonLd locale={locale} />
           <Navbar />

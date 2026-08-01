@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
 interface UseRetryOptions {
   maxRetries?: number;
@@ -36,7 +36,25 @@ export function useRetry<T>(
   const [lastError, setLastError] = useState<Error | null>(null);
   const [lastArgs, setLastArgs] = useState<unknown[]>([]);
 
-  const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+  const mountedRef = useRef(true);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  const delay = (ms: number) =>
+    new Promise<void>((resolve) => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        timeoutRef.current = null;
+        resolve();
+      }, ms);
+    });
 
   const calculateDelay = (retryAttempt: number): number => {
     const exponentialDelay = baseDelay * Math.pow(2, retryAttempt);
@@ -44,21 +62,18 @@ export function useRetry<T>(
     return Math.min(exponentialDelay + jitter, maxDelay);
   };
 
-  const execute = useCallback(
-    async (...args: unknown[]): Promise<T> => {
-      setLastArgs(args);
-      setIsRetrying(true);
-      setAttempt(0);
-      setLastError(null);
-
+  const runAttempts = useCallback(
+    async (args: unknown[]): Promise<T> => {
       let currentAttempt = 0;
 
       const attemptExecution = async (): Promise<T> => {
+        if (!mountedRef.current) throw new Error('unmounted');
         try {
           const result = await fn(...args);
           return result;
         } catch (err) {
           const error = err instanceof Error ? err : new Error(String(err));
+          if (!mountedRef.current) throw error;
           setLastError(error);
 
           if (currentAttempt < maxRetries) {
@@ -66,6 +81,7 @@ export function useRetry<T>(
             onRetry?.(currentAttempt + 1, error);
 
             await delay(retryDelay);
+            if (!mountedRef.current) throw error;
             currentAttempt++;
             setAttempt(currentAttempt);
             return attemptExecution();
@@ -76,50 +92,36 @@ export function useRetry<T>(
         }
       };
 
+      return attemptExecution();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [fn, maxRetries, baseDelay, maxDelay, onRetry, onMaxRetriesReached]
+  );
+
+  const execute = useCallback(
+    async (...args: unknown[]): Promise<T> => {
+      setLastArgs(args);
+      setIsRetrying(true);
+      setAttempt(0);
+      setLastError(null);
       try {
-        return await attemptExecution();
+        return await runAttempts(args);
       } finally {
-        setIsRetrying(false);
+        if (mountedRef.current) setIsRetrying(false);
       }
     },
-    [fn, maxRetries, baseDelay, maxDelay, onRetry, onMaxRetriesReached]
+    [runAttempts]
   );
 
   const retry = useCallback(async (): Promise<T> => {
     setIsRetrying(true);
     setLastError(null);
-
-    let currentAttempt = 0;
-
-    const attemptExecution = async (): Promise<T> => {
-      try {
-        const result = await fn(...lastArgs);
-        return result;
-      } catch (err) {
-        const error = err instanceof Error ? err : new Error(String(err));
-        setLastError(error);
-
-        if (currentAttempt < maxRetries) {
-          const retryDelay = calculateDelay(currentAttempt);
-          onRetry?.(currentAttempt + 1, error);
-
-          await delay(retryDelay);
-          currentAttempt++;
-          setAttempt(currentAttempt);
-          return attemptExecution();
-        }
-
-        onMaxRetriesReached?.(error);
-        throw error;
-      }
-    };
-
     try {
-      return await attemptExecution();
+      return await runAttempts(lastArgs);
     } finally {
-      setIsRetrying(false);
+      if (mountedRef.current) setIsRetrying(false);
     }
-  }, [fn, lastArgs, maxRetries, baseDelay, maxDelay, onRetry, onMaxRetriesReached]);
+  }, [runAttempts, lastArgs]);
 
   const reset = useCallback(() => {
     setIsRetrying(false);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter, useParams } from 'next/navigation';
@@ -36,9 +36,10 @@ export default function SupportPage() {
   const locale = params.locale as string;
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
+  const [user, setUser] = useState<{ id: string; email?: string; role?: string } | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -51,6 +52,17 @@ export default function SupportPage() {
       }
 
       if (authUser) {
+        // Resolve the user's role so admin-only UI (batch actions) is only
+        // shown to actual admins (AUDIT-118).
+        const { data: userRole } = await supabase
+          .from('users')
+          .select('role')
+          .eq('id', authUser.id)
+          .single();
+        const isAdminUser = userRole?.role === 'admin' || userRole?.role === 'super_admin';
+        setIsAdmin(isAdminUser);
+        setUser({ ...authUser, role: userRole?.role || 'user' });
+
         const response = await fetch('/api/tickets');
         if (response.ok) {
           const result = await response.json();
@@ -281,7 +293,7 @@ export default function SupportPage() {
               </div>
               <TicketList
                 tickets={tickets}
-                isAdmin={true}
+                isAdmin={isAdmin}
                 onBatchStatusUpdate={async (ids, status) => {
                   await fetch('/api/tickets/stats', {
                     method: 'PATCH',

@@ -4,7 +4,7 @@ const client = createClient({
   projectId: 'r6ztl1oq',
   dataset: 'production',
   apiVersion: '2024-01-01',
-  token: 'REPLACED_SANITY_TOKEN',
+  token: `${process.env.SANITY_API_TOKEN}`,
   useCdn: false,
 });
 

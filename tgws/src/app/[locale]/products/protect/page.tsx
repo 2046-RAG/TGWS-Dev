@@ -19,11 +19,17 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProtectPage() {
+export default async function ProtectPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'products' });
   const products = await getAllProducts();
   return (
     <>
-      <Breadcrumb items={[{ label: 'Products', href: '/products' }, { label: 'Protect' }]} />
+      <Breadcrumb items={[{ label: t('title'), href: '/products' }, { label: t('protectTitle') }]} />
       <CategoryPage category="protect" products={products} />
     </>
   );

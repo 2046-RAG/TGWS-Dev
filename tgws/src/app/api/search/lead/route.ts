@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { Resend } from 'resend';
+import { logServiceError } from '@/lib/errors';
 
 interface LeadRequest {
   name: string;
@@ -17,10 +18,27 @@ function isValidEmail(email: string): boolean {
   return emailRegex.test(email);
 }
 
+// Escape user-controlled values before HTML interpolation (AUDIT-008).
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // 发送通知邮件给管理层和销售团队
 async function sendNotificationEmail(lead: LeadRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const subject = `🔔 官网搜索发现能力缺口 - ${lead.searchQuery}`;
+
+  const safeName = escapeHtml(lead.name);
+  const safeEmail = escapeHtml(lead.email);
+  const safeQuery = escapeHtml(lead.searchQuery);
+  const safeGap = escapeHtml(lead.gapDescription);
+  const safePhone = lead.phone ? escapeHtml(lead.phone) : '';
+  const safeCompany = lead.company ? escapeHtml(lead.company) : '';
   
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -30,12 +48,12 @@ async function sendNotificationEmail(lead: LeadRequest) {
       
       <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;">
         <p><strong>⏰ 时间:</strong> ${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Manila' })}</p>
-        <p><strong>🔍 用户搜索:</strong> ${lead.searchQuery}</p>
+        <p><strong>🔍 用户搜索:</strong> ${safeQuery}</p>
         <p><strong>📍 搜索来源:</strong> 全局搜索 - 能力缺口检测</p>
       </div>
       
       <h3 style="color: #e74c3c;">⚠️ 能力缺口检测</h3>
-      <p>${lead.gapDescription}</p>
+      <p>${safeGap}</p>
       
       <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0;">
         <h4>💡 建议行动:</h4>
@@ -49,10 +67,10 @@ async function sendNotificationEmail(lead: LeadRequest) {
       
       <div style="background: #d4edda; padding: 15px; border-radius: 8px; margin: 20px 0;">
         <h4>📞 客户联系方式:</h4>
-        <p><strong>姓名:</strong> ${lead.name}</p>
-        <p><strong>邮箱:</strong> ${lead.email}</p>
-        ${lead.phone ? `<p><strong>电话:</strong> ${lead.phone}</p>` : ''}
-        ${lead.company ? `<p><strong>公司:</strong> ${lead.company}</p>` : ''}
+        <p><strong>姓名:</strong> ${safeName}</p>
+        <p><strong>邮箱:</strong> ${safeEmail}</p>
+        ${safePhone ? `<p><strong>电话:</strong> ${safePhone}</p>` : ''}
+        ${safeCompany ? `<p><strong>公司:</strong> ${safeCompany}</p>` : ''}
       </div>
       
       <p style="color: #6c757d; font-size: 12px; margin-top: 30px;">
@@ -89,7 +107,7 @@ async function sendNotificationEmail(lead: LeadRequest) {
 
     return true;
   } catch (error) {
-    console.error('Failed to send notification email:', error);
+    logServiceError({ service: 'Resend', operation: 'sendNotificationEmail', error });
     return false;
   }
 }
@@ -98,6 +116,9 @@ async function sendNotificationEmail(lead: LeadRequest) {
 async function sendCustomerConfirmation(lead: LeadRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const subject = 'Thank you for your interest in TechGuru';
+
+  const safeName = escapeHtml(lead.name);
+  const safeQuery = escapeHtml(lead.searchQuery);
   
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -105,9 +126,9 @@ async function sendCustomerConfirmation(lead: LeadRequest) {
         Thank you for your interest!
       </h2>
       
-      <p>Dear ${lead.name},</p>
+      <p>Dear ${safeName},</p>
       
-      <p>Thank you for your interest in <strong>${lead.searchQuery}</strong>. We noticed that this is an area we are actively evaluating to add to our service portfolio.</p>
+      <p>Thank you for your interest in <strong>${safeQuery}</strong>. We noticed that this is an area we are actively evaluating to add to our service portfolio.</p>
       
       <p>We apologize that we don't currently have a ready solution for your needs, but we are committed to helping you find the right solution.</p>
       
@@ -138,7 +159,7 @@ async function sendCustomerConfirmation(lead: LeadRequest) {
     });
     return true;
   } catch (error) {
-    console.error('Failed to send customer confirmation:', error);
+    logServiceError({ service: 'Resend', operation: 'sendCustomerConfirmation', error });
     return false;
   }
 }
@@ -148,10 +169,21 @@ export async function POST(request: NextRequest) {
     const body: LeadRequest = await request.json();
     const { name, email, phone, company, searchQuery, gapDescription } = body;
 
-    // 验证必填字段
-    if (!name || !email || !searchQuery || !gapDescription) {
+    // 验证必填字段（含类型 + 长度限制，AUDIT-034）
+    if (
+      !name || !email || !searchQuery || !gapDescription ||
+      typeof name !== 'string' || typeof email !== 'string' ||
+      typeof searchQuery !== 'string' || typeof gapDescription !== 'string'
+    ) {
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+
+    if (name.length > 100 || searchQuery.length > 1000 || gapDescription.length > 5000) {
+      return NextResponse.json(
+        { success: false, error: 'Field exceeds maximum length' },
         { status: 400 }
       );
     }
@@ -183,7 +215,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (leadError) {
-      console.error('Failed to create lead:', leadError);
+      logServiceError({ service: 'Supabase', operation: 'createLead', error: leadError });
       return NextResponse.json(
         { success: false, error: 'Failed to create lead' },
         { status: 500 }
@@ -191,10 +223,10 @@ export async function POST(request: NextRequest) {
     }
 
     // 发送通知邮件（异步，不阻塞响应）
-    sendNotificationEmail(body).catch(console.error);
+    sendNotificationEmail(body).catch((err) => logServiceError({ service: 'Resend', operation: 'sendNotificationEmail', error: err }));
     
     // 发送客户确认邮件（异步，不阻塞响应）
-    sendCustomerConfirmation(body).catch(console.error);
+    sendCustomerConfirmation(body).catch((err) => logServiceError({ service: 'Resend', operation: 'sendCustomerConfirmation', error: err }));
 
     return NextResponse.json({
       success: true,
@@ -204,7 +236,7 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Lead API error:', error);
+    logServiceError({ service: 'Search', operation: 'leadHandler', error });
     return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }

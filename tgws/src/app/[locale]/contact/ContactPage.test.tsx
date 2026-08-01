@@ -3,6 +3,7 @@ import { render, screen, fireEvent, act } from '@testing-library/react';
 import ContactPage from './page';
 
 vi.mock('next-intl', () => ({
+  useLocale: () => 'en',
   useTranslations: () => (key: string) => {
     const translations: Record<string, string> = {
       title: 'Contact Us',

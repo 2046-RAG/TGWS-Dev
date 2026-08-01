@@ -1,3 +1,5 @@
+import { logServiceError, isConfigured } from '@/lib/errors';
+
 export async function createOdooLead(data: {
   name: string;
   email: string;
@@ -11,8 +13,8 @@ export async function createOdooLead(data: {
   const password = process.env.ODOO_PASSWORD;
 
   if (!url || !db || !username || !password) {
-    console.warn('Odoo not configured');
-    return null;
+    logServiceError({ service: 'Odoo', operation: 'createLead', error: 'missing env vars', extra: { configured: false } });
+    return { success: false, error: 'Odoo CRM not configured' };
   }
 
   try {
@@ -49,9 +51,10 @@ export async function createOdooLead(data: {
       }),
     });
 
-    return await leadResponse.json();
+    const result = await leadResponse.json();
+    return { success: true, data: result };
   } catch (error) {
-    console.error('Odoo integration error:', error);
-    return null;
+    logServiceError({ service: 'Odoo', operation: 'createLead', error, extra: { email: data.email } });
+    return { success: false, error: 'Odoo CRM request failed' };
   }
 }

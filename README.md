@@ -30,7 +30,7 @@ npm run dev
 | CMS | Sanity | v3 |
 | 数据库 | Supabase | - |
 | 邮件 | Resend | - |
-| 样式 | Tailwind CSS + shadcn/ui | 4.x |
+| 样式 | Tailwind CSS（组件手写，未使用 shadcn/ui） | 4.x |
 | 测试 | Vitest + Playwright | - |
 | 部署 | Vercel | - |
 
@@ -52,10 +52,11 @@ TGWS/
 |---------|------|------|
 | [S1]-[S4] | 项目概述、技术架构、产品归类、网站架构 | ✅ 已完成 |
 | [S5]-[S8] | Hero、工单系统、Odoo CRM、CMS | ✅ 已完成 |
-| [S9]-[S14] | 设计规范、行业方案、案例、博客、联系、关于 | ✅ 已完成 |
+| [S9]-[S14] | 设计规范、行业方案、博客、联系、关于（案例展示已废弃 2026-07-12） | ✅ 已完成 |
 | [S15]-[S21] | 免费额度、VMware替代、数据模型、API、无障碍、兼容性、测试 | ✅ 已完成 |
 
-**测试覆盖率**: Vitest 49/49 ✅ | Playwright 47/47 ✅
+**测试状态**: Vitest 76/76 通过 ✅ | Playwright 功能测试套件（6个spec文件，见 tgws/tests/functional/）
+**代码覆盖率**: 15.62%（目标 70%）
 
 ## 开发命令
 

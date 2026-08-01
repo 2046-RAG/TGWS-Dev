@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useSyncExternalStore } from 'react';
 import { Sun, Moon, Monitor } from 'lucide-react';
 
 type ThemeMode = 'auto' | 'light' | 'dark';
@@ -28,9 +28,19 @@ function applyTheme(mode: ThemeMode) {
 
 const MODES: ThemeMode[] = ['auto', 'light', 'dark'];
 
+// Returns true only after hydration completes; SSR renders false so the
+// placeholder markup matches the server, then the real control mounts.
+const emptySubscribe = () => () => {};
+
 export default function ThemeToggle() {
-  const [mode, setMode] = useState<ThemeMode>('auto');
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
+  // Lazy init reads localStorage only on first client render; SSR yields 'auto'
+  // without touching localStorage, so server/client markup stays consistent.
+  const [mode, setMode] = useState<ThemeMode>(() => getStoredMode());
 
   const applyAndStore = useCallback((newMode: ThemeMode) => {
     setMode(newMode);
@@ -45,11 +55,15 @@ export default function ThemeToggle() {
   };
 
   useEffect(() => {
-    const initial = getStoredMode();
-    setMode(initial);
-    applyTheme(initial);
-    setMounted(true);
-  }, []);
+    applyTheme(mode);
+
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = () => {
+      if (getStoredMode() === 'auto') applyTheme('auto');
+    };
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, [mode]);
 
   if (!mounted) {
     return <div className="w-9 h-9" />;

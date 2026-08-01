@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import TcoCalculatorSection from '@/components/ui/TcoCalculatorSection';
 import {
   ArrowRight, Shield, DollarSign, Zap, Clock,
   Server, Cloud, RefreshCw, Phone
@@ -191,6 +192,9 @@ export default function VMwareAlternativePage() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12 scroll-reveal">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>{t('statsTitle')}</h2>
+            <a href="#tco-calculator" className="inline-block mt-4 px-6 py-2.5 bg-[#00D4FF] text-white text-sm font-semibold rounded-full hover:bg-[#00B8E6] transition-colors shadow-md">
+              {locale === 'zh' ? '计算你的 TCO →' : 'Calculate Your TCO →'}
+            </a>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
@@ -212,6 +216,11 @@ export default function VMwareAlternativePage() {
           </div>
         </div>
       </section>
+
+      {/* TCO Calculator */}
+      <div id="tco-calculator">
+        <TcoCalculatorSection locale={locale} />
+      </div>
 
       {/* CTA Section */}
       <section className="py-20 sm:py-28 px-5 sm:px-8">

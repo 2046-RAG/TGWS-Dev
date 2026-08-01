@@ -80,10 +80,10 @@ describe('Performance Baseline', () => {
   });
 
   // ── Schema completeness ───────────────────────────────────
-  it('has all 7 Sanity schemas registered', () => {
-    // Check that schema files exist
+  it('has all 6 Sanity schemas registered', () => {
+    // Check that schema files exist (caseStudy removed — PRD S11 deprecated)
     const schemaDir = 'sanity/schemas';
-    const required = ['product.ts', 'caseStudy.ts', 'post.ts', 'solution.ts', 'faq.ts', 'partner.ts', 'teamMember.ts'];
+    const required = ['product.ts', 'post.ts', 'solution.ts', 'faq.ts', 'partner.ts', 'teamMember.ts'];
     for (const file of required) {
       expect(fs.existsSync(path.join(schemaDir, file))).toBe(true);
     }

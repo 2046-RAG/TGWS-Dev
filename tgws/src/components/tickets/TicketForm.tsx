@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useAutoSave } from '@/hooks/useAutoSave';
 import { useTranslations } from 'next-intl';
+import { trackEvent } from '@/lib/errors';
 import { Loader2, CheckCircle, Upload, X, Image as ImageIcon } from 'lucide-react';
 import Image from 'next/image';
 
@@ -166,6 +167,7 @@ export default function TicketForm() {
     }
 
     setSuccess(true);
+    trackEvent('ticket_created', { category: formData.category });
     clear();
     setLoading(false);
   };
@@ -217,7 +219,7 @@ export default function TicketForm() {
         </div>
       )}
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-sm text-red-700 dark:text-red-400">
+        <div id="ticket-error" role="alert" className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-sm text-red-700 dark:text-red-400">
           {error}
         </div>
       )}
@@ -231,6 +233,9 @@ export default function TicketForm() {
           id="ticket-category"
           name="category"
           required
+          aria-required="true"
+          aria-invalid={error ? 'true' : undefined}
+          aria-describedby={error ? 'ticket-error' : undefined}
           value={formData.category}
           onChange={(e) => handleChange('category', e.target.value)}
           className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-white focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
@@ -251,6 +256,9 @@ export default function TicketForm() {
           id="ticket-product"
           name="product"
           required
+          aria-required="true"
+          aria-invalid={error ? 'true' : undefined}
+          aria-describedby={error ? 'ticket-error' : undefined}
           value={formData.product}
           onChange={(e) => handleChange('product', e.target.value)}
           className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-white focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all duration-200"
@@ -287,6 +295,9 @@ export default function TicketForm() {
           type="datetime-local"
           name="occurredAt"
           required
+          aria-required="true"
+          aria-invalid={error ? 'true' : undefined}
+          aria-describedby={error ? 'ticket-error' : undefined}
           value={formData.occurredAt}
           max={new Date().toISOString().slice(0, 16)}
           onChange={(e) => handleChange('occurredAt', e.target.value)}
@@ -304,6 +315,9 @@ export default function TicketForm() {
           type="text"
           name="subject"
           required
+          aria-required="true"
+          aria-invalid={error ? 'true' : undefined}
+          aria-describedby={error ? 'ticket-error' : undefined}
           maxLength={200}
           value={formData.subject}
           onChange={(e) => handleChange('subject', e.target.value)}
@@ -321,6 +335,9 @@ export default function TicketForm() {
           id="ticket-description"
           name="description"
           required
+          aria-required="true"
+          aria-invalid={error ? 'true' : undefined}
+          aria-describedby={error ? 'ticket-error' : undefined}
           rows={6}
           maxLength={DESCRIPTION_MAX}
           value={formData.description}

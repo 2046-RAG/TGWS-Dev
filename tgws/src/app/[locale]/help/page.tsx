@@ -99,8 +99,8 @@ export default function HelpPage() {
   return (
     <>
       <FAQJsonLd items={faqItems.map(item => ({ question: item.question, answer: item.answer }))} />
-      <BreadcrumbJsonLd items={[{ name: 'Help', url: `/${locale}/help` }]} locale={locale} />
-      <Breadcrumb items={[{ label: 'Help' }]} />
+      <BreadcrumbJsonLd items={[{ name: t('title'), url: `/${locale}/help` }]} locale={locale} />
+      <Breadcrumb items={[{ label: t('title') }]} />
       <section className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
       <div className="text-center mb-12">
         <h1 className="section-title text-gray-900 dark:text-white">{t('title')}</h1>

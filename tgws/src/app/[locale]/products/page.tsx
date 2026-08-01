@@ -1,4 +1,5 @@
 import { client } from '@/lib/sanity';
+import { logServiceError } from '@/lib/errors';
 import ProductsList from './ProductsList';
 import Breadcrumb from '@/components/ui/Breadcrumb';
 import { getTranslations } from 'next-intl/server';
@@ -38,16 +39,22 @@ async function getProducts() {
     const products = await client.fetch(query);
     return products || [];
   } catch (error) {
-    console.error('Failed to fetch products:', error);
+    logServiceError({ service: 'Sanity', operation: 'getProducts', error });
     return [];
   }
 }
 
-export default async function ProductsPage() {
+export default async function ProductsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'products' });
   const products = await getProducts();
   return (
     <>
-      <Breadcrumb items={[{ label: 'Products' }]} />
+      <Breadcrumb items={[{ label: t('title') }]} />
       <ProductsList products={products} />
     </>
   );

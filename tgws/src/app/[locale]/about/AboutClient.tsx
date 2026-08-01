@@ -27,7 +27,7 @@ export default function AboutClient({ teamMembers, qualifications }: AboutClient
 
   return (
     <>
-      <Breadcrumb items={[{ label: 'About Us' }]} />
+      <Breadcrumb items={[{ label: t('title') }]} />
       <section className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
         {/* Hero Section */}
         <div className="text-center mb-20">

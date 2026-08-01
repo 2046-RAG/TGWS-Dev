@@ -70,8 +70,8 @@ export default defineType({
         {
           type: 'object',
           fields: [
-            { name: 'vendor', type: 'string', title: 'Vendor Name', validation: (r: any) => r.required() },
-            { name: 'solution', type: 'string', title: 'Solution/Product Name', validation: (r: any) => r.required() },
+            { name: 'vendor', type: 'string', title: 'Vendor Name', validation: (r) => r.required() },
+            { name: 'solution', type: 'string', title: 'Solution/Product Name', validation: (r) => r.required() },
             { name: 'description', type: 'text', title: 'Brief Description' },
             { name: 'descriptionZh', type: 'text', title: 'Description (Traditional Chinese)' },
           ],

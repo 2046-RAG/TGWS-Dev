@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import RegisterForm from '@/components/auth/RegisterForm';
 import { getTranslations } from 'next-intl/server';
+import { redirectIfAuthenticated } from '@/lib/auth-guard';
 import type { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -23,6 +24,9 @@ export default async function RegisterPage({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'auth' });
+
+  // Already-authenticated users don't need the register screen (AUDIT-143).
+  await redirectIfAuthenticated();
 
   return (
     <section className="py-20 px-5 sm:px-8 max-w-md mx-auto">

@@ -4,12 +4,8 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import {
-  Video, Code2, Bot, BrainCircuit, Compass, Server, Cloud, HardDrive,
-  Shield, Lock, MonitorCheck, Network, CloudCog, Bug,
-  AlertTriangle, Settings, Database, RefreshCw, Globe, ShieldCheck,
-  Wifi, Cable, Route, Unplug, Radio, Router, NetworkIcon, ArrowRight, Check, Building2,
-} from 'lucide-react';
+import { slugToI18n, iconMap, tabColors, type TabKey } from '../shared';
+import { Server, Check, ArrowRight, Building2 } from 'lucide-react';
 
 interface VendorSolution {
   vendor: string;
@@ -30,74 +26,6 @@ interface Product {
   features: string[];
   relatedVendors?: VendorSolution[];
 }
-
-const tabColors: Record<string, string> = {
-  build: '#00D4FF',
-  run: '#7B61FF',
-  protect: '#22C55E',
-};
-
-const slugToI18n: Record<string, string> = {
-  'ai-generated-content-aigc': 'aigcTitle',
-  'ai-assisted-coding': 'aigcCoding',
-  'ai-agent-development': 'aiAgent',
-  'enterprise-legacy-system-ai-augmentation': 'legacyAI',
-  'ai-adoption-services': 'aiAdoption',
-  'server-virtualization-platform': 'vmPlatform',
-  'hyper-converged-infrastructure': 'hci',
-  'cloud-migration': 'cloudPlatform',
-  'cloud-repatriation': 'cloudRepatriation',
-  'enterprise-storage-solutions': 'hardware',
-  'managed-hosting-services': 'hosting',
-  'business-continuity-disaster-recovery': 'bcdr',
-  'enterprise-routers': 'enterpriseRouters',
-  'core-switches': 'coreSwitches',
-  'access-switches': 'accessSwitches',
-  'aggregation-switches': 'aggregationSwitches',
-  'enterprise-wireless-ap': 'enterpriseWirelessAP',
-  'wireless-controllers': 'wirelessControllers',
-  'outdoor-wireless-ap': 'outdoorWirelessAP',
-  'wifi-6-7-ap': 'wifi67AP',
-  'next-gen-firewall-ips': 'ngfw',
-  'web-application-firewall': 'waf',
-  'endpoint-detection-response': 'edr',
-  'network-detection-response': 'ndr',
-  'cloud-security': 'cloudSecurity',
-  'sd-wan-load-balancing': 'sdwan',
-  'managed-detection-response': 'mdr',
-  'incident-response': 'incidentResponse',
-};
-
-const iconMap: Record<string, React.ReactNode> = {
-  'ai-generated-content-aigc': <Video size={32} />,
-  'ai-assisted-coding': <Code2 size={32} />,
-  'ai-agent-development': <Bot size={32} />,
-  'enterprise-legacy-system-ai-augmentation': <BrainCircuit size={32} />,
-  'ai-adoption-services': <Compass size={32} />,
-  'server-virtualization-platform': <Server size={32} />,
-  'hyper-converged-infrastructure': <Database size={32} />,
-  'cloud-migration': <Cloud size={32} />,
-  'cloud-repatriation': <RefreshCw size={32} />,
-  'enterprise-storage-solutions': <HardDrive size={32} />,
-  'managed-hosting-services': <Settings size={32} />,
-  'business-continuity-disaster-recovery': <Shield size={32} />,
-  'enterprise-routers': <Route size={32} />,
-  'core-switches': <Cable size={32} />,
-  'access-switches': <Network size={32} />,
-  'aggregation-switches': <Unplug size={32} />,
-  'enterprise-wireless-ap': <Wifi size={32} />,
-  'wireless-controllers': <Radio size={32} />,
-  'outdoor-wireless-ap': <Router size={32} />,
-  'wifi-6-7-ap': <NetworkIcon size={32} />,
-  'next-gen-firewall-ips': <ShieldCheck size={32} />,
-  'web-application-firewall': <Lock size={32} />,
-  'endpoint-detection-response': <MonitorCheck size={32} />,
-  'network-detection-response': <Network size={32} />,
-  'cloud-security': <CloudCog size={32} />,
-  'sd-wan-load-balancing': <Globe size={32} />,
-  'managed-detection-response': <Bug size={32} />,
-  'incident-response': <AlertTriangle size={32} />,
-};
 
 const vendorColors: Record<string, string> = {
   bytedance: '#FE2C55',
@@ -133,7 +61,7 @@ export default function ProductDetail({ product }: { product: Product }) {
   const locale = params.locale as string;
   const slug = product.slug?.current || '';
   const i18nKey = slugToI18n[slug] || '';
-  const color = tabColors[product.category] || '#00D4FF';
+  const color = tabColors[product.category as TabKey] || '#00D4FF';
   const features = t.raw('features.' + slug);
   const isZh = locale === 'zh';
   const description = isZh ? (product.descriptionZh || product.description) : product.description;

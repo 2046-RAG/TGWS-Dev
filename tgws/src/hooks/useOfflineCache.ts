@@ -11,7 +11,15 @@ interface OfflineCacheState<T> {
 function getCachedData<T>(key: string): T | null {
   if (typeof window === 'undefined') return null;
   const cached = localStorage.getItem(key);
-  return cached ? JSON.parse(cached) : null;
+  if (!cached) return null;
+  try {
+    return JSON.parse(cached) as T;
+  } catch {
+    // Corrupted cache entry must not crash the component subtree on render
+    // (AUDIT-200). Discard it.
+    localStorage.removeItem(key);
+    return null;
+  }
 }
 
 export function useOfflineCache<T>(key: string, fetcher: () => Promise<T>) {
@@ -31,8 +39,14 @@ export function useOfflineCache<T>(key: string, fetcher: () => Promise<T>) {
       .then((fresh) => {
         if (!cancelled) {
           setState({ data: fresh, isStale: false, loading: false });
+          // Write only when still mounted; setItem can throw on unmounted
+          // nodes (AUDIT-204).
+          try {
+            localStorage.setItem(key, JSON.stringify(fresh));
+          } catch {
+            // Storage full / unavailable — cache write is best-effort.
+          }
         }
-        localStorage.setItem(key, JSON.stringify(fresh));
       })
       .catch(() => {
         if (!cancelled) {
@@ -47,6 +61,8 @@ export function useOfflineCache<T>(key: string, fetcher: () => Promise<T>) {
     return () => {
       cancelled = true;
     };
+    // fetcher identity: callers must memoize inline arrows or the effect
+    // re-fetches every render (AUDIT-204).
   }, [fetcher, key]);
 
   return state;

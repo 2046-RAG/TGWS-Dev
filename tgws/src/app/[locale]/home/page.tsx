@@ -6,7 +6,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 const HeroSection = dynamic(() => import('@/components/hero/HeroSection'));
-import { Code2, Server, Shield, ArrowRight, Check, Zap, Users, Building2, Sparkles, Monitor } from 'lucide-react';
+import { Code2, Server, Shield, ArrowRight, Check, Zap, Users, Building2, Sparkles, Monitor, Calculator } from 'lucide-react';
 import { useState, useRef, useCallback } from 'react';
 
 /* ═══════════════════════════════════════════════
@@ -457,12 +457,21 @@ export default function HomePage() {
                     </span>
                   ))}
                 </div>
-                <Link
-                  href={`/${locale}/vmware-alternative`}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-zinc-800 text-gray-900 dark:text-white font-medium rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors text-sm shrink-0"
-                >
-                  {t('vmwareCta')} <ArrowRight size={16} />
-                </Link>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+                  <Link
+                    href={`/${locale}/vmware-alternative#tco-calculator`}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#00D4FF] text-white font-semibold rounded-full hover:bg-[#00B8E6] transition-colors text-sm shadow-lg shadow-[#00D4FF]/20"
+                  >
+                    <Calculator size={16} />
+                    {locale === 'zh' ? '计算你的 TCO' : 'Calculate Your TCO'}
+                  </Link>
+                  <Link
+                    href={`/${locale}/vmware-alternative`}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-zinc-800 text-gray-900 dark:text-white font-medium rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors text-sm"
+                  >
+                    {t('vmwareCta')} <ArrowRight size={16} />
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

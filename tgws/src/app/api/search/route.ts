@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { client } from '@/lib/sanity';
+import { logServiceError } from '@/lib/errors';
 
 interface SearchFilters {
   contentType?: string[];
@@ -121,7 +122,7 @@ async function searchInternal(
           }
           results.push({
             id: product._id, type: 'product', title: title || product.title,
-            description: desc?.substring(0, 200) || '', url: `/en/products/${product.slug?.current}`,
+            description: desc?.substring(0, 200) || '', url: `/${locale}/products/${product.slug?.current}`,
             category: product.category, pillar: product.pillar, source: 'internal',
             relevanceScore: calculateRelevance(query, title, desc),
           });
@@ -132,10 +133,10 @@ async function searchInternal(
     // 搜索方案
     if (!filters?.contentType || filters.contentType.includes('solution')) {
       const solutions = await client.fetch(
-        `*[_type == "solution"] { _id, title, slug, industry, description, descriptionZh }`
+        `*[_type == "solution"] { _id, title, titleZh, slug, industry, description, descriptionZh }`
       );
       for (const solution of solutions || []) {
-        const title = locale === 'zh' ? (solution.title || solution.title) : solution.title;
+        const title = locale === 'zh' ? (solution.titleZh || solution.title) : solution.title;
         const desc = locale === 'zh' ? (solution.descriptionZh || solution.description) : solution.description;
         const matches = englishTerms.some(term => title?.toLowerCase().includes(term) || desc?.toLowerCase().includes(term));
         if (matches) {
@@ -144,7 +145,7 @@ async function searchInternal(
           }
           results.push({
             id: solution._id, type: 'solution', title: title || solution.title,
-            description: desc?.substring(0, 200) || '', url: `/en/solutions?tab=${solution.industry}`,
+            description: desc?.substring(0, 200) || '', url: `/${locale}/solutions?tab=${solution.industry}`,
             industry: solution.industry, source: 'internal',
             relevanceScore: calculateRelevance(query, title, desc),
           });
@@ -167,7 +168,7 @@ async function searchInternal(
         if (matches) {
           results.push({
             id: post._id, type: 'blog', title: title || post.title,
-            description: desc?.substring(0, 200) || '', url: `/en/blog/${post.slug?.current}`,
+            description: desc?.substring(0, 200) || '', url: `/${locale}/blog/${post.slug?.current}`,
             source: 'internal', relevanceScore: calculateRelevance(query, title, desc),
           });
         }
@@ -188,14 +189,14 @@ async function searchInternal(
         if (matches) {
           results.push({
             id: faq._id, type: 'faq', title: question || faq.question,
-            description: answer?.substring(0, 200) || '', url: '/en/help',
+            description: answer?.substring(0, 200) || '', url: `/${locale}/help`,
             source: 'internal', relevanceScore: calculateRelevance(query, question, answer),
           });
         }
       }
     }
   } catch (error) {
-    console.error('Internal search error:', error);
+    logServiceError({ service: 'Search', operation: 'internalSearch', error });
   }
 
   return results.sort((a, b) => b.relevanceScore - a.relevanceScore);
@@ -210,7 +211,7 @@ async function searchGoogleCSE(query: string): Promise<ExternalResult[]> {
     const cseId = process.env.GOOGLE_CSE_ID;
     
     if (!apiKey || !cseId) {
-      console.log('Google CSE not configured, skipping');
+      logServiceError({ service: 'GoogleCSE', operation: 'search', error: 'not configured' });
       return results;
     }
 
@@ -219,7 +220,7 @@ async function searchGoogleCSE(query: string): Promise<ExternalResult[]> {
     );
     
     if (!response.ok) {
-      console.error('Google CSE error:', response.statusText);
+      logServiceError({ service: 'GoogleCSE', operation: 'search', error: response.statusText });
       return results;
     }
 
@@ -236,7 +237,7 @@ async function searchGoogleCSE(query: string): Promise<ExternalResult[]> {
       });
     }
   } catch (error) {
-    console.error('Google CSE error:', error);
+    logServiceError({ service: 'GoogleCSE', operation: 'search', error });
   }
 
   return results;
@@ -251,12 +252,14 @@ async function searchTavily(query: string): Promise<{ results: ExternalResult[];
     const apiKey = process.env.TAVILY_API_KEY;
 
     if (!apiKey) {
-      console.log('Tavily not configured, skipping');
+      logServiceError({ service: 'Tavily', operation: 'search', error: 'not configured' });
       return { results, answer };
     }
 
-    // 注入 TechGuru 上下文 — 只描述公司定位，不把搜索词列为业务
-    const enrichedQuery = `For TechGuru Network & Data Solutions (enterprise IT solutions company in the Philippines specializing in virtualization, HCI, cloud infrastructure, cybersecurity, and networking): explain what "${query}" means in enterprise IT context, its use cases, and how it relates to infrastructure solutions.`;
+    // 注入 TechGuru 上下文 — 只描述公司定位，不把搜索词列为业务。
+    // 清理引号/换行/控制字符，防止 prompt injection (AUDIT-048)。
+    const safeQuery = String(query).replace(/["\\\n\r\t]/g, ' ').slice(0, 300);
+    const enrichedQuery = `For TechGuru Network & Data Solutions (enterprise IT solutions company in the Philippines specializing in virtualization, HCI, cloud infrastructure, cybersecurity, and networking): explain what "${safeQuery}" means in enterprise IT context, its use cases, and how it relates to infrastructure solutions.`;
 
     const response = await fetch('https://api.tavily.com/search', {
       method: 'POST',
@@ -272,7 +275,7 @@ async function searchTavily(query: string): Promise<{ results: ExternalResult[];
     });
 
     if (!response.ok) {
-      console.error('Tavily error:', response.statusText);
+      logServiceError({ service: 'Tavily', operation: 'search', error: response.statusText });
       return { results, answer };
     }
 
@@ -293,7 +296,7 @@ async function searchTavily(query: string): Promise<{ results: ExternalResult[];
       });
     }
   } catch (error) {
-    console.error('Tavily error:', error);
+    logServiceError({ service: 'Tavily', operation: 'search', error });
   }
 
   return { results, answer };
@@ -348,6 +351,9 @@ async function generateAiSummary(
     return generateFallbackSummary(query, internalResults, externalResults);
   }
 
+  // 清理用户输入防止 prompt injection (AUDIT-048)
+  const safeQuery = String(query).replace(/["\\\n\r\t]/g, ' ').slice(0, 300);
+
   // 构建上下文：站内结果 + Tavily洞察 + 外部来源
   const internalContext = internalResults.slice(0, 5).map(r =>
     `[${r.type}] ${r.title}: ${r.description.substring(0, 150)}`
@@ -362,7 +368,7 @@ async function generateAiSummary(
 
   const prompt = `You are TechGuru Network & Data Solutions' search AI assistant. TechGuru is an enterprise IT solutions company in the Philippines specializing in Build (AI, cloud), Run (virtualization, HCI, hosting), and Protect (security, networking).
 
-User searched: "${query}"
+User searched: "${safeQuery}"
 
 INTERNAL RESOURCES from TechGuru:
 ${internalContext || '(none)'}
@@ -377,7 +383,7 @@ You MUST output EXACTLY these 3 sections in order. Every section is REQUIRED:
 State how many TechGuru resources match and list the top 1-2 by name. If zero, write "TechGuru doesn't currently have dedicated resources for this topic."
 
 [INSIGHT]
-Write 1-2 sentences explaining what "${query}" means for enterprise IT infrastructure, why it matters, and how companies evaluate or deploy it. Be specific and actionable — NOT a dictionary definition.
+Write 1-2 sentences explaining what "${safeQuery}" means for enterprise IT infrastructure, why it matters, and how companies evaluate or deploy it. Be specific and actionable — NOT a dictionary definition.
 
 [SOURCES]
 List exactly 2-3 URLs from this allowed list ONLY: oracle.com, wikipedia.org, ibm.com, microsoft.com, cisco.com, aws.amazon.com, cloud.google.com, vmware.com, nutanix.com, gartner.com, forrester.com, techtarget.com, arxiv.org, nist.gov. NEVER use any other domain.`;
@@ -399,7 +405,7 @@ List exactly 2-3 URLs from this allowed list ONLY: oracle.com, wikipedia.org, ib
     );
 
     if (!response.ok) {
-      console.error('Gemini API error:', response.statusText);
+      logServiceError({ service: 'Gemini', operation: 'generateSummary', error: response.statusText });
       const fallback = generateFallbackSummary(query, internalResults, externalResults);
       return postProcessAiSummary(fallback, query, internalResults, externalResults);
     }
@@ -410,7 +416,7 @@ List exactly 2-3 URLs from this allowed list ONLY: oracle.com, wikipedia.org, ib
       return postProcessAiSummary(text.trim(), query, internalResults, externalResults);
     }
   } catch (error) {
-    console.error('Gemini error:', error);
+    logServiceError({ service: 'Gemini', operation: 'generateSummary', error });
   }
 
   // Fallback 也经过 postProcessAiSummary 保证三段格式 + 域名过滤
@@ -595,6 +601,7 @@ export async function POST(request: NextRequest) {
           filters,
           locale,
           timestamp: new Date().toISOString(),
+          externalSourcesAvailable: !!(process.env.GOOGLE_CSE_API_KEY && process.env.TAVILY_API_KEY),
         },
       },
     };
@@ -613,12 +620,12 @@ export async function POST(request: NextRequest) {
         gapDescription: capabilityGap.gapDescription,
       });
     } catch (logError) {
-      console.error('Failed to log search:', logError);
+      logServiceError({ service: 'Sanity', operation: 'logSearch', error: logError });
     }
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Search API error:', error);
+    logServiceError({ service: 'Search', operation: 'handler', error });
     return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }

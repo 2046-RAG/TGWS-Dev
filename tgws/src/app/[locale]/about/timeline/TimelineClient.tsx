@@ -25,12 +25,13 @@ interface TimelineClientProps {
 
 export default function TimelineClient({ events }: TimelineClientProps) {
   const t = useTranslations('about.timeline');
+  const aboutT = useTranslations('about');
   const locale = useLocale();
   const isZh = locale === 'zh';
 
   return (
     <>
-      <Breadcrumb items={[{ label: 'About Us', href: '/about' }, { label: 'Our Journey' }]} />
+      <Breadcrumb items={[{ label: aboutT('title'), href: '/about' }, { label: t('page_title') }]} />
       
       {/* Hero Section */}
       <section className="relative py-20 px-5 sm:px-8 overflow-hidden">

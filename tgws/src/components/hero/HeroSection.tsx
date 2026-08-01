@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
-import { Copy, Check, Mail, Code2, Sparkles, ArrowRight, Monitor } from 'lucide-react';
+import { Copy, Check, Mail, Code2, Sparkles, ArrowRight, Monitor, Calculator } from 'lucide-react';
 
 // ═══════════════════════════════════════════════
 // Hero Section — Video Background + Mouse Scrubbing
@@ -287,6 +287,13 @@ export default function HeroSection() {
               <p className="text-white/60 text-xs leading-relaxed">
                 {t('storyline3Desc')}
               </p>
+              <Link
+                href={`/${locale}/vmware-alternative#tco-calculator`}
+                className="inline-flex items-center gap-1.5 mt-3 px-3 py-1.5 rounded-full bg-[#00D4FF]/15 border border-[#00D4FF]/30 text-[#00D4FF] text-[11px] font-semibold hover:bg-[#00D4FF]/25 transition-colors"
+              >
+                <Calculator size={12} />
+                {locale === 'zh' ? '计算 TCO' : 'TCO Calculator'}
+              </Link>
               <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
                 <ArrowRight size={14} className="text-white/50" />
               </div>

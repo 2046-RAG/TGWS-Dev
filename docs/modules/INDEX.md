@@ -2,19 +2,19 @@
 
 ## 模块总览
 
-| 模块ID | 模块名称 | 路由 | 状态 | 大小 |
-|--------|----------|------|------|------|
-| M01 | Home | /home | ✅ 完成 | 20KB |
-| M02 | Products | /products/* | ✅ 完成 | 36KB |
-| M03 | Blog | /blog/* | ✅ 完成 | 26KB |
-| M04 | Solutions | /solutions | ✅ 完成 | 12KB |
-| M05 | Tickets | /support/* | ✅ 完成 | 34KB |
-| M06 | Contact | /contact | ✅ 完成 | 24KB |
-| M07 | About | /about | ✅ 完成 | 6KB |
-| M08 | Compare | /compare | ✅ 完成 | 5KB |
-| M09 | VMware Alt | /vmware-alternative | ✅ 完成 | 11KB |
-| M10 | Help | /help | ✅ 完成 | 8KB |
-| M11 | Legal | /privacy, /terms | ✅ 完成 | 5KB |
+| 模块ID | 模块名称 | 路由 | 状态 | 完成度 | 差距 |
+|--------|----------|------|------|--------|------|
+| M01 | Home | /home | ✅ 完成 | 95% | 视频性能优化 |
+| M02 | Products | /products/* | ✅ 完成 | 95% | API路由字段补全 |
+| M03 | Blog | /blog/* | ✅ 完成 | 85% | 社交分享 |
+| M04 | Solutions | /solutions | ✅ 完成 | 90% | — |
+| M05 | Tickets | /support/* | ✅ 完成 | 85% | audit_log写入/测试覆盖 |
+| M06 | Contact | /contact | ✅ 完成 | 90% | Odoo降级提示/重试 |
+| M07 | About | /about | ✅ 完成 | 95% | — |
+| M08 | Compare | /compare | ✅ 完成 | 85% | 详细指南 |
+| M09 | VMware Alt | /vmware-alternative | ✅ 完成 | 75% | TCO计算器 |
+| M10 | Help | /help | ✅ 完成 | 60% | 帮助文档内容补全 |
+| M11 | Legal | /privacy, /terms | ✅ 完成 | 95% | — |
 
 ## 全局组件（被多个模块共享）
 

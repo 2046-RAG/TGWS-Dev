@@ -14,6 +14,11 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Node.js utility scripts (use require() style)
     "scripts/**",
+    // Playwright-generated HTML report assets (third-party JS, not project code)
+    "tests/functional/functional-report/**",
+    "coverage/**",
+    // One-off local migration scripts (require() style, not project code)
+    "_*.cjs",
   ]),
 ]);
 

@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { logServiceError } from '@/lib/errors';
 
 let resend: Resend | null = null;
 
@@ -12,6 +13,18 @@ function getResend() {
 const FROM_ADDRESS = 'TechGuru Support <support@techguru-it.asia>';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.techguru-it.asia';
 
+// Escape user-controlled values before HTML interpolation so ticket subjects,
+// replies, and author names can't inject markup into recipient inboxes
+// (AUDIT-046).
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 interface SendEmailParams {
   to: string;
   subject: string;
@@ -21,7 +34,7 @@ interface SendEmailParams {
 async function sendEmail({ to, subject, html }: SendEmailParams) {
   const client = getResend();
   if (!client) {
-    console.log('[Email] Resend not configured, skipping:', subject);
+    logServiceError({ service: 'Resend', operation: 'sendEmail', error: 'not configured', extra: { subject } });
     return { success: false, error: 'Resend not configured' };
   }
 
@@ -34,13 +47,13 @@ async function sendEmail({ to, subject, html }: SendEmailParams) {
     });
 
     if (error) {
-      console.error('[Email] Send failed:', error);
+      logServiceError({ service: 'Resend', operation: 'sendEmail', error: error.message, extra: { to, subject } });
       return { success: false, error: error.message };
     }
 
     return { success: true, id: data?.id };
   } catch (err) {
-    console.error('[Email] Send exception:', err);
+    logServiceError({ service: 'Resend', operation: 'sendEmail', error: err, extra: { to, subject } });
     return { success: false, error: String(err) };
   }
 }
@@ -53,6 +66,9 @@ export async function sendTicketCreatedEmail(
   category: string
 ) {
   const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
+  const safeTicketNumber = escapeHtml(ticketNumber);
+  const safeSubject = escapeHtml(subject);
+  const safeCategory = escapeHtml(categoryLabel);
   return sendEmail({
     to,
     subject: `Ticket ${ticketNumber} Created`,
@@ -61,9 +77,9 @@ export async function sendTicketCreatedEmail(
         <h2 style="color: #00D4FF;">Ticket Submitted Successfully</h2>
         <p>Your support ticket has been created and our team will review it shortly.</p>
         <div style="background: #FAFAFA; border-radius: 12px; padding: 20px; margin: 20px 0;">
-          <p><strong>Ticket Number:</strong> ${ticketNumber}</p>
-          <p><strong>Category:</strong> ${categoryLabel}</p>
-          <p><strong>Subject:</strong> ${subject}</p>
+          <p><strong>Ticket Number:</strong> ${safeTicketNumber}</p>
+          <p><strong>Category:</strong> ${safeCategory}</p>
+          <p><strong>Subject:</strong> ${safeSubject}</p>
         </div>
         <p>You can track your ticket status at:</p>
         <a href="${SITE_URL}/en/support" style="color: #00D4FF;">View Ticket</a>
@@ -88,6 +104,9 @@ export async function sendTicketStatusEmail(
     closed: 'Closed',
   };
 
+  const safeTicketNumber = escapeHtml(ticketNumber);
+  const safeOld = escapeHtml(statusLabels[oldStatus] || oldStatus);
+  const safeNew = escapeHtml(statusLabels[newStatus] || newStatus);
   return sendEmail({
     to,
     subject: `Ticket ${ticketNumber} Status Updated: ${statusLabels[newStatus] || newStatus}`,
@@ -96,9 +115,9 @@ export async function sendTicketStatusEmail(
         <h2 style="color: #00D4FF;">Ticket Status Updated</h2>
         <p>Your ticket status has been changed.</p>
         <div style="background: #FAFAFA; border-radius: 12px; padding: 20px; margin: 20px 0;">
-          <p><strong>Ticket Number:</strong> ${ticketNumber}</p>
-          <p><strong>Previous Status:</strong> ${statusLabels[oldStatus] || oldStatus}</p>
-          <p><strong>New Status:</strong> ${statusLabels[newStatus] || newStatus}</p>
+          <p><strong>Ticket Number:</strong> ${safeTicketNumber}</p>
+          <p><strong>Previous Status:</strong> ${safeOld}</p>
+          <p><strong>New Status:</strong> ${safeNew}</p>
         </div>
         <a href="${SITE_URL}/en/support" style="color: #00D4FF;">View Ticket</a>
         <hr style="border: none; border-top: 1px solid #F4F4F5; margin: 20px 0;">
@@ -136,6 +155,10 @@ export async function sendTicketReplyEmail(
   replyAuthor: string,
   replyContent: string
 ) {
+  const safeTicketNumber = escapeHtml(ticketNumber);
+  const safeSubject = escapeHtml(subject);
+  const safeAuthor = escapeHtml(replyAuthor);
+  const safeContent = escapeHtml(replyContent);
   return sendEmail({
     to,
     subject: `New Reply on Ticket ${ticketNumber}`,
@@ -144,12 +167,12 @@ export async function sendTicketReplyEmail(
         <h2 style="color: #00D4FF;">New Reply on Your Ticket</h2>
         <p>A team member has replied to your support ticket.</p>
         <div style="background: #FAFAFA; border-radius: 12px; padding: 20px; margin: 20px 0;">
-          <p><strong>Ticket:</strong> ${ticketNumber}</p>
-          <p><strong>Subject:</strong> ${subject}</p>
-          <p><strong>From:</strong> ${replyAuthor}</p>
+          <p><strong>Ticket:</strong> ${safeTicketNumber}</p>
+          <p><strong>Subject:</strong> ${safeSubject}</p>
+          <p><strong>From:</strong> ${safeAuthor}</p>
         </div>
         <div style="background: white; border: 1px solid #E5E7EB; border-radius: 12px; padding: 20px; margin: 20px 0;">
-          <p style="color: #374151; line-height: 1.6; white-space: pre-wrap;">${replyContent}</p>
+          <p style="color: #374151; line-height: 1.6; white-space: pre-wrap;">${safeContent}</p>
         </div>
         <div style="text-align: center; margin: 30px 0;">
           <a href="${SITE_URL}/en/support" style="background: #00D4FF; color: white; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">View & Reply</a>

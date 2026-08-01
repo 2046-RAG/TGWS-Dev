@@ -1,6 +1,6 @@
 import https from 'https';
 
-const SANITY_TOKEN = 'REPLACED_SANITY_TOKEN';
+const SANITY_TOKEN = `${process.env.SANITY_API_TOKEN}`;
 const SANITY_PROJECT_ID = 'r6ztl1oq';
 const SANITY_DATASET = 'production';
 

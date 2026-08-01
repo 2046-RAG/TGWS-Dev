@@ -2,11 +2,18 @@ interface JsonLdProps {
   data: Record<string, unknown>;
 }
 
+// Escape < and > so a user/CMS-supplied string containing "</script>" cannot
+// terminate the JSON-LD script element early (AUDIT-145 — classic JSON-LD XSS).
+const BRAND_OG_IMAGE = 'https://www.techguru-it.asia/logos/techguru-logo.png';
+
 export default function JsonLd({ data }: JsonLdProps) {
+  const safeJson = JSON.stringify(data)
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e');
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: safeJson }}
     />
   );
 }
@@ -74,7 +81,7 @@ export function ArticleJsonLd({
     '@type': 'Article',
     headline: title,
     description,
-    image: image || 'https://picsum.photos/seed/techguru/1200/630',
+    image: image || BRAND_OG_IMAGE,
     url,
     datePublished,
     dateModified: dateModified || datePublished,
@@ -153,7 +160,7 @@ export function ProductJsonLd({
     name,
     description,
     url,
-    image: image || 'https://picsum.photos/seed/techguru-product/1200/630',
+    image: image || BRAND_OG_IMAGE,
     brand: {
       '@type': 'Organization',
       name: brand || 'TechGuru',

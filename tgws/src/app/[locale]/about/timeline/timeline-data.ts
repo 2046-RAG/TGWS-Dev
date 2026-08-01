@@ -1,4 +1,5 @@
 import { client } from '@/lib/sanity';
+import { logServiceError } from '@/lib/errors';
 
 export interface TimelineEvent {
   _id: string;
@@ -35,7 +36,7 @@ export async function getAllTimelineEvents(): Promise<TimelineEvent[]> {
     const events = await client.fetch(TIMELINE_QUERY);
     return events || [];
   } catch (error) {
-    console.error('Failed to fetch timeline events:', error);
+    logServiceError({ service: 'Sanity', operation: 'getAllTimelineEvents', error });
     return [];
   }
 }

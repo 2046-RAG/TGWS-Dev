@@ -1,4 +1,4 @@
-$SANITY_TOKEN = "REPLACED_SANITY_TOKEN"
+$SANITY_TOKEN = "$env:SANITY_API_TOKEN"
 $API_URL = "https://r6ztl1oq.api.sanity.io/v2024-01-01/data/mutate/production?returnIds=true"
 
 $headers = @{

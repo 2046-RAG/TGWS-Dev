@@ -1,4 +1,4 @@
-const SANITY_TOKEN = 'REPLACED_SANITY_TOKEN';
+const SANITY_TOKEN = `${process.env.SANITY_API_TOKEN}`;
 const PROJECT_ID = 'r6ztl1oq';
 const DATASET = 'production';
 const API_VERSION = '2024-01-01';

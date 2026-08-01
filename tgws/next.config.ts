@@ -28,17 +28,13 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '*.supabase.co',
       },
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos',
-      },
     ],
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
   experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion'],
+    optimizePackageImports: ['lucide-react'],
   },
   async headers() {
     return [
@@ -48,11 +44,10 @@ const nextConfig: NextConfig = {
           { key: 'X-Frame-Options', value: 'DENY' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-          { key: 'X-XSS-Protection', value: '1; mode=block' },
           { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://db.onlinewebfonts.com; img-src 'self' https: data: blob:; font-src 'self' https://db.onlinewebfonts.com; connect-src 'self' https://*.supabase.co https://*.sanity.io wss://*.supabase.co; media-src 'self' https://cdn.coverr.co https://d8j0ntlcm91z4.cloudfront.net; frame-src 'self' https://www.openstreetmap.org https://www.google.com https://maps.google.com; frame-ancestors 'none'"
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://db.onlinewebfonts.com; img-src 'self' data: blob: https://cdn.sanity.io https://*.supabase.co; font-src 'self' https://db.onlinewebfonts.com; connect-src 'self' https://*.supabase.co https://*.sanity.io wss://*.supabase.co; media-src 'self' https://cdn.coverr.co https://d8j0ntlcm91z4.cloudfront.net; frame-src 'self' https://www.openstreetmap.org https://www.google.com https://maps.google.com; frame-ancestors 'none'"
           },
           {
             key: 'Permissions-Policy',
