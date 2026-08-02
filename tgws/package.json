@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "vitest run --coverage --pool=forks --poolOptions.forks.singleFork=true",
     "test:e2e": "playwright test"
   },
   "dependencies": {
