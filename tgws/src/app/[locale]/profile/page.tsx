@@ -53,7 +53,7 @@ export default function ProfilePage() {
       if (pwError) { setError(pwError.message); setSaving(false); return; }
     }
 
-    setSuccess(locale === 'zh' ? '个人资料已更新' : 'Profile updated successfully');
+    setSuccess(locale === 'zh' ? '個人資料已更新' : 'Profile updated successfully');
     setNewPassword('');
     setConfirmPassword('');
     setSaving(false);
@@ -67,7 +67,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-[#F4F4F5] dark:bg-zinc-900">
-      <Breadcrumb items={[{ label: locale === 'zh' ? '个人资料' : 'Profile' }]} locale={locale} />
+      <Breadcrumb items={[{ label: locale === 'zh' ? '個人資料' : 'Profile' }]} locale={locale} />
       <section className="py-16 px-5 sm:px-8 max-w-lg mx-auto">
         <div className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-200 dark:border-zinc-700 p-6 sm:p-8 shadow-sm">
           <div className="flex items-center gap-3 mb-8">
@@ -76,7 +76,7 @@ export default function ProfilePage() {
             </div>
             <div>
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-                {locale === 'zh' ? '个人资料' : 'Profile'}
+                {locale === 'zh' ? '個人資料' : 'Profile'}
               </h1>
               <p className="text-sm text-gray-500">{email}</p>
             </div>
@@ -99,11 +99,11 @@ export default function ProfilePage() {
             <div>
               <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 <User size={16} className="text-[#00D4FF]" />
-                {locale === 'zh' ? '显示名称' : 'Display Name'}
+                {locale === 'zh' ? '顯示名稱' : 'Display Name'}
               </label>
               <input type="text" value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                placeholder={locale === 'zh' ? '输入名称' : 'Enter your name'}
+                placeholder={locale === 'zh' ? '輸入名稱' : 'Enter your name'}
                 className="w-full px-4 py-2.5 border border-gray-200 dark:border-zinc-600 rounded-lg bg-gray-50 dark:bg-zinc-700 text-gray-900 dark:text-white focus:border-[#00D4FF] focus:ring-1 focus:ring-[#00D4FF] outline-none" />
             </div>
 
@@ -111,7 +111,7 @@ export default function ProfilePage() {
             <div>
               <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 <Mail size={16} className="text-[#7B61FF]" />
-                {locale === 'zh' ? '电子邮箱' : 'Email'}
+                {locale === 'zh' ? '電子郵件' : 'Email'}
               </label>
               <input type="email" value={email} disabled
                 className="w-full px-4 py-2.5 border border-gray-200 dark:border-zinc-600 rounded-lg bg-gray-100 dark:bg-zinc-800/50 text-gray-500 cursor-not-allowed outline-none" />
@@ -121,16 +121,16 @@ export default function ProfilePage() {
             <div className="border-t border-gray-100 dark:border-zinc-700 pt-6">
               <p className="text-sm font-medium text-gray-700 dark:text-gray-200 mb-4 flex items-center gap-2">
                 <Lock size={16} className="text-[#22C55E]" />
-                {locale === 'zh' ? '修改密码（可选）' : 'Change Password (optional)'}
+                {locale === 'zh' ? '修改密碼（選填）' : 'Change Password (optional)'}
               </p>
               <div className="space-y-4">
                 <input type="password" value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder={locale === 'zh' ? '新密码（至少 8 位）' : 'New password (min 8 chars)'}
+                  placeholder={locale === 'zh' ? '新密碼（至少 8 位）' : 'New password (min 8 chars)'}
                   className="w-full px-4 py-2.5 border border-gray-200 dark:border-zinc-600 rounded-lg bg-gray-50 dark:bg-zinc-700 text-gray-900 dark:text-white focus:border-[#00D4FF] focus:ring-1 focus:ring-[#00D4FF] outline-none" />
                 <input type="password" value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder={locale === 'zh' ? '确认新密码' : 'Confirm new password'}
+                  placeholder={locale === 'zh' ? '確認新密碼' : 'Confirm new password'}
                   className="w-full px-4 py-2.5 border border-gray-200 dark:border-zinc-600 rounded-lg bg-gray-50 dark:bg-zinc-700 text-gray-900 dark:text-white focus:border-[#00D4FF] focus:ring-1 focus:ring-[#00D4FF] outline-none" />
               </div>
             </div>
@@ -139,8 +139,8 @@ export default function ProfilePage() {
               className="w-full flex items-center justify-center gap-2 bg-[#00D4FF] text-white font-medium py-3 rounded-lg hover:bg-[#00B8E6] transition-colors disabled:opacity-50">
               {saving ? <Loader2 size={18} className="animate-spin" /> : null}
               {saving
-                ? (locale === 'zh' ? '保存中...' : 'Saving...')
-                : (locale === 'zh' ? '保存' : 'Save')}
+                ? (locale === 'zh' ? '儲存中...' : 'Saving...')
+                : (locale === 'zh' ? '儲存' : 'Save')}
             </button>
           </form>
         </div>
