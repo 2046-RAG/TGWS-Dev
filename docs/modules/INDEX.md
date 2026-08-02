@@ -6,15 +6,17 @@
 |--------|----------|------|------|--------|------|
 | M01 | Home | /home | ✅ 完成 | 95% | 视频性能优化 |
 | M02 | Products | /products/* | ✅ 完成 | 95% | API路由字段补全 |
-| M03 | Blog | /blog/* | ✅ 完成 | 85% | 社交分享 |
+| M03 | Blog | /blog/* | ✅ 完成 | 95% | — |
 | M04 | Solutions | /solutions | ✅ 完成 | 90% | — |
-| M05 | Tickets | /support/* | ✅ 完成 | 85% | audit_log写入/测试覆盖 |
-| M06 | Contact | /contact | ✅ 完成 | 90% | Odoo降级提示/重试 |
+| M05 | Tickets | /support/* | ✅ 完成 | 90% | 测试覆盖（TODO-005） |
+| M06 | Contact | /contact | ✅ 完成 | 95% | — |
 | M07 | About | /about | ✅ 完成 | 95% | — |
 | M08 | Compare | /compare | ✅ 完成 | 85% | 详细指南 |
-| M09 | VMware Alt | /vmware-alternative | ✅ 完成 | 75% | TCO计算器 |
-| M10 | Help | /help | ✅ 完成 | 60% | 帮助文档内容补全 |
+| M09 | VMware Alt | /vmware-alternative | ✅ 完成 | 90% | —（TCO 计算器已实现，独立工具 vmware-tco.vercel.app） |
+| M10 | Help | /help | 🔄 内容待录入 | 60% | 帮助文档内容补全（需迁移 Sanity，待用户确认） |
 | M11 | Legal | /privacy, /terms | ✅ 完成 | 95% | — |
+
+> 状态对齐 2026-08-02（与 TODO.md 复核一致）：M03 社交分享 ✅（TODO-014）、M05 audit_log 写入 ✅（TODO-023）、M06 Odoo 降级提示 ✅（TODO-021/022）、M09 TCO 计算器 ✅（TODO-025）、M10 Help 基础设施就绪、内容走 i18n 未迁移 Sanity（TODO-028）。
 
 ## 全局组件（被多个模块共享）
 

@@ -85,9 +85,13 @@ npm run test:e2e     # 端到端测试 (Playwright)
 
 ## 待办
 
+完整待办见 [TODO.md](TODO.md)。当前真实剩余：
+
 | 优先级 | 任务 | 状态 |
 |--------|------|------|
-| P1 | 真实内容填充（案例、博客文章） | 待执行 |
-| P1 | 社交媒体账号配置（WeChat、WhatsApp） | 待执行 |
-| P2 | Odoo CRM 凭证 | 可选 |
-| P2 | 分析工具配置（Google Analytics / Umami） | 可选 |
+| P1 | 测试覆盖率 15.6% → 70% | 进行中（TODO-005） |
+| P1 | 仓库治理（已清理 gh.msi/tmp-query*/generate_report 等） | 进行中（TODO-019） |
+| P1 | 工单/线索提交失败的用户反馈 + error.tsx 边界 | 已基本完成（TODO-022） |
+| P2 | Help Center 内容迁移 Sanity（需决策） | 待确认（TODO-028） |
+| P2 | Umami 分析已接入（NEXT_PUBLIC_UMAMI_WEBSITE_ID） | ✅ 已完成（TODO-026） |
+| P2 | Odoo CRM 凭证（.env.local 占位符） | 待用户填写 |

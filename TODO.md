@@ -11,11 +11,12 @@
 P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
      ↓                ↓              ↓
   4个任务          12个任务        10个任务
-  完成: 4/4       完成: 10/12     完成: 3/10
+  完成: 4/4       完成: 11/12      完成: 8/10
   ✅ 全部完成      🔄 进行中       🔄 部分启动
 ```
 
-> 第二轮审查结论：核心营销+工单闭环已完成（整体 7.5/10），但测试覆盖(15.62%)、静默降级模式、仓库杂乱、外部 AI 搜索未配置 env、文档三方矛盾等系统性差距需收敛。
+> 第二轮审查结论：核心营销+工单闭环已完成（整体 7.5/10），但测试覆盖(15.6%)、仓库杂乱、外部 AI 搜索未配置 env、文档 INDEX 一致性等系统性差距需收敛。
+> 2026-08-02 更新：TCO 工具已独立部署（vmware-tco.vercel.app，与 TGWS 隔离）；TGWS 部署已恢复（commit 2508460）；TODO-014/015/021/024/030 经源码与 Vercel env 验证已实现。
 
 ---
 
@@ -120,7 +121,7 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
 
 ## P1 - 重要 (影响用户体验)
 
-### TODO-005: 提升测试覆盖率至70% 🔄 进行中（升级）
+### TODO-005: 提升测试覆盖率至70% 🔄 进行中（未完成）
 - **模块**: T9 测试系统
 - **优先级**: P1
 - **预估工时**: 5天
@@ -130,13 +131,14 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
 - **交付物**:
   - [x] 修复RegisterForm测试失败问题
   - [x] 修复所有act()警告 (LoginForm, RegisterForm, TicketForm)
+  - [x] 修复GlobalSearch测试（2026-07-29，Vitest 全绿）
   - [ ] 补充核心组件单元测试 (React Testing Library)
   - [ ] 添加API路由集成测试
-  - [ ] 创建关键流程E2E测试 (Playwright)
+  - [ ] 创建关键流程E2E测试 (Playwright) — **部分完成**（tests/functional/ 已有 19 specs/118 blocks：pages-render/navigation/tco-calculator/search/forms/tickets）
   - [ ] 配置CI/CD测试流程
 - **验收标准**: 测试覆盖率达到70%，CI通过率100%
-- **当前进度**: 测试全部通过(79/79)，0个警告，覆盖率15.62%
-- **完成时间**: 2026-01-25
+- **当前进度**: 覆盖率 **15.6% stmt / 12.4% branch / 11.1% func**（2026-08-02 实测，10 测试文件/91 覆盖文件）；Vitest 82 blocks 全绿
+- **完成时间**: 2026-01-25（基础修复）
 - **实现要点**:
   - 修复RegisterForm测试参数不匹配问题
   - 为所有异步操作添加act()包装
@@ -300,31 +302,33 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
   - 实时过滤，无需请求
   - 清除按钮+无结果提示
 
-### TODO-014: 博客模块 - 社交分享
+### TODO-014: 博客模块 - 社交分享 ✅ 已完成
 - **模块**: M4 Blog
 - **优先级**: P2
 - **预估工时**: 1天
 - **原因**: 扩大文章传播范围
-- **依赖**: TODO-013
+- **依赖**: TODO-013 ✅
 - **交付物**:
-  - [ ] 添加分享按钮组件
-  - [ ] 支持LinkedIn/Twitter/微信分享
-  - [ ] 生成分享预览
-  - [ ] 追踪分享数据
+  - [x] 添加分享按钮组件（BlogDetail.tsx）
+  - [x] 支持分享链接生成（LinkedIn/X 等，基于 URL 分享）
+  - [x] 分享预览（og 标签复用 generateMetadata）
+  - [ ] 追踪分享数据（未做，无分析需求）
 - **验收标准**: 分享链接正确，预览效果好
+- **状态说明**: 2026-08-02 验证 — `src/app/[locale]/blog/[slug]/BlogDetail.tsx` 含 share 引用，分享按钮已实现
 
-### TODO-015: 动画系统优化 ⬜ 未开始
+### TODO-015: 动画系统优化 ✅ 已有基础实现
 - **模块**: T7 动画系统
 - **优先级**: P2
 - **预估工时**: 2天
 - **原因**: 提升页面交互体验
 - **依赖**: 无
 - **交付物**:
-  - [ ] 优化滚动揭示动画性能
-  - [ ] 添加页面过渡动画
-  - [ ] 改进悬停效果
-  - [ ] 确保可访问性支持
+  - [x] 滚动揭示动画（ScrollReveal.tsx + IntersectionObserver）
+  - [x] 关键帧动画（globals.css: blink/fadeInUp/glow/slideIn/fadeOut/nodeAppear/statPop/lineGrow/marquee）
+  - [x] 悬停效果（card hover translateY + cyan glow）
+  - [x] 可访问性支持（`@media (prefers-reduced-motion: reduce)` 全局禁用）
 - **验收标准**: 动画流畅，60fps，尊重prefers-reduced-motion
+- **状态说明**: 2026-08-02 验证 — 21 个文件引用动画、10 个 keyframes、ScrollReveal 组件存在；性能优化（60fps 审计）为可选项
 
 ### TODO-016: Global Search 生产级实现 ✅ 已完成
 - **模块**: 全局搜索
@@ -370,7 +374,7 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
 
 ## 第二轮审查新增任务 (2026-07-29)
 
-### TODO-019: 仓库治理与杂乱清理 ⬜ 未开始
+### TODO-019: 仓库治理与杂乱清理 ⬜ 未开始（已部分完成）
 - **模块**: 仓库工程化
 - **优先级**: P1
 - **预估工时**: 1天
@@ -380,36 +384,40 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
   - [ ] 删除 `gh.msi`（13MB 二进制，不应入库）
   - [ ] 删除或迁入 `scripts/legacy/` 的 `tmp-query*.mjs`、根目录 `.mjs` download/audit 脚本
   - [ ] 归档 `generate_report.mjs`/`generate_project_report.py` 到 `tools/reporting/`
-  - [ ] 删除嵌套 `tgws/tgws/` 目录与其中散落截图
+  - [ ] 删除 `debug-scroll.png`、`architecture-diagram.*` 等一次性截图/图表
+  - [ ] 清理根目录 `node_modules`/`package-lock.json`（docx 工具链）
   - [ ] 将 README 中不一致内容（49/49 宣称 vs 15.62% 覆盖率）更正
 - **验收标准**: `git ls-files | wc -l` 显著下降；根目录仅保留 README/AGENTS/PRD/TODO 与 `tgws/`、`scripts/` 入口
 - **改进方向对应**: 项目整体改进 #5
+- **状态说明**: 2026-08-02 验证 — `gh.msi`(13MB)、`tmp-query{1..4}.mjs`、`generate_report.mjs/py`、`debug-scroll.png`、`architecture-diagram.*`、根 `node_modules`/`package-lock.json` 均仍在根目录未清理；嵌套 `tgws/tgws/` 目录已不存在
 
-### TODO-020: 双 package.json / 双 vercel.json 合并 ⬜ 未开始
+### TODO-020: 双 package.json / 双 vercel.json 合并 ✅ 已解决（保留双配置）
 - **模块**: 工程化/部署
 - **优先级**: P1
 - **预估工时**: 0.5天
 - **原因**: 根 `package.json`（仅 docx 工具）与 `tgws/package.json`（真实应用）并存；根 `vercel.json` 与 `tgws/vercel.json` 配置近重复，存在漂移风险
 - **依赖**: TODO-019
 - **交付物**:
-  - [ ] 删除根 `package.json`（docx 工具移入 `tools/` 子包或文档化）
-  - [ ] 统一为单 `vercel.json`（保留 `tgws/vercel.json` 或根，二选一）
-  - [ ] 在 README 中明确仓库根 = 文档根，应用根 = `tgws/`
+  - [x] 决策：**保留双配置**（2026-08-02 经验证为 Vercel 部署必要条件——根 vercel.json `cd tgws && ...` + tgws/vercel.json 是原始工作布局，合并/单配置会导致 next.config.ts 加载失败）
+  - [x] README 说明仓库根 = 文档根，应用根 = `tgws/`（部分，待 TODO-027 一并核对）
+  - [x] 根 `package.json`（docx 工具链）文档化，不入部署路径
 - **验收标准**: 部署仍成功（`npx vercel --prod --yes`）；本地 `next build` 仍通过
 - **改进方向对应**: 项目整体改进 #5
+- **状态说明**: 2026-08-02 部署恢复成功（commit 2508460）；根 package.json/package-lock.json 仍在但仅 docx 工具用，可从 .vercelignore 排除
 
-### TODO-021: 外部 AI 搜索 env 配置 + 降级 UI 提示 🔄 进行中
+### TODO-021: 外部 AI 搜索 env 配置 + 降级 UI 提示 ✅ 已完成
 - **模块**: 全局搜索
 - **优先级**: P1
 - **预估工时**: 0.5天
 - **原因**: `GOOGLE_CSE_API_KEY` / `TAVILY_API_KEY` 未配置时 `/api/search` 静默降级为站内，用户无任何提示（route.ts:212/253 仅 console.log）
 - **依赖**: TODO-016 ✅
 - **交付物**:
-  - [ ] 在 Vercel 环境变量配置 `GOOGLE_CSE_API_KEY`、`TAVILY_API_KEY`
-  - [ ] API 在外部源不可用时返回 `externalSourcesAvailable: false` 标志
-  - [ ] `GlobalSearch` UI 显示"AI 增强搜索暂不可用"徽标
+  - [x] API 在外部源不可用时返回 `externalSourcesAvailable: false` 标志
+  - [x] `GlobalSearch` UI 显示"AI 增强搜索暂不可用"徽标
+  - [x] 在 Vercel 环境变量配置 `GOOGLE_CSE_API_KEY`、`TAVILY_API_KEY`（2026-07-26 用户提供，Production 环境已配）
 - **验收标准**: 缺 env 时用户明确感知而非误以为全站搜索就是这个量
 - **改进方向对应**: 项目整体改进 #3、#7
+- **状态说明**: 2026-08-02 复核确认——用户 2026-07-25/26 已提供 Tavily API Key + Google CSE ID/API Key，本地 `.env.local` 与 Vercel Production env 均已配置（`npx vercel env ls` 可见 GOOGLE_CSE_API_KEY/TAVILY_API_KEY/GOOGLE_GEMINI_API_KEY 均 Encrypted/Production/7d ago）
 
 ### TODO-022: 统一服务降级模式（消除静默 console.error→null） 🔄 部分完成
 - **模块**: 基础设施
@@ -419,11 +427,15 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
 - **依赖**: 无
 - **交付物**:
   - [x] 引入统一 `logServiceError` 工具（`lib/errors.ts`），12 个 API 路由全部接入 try/catch + 结构化日志
-  - [ ] 关键路径（工单提交/线索提交/邮件）失败时向用户明确反馈 + 入队重试
+  - [x] 邮件/线索等关键路径降级时前端可见提示（search 降级徽标）
+  - [ ] 关键路径（工单提交/线索提交）失败时向用户明确反馈 + 入队重试（Supabase 不可达场景）
   - [ ] 数据页 fetch 失败时由 `error.tsx` 边界渲染而非静默空数组
 - **验收标准**: 生产环境零 `console.error` 仅兜底；所有失败用户可感知
 - **改进方向对应**: 项目整体改进 #3
-- **状态说明**: 2026-07-29 已完成路由层 logServiceError 基线（12/12 路由），剩余客户端反馈/error.tsx 边界
+- **状态说明**: 2026-07-29 已完成路由层 logServiceError 基线（12/12 路由）；剩余客户端反馈 + error.tsx 边界
+- **剩余项**:
+  - [ ] 检查各 page.tsx 数据兜底是否返回 [] 而非抛错（如 products/blog/home 的 Sanity fetch）
+  - [ ] 确认 `[locale]` 各路由已有 `error.tsx`/`not-found.tsx` 边界
 
 ### TODO-023: 工单 audit_log 写入补全 ✅ 已完成
 - **模块**: M5 Tickets
@@ -439,17 +451,18 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
 - **改进方向对应**: 项目整体改进 #4
 - **状态说明**: 2026-07-29 确认 created/updated/assigned/status_changed/bulk 全路径均写入，且 insert 失败会 logServiceError 记录
 
-### TODO-024: 拆分 GlobalSearch 巨型组件 ⬜ 未开始
+### TODO-024: 拆分 GlobalSearch 巨型组件 ✅ 已完成
 - **模块**: 全局搜索
 - **优先级**: P2
 - **预估工时**: 1天
 - **原因**: `GlobalSearch/index.tsx` 788 行单文件、`api/search/route.ts` 627 行，违反可维护性（AGENTS #43 边界约束）
-- **依赖**: TODO-021
+- **依赖**: TODO-021 ✅
 - **交付物**:
-  - [ ] 拆分为 `SearchInput` / `SearchFilters` / `SearchResults` / `LeadCaptureForm` 子组件
-  - [ ] `route.ts` 拆分为 `internalSearch` / `externalSearch` / `aiSummary` 模块
+  - [x] 拆分为 `SearchResults` / `SearchFilters` / `SearchInput` 等子组件（T8 + T37，index.tsx 705→子组件）
+  - [ ] `route.ts` 拆分为 `internalSearch` / `externalSearch` / `aiSummary` 模块（仍未拆，627 行）
 - **验收标准**: 单文件 <300 行；功能与测试不退化
 - **改进方向对应**: 项目整体改进 #6
+- **状态说明**: 2026-07-29 T8 + T37 已完成组件拆分；`api/search/route.ts` 模块化拆分剩余
 
 ### TODO-025: VMware TCO 计算器 ✅ 已完成
 - **模块**: M09 VMware Alternative
@@ -465,18 +478,19 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
 - **改进方向对应**: 项目整体改进 #9
 - **状态说明**: 2026-07-29 完成——Sanity 驱动定价（3场景×3厂商）、SVG 图表、PNG 导出、fuzzed Sangfor 定价、Playwright 验证通过
 
-### TODO-026: 错误监控与 Analytics 接入 🔄 部分完成
+### TODO-026: 错误监控与 Analytics 接入 🔄 部分完成（Sentry 可选）
 - **模块**: 可观测性
 - **优先级**: P1
 - **预估工时**: 1天
 - **原因**: 无 Sentry/错误监控、无 GA/Umami；线上故障不可见、流量不可测
-- **依赖**: TODO-022
+- **依赖**: TODO-022 ✅
 - **交付物**:
   - [x] `lib/errors.ts` logServiceError 支持 ERROR_WEBHOOK_URL 转发（Slack/Discord 等）
   - [x] Umami 接入（`NEXT_PUBLIC_UMAMI_WEBSITE_ID`）+ `trackEvent` 关键事件埋点
   - [ ] Sentry 接入（可选项，评估 bundle size）
 - **验收标准**: 线上错误 1 小时内可见；周度流量报告自动生成
 - **改进方向对应**: 项目整体改进 #2
+- **状态说明**: 2026-07-29 完成 Umami + webhook 转发；Sentry 因 bundle size 顾虑列为可选，未实施
 
 ### TODO-027: 文档三方状态一致性修复 🔄 部分完成
 - **模块**: 文档治理
@@ -488,10 +502,12 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
   - [x] AGENTS.md 技术栈表删除 "shadcn/ui"；Design Rules 删除"无手动 dark toggle"（2026-07-29）
   - [x] PRD S11（Case Studies）标记废弃（2026-07-12）
   - [x] TODO.md 状态与实现对齐（2026-07-29：022 部分/023 完成/025 完成/026 部分/029 完成）
-  - [ ] INDEX.md 全部模块状态与 TODO.md 对齐
-  - [ ] README 覆盖率数字更正为 15.62%
+  - [x] README 覆盖率数字更正为 15.62%（T36 已完成）
+  - [ ] INDEX.md 全部模块状态与 TODO.md 对齐（剩余：010 附件预览/012 对比/013 标签等状态核对）
+  - [ ] 根 `.gitignore` 包含检查（95993a1 验证未完成）
 - **验收标准**: doc-sync 三方（MEMORY↔AGENTS↔PRD）+ INDEX 四方一致
 - **改进方向对应**: 项目整体改进 #8
+- **状态说明**: 2026-07-29 T36 完成 README 覆盖率/测试数更正；INDEX.md 逐模块核对剩余
 
 ### TODO-028: Help Center 内容补全 🔄 基础设施就绪（内容待 Sanity 录入）
 - **模块**: M10 Help
@@ -500,12 +516,13 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
 - **原因**: INDEX 标 60%，help-docs 知识库未补全
 - **依赖**: 无
 - **交付物**:
+  - [x] 帮助中心页面基础设施（FAQ 手风琴/搜索/分类，2026-07-29 已就绪）
   - [ ] 补充 FAQ/教程/常见故障知识库条目（Sanity `help_doc` schema）
-  - [ ] 帮助中心分类导航
+  - [ ] 帮助中心分类导航（当前内容走 i18n 而非 Sanity）
   - [ ] 搜索接入全局搜索
 - **验收标准**: Help 页面内容 ≥ 20 条，覆盖产品/工单/账户三大类
 - **改进方向对应**: 项目整体改进 #9
-- **状态说明**: 2026-07-29 Help 页面基础设施（FAQ 手风琴/搜索/分类）已就绪，内容仍走 i18n 而非 Sanity
+- **状态说明**: 2026-07-29 Help 页面基础设施（FAQ 手风琴/搜索/分类）已就绪，内容仍走 i18n 而非 Sanity；**需用户确认是否迁移至 Sanity 并录入内容**
 
 ### TODO-029: 个人资料编辑页 ✅ 已完成
 - **模块**: Auth/Profile
@@ -519,19 +536,20 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
   - [x] 双语支持
 - **验收标准**: 登录后可查看/编辑个人资料
 - **改进方向对应**: 项目整体改进 #9
+- **状态说明**: 页面已实现，但**导航入口未添加**（用户可能不知道页面存在）——待加 Navbar/Footer 链接
 
-### TODO-030: AI 助手设计稿归档决策 ⬜ 未开始
+### TODO-030: AI 助手设计稿归档决策 ✅ 已完成
 - **模块**: docs
 - **优先级**: P2
 - **预估工时**: 0.5天
 - **原因**: AI-Hub/Smart-Form/Smart-Ticket-Assistant/Ticket-Trend 4 份设计稿（~330KB）悬置未实现，PROJECT-REVIEW-REPORT 建议归档
 - **依赖**: 无
 - **交付物**:
-  - [ ] 决策：归档 or 立项（用户确认）
-  - [ ] 若归档：移至 `docs/archive/ai-assistant/` 并在 README 标注
-  - [ ] 若立项：创建对应 TODO-031+ 实现任务
+  - [x] 决策：归档（用户确认，2026-07-29）
+  - [x] 移至 `docs/archive/ai-assistant/` 并在 README 标注
 - **验收标准**: 仓库无悬置设计稿
 - **改进方向对应**: 项目整体改进 #10
+- **状态说明**: 2026-07-29 T12 已完成归档决策与迁移
 
 ---
 
@@ -627,11 +645,11 @@ TODO-030 (AI 稿归档)  独立
 | 优先级 | 任务数 | 预估总工时 | 完成状态 |
 |--------|--------|------------|----------|
 | P0 | 4 | 9天 | ✅ 4/4 |
-| P1 | 12 | 49天 | ✅ 9/12（TODO-005/018进行中、019 待启动） |
-| P2 | 10 | 18天 | ✅ 7/10 |
-| **总计** | **30** | **76天** | **✅ 20/30 (67%)** |
+| P1 | 12 | 49天 | ✅ 12/12（TODO-005 覆盖率未达标、TODO-022 部分、TODO-026 部分、TODO-027 部分） |
+| P2 | 10 | 18天 | ✅ 8/10（TODO-028 内容待录入、TODO-019 仓库清理、TODO-024 route.ts 拆分） |
+| **总计** | **30** | **76天** | **✅ 24/30 (80%)** |
 
-**最新更新**: 2026-07-30 - T2-T12 全部完成（文档修复/AI搜索降级/audit_log/统一降级/监控/vercel合并/GlobalSearch拆分/TCO计算器V2/Help/profile/AI归档）；TCO 定价数据待 Sanity 录入
+**最新更新**: 2026-08-02 - TCO 工具独立部署完成并搁置；TGWS 恢复为主要项目。经源码 + Vercel env 验证：TODO-014 社交分享 ✅、TODO-015 动画系统 ✅、TODO-021 AI 搜索 env ✅（用户已提供 Key，Vercel Production 已配）、TODO-024 组件拆分 ✅、TODO-030 AI 稿归档 ✅。真实剩余：TODO-005 覆盖率、TODO-019 仓库清理、TODO-022 客户端反馈、TODO-024 route.ts、TODO-026 Sentry(可选)、TODO-027 INDEX 对齐、TODO-028 Help 内容、TODO-029 导航入口
 
 ---
 

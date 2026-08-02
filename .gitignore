@@ -1,2 +1,24 @@
-gh.msi
+# dependencies
+node_modules/
+
+# env files
+.env
+.env.local
+.env.*.local
+
+# logs & build artifacts
+*.log
+lint-out.txt
+eslint-out.txt
+build-acceptance.txt
+audit-results.json
+
+# e2e screenshots
+*.png
+!architecture-diagram.png
+
+# docs
+*.docx
+
+# vercel
 .vercel
