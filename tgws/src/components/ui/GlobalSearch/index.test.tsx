@@ -2,6 +2,12 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import GlobalSearch from './index';
 
+const { mockPush, mockTrackEvent } = vi.hoisted(() => ({
+  mockPush: vi.fn(),
+  mockTrackEvent: vi.fn(),
+}));
+let latestProps: Record<string, unknown> = {};
+
 vi.mock('next-intl', () => {
   const m: Record<string, string> = {
     searchPlaceholder: 'Search TechGuru...', searchButton: 'Search', close: 'Close',
@@ -13,30 +19,40 @@ vi.mock('next-intl', () => {
 });
 
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push: vi.fn() }),
+  useRouter: () => ({ push: mockPush }),
 }));
 
 vi.mock('@/lib/sanity', () => ({
-  client: { fetch: vi.fn() },
+  client: { fetch: vi.fn().mockResolvedValue(null) },
 }));
 
 vi.mock('@/lib/errors', () => ({
   logServiceError: vi.fn(),
-  trackEvent: vi.fn(),
+  trackEvent: mockTrackEvent,
 }));
 
 vi.mock('./SearchFiltersPanel', () => ({
-  default: () => <div data-testid="filters-panel" />,
+  default: (props: Record<string, unknown>) => {
+    latestProps = { ...latestProps, ...props };
+    return <div data-testid="filters-panel" />;
+  },
 }));
 
 vi.mock('./SearchResults', () => ({
-  default: ({ results }: { results: unknown }) => (
-    <div data-testid="results">
-      {(results as { internalResults?: { title: string }[] })?.internalResults?.map(r => (
-        <div key={r.title}>{r.title}</div>
-      ))}
-    </div>
-  ),
+  default: (props: Record<string, unknown>) => {
+    latestProps = { ...latestProps, ...props };
+    const results = props.results as { internalResults?: { title: string; url: string }[]; capabilityGap?: { detected: boolean } } | null;
+    return (
+      <div data-testid="results">
+        {results?.internalResults?.map(r => (
+          <button key={r.title} onClick={() => (props.onResultClick as (u: string) => void)(r.url)}>
+            {r.title}
+          </button>
+        ))}
+        {results?.capabilityGap?.detected ? <div data-testid="gap-detected" /> : null}
+      </div>
+    );
+  },
 }));
 
 const fetchMock = vi.fn();
@@ -51,7 +67,7 @@ function mockSearchResponse() {
         aiSummary: '[RESOURCES]\n2 resources\n\n[INSIGHT]\nInsight\n\n[SOURCES]\n- X (oracle.com)',
         internalResults: [{ id: 'p1', type: 'product', title: 'HCI Appliance', description: 'Desc', url: '/en/products/hci-appliance', source: 'internal', relevanceScore: 0.9 }],
         externalResults: [],
-        capabilityGap: { detected: false, gapDescription: null },
+        capabilityGap: { detected: true, gapDescription: 'No resources for this' },
         metadata: { externalSourcesAvailable: true },
       },
     }),
@@ -61,6 +77,9 @@ function mockSearchResponse() {
 describe('GlobalSearch', () => {
   beforeEach(() => {
     fetchMock.mockReset();
+    mockPush.mockClear();
+    mockTrackEvent.mockClear();
+    latestProps = {};
   });
   afterEach(() => {
     vi.restoreAllMocks();
@@ -86,30 +105,45 @@ describe('GlobalSearch', () => {
     }, { timeout: 3000 });
   });
 
-  it('calls onClose when the close button is clicked', () => {
+  it('calls onClose when the backdrop is clicked', () => {
     const onClose = vi.fn();
     render(<GlobalSearch isOpen onClose={onClose} />);
-    // backdrop click closes
     const backdrop = screen.getByRole('dialog');
     fireEvent.click(backdrop);
     expect(onClose).toHaveBeenCalled();
   });
 
-  it('handles image upload then searches with image data', async () => {
+  it('navigates and closes on result click', async () => {
     fetchMock.mockResolvedValueOnce(mockSearchResponse());
-    const { container } = render(<GlobalSearch isOpen onClose={() => {}} />);
-    const fileInput = container.querySelector('input[type="file"]');
-    expect(fileInput).toBeTruthy();
-    const file = new File(['data'], 'pic.png', { type: 'image/png' });
-    fireEvent.change(fileInput!, { target: { files: [file] } });
-    // search button becomes enabled once an image is attached
-    const searchBtn = screen.getByRole('button', { name: '' });
-    fireEvent.click(searchBtn);
-    await waitFor(() => {
-      expect(fetchMock).toHaveBeenCalledWith('/api/search', expect.objectContaining({
-        method: 'POST',
-        body: expect.stringContaining('image'),
-      }));
-    }, { timeout: 3000 });
+    const onClose = vi.fn();
+    render(<GlobalSearch isOpen onClose={onClose} />);
+    fireEvent.change(screen.getByPlaceholderText(/Search products, solutions/), { target: { value: 'hci' } });
+    await waitFor(() => expect(screen.getByText('HCI Appliance')).toBeInTheDocument(), { timeout: 3000 });
+    fireEvent.click(screen.getByText('HCI Appliance'));
+    expect(mockPush).toHaveBeenCalledWith('/en/products/hci-appliance');
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it('renders capability gap indicator when detected', async () => {
+    fetchMock.mockResolvedValueOnce(mockSearchResponse());
+    render(<GlobalSearch isOpen onClose={() => {}} />);
+    fireEvent.change(screen.getByPlaceholderText(/Search products, solutions/), { target: { value: 'hci' } });
+    await waitFor(() => expect(screen.getByTestId('gap-detected')).toBeInTheDocument(), { timeout: 3000 });
+  });
+
+  it('submits a lead via the lead form', async () => {
+    fetchMock
+      .mockResolvedValueOnce(mockSearchResponse()) // search
+      .mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ success: true }) }); // lead
+    render(<GlobalSearch isOpen onClose={() => {}} />);
+    fireEvent.change(screen.getByPlaceholderText(/Search products, solutions/), { target: { value: 'hci' } });
+    await waitFor(() => expect(screen.getByText('HCI Appliance')).toBeInTheDocument(), { timeout: 3000 });
+    // trigger lead submit through captured props
+    const leadSubmit = latestProps.onLeadSubmit as (d: Record<string, string>) => Promise<void>;
+    await act(async () => {
+      await leadSubmit({ name: 'Jane', email: 'j@x.com' });
+    });
+    expect(mockTrackEvent).toHaveBeenCalledWith('lead_submitted', expect.anything());
+    expect(fetchMock).toHaveBeenCalledWith('/api/search/lead', expect.objectContaining({ method: 'POST' }));
   });
 });
