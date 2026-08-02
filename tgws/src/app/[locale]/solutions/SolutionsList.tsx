@@ -118,9 +118,9 @@ export default function SolutionsList({ solutions }: SolutionsListProps) {
         <p className="section-subtitle mx-auto">{t('subtitle')}</p>
       </div>
 
-      {/* Industry Selector */}
+      {/* Industry Selector — filtered by search */}
       <div className="flex flex-wrap justify-center gap-2 mb-12">
-        {industryKeys.map((key, i) => {
+        {filteredIndustries.map((key, i) => {
           const m = industryMeta[key];
           const Icon = m.icon;
           return (
