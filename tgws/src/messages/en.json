@@ -1476,10 +1476,10 @@
     "ctaContact": "Contact Us",
     "ctaTicket": "Submit a Ticket",
     "faqCounts": {
-      "product": "4",
-      "technical": "4",
-      "account": "3",
-      "billing": "3"
+      "product": 5,
+      "technical": 5,
+      "account": 5,
+      "billing": 5
     },
     "faq": {
       "product": [
@@ -1498,6 +1498,10 @@
         {
           "q": "What industries do you serve?",
           "a": "We serve Healthcare, Finance, Retail, Logistics, Education, and Government sectors across Asia. Each industry solution is built for specific regulatory and operational requirements."
+        },
+        {
+          "q": "How do you ensure data security and compliance?",
+          "a": "We follow industry best practices including encryption in transit and at rest, role-based access controls, regular security audits, and compliance with GDPR/CCPA where applicable. Each deployment is reviewed against your regulatory requirements."
         }
       ],
       "technical": [
@@ -1516,6 +1520,10 @@
         {
           "q": "Can I track my ticket status online?",
           "a": "Yes. Log in to your account and visit the Support Center to view all your tickets, their current status, and response history. You can also add comments to existing tickets."
+        },
+        {
+          "q": "How do I attach files to my support ticket?",
+          "a": "In the ticket form, use the attachment section to upload images, PDFs, or other documents that help describe your issue. Files are stored securely and visible to our support team immediately."
         }
       ],
       "account": [
@@ -1530,6 +1538,14 @@
         {
           "q": "Can I update my account information?",
           "a": "Yes. After logging in, go to your profile settings to update your name, email, phone number, and company information. Changes take effect immediately."
+        },
+        {
+          "q": "Can I use my Google account to sign in?",
+          "a": "Yes. We support Google OAuth — click \"Sign in with Google\" on the login page and authorize access. A TechGuru account is created automatically on first sign-in."
+        },
+        {
+          "q": "What happens if I forget my password?",
+          "a": "Use the \"Forgot Password\" link on the login page. We will send a secure reset link to your registered email. The link expires after 30 minutes for your security."
         }
       ],
       "billing": [
@@ -1544,6 +1560,14 @@
         {
           "q": "Is there a free consultation available?",
           "a": "Yes. We offer a free initial consultation to understand your needs and recommend solutions. Schedule a call or submit a contact form to get started. No commitment required."
+        },
+        {
+          "q": "Do you provide detailed invoices for purchases?",
+          "a": "Yes. Every purchase generates an itemized invoice with a unique reference number, delivered to your billing email. You can also request invoice copies through the Support Center."
+        },
+        {
+          "q": "How does annual maintenance and support pricing work?",
+          "a": "Most solutions include an annual maintenance fee covering software updates, patches, and standard support. The exact rate depends on the solution and is stated in your proposal before purchase."
         }
       ]
     },
