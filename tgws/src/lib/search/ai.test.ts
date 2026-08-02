@@ -20,6 +20,7 @@ describe('generateAiSummary', () => {
   afterEach(() => {
     delete process.env.GOOGLE_GEMINI_API_KEY;
     vi.restoreAllMocks();
+    vi.unstubAllGlobals();
   });
 
   it('uses the fallback summary when no Gemini key is configured', async () => {

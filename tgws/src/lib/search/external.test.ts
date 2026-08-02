@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { deduplicateResults, filterExternalResults, isExternalSourcesConfigured } from './external';
+import { deduplicateResults, filterExternalResults, isExternalSourcesConfigured, searchGoogleCSE, searchTavily } from './external';
 import type { ExternalResult, SearchResult } from './types';
 
 function ext(url: string, source: 'google' | 'tavily' = 'google', title = 't'): ExternalResult {
@@ -80,5 +80,102 @@ describe('isExternalSourcesConfigured', () => {
     process.env.GOOGLE_CSE_API_KEY = 'k';
     process.env.TAVILY_API_KEY = 't';
     expect(isExternalSourcesConfigured()).toBe(true);
+  });
+});
+
+describe('searchGoogleCSE', () => {
+  const fetchMock = vi.fn();
+  beforeEach(() => {
+    process.env.GOOGLE_CSE_API_KEY = 'key';
+    process.env.GOOGLE_CSE_ID = 'cse1';
+    vi.stubGlobal('fetch', fetchMock);
+  });
+  afterEach(() => {
+    delete process.env.GOOGLE_CSE_API_KEY;
+    delete process.env.GOOGLE_CSE_ID;
+    vi.unstubAllGlobals();
+  });
+
+  it('returns empty when not configured', async () => {
+    delete process.env.GOOGLE_CSE_API_KEY;
+    expect(await searchGoogleCSE('q')).toEqual([]);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('returns empty on non-OK response', async () => {
+    fetchMock.mockResolvedValue({ ok: false, statusText: '403' });
+    expect(await searchGoogleCSE('q')).toEqual([]);
+  });
+
+  it('maps search items to external results', async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: async () => ({ items: [{ link: 'https://oracle.com/x', title: 'Oracle X', snippet: 'desc' }] }),
+    });
+    const results = await searchGoogleCSE('vmware');
+    expect(results).toHaveLength(1);
+    expect(results[0].source).toBe('google');
+    expect(results[0].url).toBe('https://oracle.com/x');
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('googleapis.com/customsearch'));
+  });
+
+  it('returns empty and logs on fetch throw', async () => {
+    fetchMock.mockRejectedValue(new Error('network'));
+    expect(await searchGoogleCSE('q')).toEqual([]);
+  });
+});
+
+describe('searchTavily', () => {
+  const fetchMock = vi.fn();
+  beforeEach(() => {
+    process.env.TAVILY_API_KEY = 'tvly-key';
+    fetchMock.mockReset();
+    vi.stubGlobal('fetch', fetchMock);
+  });
+  afterEach(() => {
+    delete process.env.TAVILY_API_KEY;
+    vi.unstubAllGlobals();
+  });
+
+  it('returns empty when not configured', async () => {
+    delete process.env.TAVILY_API_KEY;
+    const r = await searchTavily('q');
+    expect(r.results).toEqual([]);
+    expect(r.answer).toBe('');
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('returns empty on non-OK response', async () => {
+    fetchMock.mockResolvedValue({ ok: false, statusText: '429' });
+    const r = await searchTavily('q');
+    expect(r.results).toEqual([]);
+    expect(r.answer).toBe('');
+  });
+
+  it('maps results and extracts the AI answer', async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        answer: 'HCI means hyper-converged infrastructure',
+        results: [{ url: 'https://ibm.com/hci', title: 'IBM HCI', content: 'content', score: 0.9 }],
+      }),
+    });
+    const r = await searchTavily('hci');
+    expect(r.answer).toContain('hyper-converged');
+    expect(r.results).toHaveLength(1);
+    expect(r.results[0].source).toBe('tavily');
+    // query is enriched with TechGuru context
+    const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(body.query).toContain('TechGuru Network & Data Solutions');
+  });
+
+  it('sanitizes quotes in the injected query', async () => {
+    fetchMock.mockResolvedValue({ ok: true, json: async () => ({ answer: '', results: [] }) });
+    await searchTavily('drop" table');
+    const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+    // the embedded query has quotes stripped (only wrapper quotes remain)
+    const embedded = body.query.match(/explain what "(.*)" means/)[1];
+    expect(embedded).not.toContain('"');
+    expect(embedded).toBe('drop  table');
   });
 });
