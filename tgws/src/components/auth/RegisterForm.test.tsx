@@ -28,7 +28,7 @@ const mockSignUp = vi.fn();
 
 vi.mock('@/lib/supabase/client', () => ({
   createClient: () => ({
-    auth: { signUp: mockSignUp },
+    auth: { signUp: mockSignUp, resend: vi.fn().mockResolvedValue({ error: null }) },
   }),
 }));
 
@@ -162,5 +162,20 @@ describe('RegisterForm', () => {
     expect(screen.queryByText(/Passwords do not match/)).not.toBeInTheDocument();
     expect(screen.queryByText(/at least 8 characters/)).not.toBeInTheDocument();
     expect(screen.queryByText(/uppercase, lowercase/)).not.toBeInTheDocument();
+  });
+
+  it('resends verification email after signup', async () => {
+    render(<RegisterForm />);
+    fireEvent.change(screen.getByLabelText(/Full Name/i), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'test@test.com' } });
+    fireEvent.change(document.getElementById('register-password')!, { target: { value: 'Abcdef1@' } });
+    fireEvent.change(document.getElementById('register-confirm')!, { target: { value: 'Abcdef1@' } });
+    fireEvent.click(screen.getByRole('button', { name: /Create Account/i }));
+    await waitFor(() => expect(mockSignUp).toHaveBeenCalled());
+
+    // success state shows resend link
+    await waitFor(() => {
+      expect(screen.getByText(/resend/i)).toBeInTheDocument();
+    });
   });
 });
