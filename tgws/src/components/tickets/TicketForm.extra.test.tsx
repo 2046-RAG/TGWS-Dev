@@ -150,3 +150,44 @@ describe('TicketForm char counter', () => {
     expect(screen.getByText('5/800')).toBeInTheDocument();
   });
 });
+
+describe('TicketForm upload flow', () => {
+  beforeEach(() => {
+    fetchMock.mockReset();
+    mockProducts();
+  });
+
+  it('uploads pasted images after ticket creation and shows them in success state', async () => {
+    // products (set by mockProducts) → tickets → upload
+    fetchMock
+      .mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ success: true, data: { id: 'tk1' } }) }) // tickets
+      .mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ success: true, data: { name: 'shot.png', url: '/u/shot.png', size: 2048, type: 'image/png' } }) }); // upload
+
+    const { container } = render(<TicketForm />);
+    await act(async () => { await Promise.resolve(); });
+
+    // paste an image
+    const pasteArea = container.querySelector('div[class*="border-dashed"]');
+    const file = new File(['x'], 'shot.png', { type: 'image/png' });
+    const clipboardData = {
+      items: [{ type: 'image/png', getAsFile: () => file }],
+    } as unknown as DataTransfer;
+    fireEvent.paste(pasteArea!, { clipboardData });
+    await waitFor(() => expect(screen.getByAltText('Screenshot 1')).toBeInTheDocument());
+
+    // fill and submit
+    fireEvent.change(screen.getByLabelText('Category *'), { target: { value: 'build' } });
+    fireEvent.change(screen.getByLabelText('Product *'), { target: { value: 'vSphere' } });
+    fireEvent.change(screen.getByLabelText('Subject *'), { target: { value: 'S' } });
+    fireEvent.change(screen.getByLabelText('Description *'), { target: { value: 'D' } });
+    fireEvent.submit(screen.getByRole('button', { name: 'Submit' }));
+
+    // success state with attachment listed (name + size)
+    await waitFor(() => {
+      expect(screen.getByText('Submitted')).toBeInTheDocument();
+      expect(screen.getByText(/shot\.png \(2\.0 KB\)/)).toBeInTheDocument();
+    }, { timeout: 3000 });
+    // upload endpoint was hit
+    expect(fetchMock).toHaveBeenCalledWith('/api/upload', expect.objectContaining({ method: 'POST' }));
+  });
+});
