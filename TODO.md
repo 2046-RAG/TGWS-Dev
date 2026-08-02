@@ -137,7 +137,7 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
   - [ ] 创建关键流程E2E测试 (Playwright) — **部分完成**（tests/functional/ 已有 19 specs/118 blocks：pages-render/navigation/tco-calculator/search/forms/tickets）
   - [ ] 配置CI/CD测试流程
 - **验收标准**: 测试覆盖率达到70%，CI通过率100%
-- **当前进度**: 覆盖率 **34.4% stmt / 33.1% branch / 30.5% func**（2026-08-02 实测，34 测试文件/212 用例，全绿）；hooks 89%、search 管道/API 路由/工单组件/列表页全覆盖；仍低于 70% 目标（最大未覆盖: GlobalSearch 163 语句/TcoCalculatorClient 101/HeroSection 95/死代码 ContactPage.tsx 167）
+- **当前进度**: 覆盖率 **39.8% stmt / 35.9% branch / 34.8% func**（2026-08-02 实测，36 测试文件/223 用例，全绿）；hooks 89%、search 管道/API 路由/工单/列表页/Hero/GlobalSearch 全覆盖；仍低于 70% 目标（最大未覆盖: TcoCalculatorClient 101/死代码 ContactPage.tsx 167/BlogDetail 70/support 页面）
 - **完成时间**: 2026-01-25（基础修复）
 - **实现要点**:
   - 修复RegisterForm测试参数不匹配问题
