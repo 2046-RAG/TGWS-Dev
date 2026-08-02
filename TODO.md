@@ -137,7 +137,7 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
   - [ ] 创建关键流程E2E测试 (Playwright) — **部分完成**（tests/functional/ 已有 19 specs/118 blocks：pages-render/navigation/tco-calculator/search/forms/tickets）
   - [ ] 配置CI/CD测试流程
 - **验收标准**: 测试覆盖率达到70%，CI通过率100%
-- **当前进度**: 覆盖率 **15.6% stmt / 12.4% branch / 11.1% func**（2026-08-02 实测，10 测试文件/91 覆盖文件）；Vitest 82 blocks 全绿
+- **当前进度**: 覆盖率 **20.0% stmt / 16.4% branch / 17.1% func**（2026-08-02 实测，21 测试文件/138 用例，全绿）；hooks 89%、search 管道全覆盖；仍远低于 70% 目标（最大未覆盖: GlobalSearch 163 语句/TcoCalculatorClient 101/HeroSection 95/API 路由 6 个）
 - **完成时间**: 2026-01-25（基础修复）
 - **实现要点**:
   - 修复RegisterForm测试参数不匹配问题
@@ -645,8 +645,8 @@ TODO-030 (AI 稿归档)  独立
 | 优先级 | 任务数 | 预估总工时 | 完成状态 |
 |--------|--------|------------|----------|
 | P0 | 4 | 9天 | ✅ 4/4 |
-| P1 | 12 | 49天 | ✅ 12/12（TODO-005 覆盖率未达标、TODO-022 部分、TODO-026 部分、TODO-027 部分） |
-| P2 | 10 | 18天 | ✅ 8/10（TODO-028 内容待录入、TODO-019 仓库清理、TODO-024 route.ts 拆分） |
+| P1 | 12 | 49天 | ✅ 12/12（TODO-005 覆盖率 20% 未达标、TODO-022 部分、TODO-026 部分、TODO-027 部分） |
+| P2 | 10 | 18天 | ✅ 8/10（TODO-028 内容待录入、TODO-019 仓库清理✅、TODO-024 route.ts✅） |
 | **总计** | **30** | **76天** | **✅ 24/30 (80%)** |
 
 **最新更新**: 2026-08-02 - TCO 工具独立部署完成并搁置；TGWS 恢复为主要项目。经源码 + Vercel env 验证：TODO-014 社交分享 ✅、TODO-015 动画系统 ✅、TODO-021 AI 搜索 env ✅（用户已提供 Key，Vercel Production 已配）、TODO-024 组件拆分 ✅、TODO-030 AI 稿归档 ✅。真实剩余：TODO-005 覆盖率、TODO-019 仓库清理、TODO-022 客户端反馈、TODO-024 route.ts、TODO-026 Sentry(可选)、TODO-027 INDEX 对齐、TODO-028 Help 内容、TODO-029 导航入口
