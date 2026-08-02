@@ -16,7 +16,7 @@ describe('useRetry', () => {
     const fn = vi.fn().mockResolvedValue('ok');
     const { result } = renderHook(() => useRetry(fn, { baseDelay: 10 }));
 
-    let promise: Promise<string>;
+    let promise: Promise<string> | undefined;
     act(() => {
       promise = result.current.execute('a') as Promise<string>;
     });
@@ -41,7 +41,7 @@ describe('useRetry', () => {
       useRetry(fn, { maxRetries: 3, baseDelay: 100, onRetry }),
     );
 
-    let promise: Promise<string>;
+    let promise: Promise<string> | undefined;
     act(() => {
       promise = result.current.execute() as Promise<string>;
     });
@@ -72,16 +72,19 @@ describe('useRetry', () => {
       useRetry(fn, { maxRetries: 2, baseDelay: 10, onMaxRetriesReached }),
     );
 
-    let promise: Promise<string>;
+    let promise: Promise<string> | undefined;
     act(() => {
       promise = result.current.execute() as Promise<string>;
     });
+    // swallow the rejection now so the later expects don't race with unhandled-rejection
+    const settled = promise!.catch(() => 'rejected');
     await act(async () => {
       await vi.advanceTimersByTimeAsync(1000);
     });
     await act(async () => {
       await expect(promise!).rejects.toThrow('always fails');
     });
+    await settled;
 
     expect(fn).toHaveBeenCalledTimes(3); // initial + 2 retries
     expect(onMaxRetriesReached).toHaveBeenCalledTimes(1);
@@ -96,16 +99,18 @@ describe('useRetry', () => {
       .mockResolvedValue('recovered');
     const { result } = renderHook(() => useRetry(fn, { maxRetries: 0, baseDelay: 10 }));
 
-    let p1: Promise<string>;
+    let p1: Promise<string> | undefined;
     act(() => {
       p1 = result.current.execute('arg1', 'arg2') as Promise<string>;
     });
+    const settled1 = p1!.catch(() => 'rejected');
     await act(async () => {
       await expect(p1!).rejects.toThrow('first');
     });
+    await settled1;
 
     // Manual retry reuses stored args
-    let p2: Promise<string>;
+    let p2: Promise<string> | undefined;
     act(() => {
       p2 = result.current.retry() as Promise<string>;
     });
@@ -121,16 +126,18 @@ describe('useRetry', () => {
     const fn = vi.fn().mockRejectedValue(new Error('x'));
     const { result } = renderHook(() => useRetry(fn, { maxRetries: 1, baseDelay: 10 }));
 
-    let promise: Promise<string>;
+    let promise: Promise<string> | undefined;
     act(() => {
       promise = result.current.execute() as Promise<string>;
     });
+    const settled = promise!.catch(() => 'rejected');
     await act(async () => {
       await vi.advanceTimersByTimeAsync(200);
     });
     await act(async () => {
       await expect(promise!).rejects.toThrow('x');
     });
+    await settled;
 
     act(() => {
       result.current.reset();
