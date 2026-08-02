@@ -129,7 +129,8 @@ const BLOCKED_DOMAINS = new Set([
 // 过滤低质量外部结果
 export function filterExternalResults(results: ExternalResult[]): ExternalResult[] {
   return results.filter(r => {
-    const domain = r.url.replace(/^https?:\/\//, '').split('/')[0].toLowerCase();
+    // 剥离 www. 前缀，避免 www.medium.com 绕过黑名单 (AUDIT-048 follow-up)
+    const domain = r.url.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0].toLowerCase();
     // 过滤黑名单
     if (BLOCKED_DOMAINS.has(domain)) return false;
     // 过滤标题含广告特征的
