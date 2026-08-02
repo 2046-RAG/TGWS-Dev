@@ -55,8 +55,8 @@ TGWS/
 | [S9]-[S14] | 设计规范、行业方案、博客、联系、关于（案例展示已废弃 2026-07-12） | ✅ 已完成 |
 | [S15]-[S21] | 免费额度、VMware替代、数据模型、API、无障碍、兼容性、测试 | ✅ 已完成 |
 
-**测试状态**: Vitest 76/76 通过 ✅ | Playwright 功能测试套件（6个spec文件，见 tgws/tests/functional/）
-**代码覆盖率**: 15.62%（目标 70%）
+**测试状态**: Vitest 68 测试文件全绿 ✅ | Playwright 功能测试套件（6个spec文件，见 tgws/tests/functional/）
+**代码覆盖率**: 74.9%（2026-08-02，超过 70% 目标；此前 62-73% 波动为 vitest 并发 worker OOM 假象，已用 singleFork 修复）
 
 ## 开发命令
 
@@ -89,9 +89,9 @@ npm run test:e2e     # 端到端测试 (Playwright)
 
 | 优先级 | 任务 | 状态 |
 |--------|------|------|
-| P1 | 测试覆盖率 15.6% → 70% | 进行中（TODO-005） |
-| P1 | 仓库治理（已清理 gh.msi/tmp-query*/generate_report 等） | 进行中（TODO-019） |
-| P1 | 工单/线索提交失败的用户反馈 + error.tsx 边界 | 已基本完成（TODO-022） |
-| P2 | Help Center 内容迁移 Sanity（需决策） | 待确认（TODO-028） |
+| P1 | 测试覆盖率 15.6% → 70% | ✅ 已完成 74.9%（TODO-005） |
+| P1 | 仓库治理（已清理 gh.msi/tmp-query*/generate_report + 2 死代码文件） | ✅ 已完成（TODO-019） |
+| P1 | 工单/线索提交失败的用户反馈 + error.tsx 边界 | ✅ 已完成（TODO-022） |
+| P2 | Help Center 内容（FAQ 20 条，走 i18n 架构） | ✅ 已完成（TODO-028） |
 | P2 | Umami 分析已接入（NEXT_PUBLIC_UMAMI_WEBSITE_ID） | ✅ 已完成（TODO-026） |
 | P2 | Odoo CRM 凭证（.env.local 占位符） | 待用户填写 |
