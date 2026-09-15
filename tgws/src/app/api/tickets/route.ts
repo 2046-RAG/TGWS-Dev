@@ -3,9 +3,13 @@ import { createClient } from '@/lib/supabase/server';
 import { sendTicketCreatedEmail } from '@/lib/resend';
 import { logServiceError } from '@/lib/errors';
 import { randomUUID } from 'crypto';
+import { rateLimit, requireSameOrigin, validateFields } from '@/lib/api-guard';
 
 export async function POST(request: Request) {
   try {
+    const blocked = requireSameOrigin(request) ?? rateLimit(request, { name: 'tickets-create', limit: 10, windowMs: 60_000 });
+    if (blocked) return blocked;
+
     const supabase = await createClient();
     const {
       data: { user },
@@ -16,7 +20,23 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { category, productService, subject, description, occurredAt } = body;
+    const fieldError = validateFields(body, {
+      category: { required: true },
+      productService: { required: true, max: 100 },
+      subject: { required: true, max: 200 },
+      description: { required: true, max: 800 },
+    });
+    if (fieldError) {
+      return NextResponse.json({ error: fieldError }, { status: 400 });
+    }
+
+    const { category, productService, subject, description, occurredAt } = body as {
+      category: string;
+      productService: string;
+      subject: string;
+      description: string;
+      occurredAt?: string;
+    };
 
     if (!category || !productService || !subject || !description) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });

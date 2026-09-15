@@ -46,7 +46,7 @@ describe('blog/[slug] generateMetadata', () => {
     const meta = await generateMetadata({ params: Promise.resolve({ slug: 'x', locale: 'en' }) });
     expect(meta.title).toBe('Understanding HCI');
     expect(meta.description).toBe('An excerpt');
-    expect(meta.openGraph?.images?.[0]?.url).toBe('/og-image.jpg');
+    expect((meta.openGraph?.images as { url?: string }[] | undefined)?.[0]?.url).toBe('/og-image.jpg');
   });
 
   it('returns zh title and description for zh locale', async () => {
@@ -59,7 +59,7 @@ describe('blog/[slug] generateMetadata', () => {
   it('falls back to brand logo when no cover image', async () => {
     mockFetch.mockResolvedValue({ ...post, coverImage: null });
     const meta = await generateMetadata({ params: Promise.resolve({ slug: 'x', locale: 'en' }) });
-    expect(meta.openGraph?.images?.[0]?.url).toBe('https://www.techguru-it.asia/logos/techguru-logo.png');
+    expect((meta.openGraph?.images as { url?: string }[] | undefined)?.[0]?.url).toBe('https://www.techguru-it.asia/logos/techguru-logo.png');
   });
 
   it('handles locale-object titles', async () => {

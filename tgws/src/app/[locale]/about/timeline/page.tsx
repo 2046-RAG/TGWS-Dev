@@ -1,11 +1,24 @@
 import { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { getAllTimelineEvents } from './timeline-data';
 import TimelineClient from './TimelineClient';
 
-export const metadata: Metadata = {
-  title: 'Our Journey | TechGuru',
-  description: 'Discover TechGuru\'s journey from our founding in 2023 to becoming a leading IT solutions integrator in Asia.',
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'about.timeline.metadata' });
+  return {
+    title: t('title'),
+    description: t('description'),
+    openGraph: {
+      title: t('title'),
+      description: t('description'),
+    },
+  };
+}
 
 export default async function TimelinePage() {
   const events = await getAllTimelineEvents();

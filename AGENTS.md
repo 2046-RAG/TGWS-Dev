@@ -330,7 +330,8 @@ These constraints are enforced during development:
 
 ## 项目状态
 
-详细状态请查看 `MEMORY.md` 和 `docs/modules/INDEX.md`
+详细状态请查看会话/项目级 `MEMORY.md`（mimocode 项目记忆，**不在仓库根目录**）和 `docs/modules/INDEX.md`。
+仓库内待办真相源为 `TODO.md`（含第三轮收口表）。
 
 ## 教训记录
 

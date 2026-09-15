@@ -2,32 +2,32 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { createOdooLead } from '@/lib/odoo';
 import { logServiceError } from '@/lib/errors';
-
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import { rateLimit, requireSameOrigin, validateFields } from '@/lib/api-guard';
 
 export async function POST(request: Request) {
   try {
+    const blocked = requireSameOrigin(request) ?? rateLimit(request, { name: 'contact', limit: 5, windowMs: 60_000 });
+    if (blocked) return blocked;
+
     const body = await request.json();
-    const { name, email, company, phone, message } = body;
-
-    if (!name || !email || !message) {
-      return NextResponse.json(
-        { error: 'Name, email, and message are required' },
-        { status: 400 }
-      );
+    const fieldError = validateFields(body, {
+      name: { required: true, type: 'string', max: 100 },
+      email: { required: true, type: 'email', max: 254 },
+      company: { max: 100 },
+      phone: { max: 40 },
+      message: { required: true, type: 'string', max: 5000 },
+    });
+    if (fieldError) {
+      return NextResponse.json({ error: fieldError }, { status: 400 });
     }
 
-    if (!emailRegex.test(email)) {
-      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
-    }
-
-    if (typeof name === 'string' && name.length > 100) {
-      return NextResponse.json({ error: 'Name must be 100 characters or less' }, { status: 400 });
-    }
-
-    if (typeof message === 'string' && message.length > 5000) {
-      return NextResponse.json({ error: 'Message must be 5000 characters or less' }, { status: 400 });
-    }
+    const { name, email, company, phone, message } = body as {
+      name: string;
+      email: string;
+      company?: string;
+      phone?: string;
+      message: string;
+    };
 
     const supabase = await createClient();
 

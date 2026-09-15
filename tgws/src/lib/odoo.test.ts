@@ -43,18 +43,31 @@ describe('createOdooLead', () => {
 
   it('authenticates then creates the CRM lead', async () => {
     fetchMock
-      .mockResolvedValueOnce({ headers: { get: () => 'session=xyz' } }) // auth
-      .mockResolvedValueOnce({ json: async () => ({ id: 42 }) }); // create
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        headers: { get: () => 'session_id=xyz; Path=/; HttpOnly' },
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({ result: { id: 42 } }),
+      });
     const result = await createOdooLead(lead);
     expect(result.success).toBe(true);
     expect(result.data).toEqual({ id: 42 });
-    // auth call
     expect(fetchMock.mock.calls[0][0]).toContain('/web/session/authenticate');
-    // create call passes the cookie
     const createCall = fetchMock.mock.calls[1];
     expect(createCall[0]).toContain('/web/dataset/call_kw');
     expect(JSON.parse(createCall[1].body).model).toBe('crm.lead');
-    expect(createCall[1].headers.Cookie).toBe('session=xyz');
+    expect(createCall[1].headers.Cookie).toBe('session_id=xyz');
+  });
+
+  it('returns failure when auth is not ok', async () => {
+    fetchMock.mockResolvedValueOnce({ ok: false, status: 401, headers: { get: () => null } });
+    const result = await createOdooLead(lead);
+    expect(result.success).toBe(false);
+    expect(result.error).toContain('authentication failed');
   });
 
   it('returns failure when fetch throws', async () => {

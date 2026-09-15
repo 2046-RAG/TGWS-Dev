@@ -1,11 +1,8 @@
-import { Metadata } from 'next';
 import { getTeamMembers, getQualifications } from './about-data';
 import AboutClient from './AboutClient';
 
-export const metadata: Metadata = {
-  title: 'About Us | TechGuru',
-  description: 'Learn about TechGuru\'s mission, team, and journey. Discover our qualifications, partnerships, and commitment to enterprise IT excellence.',
-};
+// Metadata comes from ./layout.tsx generateMetadata (i18n). Do not export
+// page-level metadata here — it would override the locale-aware title.
 
 export default async function AboutPage() {
   const [teamMembers, qualifications] = await Promise.all([

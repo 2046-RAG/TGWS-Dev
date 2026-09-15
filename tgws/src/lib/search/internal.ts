@@ -1,6 +1,6 @@
 // Internal (Sanity GROQ) search across products, solutions, blog posts and FAQs.
 
-import { client } from '@/lib/sanity';
+import { client } from '@/lib/sanity.server';
 import { logServiceError } from '@/lib/errors';
 import type { SearchFilters, SearchResult } from './types';
 

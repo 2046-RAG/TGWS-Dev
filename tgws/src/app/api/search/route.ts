@@ -1,15 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { client } from '@/lib/sanity';
+import { client } from '@/lib/sanity.server';
 import { logServiceError } from '@/lib/errors';
 import type { SearchRequest } from '@/lib/search/types';
 import { searchInternal } from '@/lib/search/internal';
 import { searchGoogleCSE, searchTavily, deduplicateResults, filterExternalResults, isExternalSourcesConfigured } from '@/lib/search/external';
 import { generateAiSummary } from '@/lib/search/ai';
 import { detectCapabilityGap } from '@/lib/search/capability';
+import { rateLimit } from '@/lib/api-guard';
 
 // 主搜索函数
 export async function POST(request: NextRequest) {
   try {
+    // Search fans out to paid external APIs — tighter window than contact.
+    const blocked = rateLimit(request, { name: 'search', limit: 20, windowMs: 60_000 });
+    if (blocked) return blocked;
+
     const body: SearchRequest = await request.json();
     const { query, type = 'text', imageData, filters, locale = 'en' } = body;
 

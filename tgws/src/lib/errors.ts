@@ -14,7 +14,12 @@ interface ErrorContext {
 function logServiceError({ service, operation, error, extra }: ErrorContext) {
   const timestamp = new Date().toISOString();
   const errorMsg = error instanceof Error ? error.message : String(error ?? 'unknown');
-  const context = JSON.stringify({ timestamp, service, operation, error: errorMsg, ...extra });
+  let context: string;
+  try {
+    context = JSON.stringify({ timestamp, service, operation, error: errorMsg, ...extra });
+  } catch {
+    context = JSON.stringify({ timestamp, service, operation, error: errorMsg, extra: '[unserializable]' });
+  }
 
   // Always log to console (Vercel captures these)
   console.error(`[${service}] ${operation} failed:`, context);
@@ -25,7 +30,8 @@ function logServiceError({ service, operation, error, extra }: ErrorContext) {
     fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ timestamp, service, operation, error: errorMsg, ...extra }),
+      body: context,
+      signal: AbortSignal.timeout(5000),
     }).catch(() => {
       // Silently ignore webhook delivery failures to avoid infinite loops
     });

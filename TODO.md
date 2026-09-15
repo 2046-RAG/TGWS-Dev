@@ -646,9 +646,21 @@ TODO-030 (AI 稿归档)  独立
 | P2 | 10 | 18天 | ✅ 10/10 |
 | **总计** | **30** | **76天** | **✅ 30/30 (100%)** |
 
-**最新更新**: 2026-08-02 - 全部 30 项完成。覆盖率达到 74.9%（>70% 目标，0 OOM 稳定实测）；仓库治理删除 2 死代码文件；文档四方一致（README/TODO/INDEX/AGENTS）；Vercel 部署成功。唯一待办为运维性质：`GOOGLE_CSE_API_KEY`/`TAVILY_API_KEY` 已在 Vercel 配置 ✅、Odoo CRM 凭证待用户填写 `.env.local`、Sanity token `sk94...` 建议 revoke（用户曾拒绝）。
+**最新更新**: 2026-08-05 全面收口轮 — 见下方「第三轮收口」。历史 30/30 仍成立；本轮新增 T-031~T-034 并关闭可代码落地项。
 
-**最新更新**: 2026-08-02 - TCO 工具独立部署完成并搁置；TGWS 恢复为主要项目。经源码 + Vercel env 验证：TODO-014 社交分享 ✅、TODO-015 动画系统 ✅、TODO-021 AI 搜索 env ✅（用户已提供 Key）、TODO-024 组件+route.ts 拆分 ✅、TODO-030 AI 稿归档 ✅、TODO-019 仓库清理 ✅、TODO-028 Help 内容 ✅。真实剩余：TODO-005 覆盖率 27%→70%（持续工程）、TODO-022 客户端反馈、TODO-026 Sentry(可选)、TODO-027 INDEX 对齐
+---
+
+## 第三轮收口 (2026-08-05)
+
+| 编号 | 任务 | 状态 | 说明 |
+|------|------|------|------|
+| T-031 | About/Timeline 双语 metadata | ✅ 完成 | 删除 page 硬编码 metadata；补 `about.timeline.metadata` en/zh |
+| T-032 | 公开写接口限流 + Origin + 字段校验 | ✅ 完成 | `src/lib/api-guard.ts` 零依赖；接入 contact/search/lead/reset-password/tickets/upload |
+| T-033 | 仓库杂物归档 | ✅ 完成 | 78 个 png/log/mjs 脚本移至 `docs/archive/qa-artifacts/` |
+| T-034 | 文档一致性 | ✅ 完成 | README 分支名 main→Trunk；TODO 双「最新更新」矛盾段合并 |
+| T-035 | Odoo 集成 | 🟡 已文档化 | 缺 env 时仅 Supabase+邮件；填 `ODOO_*` 即启用，无需改代码 |
+| T-036 | design-v2 UI 重设计 | 🔵 待用户审批 | `tgws/design-v2/` 未提交；批准前生产 UI 不变 |
+| T-037 | 推送 + 生产部署 | 🔵 待执行 | 需 `git push origin Trunk` + `npx vercel --prod --yes`（凭证） |
 
 ---
 

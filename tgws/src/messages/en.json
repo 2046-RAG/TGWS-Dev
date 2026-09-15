@@ -532,6 +532,10 @@
       "title": "Our Journey",
       "page_title": "Our Journey",
       "page_subtitle": "From a small team of IT veterans to a leading solutions integrator — discover the milestones that shaped TechGuru.",
+      "metadata": {
+        "title": "Our Journey | TechGuru",
+        "description": "Discover TechGuru's journey from our founding to becoming a leading IT solutions integrator in Asia."
+      },
       "no_events": "No timeline events found. Please check back later.",
       "view_all": "View Full Timeline",
       "preview_hint": "Click above to explore our complete journey with detailed milestones.",

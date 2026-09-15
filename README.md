@@ -81,7 +81,8 @@ npm run test:e2e     # 端到端测试 (Playwright)
 **已上线**: https://www.techguru-it.asia
 
 - Vercel 项目: prj_LHKlb8B4Q7eUtBri3zkeSz3vK9Mu
-- 推送代码到 main 分支会自动部署
+- 推送代码到 **`Trunk`** 分支会自动部署（仓库分支名为 Trunk，不是 main）
+- 手动生产部署：在仓库根执行 `npx vercel --prod --yes`（需已登录 Vercel CLI）
 
 ## 待办
 
@@ -94,4 +95,7 @@ npm run test:e2e     # 端到端测试 (Playwright)
 | P1 | 工单/线索提交失败的用户反馈 + error.tsx 边界 | ✅ 已完成（TODO-022） |
 | P2 | Help Center 内容（FAQ 20 条，走 i18n 架构） | ✅ 已完成（TODO-028） |
 | P2 | Umami 分析已接入（NEXT_PUBLIC_UMAMI_WEBSITE_ID） | ✅ 已完成（TODO-026） |
-| P2 | Odoo CRM 凭证（.env.local 占位符） | 待用户填写 |
+| P2 | Odoo CRM 凭证（.env.local 占位符） | 未配置——缺 env 时线索仅入 Supabase + 邮件通知，不写 Odoo（代码已优雅降级） |
+| P2 | design-v2「蓝图/Cyanotype」UI 重设计提案 | 待用户审批（见 `tgws/design-v2/`），批准前生产 UI 维持现状 |
+| P1 | 公开写接口限流 + Origin 校验 | ✅ 已实现（`src/lib/api-guard.ts`，无新依赖） |
+| P0 | About 双语 metadata | ✅ 已修复（page 硬编码 metadata 覆盖 i18n layout 的 bug） |

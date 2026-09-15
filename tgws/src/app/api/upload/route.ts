@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { logServiceError } from '@/lib/errors';
+import { rateLimit, requireSameOrigin } from '@/lib/api-guard';
 
 const MAX_SIZE = 50 * 1024 * 1024;
 // SVG removed: it can carry <script>/onload= XSS if served inline (AUDIT-016).
@@ -23,6 +24,9 @@ function sanitizeFileName(name: string): string {
 
 export async function POST(request: Request) {
   try {
+    const blocked = requireSameOrigin(request) ?? rateLimit(request, { name: 'upload', limit: 10, windowMs: 60_000 });
+    if (blocked) return blocked;
+
     const supabase = await createClient();
     const {
       data: { user },

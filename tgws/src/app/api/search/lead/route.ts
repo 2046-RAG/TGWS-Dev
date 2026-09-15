@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { Resend } from 'resend';
 import { logServiceError } from '@/lib/errors';
+import { rateLimit, requireSameOrigin } from '@/lib/api-guard';
 
 interface LeadRequest {
   name: string;
@@ -166,6 +167,9 @@ async function sendCustomerConfirmation(lead: LeadRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const blocked = requireSameOrigin(request) ?? rateLimit(request, { name: 'search-lead', limit: 3, windowMs: 60_000 });
+    if (blocked) return blocked;
+
     const body: LeadRequest = await request.json();
     const { name, email, phone, company, searchQuery, gapDescription } = body;
 
