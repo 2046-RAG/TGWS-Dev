@@ -644,23 +644,25 @@ TODO-030 (AI 稿归档)  独立
 | P0 | 4 | 9天 | ✅ 4/4 |
 | P1 | 12 | 49天 | ✅ 12/12（TODO-005 覆盖率 74.9% ✅、TODO-022 ✅、TODO-026 ✅、TODO-027 ✅） |
 | P2 | 10 | 18天 | ✅ 10/10 |
-| **总计** | **30** | **76天** | **✅ 30/30 (100%)** |
+| 第三轮收口 | 8 | — | ✅ 7/8 完成上线（T-036 design-v2 待用户审批） |
+| **总计** | **30+8** | **76天+** | **代码项全关；仅 design-v2 审批 + Odoo 凭证可选** |
 
-**最新更新**: 2026-08-05 全面收口轮 — 见下方「第三轮收口」。历史 30/30 仍成立；本轮新增 T-031~T-034 并关闭可代码落地项。
+**最新更新**: 2026-09-15 第三轮收口完成并已上线。历史 30/30 仍成立；T-031~T-037 除 design-v2 待审批外全部关闭。生产部署 commit `362c07a` → https://www.techguru-it.asia
 
 ---
 
-## 第三轮收口 (2026-08-05)
+## 第三轮收口 (2026-09-15)
 
 | 编号 | 任务 | 状态 | 说明 |
 |------|------|------|------|
-| T-031 | About/Timeline 双语 metadata | ✅ 完成 | 删除 page 硬编码 metadata；补 `about.timeline.metadata` en/zh |
-| T-032 | 公开写接口限流 + Origin + 字段校验 | ✅ 完成 | `src/lib/api-guard.ts` 零依赖；接入 contact/search/lead/reset-password/tickets/upload |
+| T-031 | About/Timeline 双语 metadata | ✅ 完成并上线 | 删除 page 硬编码 metadata；补 `about.timeline.metadata`；线上 `/zh/about` 已为「關於我們」 |
+| T-032 | 公开写接口限流 + Origin + 字段校验 | ✅ 完成并上线 | `src/lib/api-guard.ts` 零依赖；接入 contact/search/lead/reset-password/tickets/upload |
 | T-033 | 仓库杂物归档 | ✅ 完成 | 78 个 png/log/mjs 脚本移至 `docs/archive/qa-artifacts/` |
 | T-034 | 文档一致性 | ✅ 完成 | README 分支名 main→Trunk；TODO 双「最新更新」矛盾段合并 |
-| T-035 | Odoo 集成 | 🟡 已文档化 | 缺 env 时仅 Supabase+邮件；填 `ODOO_*` 即启用，无需改代码 |
-| T-036 | design-v2 UI 重设计 | 🔵 待用户审批 | `tgws/design-v2/` 未提交；批准前生产 UI 不变 |
-| T-037 | 推送 + 生产部署 | 🔵 待执行 | 需 `git push origin Trunk` + `npx vercel --prod --yes`（凭证） |
+| T-035 | Odoo 集成 | 🟡 已文档化+客户端加固 | 代码：session cookie 解析 + `response.ok`；缺 env 时仅 Supabase+邮件；填 `ODOO_*` 即启用 |
+| T-036 | design-v2 UI 重设计 | 🔵 待用户审批 | `tgws/design-v2/STATUS.md`；6 项批准前生产 UI 不变 |
+| T-037 | 推送 + 生产部署 | ✅ 完成 | Vercel login；修 Root Directory=`tgws` + next-intl 显式路径；`vercel --prod` Ready，alias www.techguru-it.asia |
+| T-038 | 审计残留安全项 | ✅ 本轮落地 | Odoo/搜索 server client 边界、errors 序列化+webhook 超时；附件公开 URL 改 signed 仍为后续可选项 |
 
 ---
 

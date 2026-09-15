@@ -96,6 +96,7 @@ npm run test:e2e     # 端到端测试 (Playwright)
 | P2 | Help Center 内容（FAQ 20 条，走 i18n 架构） | ✅ 已完成（TODO-028） |
 | P2 | Umami 分析已接入（NEXT_PUBLIC_UMAMI_WEBSITE_ID） | ✅ 已完成（TODO-026） |
 | P2 | Odoo CRM 凭证（.env.local 占位符） | 未配置——缺 env 时线索仅入 Supabase + 邮件通知，不写 Odoo（代码已优雅降级） |
-| P2 | design-v2「蓝图/Cyanotype」UI 重设计提案 | 待用户审批（见 `tgws/design-v2/`），批准前生产 UI 维持现状 |
-| P1 | 公开写接口限流 + Origin 校验 | ✅ 已实现（`src/lib/api-guard.ts`，无新依赖） |
-| P0 | About 双语 metadata | ✅ 已修复（page 硬编码 metadata 覆盖 i18n layout 的 bug） |
+| P2 | design-v2「蓝图/Cyanotype」UI 重设计提案 | 待用户审批（见 `tgws/design-v2/STATUS.md`），批准前生产 UI 维持现状 |
+| P1 | 公开写接口限流 + Origin 校验 | ✅ 已实现并上线（`src/lib/api-guard.ts`，无新依赖） |
+| P0 | About 双语 metadata | ✅ 已修复并上线（page 硬编码 metadata 覆盖 i18n layout 的 bug） |
+| P0 | 生产部署（Vercel Root Directory / next-intl 路径） | ✅ 已上线 2026-09-15（commit `362c07a` → www.techguru-it.asia） |
