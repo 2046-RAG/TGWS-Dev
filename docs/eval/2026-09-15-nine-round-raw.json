@@ -1,0 +1,725 @@
+{
+  "rounds": {
+    "N1": {
+      "terms.section14Body": {
+        "en": true,
+        "zh": false,
+        "referencedInSrc": true
+      },
+      "privacy.section12Body": {
+        "en": true,
+        "zh": false,
+        "referencedInSrc": true
+      },
+      "products.learnMore": {
+        "en": false,
+        "zh": false,
+        "referencedInSrc": false
+      },
+      "products.viewAllProducts": {
+        "en": false,
+        "zh": false,
+        "referencedInSrc": true
+      },
+      "compare.testimonials.items.1.quote": {
+        "en": true,
+        "zh": true,
+        "referencedInSrc": false
+      },
+      "home.socialProofStat4": {
+        "en": true,
+        "zh": true,
+        "referencedInSrc": true
+      },
+      "about.intro": {
+        "en": true,
+        "zh": true,
+        "referencedInSrc": true
+      },
+      "termsPageUsesSection14": true,
+      "privacyPageUsesSection12": true,
+      "learnMoreInSrc": false,
+      "missingInZh": [
+        "privacy.section12Body",
+        "terms.section14Body"
+      ],
+      "missingInEn": []
+    },
+    "N2": {
+      "/en": {
+        "visLen": 3935,
+        "bare14": false,
+        "bare12": false,
+        "governs": false,
+        "learnMore": false,
+        "viewAll": false,
+        "founded2023": false,
+        "founded2020": false,
+        "years12": true,
+        "techPartners19": true,
+        "traditionalVendor": false,
+        "quote40": false,
+        "lastUpdJuly": false,
+        "hasGovernsCtx": null
+      },
+      "/zh": {
+        "visLen": 1997,
+        "bare14": false,
+        "bare12": false,
+        "governs": false,
+        "learnMore": false,
+        "viewAll": false,
+        "founded2023": false,
+        "founded2020": false,
+        "years12": false,
+        "techPartners19": false,
+        "traditionalVendor": false,
+        "quote40": false,
+        "lastUpdJuly": false,
+        "hasGovernsCtx": null
+      },
+      "/en/terms": {
+        "visLen": 6364,
+        "bare14": false,
+        "bare12": false,
+        "governs": false,
+        "learnMore": false,
+        "viewAll": false,
+        "founded2023": false,
+        "founded2020": false,
+        "years12": false,
+        "techPartners19": false,
+        "traditionalVendor": false,
+        "quote40": false,
+        "lastUpdJuly": true,
+        "hasGovernsCtx": null
+      },
+      "/zh/terms": {
+        "visLen": 2185,
+        "bare14": true,
+        "bare12": false,
+        "governs": true,
+        "learnMore": false,
+        "viewAll": false,
+        "founded2023": false,
+        "founded2020": false,
+        "years12": false,
+        "techPartners19": false,
+        "traditionalVendor": false,
+        "quote40": false,
+        "lastUpdJuly": true,
+        "hasGovernsCtx": "稱「TechGuru」、「我們」）。本服務條款（「條款」） governs 您對我們網站、產品和服務（「服務」）的存取和使用。存取或使"
+      },
+      "/zh/privacy": {
+        "visLen": 2337,
+        "bare14": false,
+        "bare12": true,
+        "governs": false,
+        "learnMore": false,
+        "viewAll": false,
+        "founded2023": false,
+        "founded2020": false,
+        "years12": false,
+        "techPartners19": false,
+        "traditionalVendor": false,
+        "quote40": false,
+        "lastUpdJuly": true,
+        "hasGovernsCtx": null
+      },
+      "/en/privacy": {
+        "visLen": 6585,
+        "bare14": false,
+        "bare12": false,
+        "governs": false,
+        "learnMore": false,
+        "viewAll": false,
+        "founded2023": false,
+        "founded2020": false,
+        "years12": false,
+        "techPartners19": false,
+        "traditionalVendor": false,
+        "quote40": false,
+        "lastUpdJuly": true,
+        "hasGovernsCtx": null
+      },
+      "/en/products/build": {
+        "visLen": 2307,
+        "bare14": false,
+        "bare12": false,
+        "governs": false,
+        "learnMore": true,
+        "viewAll": true,
+        "founded2023": false,
+        "founded2020": false,
+        "years12": false,
+        "techPartners19": false,
+        "traditionalVendor": false,
+        "quote40": false,
+        "lastUpdJuly": false,
+        "hasGovernsCtx": null
+      },
+      "/en/products/ai-generated-content-aigc": {
+        "visLen": 1781,
+        "bare14": false,
+        "bare12": false,
+        "governs": false,
+        "learnMore": false,
+        "viewAll": false,
+        "founded2023": false,
+        "founded2020": false,
+        "years12": false,
+        "techPartners19": false,
+        "traditionalVendor": false,
+        "quote40": false,
+        "lastUpdJuly": false,
+        "hasGovernsCtx": null
+      },
+      "/en/compare": {
+        "visLen": 2302,
+        "bare14": false,
+        "bare12": false,
+        "governs": false,
+        "learnMore": false,
+        "viewAll": false,
+        "founded2023": false,
+        "founded2020": false,
+        "years12": false,
+        "techPartners19": false,
+        "traditionalVendor": true,
+        "quote40": false,
+        "lastUpdJuly": false,
+        "hasGovernsCtx": null
+      },
+      "/en/about/timeline": {
+        "visLen": 2223,
+        "bare14": false,
+        "bare12": false,
+        "governs": false,
+        "learnMore": false,
+        "viewAll": false,
+        "founded2023": true,
+        "founded2020": true,
+        "years12": false,
+        "techPartners19": false,
+        "traditionalVendor": false,
+        "quote40": false,
+        "lastUpdJuly": false,
+        "hasGovernsCtx": null
+      },
+      "/en/about": {
+        "visLen": 2473,
+        "bare14": false,
+        "bare12": false,
+        "governs": false,
+        "learnMore": false,
+        "viewAll": false,
+        "founded2023": true,
+        "founded2020": false,
+        "years12": false,
+        "techPartners19": false,
+        "traditionalVendor": false,
+        "quote40": false,
+        "lastUpdJuly": false,
+        "hasGovernsCtx": null
+      }
+    },
+    "N3": {
+      "partnersInCms": {
+        "status": 200,
+        "count": 0,
+        "sample": []
+      },
+      "solutions": {
+        "status": 400,
+        "count": null,
+        "sample": []
+      },
+      "productsSample": {
+        "status": 400,
+        "error": {
+          "description": "string literal expected",
+          "end": 43,
+          "query": "*[_type==\"product\"]{_id,slug,title,hasImage:defined(image)}[0...5]",
+          "start": 35,
+          "type": "queryParseError"
+        }
+      },
+      "team": {
+        "status": 400,
+        "count": null,
+        "sample": []
+      }
+    },
+    "N4": {
+      "/en↔/zh": {
+        "enLen": 3935,
+        "zhLen": 1997,
+        "enCjk": 0,
+        "zhCjk": 849,
+        "enHasLearnMore": false,
+        "zhHasLearnMore": false,
+        "zhHasEnglishLegal": false,
+        "ratio": 0.51
+      },
+      "/en/about↔/zh/about": {
+        "enLen": 2473,
+        "zhLen": 1148,
+        "enCjk": 0,
+        "zhCjk": 600,
+        "enHasLearnMore": false,
+        "zhHasLearnMore": false,
+        "zhHasEnglishLegal": false,
+        "ratio": 0.46
+      },
+      "/en/products/build↔/zh/products/build": {
+        "enLen": 2307,
+        "zhLen": 1083,
+        "enCjk": 0,
+        "zhCjk": 546,
+        "enHasLearnMore": true,
+        "zhHasLearnMore": true,
+        "zhHasEnglishLegal": false,
+        "ratio": 0.47
+      },
+      "/en/terms↔/zh/terms": {
+        "enLen": 6364,
+        "zhLen": 2185,
+        "enCjk": 0,
+        "zhCjk": 1427,
+        "enHasLearnMore": false,
+        "zhHasLearnMore": false,
+        "zhHasEnglishLegal": true,
+        "ratio": 0.34
+      },
+      "/en/privacy↔/zh/privacy": {
+        "enLen": 6585,
+        "zhLen": 2337,
+        "enCjk": 0,
+        "zhCjk": 1554,
+        "enHasLearnMore": false,
+        "zhHasLearnMore": false,
+        "zhHasEnglishLegal": false,
+        "ratio": 0.35
+      },
+      "/en/compare↔/zh/compare": {
+        "enLen": 2302,
+        "zhLen": 1166,
+        "enCjk": 0,
+        "zhCjk": 569,
+        "enHasLearnMore": false,
+        "zhHasLearnMore": false,
+        "zhHasEnglishLegal": false,
+        "ratio": 0.51
+      },
+      "/en/help↔/zh/help": {
+        "enLen": 1128,
+        "zhLen": 586,
+        "enCjk": 0,
+        "zhCjk": 343,
+        "enHasLearnMore": false,
+        "zhHasLearnMore": false,
+        "zhHasEnglishLegal": false,
+        "ratio": 0.52
+      }
+    },
+    "N5": {
+      "found": 25,
+      "results": [
+        {
+          "src": "/_next/image?url=%2Fimages%2Fproducts%2Freal%2Faigc.jpg&amp;w=2048&amp;q=75",
+          "status": 200,
+          "bytes": 44176,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "/_next/image?url=%2Fimages%2Fproducts%2Freal%2Fvirtualization.jpg&amp;w=2048&amp;q=75",
+          "status": 200,
+          "bytes": 39053,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "/_next/image?url=%2Fimages%2Fproducts%2Freal%2Ffirewall.jpg&amp;w=2048&amp;q=75",
+          "status": 200,
+          "bytes": 23474,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "/_next/image?url=%2Fimages%2Fproducts%2Freal%2Fai-adoption.jpg&amp;w=2048&amp;q=75",
+          "status": 200,
+          "bytes": 32868,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "/_next/image?url=%2Fimages%2Fproducts%2Freal%2Fai-agent.jpg&amp;w=2048&amp;q=75",
+          "status": 200,
+          "bytes": 18699,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "/images/architecture/vmware-migration.svg",
+          "status": 200,
+          "bytes": 3491,
+          "type": "image/svg+xml"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Fveeam.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 764,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Ffortinet.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 585,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Fsangfor.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 5689,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Fhuawei.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 1552,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Fcisco.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 874,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Fdell.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 1404,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Fnutanix.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 649,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Falibaba-cloud.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 580,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Fbytedance.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 530,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Fh3c.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 1353,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Fhp.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 1591,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Flenovo.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 719,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Fsophos.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 806,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Fstarwind.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 1099,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Fproxmox.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 1339,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Fruijie.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 1355,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Fkvm.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 1187,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Fhillstone.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 2300,
+          "type": "image/png"
+        },
+        {
+          "src": "/_next/image?url=%2Flogos%2Farcfra.png&amp;w=96&amp;q=75",
+          "status": 200,
+          "bytes": 981,
+          "type": "image/png"
+        }
+      ],
+      "ok": 25,
+      "fail": 0
+    },
+    "N6": {
+      "/en": {
+        "title": "TechGuru | Enterprise IT Solutions",
+        "descLen": 135,
+        "canonical": "/en",
+        "hreflang": [
+          "zh=https://tgws.vercel.app/zh"
+        ],
+        "jsonldCount": 4
+      },
+      "/zh": {
+        "title": "TechGuru | 企業IT解決方案",
+        "descLen": 47,
+        "canonical": "/zh",
+        "hreflang": [
+          "en=https://tgws.vercel.app/en"
+        ],
+        "jsonldCount": 4
+      },
+      "/en/about": {
+        "title": "About Us | TechGuru | TechGuru",
+        "descLen": 142,
+        "canonical": "/en",
+        "hreflang": [
+          "zh=https://tgws.vercel.app/zh"
+        ],
+        "jsonldCount": 4
+      },
+      "/zh/about": {
+        "title": "關於我們 | TechGuru | TechGuru",
+        "descLen": 46,
+        "canonical": "/zh",
+        "hreflang": [
+          "en=https://tgws.vercel.app/en"
+        ],
+        "jsonldCount": 4
+      },
+      "/en/products/build": {
+        "title": "Build — AI-Powered Infrastructure | TechGuru | TechGuru",
+        "descLen": 85,
+        "canonical": "/en",
+        "hreflang": [
+          "zh=https://tgws.vercel.app/zh"
+        ],
+        "ogLocale": "en_US",
+        "jsonldCount": 4
+      }
+    },
+    "N7": {
+      "learn-more": [],
+      "view-all-products": [],
+      "sign-out": [],
+      "sign-in": [],
+      "submit-ticket-hint": [
+        "src\\components\\tickets\\TicketList.tsx:147"
+      ],
+      "network-error": [
+        "src\\components\\auth\\LoginForm.tsx:37"
+      ],
+      "calc-tco-zh": [
+        "src\\app\\[locale]\\home\\page.tsx:466",
+        "src\\app\\[locale]\\vmware-alternative\\page.tsx:196",
+        "src\\components\\ui\\TcoCalculatorClient.tsx:105"
+      ],
+      "years-preview": [
+        "src\\app\\[locale]\\about\\AboutClient.tsx:57"
+      ],
+      "abs-timeline": [
+        "src\\app\\[locale]\\about\\AboutClient.tsx:45"
+      ],
+      "last-updated-en": [
+        "src\\app\\[locale]\\privacy\\page.tsx:35",
+        "src\\app\\[locale]\\terms\\page.tsx:35"
+      ]
+    },
+    "N8": {
+      "matrix": {
+        "challenges": {
+          "inQuery": true,
+          "inList": true,
+          "inSchema": true
+        },
+        "challengesZh": {
+          "inQuery": false,
+          "inList": true,
+          "inSchema": true
+        },
+        "solutions": {
+          "inQuery": false,
+          "inList": true,
+          "inSchema": true
+        },
+        "solutionsZh": {
+          "inQuery": false,
+          "inList": true,
+          "inSchema": true
+        },
+        "recommendedProducts": {
+          "inQuery": true,
+          "inList": true,
+          "inSchema": true
+        },
+        "recommendedProductsZh": {
+          "inQuery": false,
+          "inList": true,
+          "inSchema": true
+        },
+        "metricLabel": {
+          "inQuery": false,
+          "inList": true,
+          "inSchema": true
+        },
+        "metricLabelZh": {
+          "inQuery": false,
+          "inList": true,
+          "inSchema": true
+        },
+        "image": {
+          "inQuery": true,
+          "inList": true,
+          "inSchema": true
+        },
+        "descriptionZh": {
+          "inQuery": true,
+          "inList": true,
+          "inSchema": true
+        }
+      },
+      "brokenFields": [
+        "challengesZh",
+        "solutions",
+        "solutionsZh",
+        "recommendedProductsZh",
+        "metricLabel",
+        "metricLabelZh"
+      ],
+      "fallbackPattern": true,
+      "cmsSample": {
+        "status": 400,
+        "count": null,
+        "sample": []
+      }
+    },
+    "N9": {
+      "H1_alt": {
+        "claim": "zh missing terms.section14Body",
+        "enHas": true,
+        "zhHas": false,
+        "pageRendersKey": true,
+        "anyZhTermsSection": 32,
+        "enTermsSections": 33,
+        "verdict": "CONFIRMED"
+      },
+      "H4_alt": {
+        "claim": "12+ years conflicts with founded 2020/2023",
+        "label": "Years of Enterprise IT",
+        "intro": "Founded in 2023, TechGuru Network & Data Solutions delivers IT infrast",
+        "event0": "2020: TechGuru founded in Manila by three IT veterans with 12-15 years",
+        "verdict": "CONFIRMED (label implies tenure)",
+        "keys": [
+          {
+            "k": "home.socialProofLabel",
+            "v": "Trusted by businesses across Asia"
+          },
+          {
+            "k": "home.socialProofStat1",
+            "v": "28"
+          },
+          {
+            "k": "home.socialProofStat1Label",
+            "v": "Enterprise Products"
+          },
+          {
+            "k": "home.socialProofStat2",
+            "v": "19"
+          },
+          {
+            "k": "home.socialProofStat2Label",
+            "v": "Technology Partners"
+          },
+          {
+            "k": "home.socialProofStat3",
+            "v": "6"
+          },
+          {
+            "k": "home.socialProofStat3Label",
+            "v": "Industry Solutions"
+          },
+          {
+            "k": "home.socialProofStat4",
+            "v": "12+"
+          },
+          {
+            "k": "home.socialProofStat4Label",
+            "v": "Years of Enterprise IT"
+          }
+        ]
+      },
+      "H7_alt": {
+        "claim": "solutions query omits Zh fields",
+        "query": "*[_type == \"solution\"] | order(industry asc) { _id, title, slug, industry, description, descriptionZh, challenges, recommendedProducts, image }",
+        "usesStar": true,
+        "explicitFieldsOnly": true,
+        "brokenFields": [
+          "challengesZh",
+          "solutions",
+          "solutionsZh",
+          "recommendedProductsZh",
+          "metricLabel",
+          "metricLabelZh"
+        ],
+        "verdict": "CONFIRMED"
+      },
+      "H8_alt": {
+        "claim": "partners hardcoded only",
+        "homeHardcoded": true,
+        "otherFetch": false,
+        "cmsPartnerCount": 0,
+        "verdict": "CONFIRMED (no fetch anywhere)"
+      },
+      "H9_alt": {
+        "detailHasImg": false,
+        "detailHasIcon": true,
+        "parentSelectsImage": false,
+        "liveImgTags": "see N2/N5",
+        "schemaHasImage": true,
+        "verdict": "CONFIRMED (icon-only UI)"
+      },
+      "H10_alt": {
+        "pageMentionsTestimonial": false,
+        "visible40OnCompare": false,
+        "i18nHas": true,
+        "verdict": "CONFIRMED not rendered"
+      },
+      "H12_alt": {
+        "claim": "api-guard origin check live",
+        "note": "from 6-round R4; re-check via code only here",
+        "contactHasOrigin": true,
+        "searchHasOrigin": false,
+        "verdict": "CONFIRMED in code; live 403 was 6R-R4"
+      }
+    }
+  }
+}

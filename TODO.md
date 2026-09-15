@@ -645,9 +645,10 @@ TODO-030 (AI 稿归档)  独立
 | P1 | 12 | 49天 | ✅ 12/12（TODO-005 覆盖率 74.9% ✅、TODO-022 ✅、TODO-026 ✅、TODO-027 ✅） |
 | P2 | 10 | 18天 | ✅ 10/10 |
 | 第三轮收口 | 8 | — | ✅ 7/8 完成上线（T-036 design-v2 待用户审批） |
-| **总计** | **30+8** | **76天+** | **代码项全关；仅 design-v2 审批 + Odoo 凭证可选** |
+| **第四轮 · 内容质量（九轮校准）** | 12 | — | ⬜ **新开**：以 `docs/eval/2026-09-15-nine-round-verification.md` 为唯一依据 |
+| **总计** | **30+8+12** | — | 工程收口已完；内容/SEO/CMS 数据为当前主战场 |
 
-**最新更新**: 2026-09-15 第三轮收口完成并已上线。历史 30/30 仍成立；T-031~T-037 除 design-v2 待审批外全部关闭。生产部署 commit `362c07a` → https://www.techguru-it.asia
+**最新更新**: 2026-09-15 — 第三轮工程收口已上线；经 **3→6→9 轮**复核后，仅保留九轮仍成立的结论开待办（见第四轮）。已证伪项（logo 破损、76% broken、Compare 证言上线、EN 中文串台）**不得再入待办**。
 
 ---
 
@@ -663,6 +664,58 @@ TODO-030 (AI 稿归档)  独立
 | T-036 | design-v2 UI 重设计 | 🔵 待用户审批 | `tgws/design-v2/STATUS.md`；6 项批准前生产 UI 不变 |
 | T-037 | 推送 + 生产部署 | ✅ 完成 | Vercel login；修 Root Directory=`tgws` + next-intl 显式路径；`vercel --prod` Ready，alias www.techguru-it.asia |
 | T-038 | 审计残留安全项 | ✅ 本轮落地 | Odoo/搜索 server client 边界、errors 序列化+webhook 超时；附件公开 URL 改 signed 仍为后续可选项 |
+
+---
+
+## 第四轮 · 内容质量待办（九轮校准 2026-09-15）
+
+> 依据：`docs/eval/2026-09-15-nine-round-verification.md`（覆盖六轮/三轮）  
+> 每条均经 N1–N9 多方法确认；标注「需你确认」的不得擅自改品牌文案（AGENTS #47）
+
+### P0 — 阻塞信任 / SEO / 法律
+
+| 编号 | 待办 | 原因（九轮证据） | 交付 |
+|------|------|------------------|------|
+| **T-041** | 补 ZH `terms.section14Body`、`privacy.section12Body` | N1 键差 + N2 线上可见裸键 | `zh.json` 两键 + 复抓 `/zh/terms` `/zh/privacy` |
+| **T-042** | **hreflang / alternates 指向 www.techguru-it.asia** | N6 线上为 `https://tgws.vercel.app/...` | 查 `NEXT_PUBLIC_SITE_URL` 与 layout `generateMetadata`；部署后验证 hreflang |
+| **T-043** | 统一成立年份与年限数字 | CMS timeline **Founded=2020**；i18n intro=2023；Home **12+ Years of Enterprise IT** 同页矛盾 | 单一事实源；intro/socialProof/timeline 对齐（**数字表述需你确认**） |
+
+### P1 — 内容与 CMS 数据双缺口
+
+| 编号 | 待办 | 原因 | 交付 |
+|------|------|------|------|
+| **T-044** | solutions GROQ 补 6 字段 | N8：`challengesZh/solutions/solutionsZh/recommendedProductsZh/metricLabel/metricLabelZh` query 无、UI 有 | 改 `solutions/page.tsx` query |
+| **T-045** | Studio 补 solutions 中文字段 | N3：17 条 solution **hasChZh/hasSolZh 全 false**，修 query 后仍会 fallback | Sanity 录入或确认继续用 i18n |
+| **T-046** | Partner：前端接 Sanity + 导入数据 | N3：**partner 文档 0 条**；N9：全站无 fetch；首页硬编码 19 条 | `getPartners()` + Studio 导入 + 替换 home 数组 |
+| **T-047** | Product image：策略二选一 | N3：28 产品 **hasImg 全 false**；UI icon-only | **A** Studio 传图+Detail 接 `image`；或 **B** 书面确认图标策略并文档化 |
+| **T-048** | `Learn more` / `View all products` i18n | N1 key 不存在；N7 行号；N4 **ZH 页英文** | 新增 key + 替换 ProductsList/CategoryPage |
+| **T-049** | 修 title 模板双拼 | N6：`… \| TechGuru \| TechGuru` | layout template / per-page title |
+| **T-050** | About 预览年份 + timeline 链接 locale | N7：`2023,2024,2025` 与 `href="/about/timeline"` | 动态年份 + `/${locale}/about/timeline` |
+| **T-051** | 法律页日期本地化 | N7：`July 1, 2026` 写死在 privacy/terms | i18n 或按 locale 格式化 |
+
+### P2 — 打磨
+
+| 编号 | 待办 | 原因 |
+|------|------|------|
+| **T-052** | Compare 证言：接 UI 或删死键 | N1 零引用；N2 可见文本无 40% 证言（**接 UI 前证言文案需你确认**） |
+| **T-053** | TCO / UserMenu / TicketList / LoginForm 等硬编码迁 i18n | N7 行号清单；EN 不串中文，属可维护性 |
+| **T-054** | ZH 法律页内容长度对齐 EN | N4：zh/en 比约 0.34–0.35 |
+
+### 非内容 · 仍开放
+
+| 编号 | 待办 | 状态 |
+|------|------|------|
+| T-036 | design-v2 UI 提案 | 🔵 待你 6 项批准 |
+| T-035 | Odoo 凭证 | 🟡 代码已就绪，等 `ODOO_*` |
+| T-055 | 功能测试计划执行 | 🔵 `tgws/docs/eval/2026-09-15-test-plan.md` §5 勾选后执行 |
+| — | TCO Sanity 定价数据 | 🔵 等你提供 |
+
+### 明确不做的（已证伪，禁止再开单）
+
+- ~~修复 Partner logo 破损~~  
+- ~~按「76% broken images」整改配图~~  
+- ~~Compare 40% 证言「已上线造假」整改（问题只是死键/未渲染）~~  
+- ~~EN 页 TCO 中文串台~~  
 
 ---
 
