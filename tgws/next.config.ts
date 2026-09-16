@@ -29,6 +29,23 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '*.supabase.co',
       },
+      // Same-origin absolute URLs used by some blog covers
+      {
+        protocol: 'https',
+        hostname: 'www.techguru-it.asia',
+      },
+      {
+        protocol: 'https',
+        hostname: 'techguru-it.asia',
+      },
+      {
+        protocol: 'https',
+        hostname: 'tgws.vercel.app',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.vercel.app',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
