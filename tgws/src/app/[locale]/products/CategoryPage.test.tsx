@@ -26,7 +26,8 @@ vi.mock('next/link', () => ({
 
 vi.mock('./shared', () => ({
   slugToI18n: { 'hci': 'features.hci.0' },
-  iconMap: {},
+  ProductIcon: ({ slug }: { slug: string }) => <span data-testid="product-icon" data-slug={slug} />,
+  productIcons: {},
   tabColors: { build: '#00D4FF', run: '#7B61FF', protect: '#22C55E' },
   runSubgroups: [
     { key: 'virtualization', i18nKey: 'Virtualization', slugs: ['hci'] },

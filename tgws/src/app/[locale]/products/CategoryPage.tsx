@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { slugToI18n, iconMap, tabColors, runSubgroups, type TabKey } from './shared';
+import { slugToI18n, ProductIcon, tabColors, runSubgroups, type TabKey } from './shared';
 import { Code2, Server, Shield, ArrowRight } from 'lucide-react';
 
 interface Product {
@@ -70,7 +70,7 @@ export default function CategoryPage({
             className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
             style={{ backgroundColor: color + '15', color }}
           >
-            {iconMap[slug] || <Server size={28} />}
+            <ProductIcon slug={slug} size={28} />
           </div>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-[#00D4FF] transition-colors duration-200">
             {t(i18nKey || product.title)}

@@ -90,6 +90,35 @@ export default function ComparePage() {
         </div>
       </div>
 
+      {/* Client testimonials (user-confirmed public quotes) */}
+      <div className="mb-16">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">{t('testimonials.title')}</h2>
+        <div className="grid md:grid-cols-3 gap-5">
+          {(['1', '2', '3'] as const).map((key) => {
+            const item = t.raw(`testimonials.items.${key}`) as {
+              quote: string;
+              author: string;
+              industry: string;
+            };
+            if (!item?.quote) return null;
+            return (
+              <figure
+                key={key}
+                className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl p-6 flex flex-col"
+              >
+                <blockquote className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed flex-1">
+                  “{item.quote}”
+                </blockquote>
+                <figcaption className="mt-5 pt-4 border-t border-gray-100 dark:border-zinc-700">
+                  <div className="font-semibold text-gray-900 dark:text-white text-sm">{item.author}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">{item.industry}</div>
+                </figcaption>
+              </figure>
+            );
+          })}
+        </div>
+      </div>
+
       {/* CTA */}
       <div className="text-center bg-gray-50 rounded-2xl p-10">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">{t('ctaTitle')}</h2>

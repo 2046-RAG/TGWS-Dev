@@ -4,7 +4,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { slugToI18n, iconMap, tabColors, runSubgroups, type TabKey } from './shared';
+import { slugToI18n, ProductIcon, tabColors, runSubgroups, type TabKey } from './shared';
 import { Server, ArrowRight, Search, X, Code2, Shield } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -148,7 +148,7 @@ export default function ProductsList({ products }: { products: Product[] }) {
                     color: tabColors[activeTab],
                   }}
                 >
-                  {iconMap[slug] || <Server size={32} />}
+                  <ProductIcon slug={slug} size={32} />
                 </div>
               </div>
             )}
@@ -160,7 +160,7 @@ export default function ProductsList({ products }: { products: Product[] }) {
                 color: tabColors[activeTab],
               }}
             >
-              {iconMap[slug] || <Server size={20} />}
+              <ProductIcon slug={slug} size={20} />
             </div>
           </div>
           <div className="p-5">

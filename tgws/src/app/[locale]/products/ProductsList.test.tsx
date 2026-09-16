@@ -31,7 +31,8 @@ vi.mock('framer-motion', () => ({
 
 vi.mock('./shared', () => ({
   slugToI18n: { 'hci-appliance': 'features.hci-appliance.0' },
-  iconMap: {},
+  ProductIcon: ({ slug, size }: { slug: string; size?: number }) => <span data-testid="product-icon" data-slug={slug} data-size={size} />,
+  productIcons: {},
   tabColors: { build: '#00D4FF', run: '#7B61FF', protect: '#22C55E' },
   runSubgroups: [
     { key: 'virtualization', i18nKey: 'Virtualization', slugs: ['hci-appliance'] },

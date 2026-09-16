@@ -4,8 +4,8 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { slugToI18n, iconMap, tabColors, type TabKey } from '../shared';
-import { Server, Check, ArrowRight, Building2 } from 'lucide-react';
+import { slugToI18n, ProductIcon, tabColors, type TabKey } from '../shared';
+import { Check, ArrowRight, Building2 } from 'lucide-react';
 
 interface VendorSolution {
   vendor: string;
@@ -76,12 +76,20 @@ export default function ProductDetail({ product }: { product: Product }) {
         transition={{ duration: 0.4 }}
         className="mb-12"
       >
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center gap-5 mb-6">
           <div
-            className="w-16 h-16 rounded-2xl flex items-center justify-center"
-            style={{ backgroundColor: color + '15', color }}
+            className="relative w-20 h-20 rounded-3xl flex items-center justify-center shadow-sm"
+            style={{
+              backgroundColor: color + '12',
+              color,
+              boxShadow: `0 0 0 1px ${color}22, 0 8px 24px ${color}18`,
+            }}
           >
-            {iconMap[slug] || <Server size={32} />}
+            <div
+              className="absolute inset-2 rounded-2xl opacity-40"
+              style={{ background: `linear-gradient(145deg, ${color}22, transparent)` }}
+            />
+            <ProductIcon slug={slug} size={36} strokeWidth={1.75} className="relative" />
           </div>
           <div>
             <span

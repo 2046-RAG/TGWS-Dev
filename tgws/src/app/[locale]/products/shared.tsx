@@ -1,13 +1,19 @@
 'use client';
 
+import type { ComponentType } from 'react';
 import {
-  Video, Code2, Bot, BrainCircuit, Compass, Server, Cloud, HardDrive,
-  Shield, Lock, MonitorCheck, Network, CloudCog, Bug,
-  AlertTriangle, Settings, Database, RefreshCw, Globe, ShieldCheck,
-  Wifi, Cable, Route, Unplug, Radio, Router, NetworkIcon,
+  Clapperboard, TerminalSquare, BotMessageSquare, Cpu, Lightbulb,
+  Boxes, Layers3, CloudUpload, CloudDownload, HardDrive, ServerCog,
+  LifeBuoy, Router as RouterIcon, Network, Cable, Waypoints,
+  Wifi, RadioTower, Antenna, SignalHigh,
+  ShieldCheck, ShieldAlert, Laptop, Radar, CloudCog,
+  Shuffle, Siren, CircleAlert,
+  Server,
+  type LucideProps,
 } from 'lucide-react';
 
 export type TabKey = 'build' | 'run' | 'protect';
+export type ProductIconComponent = ComponentType<LucideProps>;
 
 export const tabColors: Record<TabKey, string> = {
   build: '#00D4FF',
@@ -48,36 +54,52 @@ export const slugToI18n: Record<string, string> = {
   'incident-response': 'incidentResponse',
 };
 
-export const iconMap: Record<string, React.ReactNode> = {
-  'ai-generated-content-aigc': <Video size={28} />,
-  'ai-assisted-coding': <Code2 size={28} />,
-  'ai-agent-development': <Bot size={28} />,
-  'enterprise-legacy-system-ai-augmentation': <BrainCircuit size={28} />,
-  'ai-adoption-services': <Compass size={28} />,
-  'server-virtualization-platform': <Server size={28} />,
-  'hyper-converged-infrastructure': <Database size={28} />,
-  'cloud-migration': <Cloud size={28} />,
-  'cloud-repatriation': <RefreshCw size={28} />,
-  'enterprise-storage-solutions': <HardDrive size={28} />,
-  'managed-hosting-services': <Settings size={28} />,
-  'business-continuity-disaster-recovery': <Shield size={28} />,
-  'enterprise-routers': <Route size={28} />,
-  'core-switches': <Cable size={28} />,
-  'access-switches': <Network size={28} />,
-  'aggregation-switches': <Unplug size={28} />,
-  'enterprise-wireless-ap': <Wifi size={28} />,
-  'wireless-controllers': <Radio size={28} />,
-  'outdoor-wireless-ap': <Router size={28} />,
-  'wifi-6-7-ap': <NetworkIcon size={28} />,
-  'next-gen-firewall-ips': <ShieldCheck size={28} />,
-  'web-application-firewall': <Lock size={28} />,
-  'endpoint-detection-response': <MonitorCheck size={28} />,
-  'network-detection-response': <Network size={28} />,
-  'cloud-security': <CloudCog size={28} />,
-  'sd-wan-load-balancing': <Globe size={28} />,
-  'managed-detection-response': <Bug size={28} />,
-  'incident-response': <AlertTriangle size={28} />,
+/** One distinct Lucide glyph per product slug (semantic, not decorative filler). */
+export const productIcons: Record<string, ProductIconComponent> = {
+  'ai-generated-content-aigc': Clapperboard,
+  'ai-assisted-coding': TerminalSquare,
+  'ai-agent-development': BotMessageSquare,
+  'enterprise-legacy-system-ai-augmentation': Cpu,
+  'ai-adoption-services': Lightbulb,
+  'server-virtualization-platform': Boxes,
+  'hyper-converged-infrastructure': Layers3,
+  'cloud-migration': CloudUpload,
+  'cloud-repatriation': CloudDownload,
+  'enterprise-storage-solutions': HardDrive,
+  'managed-hosting-services': ServerCog,
+  'business-continuity-disaster-recovery': LifeBuoy,
+  'enterprise-routers': RouterIcon,
+  'core-switches': Network,
+  'access-switches': Cable,
+  'aggregation-switches': Waypoints,
+  'enterprise-wireless-ap': Wifi,
+  'wireless-controllers': RadioTower,
+  'outdoor-wireless-ap': Antenna,
+  'wifi-6-7-ap': SignalHigh,
+  'next-gen-firewall-ips': ShieldCheck,
+  'web-application-firewall': ShieldAlert,
+  'endpoint-detection-response': Laptop,
+  'network-detection-response': Radar,
+  'cloud-security': CloudCog,
+  'sd-wan-load-balancing': Shuffle,
+  'managed-detection-response': Siren,
+  'incident-response': CircleAlert,
 };
+
+export function ProductIcon({
+  slug,
+  size = 28,
+  className,
+  strokeWidth,
+}: {
+  slug: string;
+  size?: number;
+  className?: string;
+  strokeWidth?: number;
+}) {
+  const Icon = productIcons[slug] || Server;
+  return <Icon size={size} className={className} strokeWidth={strokeWidth} aria-hidden />;
+}
 
 // Run tab subcategory groups
 export const runSubgroups = [
