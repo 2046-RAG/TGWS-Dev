@@ -644,15 +644,77 @@ TODO-030 (AI 稿归档)  独立
 | P0 | 4 | 9天 | ✅ 4/4 |
 | P1 | 12 | 49天 | ✅ 12/12（TODO-005 覆盖率 74.9% ✅、TODO-022 ✅、TODO-026 ✅、TODO-027 ✅） |
 | P2 | 10 | 18天 | ✅ 10/10 |
-| 第三轮收口 | 8 | — | ✅ 7/8 完成上线（T-036 design-v2 待用户审批） |
-| **第四轮 · 内容质量（九轮校准）** | 12 | — | ⬜ **新开**：以 `docs/eval/2026-09-15-nine-round-verification.md` 为唯一依据 |
-| **总计** | **30+8+12** | — | 工程收口已完；内容/SEO/CMS 数据为当前主战场 |
+| 第三轮收口 | 8 | — | ✅ 全部完成上线（T-036 design-v2 仍待审批） |
+| **第四轮 · 内容/导航/厂商树** | 多项 | — | ✅ 大部分代码项已上线；剩余见「当前待办」 |
+| **总计** | — | — | 工程+多数内容已收口；开放项见下表 |
 
-**最新更新**: 2026-09-16 — 第四轮 P0/部分 P1 已上线（T-041/042/043年份/044/048/049/050/051 + governs 翻译）；hreflang 已指向 www.techguru-it.asia；经 **3→6→9 轮**复核后，仅保留九轮仍成立的结论开待办（见第四轮）。已证伪项（logo 破损、76% broken、Compare 证言上线、EN 中文串台）**不得再入待办**。
+**最新更新**: 2026-09-16 — 第四轮多批次已上线并 push `Trunk`（含法律键/hreflang/年份/Learn more/title/About/日期/Compare 证言/VendorLogo/Run 内 VMware 卡/导航修复）。产品图工作区文件曾被误删后已从 git 恢复并部署。git push 已成功（`6e3d836`）。
 
 ---
 
-## 第三轮收口 (2026-09-15)
+## 当前待办总表（2026-09-16 终态）
+
+### A. 需你拍板 / 供数（阻塞）
+
+| 序号 | 事项 | 详情 | 状态 |
+|------|------|------|------|
+| **T-036** | design-v2 UI 提案 | `tgws/design-v2/` 6 项决策 | 🔵 待你审批 |
+| **T-055** | 执行安全/功能测试 | 计划在 `tgws/docs/eval/pass5-test-plan.md`；你已选「本地全面+线上只读」 | 🔵 待你勾选范围后执行 |
+| **T-056** | TCO 定价录入 Sanity | 需 VMware/Nutanix/Sangfor 数字 | 🔵 等你供数 |
+| **T-045** | Studio 补 solutions 中文字段 | 17 条 hasChZh=false | 🔵 等你在 Sanity 录入或书面确认中文只走 i18n |
+| **T-046** | Partner 导数据 + 前端 getPartners | CMS partner=0，首页仍硬编码 19 家 | 🔵 等你导数据 |
+| **Battlecard** | HCI/虚拟化/NGFW/无线厂商对比上线 | 草稿 `docs/eval/2026-09-16-vendor-battlecard-draft.md` | 🔵 **待你批准**后写入 UI |
+| **VMware 对照品牌** | 与 VMware 对比用哪条产品线 | 建议 vSphere Foundation / VCF | 🔵 等你确认 |
+| **HCI 补 Sangfor** | Studio relatedVendors 增加 Sangfor aCloud | 你已拍板「补」 | 🔵 等 Studio 数据 |
+| **无线补 Sundray/Aruba** | 你已拍板「补」 | 🔵 等 Studio + 官方英文 logo PNG |
+| **Sundray/Aruba logo 文件** | `public/logos/` 缺文件 | 🔵 可你提供或我再生成 |
+
+### B. 代码可继续（不阻塞）
+
+| 序号 | 事项 | 说明 |
+|------|------|------|
+| **T-053** | 组件硬编码迁 i18n | TCO/UserMenu/TicketList/LoginForm 等，分批 |
+| **T-054** | ZH 法律页深度对齐 EN | 长度约 34% |
+| **T-035** | Odoo 凭证 | 你已选暂不配置；代码已就绪 |
+| **git push 重试** | 已成功 `6e3d836` | 无需再列 |
+
+### C. 本轮已完成（勿再开单）
+
+| 项 | 结果 |
+|----|------|
+| T-041 ZH 法律 2 键 | 已上线，无裸键 |
+| T-042 hreflang 品牌域 | 已指向 www.techguru-it.asia |
+| T-043 成立年 2020 + 12+ 行业经验文案 | intro=2020；Label=Years of Industry Experience |
+| T-044 solutions GROQ 6 字段 | query 已补 |
+| T-048 Learn more i18n | ZH 为「了解更多」 |
+| T-049 title 双拼 | template=`%s` |
+| T-050 About 预览年+locale 链接 | 2020/2022/2025；`/${locale}/about/timeline` |
+| T-051 法律日期 i18n | ZH 2026年7月1日 |
+| T-052 Compare 证言 | **已确认后展示**（页面有 40%/35% 卡） |
+| T-047 产品图 | AI 设备图已生成并恢复部署；详情有 Hero 图 |
+| 产品语义图标 | 28 slug 语义 Lucide + ProductIcon |
+| Vendor Logo 统一 | VendorLogo 组件；缺文件回退文字 |
+| VMware 归 Run | Products→Run→Infrastructure 内专题卡；非独立第四支柱；非新栏目 |
+| Why TechGuru 位置 | **About 下拉**（非一级顶栏） |
+| Run 菜单描述 | **已恢复** `home('runDesc')` |
+| 导航 Tab 点不动 | 改为 `?category=build|run|protect`；页内读 hash；已上线 |
+| 产品图丢失 | 工作区曾被删，已 `git checkout` 恢复并 200 上线 |
+| Vercel 构建 | `npm ci --registry npmmirror`；Root Directory=tgws |
+
+### D. 已证伪禁止再开单
+
+~~Partner logo 破损~~ · ~~76% 配图 broken~~ · ~~证言未上线却当造假~~ · ~~EN 页中文串台~~ · ~~EDR/HCI 泛化词异常~~（泛化技术名**正常**）
+
+---
+
+## 建议下一步
+
+1. 批 Battlecard 草稿 + 确认 VMware 对照品牌  
+2. Studio：HCI 补 Sangfor；无线补 Sundray/Aruba；（可选）solutions 中文、partner 导入  
+3. 勾选 T-055 测试范围 → 跑本地破坏性 + 线上只读  
+4. 需要时 design-v2 审批  
+
+
 
 | 编号 | 任务 | 状态 | 说明 |
 |------|------|------|------|
