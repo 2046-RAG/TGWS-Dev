@@ -117,3 +117,28 @@ export function validateFields(
 
   return null;
 }
+
+/** Parse JSON body; return 400 response instead of throwing on bad JSON. */
+export async function parseJsonBody(
+  request: Request,
+): Promise<{ body: Record<string, unknown> } | { response: NextResponse }> {
+  try {
+    const raw = await request.json();
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+      return {
+        response: NextResponse.json(
+          { error: 'Invalid JSON body', success: false },
+          { status: 400 },
+        ),
+      };
+    }
+    return { body: raw as Record<string, unknown> };
+  } catch {
+    return {
+      response: NextResponse.json(
+        { error: 'Invalid JSON body', success: false },
+        { status: 400 },
+      ),
+    };
+  }
+}

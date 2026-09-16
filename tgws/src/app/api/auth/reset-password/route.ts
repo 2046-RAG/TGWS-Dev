@@ -1,14 +1,16 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { logServiceError } from '@/lib/errors';
-import { rateLimit, requireSameOrigin, validateFields } from '@/lib/api-guard';
+import { rateLimit, requireSameOrigin, validateFields, parseJsonBody } from '@/lib/api-guard';
 
 export async function POST(request: Request) {
   try {
     const blocked = requireSameOrigin(request) ?? rateLimit(request, { name: 'reset-password', limit: 3, windowMs: 60_000 });
     if (blocked) return blocked;
 
-    const body = await request.json();
+    const parsed = await parseJsonBody(request);
+    if ('response' in parsed) return parsed.response;
+    const body = parsed.body;
     const fieldError = validateFields(body, {
       email: { required: true, type: 'email', max: 254 },
     });
