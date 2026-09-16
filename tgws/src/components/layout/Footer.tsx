@@ -28,10 +28,9 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm text-gray-400">
               <li><Link href={`/${locale}/products#build`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('build')}</Link></li>
               <li><Link href={`/${locale}/products#run`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('run')}</Link></li>
-              <li><Link href={`/${locale}/products#protect`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('protect')}</Link></li>
-              <li><Link href={`/${locale}/compare`} className="hover:text-[#00D4FF] transition-colors duration-200">{locale === 'zh' ? '為何選擇我們' : 'Why Choose Us'}</Link></li>
               <li><Link href={`/${locale}/vmware-alternative`} className="hover:text-[#00D4FF] transition-colors duration-200">VMware Alternatives</Link></li>
               <li><Link href={`/${locale}/vmware-alternative#tco-calculator`} className="hover:text-[#00D4FF] transition-colors duration-200">TCO Calculator</Link></li>
+              <li><Link href={`/${locale}/products#protect`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('protect')}</Link></li>
             </ul>
           </div>
           <div>
@@ -50,6 +49,7 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm text-gray-400">
               <li><Link href={`/${locale}/about`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('aboutUs')}</Link></li>
               <li><Link href={`/${locale}/blog`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('blog')}</Link></li>
+              <li><Link href={`/${locale}/compare`} className="hover:text-[#00D4FF] transition-colors duration-200">{locale === 'zh' ? '為何選擇我們' : 'Why TechGuru'}</Link></li>
               <li><Link href={`/${locale}/contact`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('contact')}</Link></li>
             </ul>
           </div>

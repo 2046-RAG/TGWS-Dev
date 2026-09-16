@@ -36,11 +36,19 @@ export default function Navbar() {
       href: `/${locale}/products`,
       children: [
         { label: t('build'), href: `/${locale}/products#build`, desc: home('buildDesc') },
+        // Run pillar first — VMware alternatives is a Run solution, not a peer of Protect
         { label: t('run'), href: `/${locale}/products#run`, desc: home('runDesc') },
+        {
+          label: locale === 'zh' ? 'VMware 替代方案' : 'VMware Alternatives',
+          href: `/${locale}/vmware-alternative`,
+          desc: locale === 'zh' ? 'Run · Sangfor / Huawei / StarWind / Nutanix' : 'Run · Sangfor / Huawei / StarWind / Nutanix',
+        },
+        {
+          label: locale === 'zh' ? 'TCO 計算器' : 'TCO Calculator',
+          href: `/${locale}/vmware-alternative#tco-calculator`,
+          desc: locale === 'zh' ? 'Run 工具 · 成本對比' : 'Run tool · cost comparison',
+        },
         { label: t('protect'), href: `/${locale}/products#protect`, desc: home('protectDesc') },
-        { label: locale === 'zh' ? '为何選擇 TechGuru' : 'Why Choose TechGuru', href: `/${locale}/compare`, desc: locale === 'zh' ? '與傳統方案對比' : 'TechGuru vs traditional vendors' },
-        { label: 'VMware Alternatives', href: `/${locale}/vmware-alternative`, desc: locale === 'zh' ? '替代方案与TCO对比' : 'Alternatives & TCO comparison' },
-        { label: 'TCO Calculator', href: `/${locale}/vmware-alternative#tco-calculator`, desc: locale === 'zh' ? '对比VMware/Sangfor/Nutanix' : 'Compare VMware vs Sangfor vs Nutanix' },
       ],
     },
     {
@@ -82,7 +90,7 @@ export default function Navbar() {
     },
   ];
 
-  // Check if Home link is active
+  const isCompareActive = pathname?.includes('/compare');
   const isHomeActive = pathname === `/${locale}` || pathname === `/${locale}/`;
 
   return (
@@ -111,6 +119,19 @@ export default function Navbar() {
             )}
           </Link>
           <MegaMenu items={megaMenuItems} activePath={pathname} />
+          <Link
+            href={`/${locale}/compare`}
+            className={`nav-link relative text-[14px] font-medium tracking-[-0.01em] py-1 transition-colors duration-200 ${
+              isCompareActive
+                ? 'text-[#00D4FF]'
+                : 'text-black/70 dark:text-white/70 hover:text-[#00D4FF]'
+            }`}
+          >
+            {locale === 'zh' ? '為何選擇我們' : 'Why TechGuru'}
+            {isCompareActive && (
+              <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#00D4FF]" />
+            )}
+          </Link>
         </div>
 
         <div className="hidden md:flex items-center gap-3">
