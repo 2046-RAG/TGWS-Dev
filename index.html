@@ -3,186 +3,93 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>TGWS 四维评估总览 · 2026-09-15</title>
+<title>TGWS 树架构 / 术语 / Battlecard / 导航 · 2026-09-16</title>
 <style>
-:root{--bg:#f4f4f5;--card:#fff;--ink:#18181b;--muted:#71717a;--cyan:#00d4ff;--cyan-dim:#0891b2;--ok:#16a34a;--warn:#d97706;--bad:#dc2626;--prog:#2563eb;--border:#e4e4e7}
+:root{--bg:#f4f4f5;--card:#fff;--ink:#18181b;--muted:#71717a;--cyan:#00d4ff;--ok:#16a34a;--warn:#d97706;--bad:#dc2626;--prog:#2563eb;--border:#e4e4e7;--purple:#7B61FF}
 *{box-sizing:border-box}
 body{margin:0;font-family:"Helvetica Neue",Helvetica,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
-header{background:#09090b;color:#fafafa;padding:2rem 1.5rem 1.5rem;border-bottom:3px solid var(--cyan)}
-header h1{margin:0 0 .35rem;font-size:1.55rem;font-weight:600}
-header p{margin:0;color:#a1a1aa;font-size:.92rem}
+header{background:#09090b;color:#fafafa;padding:1.75rem 1.5rem 1.35rem;border-bottom:3px solid var(--purple)}
+header h1{margin:0 0 .35rem;font-size:1.45rem}
+header p{margin:0;color:#a1a1aa;font-size:.9rem}
 main{max-width:1100px;margin:0 auto;padding:1.5rem}
-h2{font-size:1.15rem;margin:2rem 0 .75rem;border-left:3px solid var(--cyan);padding-left:.6rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.15rem;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-.card h3{margin:0 0 .4rem;font-size:1rem}
-.badge{display:inline-block;font-size:.7rem;font-weight:600;padding:.15rem .5rem;border-radius:999px;letter-spacing:.03em}
-.badge.ok{background:#dcfce7;color:var(--ok)}
-.badge.warn{background:#fef3c7;color:var(--warn)}
-.badge.bad{background:#fee2e2;color:var(--bad)}
-.badge.prog{background:#dbeafe;color:var(--prog)}
-.card ul{margin:.5rem 0 0;padding-left:1.1rem;color:var(--muted);font-size:.88rem}
-.card li{margin:.25rem 0}
-a{color:var(--cyan-dim);text-decoration:none}
-a:hover{text-decoration:underline}
-table{width:100%;border-collapse:collapse;font-size:.88rem;background:var(--card);border-radius:10px;overflow:hidden}
-th,td{border:1px solid var(--border);padding:.55rem .7rem;text-align:left;vertical-align:top}
-th{background:#fafafa;font-weight:600}
-.p0{color:var(--bad);font-weight:700}
-.p1{color:var(--warn);font-weight:600}
-.note{background:#ecfeff;border:1px solid #a5f3fc;border-radius:10px;padding:.9rem 1rem;font-size:.9rem;margin:1rem 0}
-.score{font-variant-numeric:tabular-nums;font-weight:600}
-.approve{background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:1rem}
-.approve label{display:block;margin:.4rem 0;font-size:.92rem}
+h2{font-size:1.1rem;margin:1.75rem 0 .7rem;border-left:3px solid var(--purple);padding-left:.55rem}
+.note{background:#f5f3ff;border:1px solid #c4b5fd;border-radius:10px;padding:.85rem 1rem;font-size:.9rem;margin:1rem 0}
+table{width:100%;border-collapse:collapse;font-size:.86rem;background:var(--card)}
+th,td{border:1px solid var(--border);padding:.5rem .65rem;text-align:left;vertical-align:top}
+th{background:#fafafa}
+.ok{color:var(--ok);font-weight:600}
+.bad{color:var(--bad);font-weight:600}
+a{color:#0891b2}
+code{background:#f4f4f5;padding:.05rem .3rem;border-radius:4px;font-size:.85em}
 footer{max-width:1100px;margin:2rem auto 3rem;padding:0 1.5rem;color:var(--muted);font-size:.8rem}
-code{background:#f4f4f5;padding:.1rem .35rem;border-radius:4px;font-size:.85em}
+ul{padding-left:1.15rem}
 </style>
 </head>
 <body>
 <header>
-  <h1>TGWS 四维评估总览</h1>
-  <p>文案 · 配图 · 硬编码 · 测试计划 · 2026-09-15 · 线上 www.techguru-it.asia · 源码实读 + Playwright 截图</p>
+  <h1>树架构校验 · 术语 · Battlecard · 导航与 Logo</h1>
+  <p>支柱 → Solution → Vendor Options · 2026-09-16 · 待审批项已标出</p>
 </header>
 <main>
 
-<div class="note" style="background:#f5f3ff;border-color:#c4b5fd">
-  <strong>九轮全新复核完成（2026-09-15）：</strong>
-  N1 键图 · N2 可见文本 · N3 Sanity CDN · N4 EN/ZH 对齐 · N5 资产 · N6 SEO · N7 硬编码行号 · N8 solutions 链路 · N9 对抗。
-  与六轮交叉：12 条硬结论全维持；<b>新增 hreflang→tgws.vercel.app</b>、CMS partner=0、product image 全空、solutions Zh 字段全空。
-  权威：<a href="docs/eval/2026-09-15-nine-round-verification.md">nine-round-verification.md</a>
+<div class="note">
+  <strong>架构结论：</strong>网站<strong>已按</strong> Build/Run/Protect → Solution → Vendor Options 实现（28/28 产品有 relatedVendors）。
+  泛化名（HCI/EDR/NDR）按你的定义视为<strong>正确</strong>。详见
+  <a href="docs/eval/2026-09-16-vendor-tree-audit.md">vendor-tree-audit.md</a> ·
+  <a href="docs/eval/2026-09-16-terminology-battlecard-logo.md">terminology-battlecard-logo.md</a>
 </div>
 
-<h2>状态看板</h2>
-<div class="grid">
-  <div class="card">
-    <h3>D1 文案质量 <span class="badge ok">完成</span></h3>
-    <ul>
-      <li>综合：文案 3.0 / 逻辑 2.9 / 合理 <span class="p0">2.6</span> / 相关 3.1 / 双语 <span class="p0">2.4</span></li>
-      <li>P0×6 · P1×18 · P2×12</li>
-      <li>线上裸键、成立年份四套口径</li>
-      <li><a href="docs/eval/2026-09-15-text-quality.md">报告全文</a></li>
-    </ul>
-  </div>
-  <div class="card">
-    <h3>D2 配图质量 <span class="badge bad">完成 · 问题严重</span></h3>
-    <ul>
-      <li>DOM 图片 295，首屏采样未加载 226（含 lazy 误判）</li>
-      <li><span class="p0">产品详情 19/19 零配图</span>（已复核确认）</li>
-      <li><span style="color:var(--ok)">Partner logo：复核后正常</span>（原空白方块为 lazy 误判）</li>
-      <li>首页 Hero 下方大留白仍待修</li>
-      <li><a href="docs/eval/2026-09-15-image-quality.md">报告全文</a> · <a href="docs/eval/shots/en-home.png">首页截图</a></li>
-    </ul>
-  </div>
-  <div class="card">
-    <h3>D3 硬编码 vs CMS <span class="badge warn">完成</span></h3>
-    <ul>
-      <li>119 源文件全扫 · P0×3 · P1×6</li>
-      <li>partner schema 已有前端未接</li>
-      <li>solutions GROQ 缺 6 字段静默 bug</li>
-      <li>TCO UI 27 处内联中英</li>
-      <li><a href="docs/eval/2026-09-15-hardcoded-content.md">报告全文</a></li>
-    </ul>
-  </div>
-  <div class="card">
-    <h3>D4 测试计划 <span class="badge prog">待你审批</span></h3>
-    <ul>
-      <li>功能 ~95 + 破坏性 50 条</li>
-      <li>14 页面模块 + 12 API</li>
-      <li>Edge-only · 未大规模执行</li>
-      <li><a href="tgws/docs/eval/2026-09-15-test-plan.md">计划全文 §5 审批清单</a></li>
-    </ul>
-  </div>
-</div>
-
-<h2>交叉后的关键 P0（去重）</h2>
+<h2>1. 术语全检摘要</h2>
 <table>
-  <thead><tr><th>#</th><th>问题</th><th>维度</th><th>证据</th></tr></thead>
+  <thead><tr><th>判定</th><th>说明</th></tr></thead>
   <tbody>
-    <tr><td class="p0">1</td><td>ZH 法律页裸键 <code>terms.section14Body</code> / 缺 <code>privacy.section12Body</code></td><td>文案</td><td>线上 <code>/zh/terms</code> 实抓</td></tr>
-    <tr><td class="p0">2</td><td>公司成立年份 2020 / 2023 / 12+ Years 多口径矛盾</td><td>文案</td><td>About intro · timeline · Home stats</td></tr>
-    <tr><td class="p0">3</td><td>产品详情页 19/19 无任何配图</td><td>配图</td><td>product-detail-diagnostics.json</td></tr>
-    <tr><td class="p0">4</td><td><s>首页 Partner logo 空白</s> → <span style="color:var(--ok)">已复核撤销</span>（文件/HTTP/lazy 均正常）</td><td>配图·勘误</td><td>en-home-partners-verified.png</td></tr>
-    <tr><td class="p0">5</td><td>首页 Partner 硬编码，Sanity partner schema 已预留未接</td><td>硬编码</td><td>home/page.tsx:124-144 · partner.ts</td></tr>
-    <tr><td class="p0">6</td><td>solutions GROQ 缺 challengesZh 等 6 字段，CMS 中文永不生效</td><td>硬编码</td><td>solutions/page.tsx:29-39</td></tr>
-    <tr><td class="p0">7</td><td>TCO 计算器 27 处硬编码中文（EN 页也显示中文）</td><td>文案×硬编码</td><td>TcoCalculatorClient.tsx</td></tr>
-    <tr><td class="p0">8</td><td>ZH 条款英文残留 governs / indemnify；简体污染</td><td>文案</td><td>zh.json terms</td></tr>
-    <tr><td class="p0">9</td><td>首页 Hero 下方异常大留白</td><td>配图/布局</td><td>shots/en-home.png</td></tr>
-    <tr><td class="p0">10</td><td>Compare 40%/35% 无具名证言 + 稻草人竞品</td><td>文案</td><td>compare i18n</td></tr>
+    <tr><td class="ok">中立方案名正确</td><td>HCI / EDR / NDR / MDR / WAF / NGFW / SD-WAN / AIGC / BCDR 均为技术方案名，厂商在 Vendor 层</td></tr>
+    <tr><td>微调建议 T1–T8</td><td>如 Cloud Platform↔cloud-migration、Hardware→Enterprise Storage、BCDR 标题补全 Disaster Recovery 等（非错误）</td></tr>
+    <tr><td class="ok">Related Vendor Solutions</td><td>维持原样（你拍板 #4）</td></tr>
   </tbody>
 </table>
 
-<h2>文案 · 页面评分摘要</h2>
+<h2>2. VMware 归 Run（专题卡 · 已实现）</h2>
+<ul>
+  <li>Products → <strong>Run</strong> 标签顶部：Featured topic · VMware Alternatives</li>
+  <li>与 Infrastructure 等产品卡并列，链到既有 <code>/vmware-alternative</code></li>
+  <li>厂商：Sangfor / Huawei / StarWind / Nutanix / Proxmox</li>
+</ul>
+
+<h2>3. HCI Battlecard 草稿（未上线）</h2>
 <table>
-  <thead><tr><th>页面</th><th>综合</th><th>最短板</th></tr></thead>
+  <thead><tr><th>厂商</th><th>客群</th><th>优势</th><th>劣势</th></tr></thead>
   <tbody>
-    <tr><td>About / Timeline</td><td class="score">2.4–2.8</td><td>成立年份矛盾、预览年份写死</td></tr>
-    <tr><td>Compare</td><td class="score">2.4</td><td>夸大证言、稻草人竞品</td></tr>
-    <tr><td>Profile</td><td class="score">2.4</td><td>无 i18n 命名空间、全英文错误</td></tr>
-    <tr><td>Products 分类</td><td class="score">2.6</td><td>Learn more 英文硬编码、标题双渲染</td></tr>
-    <tr><td>Terms / Privacy</td><td class="score">3.0–3.4</td><td>裸键、英文残留、日期英文</td></tr>
-    <tr><td>Help / VMware</td><td class="score">3.6–3.8</td><td>相对最好</td></tr>
+    <tr><td>VMware vSphere/VCF</td><td>深度绑定/强 ISV</td><td>生态与人才最强</td><td>涨价捆绑、锁定、2027 压力</td></tr>
+    <tr><td>Sangfor aSV/aCloud</td><td>亚太政企降本</td><td>安全+虚拟化同栈、迁移成熟</td><td>欧美生态较弱</td></tr>
+    <tr><td>Huawei FusionCube</td><td>运营商/大型政企</td><td>全栈、信创</td><td>部分市场合规/供应</td></tr>
+    <tr><td>H3C UIS</td><td>教育医疗园区</td><td>数通协同、性价比</td><td>国际认知有限</td></tr>
+    <tr><td>Nutanix AHV</td><td>要简单运维</td><td>体验好、免 AHV 许可</td><td>成本不低</td></tr>
+    <tr><td>Proxmox VE</td><td>预算敏感/技术强</td><td>开源可控</td><td>大型支持生态弱</td></tr>
+    <tr><td>StarWind</td><td>双节点 ROBO</td><td>双节点经济</td><td>超大规模弱</td></tr>
   </tbody>
 </table>
+<p style="font-size:.88rem;color:var(--muted)">vs VMware 主轴建议：场景分发 — Sangfor（降本）∥ Nutanix（体验）∥ Proxmox（开源）；Huawei/H3C 跟已有数通；StarWind 跟 ROBO。</p>
 
-<h2>硬编码 · 必须迁 CMS</h2>
+<h2>4. Logo 策略（你拍板 #5）</h2>
+<ul>
+  <li>Vendor 卡使用<strong>真实英文 Logo</strong>、统一规格，不用 AI 画 Logo</li>
+  <li>Hero 可用中立设备摄影（无厂商侵权）</li>
+  <li>待补 Logo 清单含 <strong>Sundray / Aruba</strong></li>
+</ul>
+
+<h2>5. 待你审批</h2>
 <table>
-  <thead><tr><th>优先级</th><th>内容</th><th>建议</th></tr></thead>
+  <thead><tr><th>#</th><th>项</th></tr></thead>
   <tbody>
-    <tr><td class="p0">P0</td><td>首页 19 个 Partner logo</td><td>接已有 partner schema + Studio 导数据</td></tr>
-    <tr><td class="p0">P0</td><td>Compare 6 厂商认证</td><td>扩展 partner.certifications 或新 schema</td></tr>
-    <tr><td class="p0">P0</td><td>solutions query 缺字段</td><td>补全 GROQ 与 interface 对齐</td></tr>
-    <tr><td class="p1">P1</td><td>TCO 27 处 UI 三元 / AI Journey / Navbar / About 预览年份</td><td>迁 next-intl 或 Sanity</td></tr>
-    <tr><td>合理</td><td>slugToI18n、iconMap、校验枚举、FAQ i18n</td><td>保留</td></tr>
+    <tr><td>1</td><td>术语 T1–T8 是否执行</td></tr>
+    <tr><td>2</td><td>HCI Battlecard 草稿是否通过（通过后我做进详情页）</td></tr>
+    <tr><td>3</td><td>CMS 补 HCI-Sangfor、无线-Sundray/Aruba</td></tr>
+    <tr><td>4</td><td>Logo 方案确认后我接 Vendor 卡 Logo</td></tr>
   </tbody>
 </table>
-
-<h2>测试计划 · 待你审批勾选</h2>
-<div class="approve">
-  <p style="margin-top:0"><strong>建议默认执行</strong>（低风险、无凭证）：</p>
-  <label><input type="checkbox" checked disabled /> A. 冒烟回归（现有 functional + 页面 P0）</label>
-  <label><input type="checkbox" /> B. 破坏性 API：限流 / CSRF / 坏 JSON / 超长</label>
-  <label><input type="checkbox" /> C. 上传安全：MIME / 大小 / 路径穿越 / 越权</label>
-  <label><input type="checkbox" /> D. OAuth 开放重定向</label>
-  <label><input type="checkbox" /> E. i18n URL↔内容一致</label>
-  <label><input type="checkbox" /> F. 鉴权矩阵（需 Supabase 测试账号 user/admin/other）</label>
-  <label><input type="checkbox" /> G. 工单并发 version（需测试账号）</label>
-  <label><input type="checkbox" /> H. P1 扩展（搜索注入、Profile、Compare）</label>
-  <label><input type="checkbox" /> I. 线上只读验收</label>
-  <p style="color:var(--muted);font-size:.85rem;margin-bottom:0">
-    禁止：Chrome、dev server、对生产做破坏性攻击。完整用例见
-    <a href="tgws/docs/eval/2026-09-15-test-plan.md">test-plan.md</a>。
-  </p>
-</div>
-
-<h2>建议修复排期</h2>
-<table>
-  <thead><tr><th>波次</th><th>内容</th><th>预估</th></tr></thead>
-  <tbody>
-    <tr><td>本周</td><td>法律裸键 ×2 · 成立年份/数字单一源 · ZH 条款英文 · logos 文件修复 · solutions GROQ · 首页留白</td><td>1–2 天</td></tr>
-    <tr><td>下周</td><td>产品 19 张语义配图 · partner 迁 Sanity · TCO/组件 i18n · Learn more 等硬编码 CTA · 简体清理</td><td>3–5 天</td></tr>
-    <tr><td>审批后</td><td>按勾选范围执行测试计划并出结果报告</td><td>0.5–2 天</td></tr>
-    <tr><td>并行</td><td>design-v2 UI 提案仍待你 6 项批准</td><td>—</td></tr>
-  </tbody>
-</table>
-
-<h2>交付文件</h2>
-<div class="grid">
-  <div class="card"><h3>报告</h3><ul>
-    <li><a href="docs/eval/2026-09-15-text-quality.md">文案</a></li>
-    <li><a href="docs/eval/2026-09-15-image-quality.md">配图</a></li>
-    <li><a href="docs/eval/2026-09-15-hardcoded-content.md">硬编码</a></li>
-    <li><a href="tgws/docs/eval/2026-09-15-test-plan.md">测试计划</a></li>
-  </ul></div>
-  <div class="card"><h3>证据</h3><ul>
-    <li><a href="docs/eval/shots/">Playwright 截图目录</a></li>
-    <li>image-diagnostics.json</li>
-    <li>product-detail-diagnostics.json</li>
-  </ul></div>
-</div>
 
 </main>
-<footer>
-  TGWS · 四维评估 · 方法：源码实读（#36）+ 线上 webfetch + Playwright Edge 截图（#38）· 测试计划未大规模执行
-</footer>
+<footer>TGWS · 树架构与厂商策略草稿 · 未批准不写入生产内容</footer>
 </body>
 </html>

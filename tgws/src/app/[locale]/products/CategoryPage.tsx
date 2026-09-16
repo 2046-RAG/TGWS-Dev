@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { slugToI18n, ProductIcon, tabColors, runSubgroups, type TabKey } from './shared';
-import { Code2, Server, Shield, ArrowRight } from 'lucide-react';
+import { Code2, Server, Shield, ArrowRight, RefreshCw } from 'lucide-react';
 
 interface Product {
   _id: string;
@@ -116,6 +116,32 @@ export default function CategoryPage({
       {/* Products grid */}
       {category === 'run' ? (
         <div className="space-y-10">
+          <Link
+            href={`/${locale}/vmware-alternative`}
+            className="group block rounded-2xl border border-[#7B61FF]/30 bg-gradient-to-r from-[#7B61FF]/10 via-white to-[#00D4FF]/10 dark:from-[#7B61FF]/20 dark:via-zinc-900 dark:to-[#00D4FF]/10 p-6 sm:p-7 hover:shadow-lg transition-all"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+              <div className="w-14 h-14 rounded-2xl bg-[#7B61FF]/15 text-[#7B61FF] flex items-center justify-center shrink-0">
+                <RefreshCw size={28} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold uppercase tracking-wider text-[#7B61FF] mb-1">
+                  {locale === 'zh' ? '專題' : 'Featured topic'} · Run
+                </p>
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-[#7B61FF] transition-colors">
+                  {locale === 'zh' ? 'VMware 替代方案' : 'VMware Alternatives'}
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  {locale === 'zh'
+                    ? '雙 Hypervisor 遷移 · Sangfor / Huawei / StarWind / Nutanix / Proxmox'
+                    : 'Dual-hypervisor migration · Sangfor / Huawei / StarWind / Nutanix / Proxmox'}
+                </p>
+              </div>
+              <span className="inline-flex items-center gap-1 text-sm font-medium text-[#7B61FF] shrink-0">
+                {locale === 'zh' ? '查看專題' : 'Open topic'} <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </span>
+            </div>
+          </Link>
           {groupedRun.map((group) => (
             <div key={group.key}>
               <div className="flex items-center gap-3 mb-5">
