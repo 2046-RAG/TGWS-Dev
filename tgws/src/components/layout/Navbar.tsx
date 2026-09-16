@@ -67,6 +67,11 @@ export default function Navbar() {
       key: 'about',
       label: t('about'),
       href: `/${locale}/about`,
+      children: [
+        { label: locale === 'zh' ? '關於我們' : 'About Us', href: `/${locale}/about`, desc: '' },
+        { label: locale === 'zh' ? '發展歷程' : 'Our Journey', href: `/${locale}/about/timeline`, desc: '' },
+        { label: locale === 'zh' ? '為何選擇我們' : 'Why TechGuru', href: `/${locale}/compare`, desc: locale === 'zh' ? '對比與客戶評價' : 'Comparison & client stories' },
+      ],
     },
     {
       key: 'support',
@@ -108,19 +113,6 @@ export default function Navbar() {
             )}
           </Link>
           <MegaMenu items={megaMenuItems} activePath={pathname} />
-          <Link
-            href={`/${locale}/compare`}
-            className={`nav-link relative text-[14px] font-medium tracking-[-0.01em] py-1 transition-colors duration-200 ${
-              isCompareActive
-                ? 'text-[#00D4FF]'
-                : 'text-black/70 dark:text-white/70 hover:text-[#00D4FF]'
-            }`}
-          >
-            {locale === 'zh' ? '為何選擇我們' : 'Why TechGuru'}
-            {isCompareActive && (
-              <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#00D4FF]" />
-            )}
-          </Link>
         </div>
 
         <div className="hidden md:flex items-center gap-3">

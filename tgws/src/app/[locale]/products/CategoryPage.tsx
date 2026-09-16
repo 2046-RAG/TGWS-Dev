@@ -156,7 +156,7 @@ export default function CategoryPage({
         </div>
       </div>
 
-      {/* Products grid */}
+      {/* Products grid — Run groups only (no extra pillars) */}
       {category === 'run' ? (
         <div className="space-y-10">
           {groupedRun.map((group) => (
@@ -176,26 +176,6 @@ export default function CategoryPage({
               </div>
             </div>
           ))}
-          {/* Run solutions without subcategory */}
-          {(() => {
-            const groupedSlugs = new Set(runSubgroups.flatMap((g) => g.slugs));
-            const rest = filtered.filter((p) => !groupedSlugs.has(p.slug?.current));
-            if (!rest.length) return null;
-            return (
-              <div>
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-2 h-8 rounded-full" style={{ backgroundColor: color }} />
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                    {locale === 'zh' ? '平台與服務' : 'Platforms & Services'}
-                  </h2>
-                  <span className="text-sm text-gray-400 dark:text-gray-500">({rest.length})</span>
-                </div>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {rest.map((product, i) => renderProductCard(product, i))}
-                </div>
-              </div>
-            );
-          })()}
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
