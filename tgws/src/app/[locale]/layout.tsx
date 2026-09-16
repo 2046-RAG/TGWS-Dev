@@ -37,6 +37,7 @@ export async function generateMetadata({
   const otherLocales = locales.filter((l) => l !== locale);
 
   return {
+    metadataBase: new URL(siteUrl),
     title: {
       default: 'TechGuru | Network & Data Solutions',
       // Pages already include brand in many i18n metadata titles — avoid `| TechGuru | TechGuru`.
