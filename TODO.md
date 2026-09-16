@@ -648,7 +648,7 @@ TODO-030 (AI 稿归档)  独立
 | **第四轮 · 内容质量（九轮校准）** | 12 | — | ⬜ **新开**：以 `docs/eval/2026-09-15-nine-round-verification.md` 为唯一依据 |
 | **总计** | **30+8+12** | — | 工程收口已完；内容/SEO/CMS 数据为当前主战场 |
 
-**最新更新**: 2026-09-15 — 第三轮工程收口已上线；经 **3→6→9 轮**复核后，仅保留九轮仍成立的结论开待办（见第四轮）。已证伪项（logo 破损、76% broken、Compare 证言上线、EN 中文串台）**不得再入待办**。
+**最新更新**: 2026-09-16 — 第四轮 P0/部分 P1 已上线（T-041/042/043年份/044/048/049/050/051 + governs 翻译）；hreflang 已指向 www.techguru-it.asia；经 **3→6→9 轮**复核后，仅保留九轮仍成立的结论开待办（见第四轮）。已证伪项（logo 破损、76% broken、Compare 证言上线、EN 中文串台）**不得再入待办**。
 
 ---
 
@@ -669,53 +669,66 @@ TODO-030 (AI 稿归档)  独立
 
 ## 第四轮 · 内容质量待办（九轮校准 2026-09-15）
 
-> 依据：`docs/eval/2026-09-15-nine-round-verification.md`（覆盖六轮/三轮）  
-> 每条均经 N1–N9 多方法确认；标注「需你确认」的不得擅自改品牌文案（AGENTS #47）
+> **唯一依据**: `docs/eval/2026-09-15-nine-round-verification.md`（覆盖六轮/三轮/初版）  
+> **证据方法**: N1 键图 · N2 可见文本 · N3 Sanity CDN · N4 EN/ZH · N5 资产 · N6 SEO · N7 硬编码行号 · N8 链路 · N9 对抗  
+> **约束**: 标「需你确认」不得擅自改品牌文案（AGENTS #47）；已证伪项禁止再开单  
 
-### P0 — 阻塞信任 / SEO / 法律
+### 一、P0 · 法律 / SEO / 事实可信（本周必做）
 
-| 编号 | 待办 | 原因（九轮证据） | 交付 |
-|------|------|------------------|------|
-| **T-041** | 补 ZH `terms.section14Body`、`privacy.section12Body` | N1 键差 + N2 线上可见裸键 | `zh.json` 两键 + 复抓 `/zh/terms` `/zh/privacy` |
-| **T-042** | **hreflang / alternates 指向 www.techguru-it.asia** | N6 线上为 `https://tgws.vercel.app/...` | 查 `NEXT_PUBLIC_SITE_URL` 与 layout `generateMetadata`；部署后验证 hreflang |
-| **T-043** | 统一成立年份与年限数字 | CMS timeline **Founded=2020**；i18n intro=2023；Home **12+ Years of Enterprise IT** 同页矛盾 | 单一事实源；intro/socialProof/timeline 对齐（**数字表述需你确认**） |
+| 序号 | 事项名 | 详情 | 改动价值 | 不改动劣势 |
+|------|--------|------|----------|------------|
+| **T-041** | ZH 法律页补全缺失正文 | `zh.json` 缺 `terms.section14Body`、`privacy.section12Body`；terms/privacy 页会渲染 i18n key；线上 `/zh/terms`、`/zh/privacy` 已出现裸键字符串。EN 两键齐全。交付：补两段繁中法律收尾文案 + 部署后复抓两页 | 繁中用户不再看到技术键名；法律页完整可读；降低「未完成站点」观感与合规风险 | 生产可见产品缺陷；信任与专业感直接受损；搜索引擎可能收录裸键页；客诉/截图传播风险 |
+| **T-042** | hreflang/alternates 改品牌域名 | 线上 `rel=alternate` 指向 `https://tgws.vercel.app/zh`（部署域）而非 `https://www.techguru-it.asia`。layout 使用 `NEXT_PUBLIC_SITE_URL`，需核对 Vercel Production env 与 `generateMetadata`。交付：env/代码对齐 + 部署后验证 hreflang/canonical | 双语 SEO 信号指向正式域名；避免权重分散到临时部署域；canonical/语言切换对爬虫正确 | Google 可能把 Vercel 域当主站或忽略交替语言；品牌域双语 SEO 失效；日后换部署名会断链 |
+| **T-043** | 统一成立年份与「12+ Years」 | CMS `timelineEvent`：**Company Founded = 2020**；i18n `about.intro` 写 Founded **2023**；Home `socialProofStat4=12+` + Label「Years of Enterprise IT」。三套口径同站并存。交付：单一事实源（建议以 CMS 2020 为准）+ 改 intro/stats（**年限表述需你确认**：公司司龄 vs 团队行业经验） | 数字一致可核验；避免「吹牛站」印象；About/Home/timeline 讲同一故事 | 客户/伙伴交叉验证即穿帮；企业采购尽调高风险；与 timeline 自相矛盾拉低整站可信度 |
 
-### P1 — 内容与 CMS 数据双缺口
+### 二、P1 · 内容与 CMS 双缺口（代码 + 数据）
 
-| 编号 | 待办 | 原因 | 交付 |
-|------|------|------|------|
-| **T-044** | solutions GROQ 补 6 字段 | N8：`challengesZh/solutions/solutionsZh/recommendedProductsZh/metricLabel/metricLabelZh` query 无、UI 有 | 改 `solutions/page.tsx` query |
-| **T-045** | Studio 补 solutions 中文字段 | N3：17 条 solution **hasChZh/hasSolZh 全 false**，修 query 后仍会 fallback | Sanity 录入或确认继续用 i18n |
-| **T-046** | Partner：前端接 Sanity + 导入数据 | N3：**partner 文档 0 条**；N9：全站无 fetch；首页硬编码 19 条 | `getPartners()` + Studio 导入 + 替换 home 数组 |
-| **T-047** | Product image：策略二选一 | N3：28 产品 **hasImg 全 false**；UI icon-only | **A** Studio 传图+Detail 接 `image`；或 **B** 书面确认图标策略并文档化 |
-| **T-048** | `Learn more` / `View all products` i18n | N1 key 不存在；N7 行号；N4 **ZH 页英文** | 新增 key + 替换 ProductsList/CategoryPage |
-| **T-049** | 修 title 模板双拼 | N6：`… \| TechGuru \| TechGuru` | layout template / per-page title |
-| **T-050** | About 预览年份 + timeline 链接 locale | N7：`2023,2024,2025` 与 `href="/about/timeline"` | 动态年份 + `/${locale}/about/timeline` |
-| **T-051** | 法律页日期本地化 | N7：`July 1, 2026` 写死在 privacy/terms | i18n 或按 locale 格式化 |
+| 序号 | 事项名 | 详情 | 改动价值 | 不改动劣势 |
+|------|--------|------|----------|------------|
+| **T-044** | solutions GROQ 补字段 | `solutions/page.tsx` query 仅取 `challenges/recommendedProducts/image/descriptionZh` 等，**未取** `challengesZh、solutions、solutionsZh、recommendedProductsZh、metricLabel、metricLabelZh`；`SolutionsList` interface 与 `solution.ts` schema 均已声明。交付：补全 query 字段列表 | 中文行业方案详情可从 CMS 生效；Studio 录入即上线，无需发版 | 即使 Studio 填了中文也永远读不到，静默 fallback i18n；运营以为「已配置」实则无效 |
+| **T-045** | Studio 录入 solutions 中文 | CDN 实查：**17 条 solution 的 challengesZh/solutionsZh 全为 false（未填）**。修 T-044 后若仍空，前端继续走 i18n。交付：按行业补中文痛点/方案/指标，或书面确认「中文只走 i18n」 | 中文方案深度可与 EN 对齐；Headless 内容真正可运营 | T-044 白做；ZH 用户继续看截断/浅层方案（N4 显示 ZH 页普遍更短） |
+| **T-046** | Partner 迁 Sanity + 导数据 | 首页 `home/page.tsx` 硬编码 **19** 家 `name+src`；`partner` schema 与 revalidate 映射已存在；**全站无 getPartners**；CDN：**partner 文档 0 条**。交付：Studio 导入 19 条 → `getPartners()` → 首页替换数组 | 增删伙伴改 CMS 即可，不必发版；与架构决策一致；logo 墙可运营 | 每次伙伴变更都要改代码+部署；schema/revalidate 空转；与 Headless 承诺不符 |
+| **T-047** | 产品视觉策略落地 | schema 有 `image`；**28 个 product 的 hasImg 全 false**；`ProductDetail` 仅 iconMap，无 `<img>`。交付二选一：**A** 传语义图并接入详情 Hero；**B** 书面确认「图标化产品页」并文档化，避免再误判为缺陷 | A：企业产品页具备视觉锚点与转化力；B：明确设计边界，评估/开发不再反复争论 | 产品线长期无摄影/示意图；与「企业 IT 官网」预期落差；后续评估易再次误报「无图=破损」 |
+| **T-048** | Learn more / View all i18n | `ProductsList.tsx:174`、`CategoryPage.tsx:82/154` 写死英文；**i18n 无 `products.learnMore` key**；N4：**`/zh/products/build` 可见文本含 Learn more**。交付：新建 en/zh key + 替换三处 | 繁中产品路径 CTA 语言正确；一次修复全站产品卡 | ZH 用户在关键转化按钮上看到英文；双语完整度失分；后续再扫还会中招 |
+| **T-049** | 修 title 模板双拼 | 多内页 title 形如 `About Us \| TechGuru \| TechGuru`（layout `template: '%s \| TechGuru'` + 页面再拼品牌）。交付：统一 template 策略或页面只传短 title | SERP 标题干净专业；避免重复浪费像素 | 搜索结果标题冗余难看；显得工程粗糙 |
+| **T-050** | About 预览年份 + 链接 locale | `AboutClient.tsx:57` 写死 `['2023','2024','2025']`（与 CMS 2020 起不一致）；`:45` `href="/about/timeline"` **无 locale 前缀**。交付：从 timeline 数据取首末年；链接 `/${locale}/about/timeline` | 预览与完整时间轴一致；ZH 路由不依赖 middleware 碰巧兜底 | About 再次暗示错误成立年；语言切换/直链可能进错 locale 或 404 |
+| **T-051** | 法律页日期本地化 | `privacy/page.tsx:35`、`terms/page.tsx:35` 写死 `Last Updated: July 1, 2026`；ZH 页同样显示英文日期。交付：i18n 日期或 `Intl.DateTimeFormat(locale)` | 繁中法律页日期符合语言习惯；完成度细节 | ZH 页英文日期刺眼；与「完整双语」叙事不符 |
 
-### P2 — 打磨
+### 三、P2 · 信任打磨与可维护性
 
-| 编号 | 待办 | 原因 |
-|------|------|------|
-| **T-052** | Compare 证言：接 UI 或删死键 | N1 零引用；N2 可见文本无 40% 证言（**接 UI 前证言文案需你确认**） |
-| **T-053** | TCO / UserMenu / TicketList / LoginForm 等硬编码迁 i18n | N7 行号清单；EN 不串中文，属可维护性 |
-| **T-054** | ZH 法律页内容长度对齐 EN | N4：zh/en 比约 0.34–0.35 |
+| 序号 | 事项名 | 详情 | 改动价值 | 不改动劣势 |
+|------|--------|------|----------|------------|
+| **T-052** | Compare 证言死键处置 | i18n `compare.testimonials`（含 40%/35% 节省）**源码零引用**；页面不渲染；可见文本无该证言。交付：**A** 接入 UI（**证言文案/客户授权需你确认**）或 **B** 删除死键 | A：对比页增加社会证明；B：去掉未使用夸大数字，降低合规/审查风险 | 死数据留在库中易被误接上线；若被搜到源码易质疑「虚假证言」；维护噪音 |
+| **T-053** | 组件硬编码迁 i18n | 已定位：`TcoCalculatorClient`（isZh 三元+数据字典）、`UserMenu` Sign In/Out、`TicketList:147`、`LoginForm:37` Network error、Navbar VMware/TCO 内联等。交付：按文件分批迁 `useTranslations`，保留必要常量 | 改文案不再改组件；翻译流程统一；降低 EN/ZH 漂移 | 每次改错综复杂的三元；翻译遗漏只能靠人肉扫；新人难维护 |
+| **T-054** | ZH 法律页深度对齐 EN | N4：`/zh/terms` 可见长度约为 EN 的 **0.34**，`/privacy` 约 **0.35**；且含 governs 等英文残留（见 T-041/T-053 交叉）。交付：按 EN 章节结构补全繁中法律正文 | 繁中法律保护实质有效；避免「半套条款」 | 若发生纠纷，残缺条款更不利；用户认为 ZH 站是敷衍翻译 |
 
-### 非内容 · 仍开放
+### 四、工程 / 集成开放项（非本轮内容主线）
 
-| 编号 | 待办 | 状态 |
-|------|------|------|
-| T-036 | design-v2 UI 提案 | 🔵 待你 6 项批准 |
-| T-035 | Odoo 凭证 | 🟡 代码已就绪，等 `ODOO_*` |
-| T-055 | 功能测试计划执行 | 🔵 `tgws/docs/eval/2026-09-15-test-plan.md` §5 勾选后执行 |
-| — | TCO Sanity 定价数据 | 🔵 等你提供 |
+| 序号 | 事项名 | 详情 | 改动价值 | 不改动劣势 |
+|------|--------|------|----------|------------|
+| **T-035** | Odoo CRM 凭证配置 | 代码已支持 cookie 会话与 ok 检查；`.env.local`/Vercel 仍为占位。缺省时线索只进 Supabase+邮件。交付：填 `ODOO_URL/DB/USERNAME/PASSWORD`（Production env） | 官网线索自动进 CRM，销售可跟进 | 线索停留在邮件/表，易漏跟；S7 集成目标名存实亡 |
+| **T-036** | design-v2 UI 重设计提案 | `tgws/design-v2/`「蓝图/Cyanotype」+ hero-demo；6 项决策未批；生产 UI 维持现状。交付：你逐项批准/否决后按 Phase 0–6 实施或归档 | 获得统一视觉升级路线；避免多套审美并行 | UI 改进无主轴；后续小改容易风格漂移；提案文件悬置占注意力 |
+| **T-055** | 执行已审批功能测试计划 | `tgws/docs/eval/2026-09-15-test-plan.md`：~95 功能 + 50 破坏性；限流数字已与源码一致；Origin 403 已实测。交付：你勾选 §5 范围后按阶段跑 Edge 套件并出结果表 | 以结果验证回归；暴露真实缺陷 | 只有计划没有执行证据；上线质量依赖人工抽查 |
+| **T-056** | TCO 定价数据录入 Sanity | 计算器与 `/api/tco` 已通；VMware/Nutanix/Sangfor 场景定价需业务数据。交付：你提供数字 → Studio/脚本上传 | TCO 工具从「能算」变为「可信算」 | 对比结果缺业务依据，销售不敢用；工具空转 |
 
-### 明确不做的（已证伪，禁止再开单）
+### 五、明确禁止再开单（九轮已证伪）
 
-- ~~修复 Partner logo 破损~~  
-- ~~按「76% broken images」整改配图~~  
-- ~~Compare 40% 证言「已上线造假」整改（问题只是死键/未渲染）~~  
-- ~~EN 页 TCO 中文串台~~  
+| 序号 | 原错误结论 | 证伪依据 | 正确表述 |
+|------|------------|----------|----------|
+| ~~X-01~~ | Partner logo 空白破损 | 资产 200；滚动后 complete；N5 25/25 有字节 | logo 正常；仅架构上应迁 CMS（T-046） |
+| ~~X-02~~ | 配图 76.6% broken | lazy-load 采样污染 | 产品侧是「无摄影资产/未接 image」（T-047） |
+| ~~X-03~~ | Compare 40% 证言已上线展示 | 可见文本无；组件不渲染 | 死 i18n（T-052） |
+| ~~X-04~~ | EN 页 TCO 显示中文 | `isZh` 分支 EN 为英文 | 硬编码 i18n 债（T-053） |
+
+### 六、建议执行顺序
+
+```
+第1批（纯代码，可立即）: T-041 → T-042 → T-043(先对齐2020) → T-048 → T-049 → T-050 → T-051
+第2批（代码+你拍板）: T-044 → T-047B或A → T-052B或A
+第3批（需你供数/Studio）: T-045 → T-046 → T-056 → T-035
+并行决策: T-036 design-v2；T-055 测试范围勾选
+可后排: T-053 分批、T-054 法律长文
+```
 
 ---
 
