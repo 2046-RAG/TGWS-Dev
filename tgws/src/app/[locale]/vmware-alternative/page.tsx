@@ -21,6 +21,7 @@ export default function VMwareAlternativePage() {
     { key: 'sol2', icon: Cloud, color: '#0066CC', brand: 'Sangfor' },
     { key: 'sol3', icon: RefreshCw, color: '#00A859', brand: 'Nutanix' },
     { key: 'sol4', icon: Server, color: '#D4213D', brand: 'StarWind' },
+    { key: 'sol5', icon: Cloud, color: '#CF0A2C', brand: 'Huawei' },
   ];
 
   const steps = [

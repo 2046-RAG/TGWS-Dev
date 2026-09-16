@@ -1367,6 +1367,8 @@
     "sol3Desc": "企業級超融合平台，具備混合雲能力。",
     "sol4Title": "StarWind HCI",
     "sol4Desc": "軟體定義超融合，原生支援雙節點叢集，相容Hyper-V、VMware和Proxmox VE。",
+    "sol5Title": "華為 FusionSphere / FusionCube",
+    "sol5Desc": "企業級虛擬化與超融合平台，支援 VMware 遷移，提供統一管理與完整生態。",
     "processTitle": "我們的遷移流程",
     "processSubtitle": "結構化的4步方法，最大程度降低風險和中斷。",
     "step1": "評估",

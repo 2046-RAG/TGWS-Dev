@@ -36,9 +36,9 @@ export default function Navbar() {
       href: `/${locale}/products`,
       children: [
         { label: t('build'), href: `/${locale}/products#build`, desc: home('buildDesc') },
-        // Run pillar first — VMware alternatives is a Run solution, not a peer of Protect
         { label: t('run'), href: `/${locale}/products#run`, desc: home('runDesc') },
         {
+          // VMware alternatives is a Run solution (not a fourth product pillar)
           label: locale === 'zh' ? 'VMware 替代方案' : 'VMware Alternatives',
           href: `/${locale}/vmware-alternative`,
           desc: locale === 'zh' ? 'Run · Sangfor / Huawei / StarWind / Nutanix' : 'Run · Sangfor / Huawei / StarWind / Nutanix',

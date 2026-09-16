@@ -1000,6 +1000,8 @@
     "sol3Desc": "Enterprise-grade hyper-converged platform with hybrid cloud capabilities.",
     "sol4Title": "StarWind HCI",
     "sol4Desc": "Software-defined HCI with native two-node clustering, supporting Hyper-V, VMware, and Proxmox VE.",
+    "sol5Title": "Huawei FusionSphere / FusionCube",
+    "sol5Desc": "Enterprise virtualization and HCI stack for VMware migration, with unified management and ecosystem support.",
     "processTitle": "Our Migration Process",
     "processSubtitle": "A structured 4-step approach to minimize risk and disruption.",
     "step1": "Assessment",
