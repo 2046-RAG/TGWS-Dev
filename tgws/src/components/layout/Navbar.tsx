@@ -35,9 +35,9 @@ export default function Navbar() {
       label: t('products'),
       href: `/${locale}/products`,
       children: [
-        { label: t('build'), href: `/${locale}/products#build`, desc: home('buildDesc') },
-        { label: t('run'), href: `/${locale}/products#run`, desc: locale === 'zh' ? '含 VMware 替代方案專題' : 'Includes VMware Alternatives topic' },
-        { label: t('protect'), href: `/${locale}/products#protect`, desc: home('protectDesc') },
+        { label: t('build'), href: `/${locale}/products?category=build`, desc: home('buildDesc') },
+        { label: t('run'), href: `/${locale}/products?category=run`, desc: home('runDesc') },
+        { label: t('protect'), href: `/${locale}/products?category=protect`, desc: home('protectDesc') },
       ],
     },
     {

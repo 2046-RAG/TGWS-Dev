@@ -44,6 +44,8 @@ export default function MegaMenu({ items, activePath }: MegaMenuProps) {
           >
             <Link
               href={item.href}
+              prefetch
+              onClick={() => setActiveKey(null)}
               className={`nav-link relative text-[14px] font-medium tracking-[-0.01em] py-1 transition-colors duration-200 ${
                 isActive
                   ? 'text-[#00D4FF]'
@@ -72,6 +74,8 @@ export default function MegaMenu({ items, activePath }: MegaMenuProps) {
                       <Link
                         key={child.href}
                         href={child.href}
+                        prefetch
+                        onClick={() => setActiveKey(null)}
                         className="block px-4 py-3 rounded-xl hover:bg-[#00D4FF]/5 dark:hover:bg-[#00D4FF]/10 transition-colors duration-150 group"
                       >
                         <div className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-[#00D4FF] transition-colors duration-150">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -40,11 +40,21 @@ export default function ProductsList({ products }: { products: Product[] }) {
   const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Sync tab from ?category= or #build|#run|#protect (mega menu / footer links)
+  useEffect(() => {
+    const fromQuery = searchParams.get('category') as TabKey | null;
+    const fromHash = window.location.hash.replace('#', '') as TabKey | null;
+    const next = (['build', 'run', 'protect'] as const).find(
+      (k) => k === fromQuery || k === fromHash
+    );
+    if (next) setActiveTab(next);
+  }, [searchParams]);
+
   const handleTabChange = useCallback((tab: TabKey) => {
     setActiveTab(tab);
     const params = new URLSearchParams(searchParams.toString());
     params.set('category', tab);
-    router.replace(`?${params.toString()}`, { scroll: false });
+    router.replace(`?${params.toString()}#${tab}`, { scroll: false });
   }, [searchParams, router]);
 
   // Filter products by category and search query
