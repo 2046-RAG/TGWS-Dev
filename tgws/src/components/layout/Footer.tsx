@@ -29,6 +29,7 @@ export default function Footer() {
               <li><Link href={`/${locale}/products#build`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('build')}</Link></li>
               <li><Link href={`/${locale}/products#run`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('run')}</Link></li>
               <li><Link href={`/${locale}/products#protect`} className="hover:text-[#00D4FF] transition-colors duration-200">{t('protect')}</Link></li>
+              <li><Link href={`/${locale}/compare`} className="hover:text-[#00D4FF] transition-colors duration-200">{locale === 'zh' ? '為何選擇我們' : 'Why Choose Us'}</Link></li>
               <li><Link href={`/${locale}/vmware-alternative`} className="hover:text-[#00D4FF] transition-colors duration-200">VMware Alternatives</Link></li>
               <li><Link href={`/${locale}/vmware-alternative#tco-calculator`} className="hover:text-[#00D4FF] transition-colors duration-200">TCO Calculator</Link></li>
             </ul>

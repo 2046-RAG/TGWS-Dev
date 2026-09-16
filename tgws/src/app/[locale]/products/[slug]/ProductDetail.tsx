@@ -4,7 +4,8 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { slugToI18n, ProductIcon, tabColors, type TabKey } from '../shared';
+import Image from 'next/image';
+import { slugToI18n, ProductIcon, tabColors, productImages, type TabKey } from '../shared';
 import { Check, ArrowRight, Building2 } from 'lucide-react';
 
 interface VendorSolution {
@@ -66,6 +67,7 @@ export default function ProductDetail({ product }: { product: Product }) {
   const isZh = locale === 'zh';
   const description = isZh ? (product.descriptionZh || product.description) : product.description;
   const relatedVendors = product.relatedVendors || [];
+  const heroImage = productImages[slug];
 
   return (
     <section className="py-20 px-5 sm:px-8 max-w-5xl mx-auto">
@@ -76,6 +78,19 @@ export default function ProductDetail({ product }: { product: Product }) {
         transition={{ duration: 0.4 }}
         className="mb-12"
       >
+        {heroImage && (
+          <div className="relative w-full h-56 sm:h-72 md:h-80 rounded-3xl overflow-hidden mb-8 border border-gray-100 dark:border-zinc-700">
+            <Image
+              src={heroImage}
+              alt={t(i18nKey || product.title)}
+              fill
+              priority
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 896px"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+          </div>
+        )}
         <div className="flex items-center gap-5 mb-6">
           <div
             className="relative w-20 h-20 rounded-3xl flex items-center justify-center shadow-sm"

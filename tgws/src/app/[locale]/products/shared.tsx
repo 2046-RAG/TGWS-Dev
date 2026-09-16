@@ -86,6 +86,38 @@ export const productIcons: Record<string, ProductIconComponent> = {
   'incident-response': CircleAlert,
 };
 
+/** Product hero photos (list cards + detail). Each slug maps to a unique file. */
+export const productImages: Record<string, string> = {
+  'ai-generated-content-aigc': '/images/products/real/aigc.jpg',
+  'ai-assisted-coding': '/images/products/real/ai-coding.jpg',
+  'ai-agent-development': '/images/products/real/ai-agent.jpg',
+  'enterprise-legacy-system-ai-augmentation': '/images/products/real/legacy-ai.jpg',
+  'ai-adoption-services': '/images/products/real/ai-adoption.jpg',
+  'server-virtualization-platform': '/images/products/real/virtualization.jpg',
+  'hyper-converged-infrastructure': '/images/products/real/hci.jpg',
+  'cloud-migration': '/images/products/real/cloud.jpg',
+  'cloud-repatriation': '/images/products/real/cloud-repatriation.jpg',
+  'enterprise-storage-solutions': '/images/products/real/storage.jpg',
+  'managed-hosting-services': '/images/products/real/managed-hosting-services.jpg',
+  'business-continuity-disaster-recovery': '/images/products/real/business-continuity-disaster-recovery.jpg',
+  'enterprise-routers': '/images/products/real/routers.jpg',
+  'core-switches': '/images/products/real/switches.jpg',
+  'access-switches': '/images/products/real/access-switches.jpg',
+  'aggregation-switches': '/images/products/real/aggregation-switches.jpg',
+  'enterprise-wireless-ap': '/images/products/real/enterprise-wireless-ap.jpg',
+  'wireless-controllers': '/images/products/real/wireless-controllers.jpg',
+  'outdoor-wireless-ap': '/images/products/real/outdoor-wireless-ap.jpg',
+  'wifi-6-7-ap': '/images/products/real/wifi-6-7-ap.jpg',
+  'next-gen-firewall-ips': '/images/products/real/next-gen-firewall-ips.jpg',
+  'web-application-firewall': '/images/products/real/web-application-firewall.jpg',
+  'endpoint-detection-response': '/images/products/real/endpoint-detection-response.jpg',
+  'network-detection-response': '/images/products/real/network-detection-response.jpg',
+  'cloud-security': '/images/products/real/cloud-security.jpg',
+  'sd-wan-load-balancing': '/images/products/real/sd-wan-load-balancing.jpg',
+  'managed-detection-response': '/images/products/real/managed-detection-response.jpg',
+  'incident-response': '/images/products/real/incident-response.jpg',
+};
+
 export function ProductIcon({
   slug,
   size = 28,

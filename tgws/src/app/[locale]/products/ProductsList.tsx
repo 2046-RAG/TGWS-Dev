@@ -4,7 +4,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { slugToI18n, ProductIcon, tabColors, runSubgroups, type TabKey } from './shared';
+import { slugToI18n, ProductIcon, tabColors, runSubgroups, productImages, type TabKey } from './shared';
 import { Server, ArrowRight, Search, X, Code2, Shield } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -21,42 +21,7 @@ interface Product {
   features: string[];
 }
 
-// Real product images - each product has its own UNIQUE image
-const imageMap: Record<string, string> = {
-  // Build - AI products (5 unique images)
-  'ai-generated-content-aigc': '/images/products/real/aigc.jpg',
-  'ai-assisted-coding': '/images/products/real/ai-coding.jpg',
-  'ai-agent-development': '/images/products/real/ai-agent.jpg',
-  'enterprise-legacy-system-ai-augmentation': '/images/products/real/legacy-ai.jpg',
-  'ai-adoption-services': '/images/products/real/ai-adoption.jpg',
-  // Run - Infrastructure (7 unique images)
-  'server-virtualization-platform': '/images/products/real/virtualization.jpg',
-  'hyper-converged-infrastructure': '/images/products/real/hci.jpg',
-  'cloud-migration': '/images/products/real/cloud.jpg',
-  'cloud-repatriation': '/images/products/real/cloud-repatriation.jpg',
-  'enterprise-storage-solutions': '/images/products/real/storage.jpg',
-  'managed-hosting-services': '/images/products/real/managed-hosting-services.jpg',
-  'business-continuity-disaster-recovery': '/images/products/real/business-continuity-disaster-recovery.jpg',
-  // Run - Routing & Switching (4 unique images)
-  'enterprise-routers': '/images/products/real/routers.jpg',
-  'core-switches': '/images/products/real/switches.jpg',
-  'access-switches': '/images/products/real/access-switches.jpg',
-  'aggregation-switches': '/images/products/real/aggregation-switches.jpg',
-  // Run - Wireless (4 unique images)
-  'enterprise-wireless-ap': '/images/products/real/enterprise-wireless-ap.jpg',
-  'wireless-controllers': '/images/products/real/wireless-controllers.jpg',
-  'outdoor-wireless-ap': '/images/products/real/outdoor-wireless-ap.jpg',
-  'wifi-6-7-ap': '/images/products/real/wifi-6-7-ap.jpg',
-  // Protect - Security (8 unique images)
-  'next-gen-firewall-ips': '/images/products/real/next-gen-firewall-ips.jpg',
-  'web-application-firewall': '/images/products/real/web-application-firewall.jpg',
-  'endpoint-detection-response': '/images/products/real/endpoint-detection-response.jpg',
-  'network-detection-response': '/images/products/real/network-detection-response.jpg',
-  'cloud-security': '/images/products/real/cloud-security.jpg',
-  'sd-wan-load-balancing': '/images/products/real/sd-wan-load-balancing.jpg',
-  'managed-detection-response': '/images/products/real/managed-detection-response.jpg',
-  'incident-response': '/images/products/real/incident-response.jpg',
-};
+// Real product images live in shared.tsx `productImages` (single source).
 
 const tabs: { key: TabKey; i18nKey: string }[] = [
   { key: 'build', i18nKey: 'build' },
@@ -113,7 +78,7 @@ export default function ProductsList({ products }: { products: Product[] }) {
     const slug = product.slug?.current || '';
     const i18nKey = slugToI18n[slug] || '';
     const features = slug ? t.raw('features.' + slug) : null;
-    const imageSrc = imageMap[slug];
+    const imageSrc = productImages[slug];
 
     return (
       <motion.div

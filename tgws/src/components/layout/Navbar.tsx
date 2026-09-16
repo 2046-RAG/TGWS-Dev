@@ -38,6 +38,7 @@ export default function Navbar() {
         { label: t('build'), href: `/${locale}/products#build`, desc: home('buildDesc') },
         { label: t('run'), href: `/${locale}/products#run`, desc: home('runDesc') },
         { label: t('protect'), href: `/${locale}/products#protect`, desc: home('protectDesc') },
+        { label: locale === 'zh' ? '为何選擇 TechGuru' : 'Why Choose TechGuru', href: `/${locale}/compare`, desc: locale === 'zh' ? '與傳統方案對比' : 'TechGuru vs traditional vendors' },
         { label: 'VMware Alternatives', href: `/${locale}/vmware-alternative`, desc: locale === 'zh' ? '替代方案与TCO对比' : 'Alternatives & TCO comparison' },
         { label: 'TCO Calculator', href: `/${locale}/vmware-alternative#tco-calculator`, desc: locale === 'zh' ? '对比VMware/Sangfor/Nutanix' : 'Compare VMware vs Sangfor vs Nutanix' },
       ],
