@@ -5,8 +5,9 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import VendorLogo from '@/components/ui/VendorLogo';
 import { slugToI18n, ProductIcon, tabColors, productImages, type TabKey } from '../shared';
-import { Check, ArrowRight, Building2 } from 'lucide-react';
+import { Check, ArrowRight } from 'lucide-react';
 
 interface VendorSolution {
   vendor: string;
@@ -178,7 +179,6 @@ export default function ProductDetail({ product }: { product: Product }) {
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {relatedVendors.map((v, i) => {
-              const vColor = getVendorColor(v.vendor);
               const desc = isZh ? (v.descriptionZh || v.description) : v.description;
               return (
                 <div
@@ -186,12 +186,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                   className="group bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl p-5 hover:shadow-md transition-all"
                 >
                   <div className="flex items-center gap-3 mb-3">
-                    <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center"
-                      style={{ backgroundColor: vColor + '15', color: vColor }}
-                    >
-                      <Building2 size={20} />
-                    </div>
+                    <VendorLogo vendor={v.vendor} />
                     <div>
                       <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{v.vendor}</h3>
                       <p className="text-xs text-gray-500 dark:text-gray-400">{v.solution}</p>

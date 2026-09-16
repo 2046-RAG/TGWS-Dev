@@ -36,18 +36,7 @@ export default function Navbar() {
       href: `/${locale}/products`,
       children: [
         { label: t('build'), href: `/${locale}/products#build`, desc: home('buildDesc') },
-        { label: t('run'), href: `/${locale}/products#run`, desc: home('runDesc') },
-        {
-          // VMware alternatives is a Run solution (not a fourth product pillar)
-          label: locale === 'zh' ? 'VMware 替代方案' : 'VMware Alternatives',
-          href: `/${locale}/vmware-alternative`,
-          desc: locale === 'zh' ? 'Run · Sangfor / Huawei / StarWind / Nutanix' : 'Run · Sangfor / Huawei / StarWind / Nutanix',
-        },
-        {
-          label: locale === 'zh' ? 'TCO 計算器' : 'TCO Calculator',
-          href: `/${locale}/vmware-alternative#tco-calculator`,
-          desc: locale === 'zh' ? 'Run 工具 · 成本對比' : 'Run tool · cost comparison',
-        },
+        { label: t('run'), href: `/${locale}/products#run`, desc: locale === 'zh' ? '含 VMware 替代方案專題' : 'Includes VMware Alternatives topic' },
         { label: t('protect'), href: `/${locale}/products#protect`, desc: home('protectDesc') },
       ],
     },
