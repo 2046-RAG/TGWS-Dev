@@ -29,21 +29,27 @@ export async function generateMetadata({
     notFound();
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.techguru-it.asia';
+  // Prefer brand domain; never emit *.vercel.app into hreflang (SEO).
+  const envUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.techguru-it.asia';
+  const siteUrl = envUrl.includes('vercel.app')
+    ? 'https://www.techguru-it.asia'
+    : envUrl.replace(/\/$/, '');
   const otherLocales = locales.filter((l) => l !== locale);
 
   return {
     title: {
       default: 'TechGuru | Network & Data Solutions',
-      template: '%s | TechGuru',
+      // Pages already include brand in many i18n metadata titles — avoid `| TechGuru | TechGuru`.
+      template: '%s',
     },
     description:
       'Enterprise network infrastructure, cybersecurity, and data solutions. Build, run, and protect your IT environment with TechGuru.',
     alternates: {
-      canonical: `/${locale}`,
-      languages: Object.fromEntries(
-        otherLocales.map((l) => [l, `${siteUrl}/${l}`]),
-      ) as Record<string, string> & { 'x-default'?: string },
+      canonical: `${siteUrl}/${locale}`,
+      languages: Object.fromEntries([
+        ...otherLocales.map((l) => [l, `${siteUrl}/${l}`]),
+        ['x-default', `${siteUrl}/${defaultLocale}`],
+      ]) as Record<string, string> & { 'x-default'?: string },
     },
     openGraph: {
       type: 'website',

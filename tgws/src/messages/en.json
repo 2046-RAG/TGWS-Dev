@@ -527,7 +527,7 @@
   },
   "about": {
     "title": "About TechGuru",
-    "intro": "Founded in 2023, TechGuru Network & Data Solutions delivers IT infrastructure solutions across Asia. We partner with leading technology providers to help businesses build, run, and protect their critical systems.",
+    "intro": "Founded in 2020, TechGuru Network & Data Solutions delivers IT infrastructure solutions across Asia. We partner with leading technology providers to help businesses build, run, and protect their critical systems.",
     "timeline": {
       "title": "Our Journey",
       "page_title": "Our Journey",
@@ -645,6 +645,8 @@
   "products": {
     "title": "Our Products & Services",
     "subtitle": "Comprehensive IT solutions spanning Build, Run, and Protect for your business.",
+    "learnMore": "Learn more",
+    "viewAllProducts": "View all products",
     "build": "Build",
     "run": "Run",
     "protect": "Protect",
@@ -895,6 +897,8 @@
     },
     "title": "Privacy Policy",
     "lastUpdated": "Last Updated",
+    "lastUpdatedDate": "July 1, 2026",
+    "lastUpdatedDate": "July 1, 2026",
     "intro": "TechGuru Network & Data Solutions Inc. (&quot;TechGuru,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.",
     "section1Title": "1. Information We Collect",
     "section1Body": "We may collect information about you in various ways, including:",
@@ -1191,6 +1195,7 @@
     },
     "title": "Terms of Service",
     "lastUpdated": "Last Updated",
+    "lastUpdatedDate": "July 1, 2026",
     "intro": "Welcome to TechGuru Network & Data Solutions Inc. (&quot;TechGuru,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;). These Terms of Service (&quot;Terms&quot;) govern your access to and use of our website, products, and services (&quot;Services&quot;). By accessing or using our Services, you agree to be bound by these Terms.",
     "section1Title": "1. Acceptance of Terms",
     "section1Body": "By accessing and using the TechGuru website and services, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, please do not use our services. We reserve the right to modify these terms at any time, and such modifications shall be effective immediately upon posting.",

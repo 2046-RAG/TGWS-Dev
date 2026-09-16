@@ -79,7 +79,7 @@ export default function CategoryPage({
             {Array.isArray(features) ? features.join(' • ') : (product.features?.join(' • ') || '')}
           </p>
           <span className="inline-flex items-center gap-1 text-sm font-medium" style={{ color }}>
-            Learn more <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            {t('learnMore')} <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </span>
         </Link>
       </motion.div>
@@ -151,7 +151,7 @@ export default function CategoryPage({
           href={`/${locale}/products`}
           className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-[#00D4FF] transition-colors"
         >
-          ← View all products
+          ← {t('viewAllProducts')}
         </Link>
       </div>
     </section>

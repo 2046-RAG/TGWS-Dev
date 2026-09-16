@@ -171,7 +171,7 @@ export default function ProductsList({ products }: { products: Product[] }) {
               {Array.isArray(features) ? features.join(' • ') : (product.features?.join(' • ') || '')}
             </p>
             <span className="inline-flex items-center gap-1 text-sm font-medium" style={{ color: tabColors[activeTab] }}>
-              Learn more <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              {t('learnMore')} <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </span>
           </div>
         </Link>

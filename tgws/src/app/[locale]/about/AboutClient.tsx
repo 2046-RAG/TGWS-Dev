@@ -42,7 +42,7 @@ export default function AboutClient({ teamMembers, qualifications }: AboutClient
               {t('timeline.title')}
             </h2>
             <Link
-              href="/about/timeline"
+              href={`/${locale}/about/timeline`}
               className="inline-flex items-center gap-2 text-[#00D4FF] hover:text-[#00B8E6] transition-colors font-medium"
             >
               <Calendar className="w-4 h-4" />
@@ -54,7 +54,7 @@ export default function AboutClient({ teamMembers, qualifications }: AboutClient
           {/* Simplified Timeline Preview */}
           <div className="bg-gradient-to-r from-[#00D4FF]/5 via-transparent to-[#7B61FF]/5 rounded-2xl p-8">
             <div className="flex flex-wrap justify-center gap-4">
-              {['2023', '2024', '2025'].map((year) => (
+              {['2020', '2022', '2025'].map((year) => (
                 <div key={year} className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-[#00D4FF]" />
                   <span className="text-gray-700 dark:text-gray-300 font-medium">{year}</span>

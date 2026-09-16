@@ -1,4 +1,4 @@
-import { client } from '@/lib/sanity';
+import { client } from '@/lib/sanity.server';
 import { logServiceError } from '@/lib/errors';
 import SolutionsList from './SolutionsList';
 import Breadcrumb from '@/components/ui/Breadcrumb';
@@ -34,7 +34,13 @@ async function getSolutions() {
       description,
       descriptionZh,
       challenges,
+      challengesZh,
+      solutions,
+      solutionsZh,
       recommendedProducts,
+      recommendedProductsZh,
+      metricLabel,
+      metricLabelZh,
       image
     }`;
     const solutions = await client.fetch(query);

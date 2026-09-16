@@ -32,7 +32,7 @@ export default async function PrivacyPage() {
         
         <div className="prose prose-gray max-w-none space-y-8 text-gray-600 dark:text-gray-300 leading-relaxed text-base">
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            <strong>{t('lastUpdated')}:</strong> July 1, 2026
+            <strong>{t('lastUpdated')}:</strong> {t('lastUpdatedDate')}
           </p>
 
           <p>{t('intro')}</p>
