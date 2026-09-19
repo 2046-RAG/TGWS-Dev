@@ -32,28 +32,8 @@ interface Post {
   tags: string[];
 }
 
-/**
- * Near-duplicate Sanity posts share slug + coverImage.
- * Until CMS slugs are unique, pin each document to its own cover file.
- */
-const COVER_OVERRIDES: Record<string, string> = {
-  'post-iso-27001-implementation-guide':
-    '/images/blog/covers/iso-27001-certification-lessons-philippines.jpg',
-  'post-vmware-cloud-foundation-private-cloud':
-    '/images/blog/covers/vmware-vcf-private-cloud-deployments.jpg',
-  'post-vmware-ha-vs-ft-which-need':
-    '/images/blog/covers/vmware-ha-vs-ft-tested-both.jpg',
-  'post-vmware-horizon-vdi-remote-workforce':
-    '/images/blog/covers/vmware-horizon-vdi-lessons-2024.jpg',
-  'post-vmware-migration-checklist-10-steps':
-    '/images/blog/covers/vmware-migration-10-steps-disaster.jpg',
-  'post-vmware-vsphere-8-upgrade-lessons':
-    '/images/blog/covers/vmware-vsphere8-biggest-rollout-lessons.jpg',
-};
-
+/** Resolve list/detail cover from Sanity coverImage (absolute URL or asset). */
 function getCoverSrc(post: Post): string | null {
-  const override = COVER_OVERRIDES[post._id];
-  if (override) return override;
   const cover = post.coverImage;
   if (!cover) return null;
   if (typeof cover === 'string' && (cover.startsWith('http') || cover.startsWith('/'))) return cover;
