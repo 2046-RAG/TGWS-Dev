@@ -32,6 +32,34 @@ interface Post {
   tags: string[];
 }
 
+/**
+ * Near-duplicate Sanity posts share slug + coverImage.
+ * Until CMS slugs are unique, pin each document to its own cover file.
+ */
+const COVER_OVERRIDES: Record<string, string> = {
+  'post-iso-27001-implementation-guide':
+    '/images/blog/covers/iso-27001-certification-lessons-philippines.jpg',
+  'post-vmware-cloud-foundation-private-cloud':
+    '/images/blog/covers/vmware-vcf-private-cloud-deployments.jpg',
+  'post-vmware-ha-vs-ft-which-need':
+    '/images/blog/covers/vmware-ha-vs-ft-tested-both.jpg',
+  'post-vmware-horizon-vdi-remote-workforce':
+    '/images/blog/covers/vmware-horizon-vdi-lessons-2024.jpg',
+  'post-vmware-migration-checklist-10-steps':
+    '/images/blog/covers/vmware-migration-10-steps-disaster.jpg',
+  'post-vmware-vsphere-8-upgrade-lessons':
+    '/images/blog/covers/vmware-vsphere8-biggest-rollout-lessons.jpg',
+};
+
+function getCoverSrc(post: Post): string | null {
+  const override = COVER_OVERRIDES[post._id];
+  if (override) return override;
+  const cover = post.coverImage;
+  if (!cover) return null;
+  if (typeof cover === 'string' && (cover.startsWith('http') || cover.startsWith('/'))) return cover;
+  return urlFor(cover).width(1200).height(600).url();
+}
+
 export default function BlogList({ posts }: { posts: Post[] }) {
   const t = useTranslations('blog');
   const params = useParams();
@@ -141,11 +169,9 @@ export default function BlogList({ posts }: { posts: Post[] }) {
             <article className="relative rounded-2xl overflow-hidden group cursor-pointer min-h-[420px] md:min-h-[480px] flex items-end">
               {/* Background Image */}
               <div className="absolute inset-0">
-                {featuredPost.coverImage ? (
+                {getCoverSrc(featuredPost) ? (
                   <Image
-                    src={typeof featuredPost.coverImage === 'string' && featuredPost.coverImage.startsWith('http')
-                      ? featuredPost.coverImage
-                      : urlFor(featuredPost.coverImage).width(1200).height(600).url()}
+                    src={getCoverSrc(featuredPost)!}
                     alt={featuredPost.title}
                     fill
                     priority
@@ -221,11 +247,9 @@ export default function BlogList({ posts }: { posts: Post[] }) {
                 <article className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl overflow-hidden group hover:border-[#00D4FF]/30 hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full">
                   {/* Image with category color accent */}
                   <div className="relative h-44">
-                    {post.coverImage ? (
+                    {getCoverSrc(post) ? (
                       <Image
-                        src={typeof post.coverImage === 'string' && post.coverImage.startsWith('http')
-                          ? post.coverImage
-                          : urlFor(post.coverImage).width(600).height(300).url()}
+                        src={getCoverSrc(post)!}
                         alt={post.title}
                         fill
                         sizes="(max-width: 768px) 100vw, 50vw"
