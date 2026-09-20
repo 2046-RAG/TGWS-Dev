@@ -262,7 +262,7 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
           </div>
-        )}
+        ) : null}
 
         {/* 架构图 */}
         {post.architectureDiagram && (
