@@ -43,9 +43,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const description = typeof rawDesc === 'object' ? (rawDesc.en || rawDesc.zh || Object.values(rawDesc)[0] || '') : rawDesc;
   // OG image: use coverImage via urlFor when present, else the brand logo
   // (no picsum — AGENTS.md rule #58).
-  const ogImage = post.coverImage && typeof post.coverImage === 'object'
-    ? urlFor(post.coverImage).width(1200).height(630).url()
-    : 'https://www.techguru-it.asia/logos/techguru-logo.png';
+  const ogImage =
+    typeof post.coverImage === 'string' && post.coverImage.startsWith('http')
+      ? post.coverImage
+      : post.coverImage && typeof post.coverImage === 'object'
+        ? urlFor(post.coverImage).width(1200).height(630).url()
+        : 'https://www.techguru-it.asia/logos/techguru-logo.png';
   return {
     title: String(title),
     description: String(description),

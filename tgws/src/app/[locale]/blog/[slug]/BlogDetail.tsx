@@ -18,6 +18,20 @@ function str(val: unknown): string {
   return '';
 }
 
+/** coverImage can be a full URL string (local covers) or a Sanity asset object. */
+function coverSrc(post: { coverImage?: unknown }): string {
+  const cover = post.coverImage;
+  if (!cover) return '';
+  if (typeof cover === 'string') {
+    if (cover.startsWith('http') || cover.startsWith('/')) return cover;
+  }
+  try {
+    return urlFor(cover as Parameters<typeof urlFor>[0]).width(1200).height(600).url();
+  } catch {
+    return '';
+  }
+}
+
 interface PortableTextBlock {
   _type: string;
   style?: string;
@@ -205,18 +219,17 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
   ];
 
   // 估算阅读时间
-  const content = locale === 'zh' ? (post.contentZh || post.content) : post.content;
-  const wordCount = content?.reduce((acc, block) => {
-    if (block._type === 'block') {
-      return acc + (block.children?.map(c => c.text).join(' ') || '').split(/\s+/).length;
+  const rawContent = locale === 'zh' ? (post.contentZh || post.content) : post.content;
+  const content = Array.isArray(rawContent) ? rawContent : [];
+  const wordCount = content.reduce((acc, block) => {
+    if (block && block._type === 'block' && Array.isArray(block.children)) {
+      return acc + (block.children.map((c) => c?.text || '').join(' ') || '').split(/\s+/).length;
     }
     return acc;
   }, 0) || 0;
   const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
-  const ogImage = post.coverImage
-    ? urlFor(post.coverImage).width(1200).height(630).url()
-    : 'https://www.techguru-it.asia/logos/techguru-logo.png';
+  const ogImage = coverSrc(post) || 'https://www.techguru-it.asia/logos/techguru-logo.png';
 
   return (
     <section className="py-12 sm:py-20 px-5 sm:px-8 max-w-4xl mx-auto">
@@ -236,12 +249,10 @@ export default function BlogDetail({ post, locale }: { post: Post; locale: strin
         </Link>
 
         {/* 封面图 */}
-        {post.coverImage && (
+        {coverSrc(post) ? (
           <div className="relative mb-8 rounded-2xl overflow-hidden">
             <Image
-              src={typeof post.coverImage === 'string' && post.coverImage.startsWith('http')
-                ? post.coverImage
-                : urlFor(post.coverImage).width(1200).height(600).url()}
+              src={coverSrc(post)!}
               alt={str(post.title)}
               width={1200}
               height={600}
