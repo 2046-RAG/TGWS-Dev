@@ -88,3 +88,11 @@
 4. §4 的 D1/D2 本轮已处理；D8/D10 需要你拍板，D3/D4/D5/D6 仍未动。
 
 > 期间代码继续推进，新增的待验项会 append 到本文，不另开文档。
+---
+
+## §7 11:41 补记（清单同步）
+
+- **GitHub 存档补推失败**：本地 commit `eb3f72f` 与本轮清单更新仍只在本地；`git push origin Trunk` 共 4 次失败（`Empty reply from server` / `schannel TLS 握手` / `TLS unexpected eof`），`api.github.com` 可读但 `github.com` 的 TLS 不通。**线上生产是最新的**（走 Vercel 直推），只是 GitHub 仓库落后。
+- **D2 的 CI 修复因此尚未触发**：`npm ci --legacy-peer-deps` 是否能让 Actions 转绿，仍未验证；网络恢复后补推再单次查结果。
+- 完整剩余待办以 `TODO.md` **§8 当前剩余待办总览（11:41）** 为准；本节只列验收动作。
+
