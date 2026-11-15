@@ -61,11 +61,11 @@
 | # | 事项 | 现状 | 建议 |
 |:--:|---|---|---|
 | D1 | 本地构建堆上限 | ✅ 已写进 `README.md`「2026-11-15 实测修正」：4GB 堆与单 worker 均失败，判定本机内存不足，本地 build 不作上线前置，生产以 Vercel 构建为准 | 换机或释放内存后补跑一次 |
-| D2 | GitHub Actions | 首次运行挂在 `npm ci`；本轮已把安装命令改为 `npm ci --legacy-peer-deps`（针对 react 19.2.4 与 `@portabletext/editor` ^19.2.7 的 peer 冲突，**推断修复未确认**） | 下次 push 后单次查 Actions 结果；不要轮询等待 |
+| D2 | GitHub Actions | ✅ **已实测转绿**：`npm ci --legacy-peer-deps` 修复后，`62f11061`（12:14）与 `67a5528`（11-16 01:42 复核）两次 Actions 均 `completed / success` | 剩 `verify` 未设 required check（需仓库管理员），CI 红仍不拦上线 |
 | D3 | Vercel Git 集成 | 仍连着 GitHub，push 会额外触发一次自动部署 | 要不要断开，需你拍板 |
 | D4 | 无邮箱账号边界 | 006 触发器跳过手机 / 不返回邮箱的 OAuth 账号，这类用户仍建不了单 | 需设计占位身份映射 |
 | D5 | 中文站 8 个产品特性 | 显示英文（CMS 无中文字段） | 归入 T-072 / T-075 |
-| D6 | 首页首屏策略 | T-062 剩的一半：`use client` + video `preload=auto` 未处理 | 归入 T-062 |
+| D6 | 首页首屏策略 | 🟡 **部分完成**：video `preload=auto` 已于 11:00 批次改 `metadata` 并线上核对；**首页仍为 `use client`、LCP 真机基线仍缺** | 归 T-062 / A17；不要据此把 T-062 划掉 |
 | D7 | 本地构建 OOM | 本机连续 5 次 `next build` worker OOM（4GB 堆、单 worker 临时验证均失败，配置已恢复）；云端 Vercel 构建每次 ● Ready | 本地 build 暂不作为上线前置；回来换机或释放内存后再验 |
 | D8 | Supabase 重定向白名单 | 只读查到 `site_url=https://www.techguru-it.asia`、`uri_allow_list=""`（空）。重置邮件的新目标 `/en/support/reset-password` 是否被允许**未实测**；未擅自改生产 auth 配置 | A14 若被拒，在 Supabase Auth → URL Configuration 加该 URL 或通配 |
 | D9 | T-077 的邮箱验证 | 只读查到 `mailer_allow_unverified_email_sign_ins=false`、`disable_signup=false`，说明平台层可能已强制邮箱验证；**功能效果未验证**，不要直接把 T-077 的「邮箱验证」划掉 | 用新注册账号确认是否必须验邮箱才能登录 |
@@ -96,5 +96,6 @@
 - **GitHub 存档补推失败**：本地 commit `eb3f72f` 与本轮清单更新仍只在本地；`git push origin Trunk` 共 4 次失败（`Empty reply from server` / `schannel TLS 握手` / `TLS unexpected eof`），`api.github.com` 可读但 `github.com` 的 TLS 不通。**线上生产是最新的**（走 Vercel 直推），只是 GitHub 仓库落后。
 - **E1 / D2 已于 12:13–12:14 解决**（本段上文为 11:41 的旧状态）：网络恢复后单次 `git push` 成功（`aecb62e..62f1106`）；GitHub Actions 运行 `62f11061 / Trunk / completed / **success**`，`npm ci --legacy-peer-deps` 修复被实测确认。
 - **门禁仍未接线**：`verify` 没被设为 required status check，CI 失败依然不会阻止 Vercel 生产部署；这一步需要仓库管理员在后台设置。
-- 完整剩余待办以 `TODO.md` **§8 当前剩余待办总览（11:41）** 为准；本节只列验收动作。
+- 完整剩余待办以 `TODO.md` **§8 当前剩余待办总览（11-16 01:42 核对）** 为准；本节只列验收动作。
+- **01:42 一致性修正**：① D2 从「推断修复未确认」改为两次 Actions 实测 success；② D6 从「`preload=auto` 未处理」改为「preload 已改 `metadata`，仍缺 `use client` 与 LCP 基线」；③ `TODO.md` §8.1 真机观察由 6 项修正为 **B1–B7 共 7 项**（12:13 新增 B7 后漏同步）；④ §8.3 的「T-069 Actions 转绿未验」与 E2 矛盾，改为已转绿、剩 required check。A1–A17 / B1–B7 / C1–C8 的**验收动作本身状态不变**。
 
