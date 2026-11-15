@@ -28,7 +28,7 @@
 | P0 4/4、P1 12/12、P2 10/10 | 是"任务条目关闭"，不是"功能可用"；82 个问题中 39 个未进任何行动项 | 旧统计作废，按本节重排 |
 | 测试 68 文件全绿 | 402 例中 14 失败（限流器污染、Sanity env 未注入、断言过期） | 转 T-068 |
 | 覆盖率 74.9% | 本轮未复测，无 CI 门禁 | 转 T-068 |
-| ISR/SSG 实时生效 | 23 条 locale 路由全动态，`revalidate` 与 `/api/revalidate` 对页面无效 | 转 T-062（本地已修，**线上未部署**） |
+| ISR/SSG 实时生效 | 23 条 locale 路由全动态，`revalidate` 与 `/api/revalidate` 对页面无效 | 转 T-062（**已推生产，线上 `PRERENDER`/`HIT` 已验证**） |
 | GlobalSearch 多模态/图片搜索 | 上传图后只把 query 置为 `'image search'`，未进视觉模型 | 转 T-064 |
 | TCO 定价 Sanity 驱动 | 有定价，但 Sangfor 为估算、无来源与有效期 | 转 T-065 |
 | Umami 已接入 | CSP `script-src` 未放行 `cloud.umami.is`，脚本被拒 | 转 T-067 |
@@ -120,7 +120,7 @@
 
 | 编号 | 任务 | 依据 | 验收标准 |
 |------|------|------|----------|
-| T-062 | 恢复静态渲染 + 首屏策略 🟡**部分完成**（静态渲染本地已验证；首屏策略、线上部署未做） | 23 条 locale 路由全 Dynamic；无 `setRequestLocale`；首页 `use client` + video `preload=auto` | 构建产物出现 `○`/ISR + **线上部署后**确认缓存命中与 revalidate 生效；首页 LCP 有基线且 video 不抢首屏带宽 |
+| T-062 | 恢复静态渲染 + 首屏策略 🟡**部分完成**（静态渲染已推生产并线上验证；仅剩首屏策略未做） | 23 条 locale 路由全 Dynamic；无 `setRequestLocale`；首页 `use client` + video `preload=auto` | 构建产物出现 `○`/ISR + **线上部署后**确认缓存命中与 revalidate 生效；首页 LCP 有基线且 video 不抢首屏带宽 |
 | T-063 | 中文博客补译或显式回退 + 5 篇空正文补齐 | 72 篇有正文，63 篇 `contentZh` < 英文 10%，中位 6.8%；5 篇 `content` 为空 | 任选 10 篇 ZH，正文 ≥ 英文 60% 或页面明示"英文原文"；空正文清零 |
 | T-064 | 搜索体验收口（图片/口径/摘要） | `api/search/route.ts:19-31` 未使用 `imageData`；全局/产品/FAQ 三套搜索口径；摘要无缓存/超时标识 | 图片搜索接模型或删入口；三套搜索统一为一套；摘要失败有降级标识 |
 | T-065 | TCO 价格来源、有效期、免责口径 | Sanity `tcoCalculator`：Sangfor `isEstimated`，VMware/Nutanix 无来源 | 每个价格有来源/日期；页面显示有效期；Sangfor 明示估算 |
@@ -138,24 +138,26 @@
 | T-078 | 双语硬编码清剿 | Navbar 中英三元、移动端 `Search`、UserMenu `Sign In/Out`、alt 英文、`taipei/hongKong` 键名 | `grep` 无 JSX 中文字面量/硬编码英文；ZH 页无英文按钮 |
 | T-079 | Footer 订阅：接后端或移除 | `Footer.tsx:12-17` 仅 `setSubscribed(true)` | 二选一：接 Resend/表单入库，或删除订阅框 |
 
-### 3.1 T-062 阶段结果（2026-11-15，代码完成 / 线上未部署）
+### 3.1 T-062 结果（2026-11-15，**已推生产并线上验证**）
 
 > 完整记录：`docs/runbooks/2026-11-15-T-062-static-rendering.md`
 
-**已做（本地）**：`[locale]/layout.tsx` 加 `setRequestLocale`；法律页改为从 `params` 取 locale；blog/products 详情页加 `generateStaticParams`；产品列表页因 `useSearchParams()` 显式保留 `force-dynamic`；顺带清掉构建期 80 条 i18n 错误（8 个网络产品特性回退 CMS 真实数据、`faqCounts` 数字改字符串）。共改 11 个文件，未改任何测试文件。
+**代码**：`[locale]/layout.tsx` 加 `setRequestLocale`；法律页改为从 `params` 取 locale；blog/products 详情页加 `generateStaticParams`；产品列表页因 `useSearchParams()` 显式保留 `force-dynamic`；顺带清掉构建期 80 条 i18n 错误（8 个网络产品特性回退 CMS 真实数据、`faqCounts` 数字改字符串）。共改 11 个文件，未改任何测试文件。
 
-**实跑**：tsc 0 错；build 通过（20 条 `●` ISR / 5 条 `○` / 4 条 locale 页仍 `ƒ`）；247 个预渲染 HTML；构建期 `MISSING_MESSAGE` / `INVALID_MESSAGE` 归零；eslint 2 errors / 68 warnings（与基线一致）；vitest 5 failed / 64 passed（与基线一致，**无新增回归**）。
+**本地实跑**：tsc 0 错；build 20 条 `●` ISR / 5 条 `○` / 4 条 locale 页仍 `ƒ`；247 个预渲染 HTML；构建期 i18n 报错归零；eslint 2e/68w、vitest 5 失败/64 通过（均与基线一致，无新增回归）。
 
-**未做 / 未验证**：① 从未 `git push`、无 Vercel 凭据 → **线上仍是旧代码，全动态渲染**；② `/api/revalidate` 与缓存命中未在线上验证；③ 首页首屏策略（`use client` + video `preload=auto`）未动；④ 中文站 8 个产品特性显示英文（CMS 无中文字段，归 T-072/T-075）。
+**生产部署（08:10–08:16）**：`git push origin Trunk` → `dca689d..07f88b4`；GitHub 上 Vercel 状态 `success / Deployment has completed`。线上响应头从 `private, no-cache`/`MISS` 变为 `public`/`PRERENDER → HIT`；首页、中文法律页、博客详情、产品详情、帮助页均预渲染；`/products` 与 `/support/login` 按设计仍动态；`/en/privacy` 英文、`/zh/privacy` 繁中，均无串台、均 200。git/curl 走本机代理 `127.0.0.1:51257`（HTTPS CONNECT 隧道），不影响推送落地。
 
-**按第五轮验收口径（代码 + 数据 + 端到端证据），T-062 不能标记已完成。**
+**仍未完成**：① 首页首屏策略（`use client` + video `preload=auto`）；② `/api/revalidate` 主动触发后的页面更新未验证；③ 中文站 8 个产品特性显示英文（CMS 无中文字段，归 T-072/T-075）。
 
-### 3.2 待授权事项：生产部署（DEP-01）
+**T-062 整条仍标 🟡 部分完成**——静态渲染子项已完成（含线上证据），首屏策略未做。
 
-- 现状：所有代码改动只在工作区；唯一线上变更是 T-061 通过 Supabase Management API 执行的 005 迁移（数据库结构）。
-- 阻塞：无 Vercel token / CLI 登录态，未执行过 `git push`。
-- 二选一：① 授权提交并 push（若 Vercel 连 GitHub 自动构建）；② 提供 Vercel token 或本地 `vercel --prod`。
-- 部署后才执行线上验证清单（见 runbook 第 6 节）。
+### 3.2 DEP-01 生产部署（已完成）
+
+- 采用路径：GitHub push 触发 Vercel 自动构建，**不需要** Vercel token。
+- 提交：`a16429a`（T-061 迁移）、`07f88b4`（T-062 代码/文档）；顺带带上此前未推送的 `4e5895c`（博客封面样本清理）。
+- 提交前扫描暂存区无明文密钥；`.secrets/` 已由 `.gitignore` 排除；未提交临时分析脚本与内部评估大文档。
+- 线上证据见 §3.1 与 runbook 第 5 节。
 
 ---
 

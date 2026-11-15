@@ -1,7 +1,7 @@
 # T-062 执行记录：恢复静态渲染 / ISR
 
 **日期**：2026-11-15
-**状态**：代码完成 + 本地验证通过；**线上未部署，T-062 验收未达成**
+**状态**：✅ 已推送生产并在线上验证（08:10 GitHub push → Vercel 自动部署成功）；静态渲染目标达成，首屏策略仍缺
 **范围说明**：本轮只解决"locale 路由全动态"，不含原任务里的首页首屏策略（`use client` + video `preload=auto`）。
 
 ---
@@ -68,29 +68,44 @@
 
 ---
 
-## 5. 未达成 / 未验证（必须如实保留）
+## 5. 生产部署与线上验证（2026-11-15 08:10–08:16）
 
-| 项 | 状态 | 需要什么 |
-|----|------|----------|
-| **代码部署到生产** | ❌ 未做 | 从未 `git push`、无 Vercel token/CLI 登录态；**线上仍是旧代码，全动态渲染** |
-| 线上 `○`/`●`/ISR 生效 | ❌ 未验证 | 部署后用构建日志 + 响应头（`x-nextjs-cache`）验证 |
-| `/api/revalidate` 对页面生效 | ❌ 未验证 | 部署后改一条 Sanity 内容，调 revalidate，确认页面更新 |
-| "重复访问不重复渲染" | 🟡 仅本地证据 | 本地有 247 个预渲染 HTML；线上需两次请求对比 |
-| 首页首屏策略（`use client` + video `preload=auto`） | ❌ 本轮未做 | 原 T-062 验收的一部分，仍待办 |
-| 中文站 8 个产品特性文案 | ❌ 未提供 | 需要业务供数/翻译，归入 T-072 / T-075 |
+**推送**：`git push origin Trunk` → `dca689d..07f88b4 Trunk -> Trunk`（3 个提交：本次 2 个 + 此前未推送的 `4e5895c`）。远程 `refs/heads/Trunk` 已确认为 `07f88b4`。提交前扫描过暂存区，无明文密钥；`.secrets/` 已被 `.gitignore` 排除。
 
-**结论口径**：T-062 的"恢复静态渲染"在**本地代码与构建产物**层面已完成；按 TODO 第五轮的验收口径（代码 + 数据 + 端到端证据），**T-062 不能标记已完成**，因为缺部署与线上证据。
+**部署**：GitHub 该提交的 Vercel 状态 `success / Deployment has completed`。无 Vercel token，靠 GitHub 自动构建。
 
----
+> 网络说明：git 与 curl 均经环境变量指定的本机代理 `http://127.0.0.1:51257`（HTTPS CONNECT 隧道）。`curl -D -` 输出里的 `HTTP/1.1 200 Connection Established` 是代理应答，不是站点状态码；真实状态码用 `%{http_code}` 单独核对为 200。
 
-## 6. 部署后线上验证清单（供下一步）
+| 检查 | 部署前 | 部署后 |
+|------|--------|--------|
+| `/en/privacy` 响应头 | `private, no-cache, no-store` / `X-Vercel-Cache: MISS` | `public, max-age=0, must-revalidate` / `PRERENDER` → `HIT` |
+| 首页、中文法律页、博客详情、产品详情、帮助页 | 全动态 | 均 `PRERENDER`/`HIT` |
+| `/en/products`、`/en/support/login`（设计上保留动态） | `MISS` | 仍 `MISS`（符合预期） |
+| 重复访问 | — | 第 2 次起 `X-Vercel-Cache: HIT`，缓存命中 |
+| 8 个产品页 "Key Features" | 无 | `/en/products/access-switches` 命中 CMS 原文 `PoE+ power supply` |
+| 语言串台 | — | `/en/privacy` = `lang="en"` + Privacy Policy；`/zh/privacy` = `lang="zh"` + 隱私權/個人資料，均 200 |
 
-1. 确认部署方式：Vercel + GitHub 自动构建（需授权 push）或 `vercel --prod`（需 token）。
-2. 部署完成后核对构建日志中 locale 路由为 `●`/`○` 而非 `ƒ`。
-3. 对同一 URL 连续请求 2 次，第二次应命中缓存（`x-nextjs-cache: HIT`）。
-4. 修改一条 Sanity 内容 → 调 `/api/revalidate` → 确认页面在 1 小时内更新。
-5. 抽查 8 个网络产品详情页的 "Key Features" 区块。
-6. 抽查中文站法律页/关于页，确认 `setRequestLocale` 未导致语言串台。
+> Vercel 的 ISR 响应是 `public, max-age=0, must-revalidate` 配合 `x-vercel-cache`，不是自托管 Next.js 的 `s-maxage=3600`。首次自动化检测按 `s-maxage` 判据误报为"未生效"，已按 Vercel 实际头修正。
+
+## 5.1 仍未完成 / 未验证（如实保留）
+
+| 项 | 状态 | 说明 |
+|----|------|------|
+| 首页首屏策略（`use client` + video `preload=auto`） | ❌ 本轮未做 | 原 T-062 验收的一半，仍待办 |
+| `/api/revalidate` 主动触发后的页面更新 | ❌ 未验证 | 需要改一条 Sanity 内容并调接口；未擅自改动线上内容 |
+| 中文站 8 个产品特性文案 | ❌ 未提供 | CMS 无中文字段，中文页显示英文特性；归入 T-072 / T-075 |
+| Vercel 构建日志里的路由表 | 🟡 未直接读取 | 无 Vercel token；以线上响应头 + 部署 success 作为等价证据 |
+
+**结论口径更新**：T-062 的"恢复静态渲染"已有代码 + 构建 + **线上端到端证据**，该项可判定完成；但 T-062 整条任务因首屏策略未做，仍标记**部分完成**。
+
+## 6. 后续可执行验证（本轮未做）
+
+1. ~~确认部署方式~~ 已完成：GitHub push 触发 Vercel 自动构建。
+2. ~~核对 locale 路由渲染模式~~ 已完成：见第 5 节响应头表。
+3. ~~连续请求命中缓存~~ 已完成：`X-Vercel-Cache: HIT`。
+4. 修改一条 Sanity 内容 → 调 `/api/revalidate` → 确认页面更新（未做）。
+5. ~~抽查 8 个网络产品详情页~~ 已抽查 1 个，其余 7 个未逐个核对。
+6. ~~抽查中文站语言串台~~ 已完成：`/zh/privacy` 繁中、`lang="zh"`。
 
 ## 7. 回滚
 
