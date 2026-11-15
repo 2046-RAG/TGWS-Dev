@@ -1,9 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { searchInternal } from './internal';
 
-// Mock the Sanity client used by internal.ts
+// internal.ts imports sanity.server (not sanity). Mocking the wrong module
+// left the real client to be constructed, which crashed on a missing
+// projectId in CI (T-069).
 const fetchMock = vi.fn();
-vi.mock('@/lib/sanity', () => ({
+vi.mock('@/lib/sanity.server', () => ({
   client: { fetch: (...args: unknown[]) => fetchMock(...args) },
 }));
 

@@ -1,0 +1,75 @@
+name: CI
+
+# T-069: gate every push/PR on TypeScript, unit tests and a production build.
+#
+# IMPORTANT: a failing check here does NOT by itself stop a Vercel deployment.
+# Vercel deploys from the GitHub App, independently of Actions results. To make
+# this a real production gate, mark the `verify` job as a required status check
+# in GitHub branch protection, or configure Vercel > Deployment Protection >
+# Required Checks. That last step needs repo-admin access and cannot be done here.
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    # Sanity projectId / dataset are public read-only values (they are
+    # already shipped in the browser bundle), so CI can prerender the
+    # real page set without any secret. Everything else below is a fake
+    # placeholder never used at build time. Production secrets stay in Vercel.
+    env:
+      NEXT_PUBLIC_SANITY_PROJECT_ID: r6ztl1oq
+      NEXT_PUBLIC_SANITY_DATASET: production
+      NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon
+      NEXT_PUBLIC_SITE_URL: https://www.techguru-it.asia
+      SUPABASE_SERVICE_ROLE_KEY: ci-placeholder-service
+      RESEND_API_KEY: ci-placeholder
+      REVALIDATE_SECRET: ci-placeholder
+      ODOO_URL: https://ci-placeholder.example
+      ODOO_DB: ci
+      ODOO_USERNAME: ci
+      ODOO_PASSWORD: ci
+      GOOGLE_GEMINI_API_KEY: ci-placeholder
+      GOOGLE_CSE_ID: ci-placeholder
+      GOOGLE_CSE_API_KEY: ci-placeholder
+      TAVILY_API_KEY: ci-placeholder
+      SANITY_API_TOKEN: ''
+      NEXT_PUBLIC_UMAMI_WEBSITE_ID: ''
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: tgws/package-lock.json
+
+      - name: Install (clean, reproducible)
+        working-directory: tgws
+        run: npm ci
+
+      - name: TypeScript
+        working-directory: tgws
+        run: npx tsc --noEmit
+
+      - name: Unit tests
+        working-directory: tgws
+        run: npm run test:run
+
+      - name: Production build
+        working-directory: tgws
+        run: npm run build

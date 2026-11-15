@@ -19,10 +19,16 @@ vi.mock('resend', () => ({
 
 vi.mock('@/lib/errors', () => ({ logServiceError: vi.fn() }));
 
+// T-069: the route allows 3 requests/min/IP. Loop-style validation cases
+// previously all shared clientIp 'unknown', so the 4th case got 429
+// instead of its real 400 response. Give each request a distinct client.
+let requestSeq = 0;
 function req(body: unknown): NextRequest {
+  requestSeq += 1;
   return new NextRequest('http://x/api/search/lead', {
     method: 'POST',
     body: JSON.stringify(body),
+    headers: { 'x-forwarded-for': `10.0.0.${(requestSeq % 254) + 1}` },
   });
 }
 

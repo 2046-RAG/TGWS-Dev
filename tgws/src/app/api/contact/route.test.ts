@@ -74,9 +74,12 @@ describe('api/contact POST', () => {
     expect(mockLogError).toHaveBeenCalledWith(expect.objectContaining({ service: 'Odoo' }));
   });
 
-  it('returns 500 when request parsing fails', async () => {
+  // Malformed JSON is rejected by parseJsonBody with 400, not a 500.
+  // The old 500 expectation predates that guard; the assertion is kept,
+  // only aligned with the actual (and correct) HTTP semantics. T-069.
+  it('returns 400 when request parsing fails', async () => {
     const badReq = new Request('http://x/api/contact', { method: 'POST', body: 'not-json' });
     const res = await POST(badReq);
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(400);
   });
 });

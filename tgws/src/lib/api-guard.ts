@@ -12,6 +12,11 @@ type Bucket = { count: number; resetAt: number };
 const buckets = new Map<string, Bucket>();
 const MAX_BUCKETS = 5_000;
 
+/** Test-only (T-069): clear the in-memory sliding window between cases. */
+export function resetRateLimits(): void {
+  buckets.clear();
+}
+
 function prune(now: number) {
   if (buckets.size < MAX_BUCKETS) return;
   for (const [key, bucket] of buckets) {

@@ -127,7 +127,7 @@
 | T-066 | Odoo 凭证 + 线索同步 + 客户确认邮件 | `.env.local` 占位；`/api/contact` 仅落库、无客户回执 | Odoo 出现对应 `crm.lead`；客户 5 分钟内收到确认邮件 |
 | T-067 | CSP：放行 Umami + 去 `unsafe-inline` | `next.config.ts:68` vs `layout.tsx:132` | 控制台无 CSP 拒绝；Umami 有数据；主题脚本改 nonce/hash |
 | T-068 | 搜索日志落点收敛 | 写 Sanity `searchLog`（未注册）而 `search_logs` 零写入 | 二选一：注册 schema 或改写 Supabase；能查到最近 7 天搜索词 |
-| T-069 | 测试隔离 + CI 门禁 | 14 例失败；无限流重置、无 env 注入、无 CI | `npm run test:run` 干净环境全绿；GitHub Actions 跑 tsc+test+build |
+| T-069 | 测试隔离 + CI 门禁 🟡**代码完成 / 本地验证，未推送** | 14 例失败；无限流重置、无 env 注入、无 CI | `npm run test:run` 干净环境全绿；GitHub Actions 跑 tsc+test+build |
 | T-070 | 依赖声明补全 | `framer-motion`、`date-fns` 未在 `package.json` | 干净环境 `npm ci` 后 build 通过；lockfile 不再依赖 hoist |
 | T-071 | 密码重置页 | `LoginForm` 的 `redirectTo` 指向仅 POST 的 API，点击得 405 | 邮件链接打开"设置新密码"页并成功改密 |
 | T-073 | 解决方案数据治理 | 17 条只有 6 条可达；`challengesZh/solutionsZh` 0/17；`title` 存繁中 | 6 条（或按行业聚合）；中文痛点/方案齐全；字段语义正确 |
@@ -158,6 +158,17 @@
 - 提交：`a16429a`（T-061 迁移）、`07f88b4`（T-062 代码/文档）；顺带带上此前未推送的 `4e5895c`（博客封面样本清理）。
 - 提交前扫描暂存区无明文密钥；`.secrets/` 已由 `.gitignore` 排除；未提交临时分析脚本与内部评估大文档。
 - 线上证据见 §3.1 与 runbook 第 5 节。
+
+---
+
+### 3.3 T-069 阶段结果（2026-11-15，代码完成 / **未推送、门禁未生效**）
+
+- **测试全绿**：`npm run test:run` → 69 文件全过、0 失败（修复前 5 失败 / 64 通过）。
+- 修复清单：`api-guard.ts` 暴露 `resetRateLimits()` + `src/test/setup.ts` 每用例重置（消除 429 跨用例污染）；`search/lead` 测试每请求独立 IP（原循环超过 3 次/分配额）；`internal.test.ts` mock 目标由 `@/lib/sanity` 改为实际使用的 `@/lib/sanity.server`；`vitest.config.ts` 注入占位 Sanity env；`performance.test.ts` 时间断言改 5 次中位数 / 50ms、组件数基线 60 对应上限 80；`contact` 畸形 JSON 断言 500→400（与 `parseJsonBody` 实现一致）。未删除任何断言。
+- **新增** `.github/workflows/ci.yml`：`npm ci` → `tsc --noEmit` → `test:run` → `build`，使用占位环境变量，不需要任何密钥。
+- **本地实跑**：tsc 0 错；测试 69/69；占位 env 下 `npm run build` 通过（58 页，因占位 Sanity 取不到 CMS 数据；真实 env 为 247 页）；eslint 仍 2 errors / 68 warnings，**故意未纳入 CI**（等 T-087 清零后再加）。
+- **未验证**：Actions 从未运行过（workflow 未推送）；`npm ci` 干净安装未实测（避免下载，未执行）；`framer-motion` / `date-fns` 未在 `package.json` 直接声明，靠 lockfile 传递依赖条目装载 → 归 T-070。
+- **门禁边界**：GitHub Actions 失败**不会自动阻止 Vercel 生产部署**。需仓库管理员把 `verify` 设为 required status check，或配 Vercel Deployment Protection。这一步本会话做不了。
 
 ---
 
