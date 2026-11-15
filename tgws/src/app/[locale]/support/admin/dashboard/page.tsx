@@ -69,7 +69,7 @@ export default function AdminDashboardPage() {  const t = useTranslations('admin
       setLoading(false);
     };
 
-    checkAdmin();
+    void checkAdmin().catch(() => setLoading(false));
   }, [supabase, router, locale]);
 
   if (loading) {

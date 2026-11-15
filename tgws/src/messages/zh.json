@@ -1251,6 +1251,16 @@
     "resendEmail": "重新發送驗證信"
   },
   "support": {
+    "conversation": "對話紀要",
+    "reply": "回覆",
+    "replyPlaceholder": "輸入回覆內容…",
+    "sendReply": "送出回覆",
+    "internalNoteToggle": "內部備註（客戶看不到）",
+    "noComments": "尚無回覆",
+    "backToTickets": "返回我的工單",
+    "replyFailed": "送出回覆失敗",
+    "viewConversation": "查看對話",
+    "justNow": "剛剛",
     "metadata": {
       "title": "客戶支援中心 | TechGuru",
       "description": "取得TechGuru產品和服務的幫助。提交支援工單、追蹤狀態並存取我們的知識庫。"
@@ -1284,6 +1294,18 @@
     "submitTicketHint": "提交工單以開始使用"
   },
   "admin": {
+    "actions": "操作",
+    "saveChanges": "儲存變更",
+    "saving": "儲存中…",
+    "saved": "已儲存",
+    "saveFailed": "儲存失敗",
+    "selectAssignee": "選擇指派對象",
+    "exportCsv": "匯出 CSV",
+    "changeStatus": "變更狀態",
+    "changePriority": "變更優先級",
+    "replyPlaceholder": "輸入回覆內容…",
+    "sendReply": "送出回覆",
+    "replyFailed": "送出回覆失敗",
     "allTickets": "所有工單",
     "allTicketsDesc": "瀏覽與管理所有客戶工單。",
     "backToDashboard": "返回儀表板",

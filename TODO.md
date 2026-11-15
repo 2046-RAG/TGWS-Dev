@@ -98,6 +98,11 @@
 - **依赖**：T-057（用户数据完整）
 
 #### T-059 管理员：指派 / 改状态 / 导出
+- **状态**：🟡 **代码完成 + 直推部署 Ready**；**线上端到端未验证**（见 `docs/PENDING-ACCEPTANCE.md` A11–A13）
+- **本轮实证**：tsc 0；vitest **71 文件全过**（新增 3 个 `/api/admin/users` 权限用例）；eslint 基线 2e/68w；本地 build 受本机内存限制连续 OOM（4GB 堆、单 worker 临时验证均失败，`next.config.ts` 已恢复原样）；云端 ● Ready，线上 `/api/admin/users` 未登录返回 401（旧版为 404，证明新接口已切流）
+- **交付物**：`GET /api/admin/users`（仅管理员）；管理端详情页操作区（状态 / 优先级 / 指派 → 复用已有 PATCH 的审计与状态邮件）；列表页 CSV 导出当前筛选页；中英各补 9 个文案键
+- **直推**：deployment `9eoYnnnUrnXKHjCeRNFW1zDnqf24` → ● Ready（Production，2m）
+- **缺的验收证据**：管理员保存后审计/邮件、CSV 文件内容、客户访问员工接口 403
 - **依据**：评估 AD1；`api/tickets/stats/route.ts` 已有批量 PATCH 能力但无 UI
 - **交付物**：
   - 详情页操作区：指派给（管理员列表）、优先级、状态（open→in_progress→resolved→closed）
@@ -108,6 +113,12 @@
 - **依赖**：T-058
 
 #### T-060 工单对话（客户 ↔ 管理员）
+- **状态**：🟡 **代码完成 + 007 已上线 + 直推部署 Ready**；**线上端到端未验证**（需真实客户/管理员账号）
+- **线上实证**：007 迁移 HTTP 201，核对 3 项全 PASS（策略数 4 / RLS 启用 / INSERT 策略存在）；顺手清掉 3 条手工遗留策略——其中「Users can insert comments for own tickets」既没校验 `user_id` 也没限制 `is_internal`，客户本可写内部备注或伪造作者，属真实安全缺口
+- **本地实证**：tsc 0；vitest **70 文件 418 例全过**（新增 6 个权限用例：401 / 400 / 客户越权 403 / 客户写内部备注 403 / 客户自己单 201 / 管理员内部备注 201 且不发客户邮件）；eslint 回基线 2e/68w（顺带修掉 dashboard 的未处理 Promise 拒绝，测试退出码恢复 0）；默认堆下 build 两次 OOM，`NODE_OPTIONS=--max-old-space-size=4096` 后通过
+- **交付物**：`007_ticket_comments_rw.sql` + `007_verify.sql` + `apply-007.mjs`；`POST /api/tickets/[id]/comments`（归属校验、内部备注仅管理员、10/min 限流、双方邮件通知、审计）；`GET /api/tickets/[id]` 非管理员过滤内部备注（与 RLS 双保险）；客户侧对话详情页 `/support/tickets/[id]` + 列表入口；管理端详情页回复框（含内部备注开关）；中英文案补齐
+- **直推**：deployment `2znJBhDcwsmKsuULmShPxuCBWXNh` → ● Ready（Production）
+- **缺的验收证据**：真实客户与管理员各发一条、双方可见且收到邮件；内部备注客户不可见（需真实账号端到端）
 - **依据**：`ticket_comments` 只读无写入（`api/tickets/[id]/route.ts:52-60`）；`sendTicketReplyEmail` 零调用
 - **交付物**：
   - `POST /api/tickets/[id]/comments`（归属校验；`is_internal` 仅管理员可写）

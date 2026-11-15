@@ -1103,6 +1103,16 @@
     "resendEmail": "Resend verification email"
   },
   "support": {
+    "conversation": "Conversation",
+    "reply": "Reply",
+    "replyPlaceholder": "Type your reply…",
+    "sendReply": "Send reply",
+    "internalNoteToggle": "Internal note (customers cannot see this)",
+    "noComments": "No replies yet",
+    "backToTickets": "Back to my tickets",
+    "replyFailed": "Failed to send reply",
+    "viewConversation": "View conversation",
+    "justNow": "Just now",
     "metadata": {
       "title": "Support Center | TechGuru",
       "description": "Get help with TechGuru products and services. Submit support tickets, track status, and access our knowledge base."
@@ -1136,6 +1146,18 @@
     "submitTicketHint": "Submit a ticket to get started"
   },
   "admin": {
+    "actions": "Actions",
+    "saveChanges": "Save changes",
+    "saving": "Saving…",
+    "saved": "Saved",
+    "saveFailed": "Failed to save",
+    "selectAssignee": "Select assignee",
+    "exportCsv": "Export CSV",
+    "changeStatus": "Change status",
+    "changePriority": "Change priority",
+    "replyPlaceholder": "Type your reply…",
+    "sendReply": "Send reply",
+    "replyFailed": "Failed to send reply",
     "allTickets": "All Tickets",
     "allTicketsDesc": "Browse and manage every customer ticket.",
     "backToDashboard": "Back to dashboard",

@@ -19,11 +19,13 @@ interface Ticket {
 interface TicketListProps {
   tickets: Ticket[];
   isAdmin?: boolean;
+  onOpen?: (id: string) => void;
+  openLabel?: string;
   onBatchStatusUpdate?: (ids: string[], status: string) => Promise<void>;
   onExport?: (tickets: Ticket[]) => void;
 }
 
-export default function TicketList({ tickets, isAdmin = false, onBatchStatusUpdate, onExport }: TicketListProps) {
+export default function TicketList({ tickets, isAdmin = false, onBatchStatusUpdate, onExport, onOpen, openLabel }: TicketListProps) {
   const t = useTranslations('auth');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [batchLoading, setBatchLoading] = useState(false);
@@ -307,6 +309,15 @@ export default function TicketList({ tickets, isAdmin = false, onBatchStatusUpda
                   <span className={`w-2 h-2 rounded-full ${status.dot}`} />
                   <span className={`text-xs font-medium ${status.text}`}>{status.label}</span>
                 </div>
+                {onOpen && (
+                  <button
+                    type="button"
+                    onClick={() => onOpen(ticket.id)}
+                    className="text-xs text-[#00B8DB] hover:underline whitespace-nowrap"
+                  >
+                    {openLabel}
+                  </button>
+                )}
                 <ArrowRight
                   size={16}
                   className="text-gray-300 dark:text-zinc-500 group-hover:text-gray-600 dark:group-hover:text-zinc-400 transition-colors"

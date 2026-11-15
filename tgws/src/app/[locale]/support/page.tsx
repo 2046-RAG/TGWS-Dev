@@ -267,7 +267,11 @@ export default function SupportPage() {
               {tickets.length > 0 && (
                 <div className="mt-8">
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{s('recentTickets')}</h2>
-                  <TicketList tickets={tickets.slice(0, 3)} />
+                  <TicketList
+                    tickets={tickets.slice(0, 3)}
+                    onOpen={(tid) => router.push(`/${locale}/support/tickets/${tid}`)}
+                    openLabel={s('viewConversation')}
+                  />
                 </div>
               )}
             </div>
@@ -294,6 +298,8 @@ export default function SupportPage() {
               <TicketList
                 tickets={tickets}
                 isAdmin={isAdmin}
+                onOpen={(tid) => router.push(`/${locale}/support/tickets/${tid}`)}
+                openLabel={s('viewConversation')}
                 onBatchStatusUpdate={async (ids, status) => {
                   await fetch('/api/tickets/stats', {
                     method: 'PATCH',

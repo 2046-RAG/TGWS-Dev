@@ -89,6 +89,26 @@ export default function AdminTicketsPage() {
   const to = Math.min(page * PAGE_SIZE, total);
   const hasNext = page * PAGE_SIZE < total;
 
+  // T-059: export the rows currently visible (this page of the current filter).
+  const exportCsv = () => {
+    const header = ['Ticket #', 'Subject', 'Status', 'Category', 'Priority', 'Created'];
+    const rows = visible.map((r) => [
+      r.ticket_number, r.subject, r.status, r.category, r.priority, r.created_at,
+    ]);
+    const csv = [header, ...rows]
+      .map((cols) => cols.map((c) => `"${String(c ?? '').replace(/"/g, '""')}"`).join(','))
+      .join('\r\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tickets-page-${page}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  };
+
   const statusLabel = (s: string) =>
     ({ open: t('statusOpen'), in_progress: t('statusInProgress'), resolved: t('statusResolved'), closed: t('statusClosed') }[s] || s);
 
@@ -151,6 +171,13 @@ export default function AdminTicketsPage() {
               <option value="high">{t('high')}</option>
               <option value="critical">{t('critical')}</option>
             </select>
+            <button
+              type="button"
+              onClick={exportCsv}
+              className="px-3 py-2 rounded-lg border border-gray-200 dark:border-zinc-700 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-zinc-700"
+            >
+              {t('exportCsv')}
+            </button>
             <button
               type="button"
               onClick={() => { setLoading(true); setReloadKey((k) => k + 1); }}

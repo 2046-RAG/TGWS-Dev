@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Breadcrumb from '@/components/ui/Breadcrumb';
 import AttachmentPreview from '@/components/tickets/AttachmentPreview';
-import { ArrowLeft, Clock, Paperclip, MessageSquare, History } from 'lucide-react';
+import { ArrowLeft, Clock, Paperclip, MessageSquare, History, Send } from 'lucide-react';
 
 interface Attachment {
   id?: string;
@@ -47,6 +47,7 @@ interface TicketDetail {
 }
 
 const card = 'bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl p-6';
+const fieldClass = 'mt-1 w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-gray-900 dark:text-gray-100';
 const dateFmt = (v: string | null | undefined, locale: string) =>
   v ? new Date(v).toLocaleString(locale === 'zh' ? 'zh-TW' : 'en-US') : '—';
 
@@ -59,6 +60,17 @@ export default function AdminTicketDetailPage() {
   const [ticket, setTicket] = useState<TicketDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [reply, setReply] = useState('');
+  const [internalNote, setInternalNote] = useState(false);
+  const [sendingReply, setSendingReply] = useState(false);
+  const [replyError, setReplyError] = useState('');
+  const [reloadKey, setReloadKey] = useState(0);
+  const [editStatus, setEditStatus] = useState('');
+  const [editPriority, setEditPriority] = useState('');
+  const [assignee, setAssignee] = useState('');
+  const [staff, setStaff] = useState<{ id: string; email: string; full_name?: string | null }[]>([]);
+  const [saving, setSaving] = useState(false);
+  const [saveMsg, setSaveMsg] = useState('');
 
   useEffect(() => {
     if (!id) return;
@@ -70,7 +82,13 @@ export default function AdminTicketDetailPage() {
       })
       .then((j) => {
         if (cancelled) return;
-        setTicket(j.data || null);
+        const d = j.data;
+        setTicket(d || null);
+        if (d) {
+          setEditStatus(d.status || 'open');
+          setEditPriority(d.priority || 'medium');
+          setAssignee(d.assigned_to || '');
+        }
         setError('');
       })
       .catch(() => {
@@ -82,7 +100,65 @@ export default function AdminTicketDetailPage() {
     return () => {
       cancelled = true;
     };
-  }, [id, t]);
+  }, [id, t, reloadKey]);
+
+  // T-059: staff list for the assignment dropdown.
+  useEffect(() => {
+    fetch('/api/admin/users')
+      .then((r) => {
+        if (!r.ok) throw new Error(String(r.status));
+        return r.json();
+      })
+      .then((j) => setStaff(Array.isArray(j.data) ? j.data : []))
+      .catch(() => setStaff([]));
+  }, []);
+
+  const save = async () => {
+    if (saving) return;
+    setSaving(true);
+    setSaveMsg('');
+    try {
+      const r = await fetch(`/api/tickets/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          status: editStatus,
+          priority: editPriority,
+          assignedTo: assignee || null,
+        }),
+      });
+      if (!r.ok) throw new Error(String(r.status));
+      setSaveMsg(t('saved'));
+      setReloadKey((k) => k + 1);
+    } catch {
+      setSaveMsg(t('saveFailed'));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const submitReply = async (e: FormEvent) => {
+    e.preventDefault();
+    const content = reply.trim();
+    if (!content || sendingReply) return;
+    setSendingReply(true);
+    setReplyError('');
+    try {
+      const r = await fetch(`/api/tickets/${id}/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content, isInternal: internalNote }),
+      });
+      if (!r.ok) throw new Error(String(r.status));
+      setReply('');
+      setInternalNote(false);
+      setReloadKey((k) => k + 1);
+    } catch {
+      setReplyError(t('replyFailed'));
+    } finally {
+      setSendingReply(false);
+    }
+  };
 
   const statusLabel =
     ({ open: t('statusOpen'), in_progress: t('statusInProgress'), resolved: t('statusResolved'), closed: t('statusClosed') }[ticket?.status || ''] || ticket?.status);
@@ -152,6 +228,50 @@ export default function AdminTicketDetailPage() {
               </dl>
             </section>
 
+            <section className={card}>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('actions')}</h2>
+              <div className="grid sm:grid-cols-3 gap-4 text-sm">
+                <label className="block">
+                  <span className="text-gray-500 dark:text-gray-400">{t('changeStatus')}</span>
+                  <select value={editStatus} onChange={(e) => setEditStatus(e.target.value)} className={fieldClass}>
+                    <option value="open">{t('statusOpen')}</option>
+                    <option value="in_progress">{t('statusInProgress')}</option>
+                    <option value="resolved">{t('statusResolved')}</option>
+                    <option value="closed">{t('statusClosed')}</option>
+                  </select>
+                </label>
+                <label className="block">
+                  <span className="text-gray-500 dark:text-gray-400">{t('changePriority')}</span>
+                  <select value={editPriority} onChange={(e) => setEditPriority(e.target.value)} className={fieldClass}>
+                    <option value="low">{t('low')}</option>
+                    <option value="medium">{t('medium')}</option>
+                    <option value="high">{t('high')}</option>
+                    <option value="critical">{t('critical')}</option>
+                  </select>
+                </label>
+                <label className="block">
+                  <span className="text-gray-500 dark:text-gray-400">{t('assignedTo')}</span>
+                  <select value={assignee} onChange={(e) => setAssignee(e.target.value)} className={fieldClass}>
+                    <option value="">{t('selectAssignee')}</option>
+                    {staff.map((u) => (
+                      <option key={u.id} value={u.id}>{u.full_name || u.email}</option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+              <div className="mt-4 flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={save}
+                  disabled={saving}
+                  className="px-4 py-2 rounded-lg bg-[#00D4FF] text-white text-sm font-medium disabled:opacity-40"
+                >
+                  {saving ? t('saving') : t('saveChanges')}
+                </button>
+                {saveMsg && <span className="text-sm text-gray-600 dark:text-gray-300">{saveMsg}</span>}
+              </div>
+            </section>
+
             {/* D-01: attachment preview is implemented, not dead code */}
             <section className={card}>
               <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -188,6 +308,35 @@ export default function AdminTicketDetailPage() {
                   ))}
                 </ul>
               )}
+
+              <form onSubmit={submitReply} className="mt-6 pt-6 border-t border-gray-100 dark:border-zinc-700">
+                <textarea
+                  value={reply}
+                  onChange={(e) => setReply(e.target.value)}
+                  placeholder={t('replyPlaceholder')}
+                  aria-label={t('comments')}
+                  rows={4}
+                  maxLength={2000}
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-gray-900 dark:text-gray-100"
+                />
+                <label className="mt-3 flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
+                  <input
+                    type="checkbox"
+                    checked={internalNote}
+                    onChange={(e) => setInternalNote(e.target.checked)}
+                    className="rounded border-gray-300"
+                  />
+                  {t('internalNoteToggle')}
+                </label>
+                {replyError && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{replyError}</p>}
+                <button
+                  type="submit"
+                  disabled={sendingReply || !reply.trim()}
+                  className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#00D4FF] text-white text-sm font-medium disabled:opacity-40"
+                >
+                  <Send size={14} /> {t('sendReply')}
+                </button>
+              </form>
             </section>
 
             <section className={card}>

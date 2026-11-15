@@ -70,12 +70,20 @@ export async function GET(
       audit = logs || [];
     }
 
+    // T-060: internal notes must never reach a customer, even if RLS is
+    // misconfigured. RLS (007) filters them too — this is the second layer.
+    const visibleComments = isAdmin
+      ? (comments || [])
+      : (comments || []).filter(
+          (c) => !(c as { is_internal?: boolean }).is_internal
+        );
+
     return NextResponse.json({
       success: true,
       data: {
         ...ticket,
         attachments: attachments || [],
-        comments: comments || [],
+        comments: visibleComments,
         audit,
       },
     });
