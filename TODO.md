@@ -65,6 +65,14 @@
 > 判断标准：不修就不能对外说"上线"。原评估的 P0 #5（中文博客）、#6（ISR）已降为 P1，理由：不阻断站点使用。
 
 #### T-057 补 `public.users` 同步触发器并回填
+- **状态**：🟡 **006 迁移已上线并验证**；但按本节验收口径，**T-057 整条不能标记已完成**——缺线上"注册→建单"E2E
+- **线上实证**：项目 `ACTIVE_HEALTHY`；006 HTTP 201；核对 4 项（函数存在 / 触发器挂载 / users RLS 启用 / 有邮箱账号无遗漏档案）全 PASS；只读明细 `auth.users=14 / public.users=14 / missing=0`，其中 13 个 customer、1 个非 customer 角色被保留（回填用 `ON CONFLICT DO NOTHING` 未覆盖）；`scripts/apply-006.mjs` 执行，token 文件保留
+- **本地实证**：PGlite 8/8 PASS，含"新用户可成功建工单（FK 不再报错）"
+- **缺的验收证据**：线上全新邮箱注册 → 建单 E2E，需往生产库写测试账号，未擅自执行
+- **编号修正**：原写 `004`，因 004 跳号、005 已被 T-061 占用，实际落地为 `006_add_user_sync.sql`
+- **本地实证**（`supabase/verify/006_pglite_harness.mjs`，001→002→005→006）：历史用户回填、新注册自动建档案、重复执行不报错且不产生重复行、函数与触发器存在、**新用户可成功建工单（FK 不再报错）**，8/8 PASS
+- **已知边界**：`users.email` 为 NOT NULL UNIQUE，无邮箱账号（纯手机 / 不提供邮箱的 OAuth）触发器会跳过，仍无法建单；需另做身份映射
+- **待执行**：`scripts/apply-006.mjs`（读 PAT → 查项目状态 → 执行 006 → 4 项核对），需把 Supabase PAT 放进 `.secrets/supabase-pat.txt`
 - **依据**：`supabase/migrations/001:5,21`（`tickets.user_id REFERENCES users(id)`）；全仓无 `handle_new_user`、无 `INSERT INTO users`；`api/tickets/route.ts:65-77` 直接用 `auth.uid()` 建单
 - **交付物**：
   - `004_add_user_sync.sql`：`auth.users` AFTER INSERT 触发器 → `public.users`（email、role=customer）
@@ -75,6 +83,11 @@
 - **风险**：线上可能已有触发器，迁移需 `IF NOT EXISTS` 语义
 
 #### T-058 管理员：全部工单列表 + 详情页
+- **状态**：🟡 **代码已完成并直推生产**；**线上端到端未验证**（需真实管理员账号登录）
+- **本轮实证**：tsc 0 错；build 通过（新增两条 `ƒ` 路由）；vitest 69 文件全过（含新增 4 个 `scope=all` 权限用例：customer→403、admin 分页元数据、非法筛选 400、默认行为不变）；eslint 一度涨到 4 errors，已修回基线 2e/68w
+- **直推**：`scripts/deploy-vercel.mjs` → deployment `4sANipqowZRhYntcaMSnkVode2dx`，上传 704.3KB、`--no-wait` exit 0（云端仍在构建）
+- **交付物**：`GET /api/tickets?scope=all`（仅 admin/super_admin，分页 + 状态/类别/优先级筛选）；详情接口新增审计时间线（仅管理员可见）；`/support/admin/tickets` 列表页与 `/[id]` 详情页（附件预览按 D-01 实现，非死代码）；dashboard「View All」由错误的客户页改指新列表；en/zh 各补 37 个 `admin` 文案键
+- **未验证**：真实管理员登录后能否看到全部工单并打开详情（本地无 admin 会话）；本次部署最终 READY 与自定义域名切换
 - **依据**：`api/tickets/route.ts:120-125` 恒定 `.eq('user_id', user.id)`；`support/admin/dashboard/page.tsx:64` 只 fetch stats
 - **交付物**：
   - `GET /api/tickets?scope=all`（仅 admin/super_admin，分页 + 状态/类别/优先级筛选）
@@ -127,8 +140,8 @@
 | T-066 | Odoo 凭证 + 线索同步 + 客户确认邮件 | `.env.local` 占位；`/api/contact` 仅落库、无客户回执 | Odoo 出现对应 `crm.lead`；客户 5 分钟内收到确认邮件 |
 | T-067 | CSP：放行 Umami + 去 `unsafe-inline` | `next.config.ts:68` vs `layout.tsx:132` | 控制台无 CSP 拒绝；Umami 有数据；主题脚本改 nonce/hash |
 | T-068 | 搜索日志落点收敛 | 写 Sanity `searchLog`（未注册）而 `search_logs` 零写入 | 二选一：注册 schema 或改写 Supabase；能查到最近 7 天搜索词 |
-| T-069 | 测试隔离 + CI 门禁 🟡**代码完成 / 本地验证，未推送** | 14 例失败；无限流重置、无 env 注入、无 CI | `npm run test:run` 干净环境全绿；GitHub Actions 跑 tsc+test+build |
-| T-070 | 依赖声明补全 | `framer-motion`、`date-fns` 未在 `package.json` | 干净环境 `npm ci` 后 build 通过；lockfile 不再依赖 hoist |
+| T-069 | 测试隔离 + CI 门禁 🟡**已推送，但 GitHub Actions 首次失败在 `npm ci`（日志需 admin 权限未取到）**；部署已改走 Vercel 直推，CI 不再是部署前置 | 本地 69 文件全过；workflow 已上线 | `npm run test:run` 干净环境全绿；GitHub Actions 跑 tsc+test+build |
+| T-070 | 依赖声明补全 🟡**声明已补齐**（`framer-motion` 12.42.2、`date-fns` 4.4.0，package.json 与 lock 根一致）；`npm ci` 干净安装未实测（本机不下载） | 原先两包靠 hoist 装载 | 干净环境 `npm ci` 后 build 通过；lockfile 不再依赖 hoist |
 | T-071 | 密码重置页 | `LoginForm` 的 `redirectTo` 指向仅 POST 的 API，点击得 405 | 邮件链接打开"设置新密码"页并成功改密 |
 | T-073 | 解决方案数据治理 | 17 条只有 6 条可达；`challengesZh/solutionsZh` 0/17；`title` 存繁中 | 6 条（或按行业聚合）；中文痛点/方案齐全；字段语义正确 |
 | T-074 | 暗色一致性巡检 | `support/page.tsx:109`、`admin/dashboard/page.tsx:114` 无 `dark:bg`，白字压浅灰 | 全站暗色无对比度 < 4.5:1 的正文；应用页与营销页背景一致 |
@@ -158,6 +171,8 @@
 - 提交：`a16429a`（T-061 迁移）、`07f88b4`（T-062 代码/文档）；顺带带上此前未推送的 `4e5895c`（博客封面样本清理）。
 - 提交前扫描暂存区无明文密钥；`.secrets/` 已由 `.gitignore` 排除；未提交临时分析脚本与内部评估大文档。
 - 线上证据见 §3.1 与 runbook 第 5 节。
+
+**2026-11-15 09:11 追加 · 部署链路改直推**：用户决定「GitHub 只存代码、Vercel 独立部署，各做各的，不再经过 GitHub 触发」。本机已有 Vercel CLI 56.5.0 与 `.vercel/project.json` 绑定（rootDirectory `tgws`），新增 `scripts/deploy-vercel.mjs`：读 `.secrets/vercel-token.txt` → `vercel deploy --prod --yes --no-wait`，token 走环境变量、不进命令行、不打印。**必须带 `NODE_OPTIONS=--use-env-proxy`**（Node fetch 默认不读代理，否则上传到 1.2MB 时报 `fetch failed`）。已实测直推成功（上传 332.9KB，exit 0），`--no-wait` 不等待云端构建。GitHub Actions 仍 failure（挂在 `npm ci`，日志需 admin 权限未取到），**不再作为部署前置**；Vercel 项目仍连着 Git 集成，push Trunk 仍会触发一次自动部署，是否断开待定。
 
 ---
 

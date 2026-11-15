@@ -106,7 +106,7 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request?: Request) {
   try {
     const supabase = await createClient();
     const {
@@ -117,19 +117,84 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { data, error } = await supabase
+    const url = request ? new URL(request.url) : null;
+
+    // Default path is intentionally unchanged: a customer only ever sees
+    // their own tickets. Existing unit tests also rely on this exact chain.
+    if (!url || url.searchParams.get('scope') !== 'all') {
+      const { data, error } = await supabase
+        .from('tickets')
+        .select('*')
+        .eq('user_id', user.id)
+        .is('deleted_at', null)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        logServiceError({ service: 'Tickets', operation: 'list', error });
+        return NextResponse.json({ error: 'Failed to load tickets' }, { status: 500 });
+      }
+
+      return NextResponse.json({ success: true, data });
+    }
+
+    // T-058: admin-only "all customers' tickets" scope.
+    const { data: roleRow, error: roleError } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+    if (roleError) {
+      logServiceError({ service: 'Tickets', operation: 'roleLookup', error: roleError });
+    }
+    const role = (roleRow as { role?: string } | null)?.role;
+    if (role !== 'admin' && role !== 'super_admin') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
+    const allowed: Record<string, string[]> = {
+      status: ['open', 'in_progress', 'resolved', 'closed'],
+      category: ['build', 'run', 'protect'],
+      priority: ['low', 'medium', 'high', 'critical'],
+    };
+    for (const key of Object.keys(allowed)) {
+      const value = url.searchParams.get(key);
+      if (value && !allowed[key].includes(value)) {
+        return NextResponse.json({ error: `Invalid ${key}` }, { status: 400 });
+      }
+    }
+
+    const page = Math.max(1, Number(url.searchParams.get('page')) || 1);
+    const limit = Math.min(100, Math.max(1, Number(url.searchParams.get('limit')) || 20));
+    const from = (page - 1) * limit;
+
+    let query = supabase
       .from('tickets')
-      .select('*')
-      .eq('user_id', user.id)
-      .is('deleted_at', null)
-      .order('created_at', { ascending: false });
+      .select('*', { count: 'exact' })
+      .is('deleted_at', null);
+
+    const status = url.searchParams.get('status');
+    const category = url.searchParams.get('category');
+    const priority = url.searchParams.get('priority');
+    if (status) query = query.eq('status', status);
+    if (category) query = query.eq('category', category);
+    if (priority) query = query.eq('priority', priority);
+
+    const { data, error, count } = await query
+      .order('created_at', { ascending: false })
+      .range(from, from + limit - 1);
 
     if (error) {
-      logServiceError({ service: 'Tickets', operation: 'list', error });
+      logServiceError({ service: 'Tickets', operation: 'listAll', error });
       return NextResponse.json({ error: 'Failed to load tickets' }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, data });
+    return NextResponse.json({
+      success: true,
+      data: data || [],
+      total: count ?? 0,
+      page,
+      limit,
+    });
   } catch (error) {
     logServiceError({ service: 'Tickets', operation: 'list', error });
     return NextResponse.json({ error: 'Failed to load tickets' }, { status: 500 });

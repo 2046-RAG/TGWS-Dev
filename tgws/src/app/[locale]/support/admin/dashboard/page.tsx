@@ -236,7 +236,7 @@ export default function AdminDashboardPage() {  const t = useTranslations('admin
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('recentTickets')}</h2>
               <Link
-                href={`/${locale}/support`}
+                href={`/${locale}/support/admin/tickets`}
                 className="text-sm text-[#00D4FF] hover:text-[#00B8E6] flex items-center gap-1"
               >
                 {t('viewAll')} <ArrowUpRight size={14} />

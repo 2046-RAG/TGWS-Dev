@@ -55,9 +55,29 @@ export async function GET(
       .eq('ticket_id', id)
       .order('created_at', { ascending: true });
 
+    // T-058: admins also get the audit trail for the detail timeline.
+    // Customers never receive it (and the query is skipped entirely).
+    let audit: unknown[] = [];
+    if (isAdmin) {
+      const { data: logs, error: auditError } = await supabase
+        .from('ticket_audit_log')
+        .select('*')
+        .eq('ticket_id', id)
+        .order('performed_at', { ascending: false });
+      if (auditError) {
+        logServiceError({ service: 'Tickets', operation: 'auditList', error: auditError });
+      }
+      audit = logs || [];
+    }
+
     return NextResponse.json({
       success: true,
-      data: { ...ticket, attachments: attachments || [], comments: comments || [] },
+      data: {
+        ...ticket,
+        attachments: attachments || [],
+        comments: comments || [],
+        audit,
+      },
     });
   } catch (error) {
     logServiceError({ service: 'Tickets', operation: 'get', error });
