@@ -64,8 +64,9 @@ export default function HeroSection() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Video mouse scrubbing
+  // Video mouse scrubbing (T-080: skip it entirely for reduced-motion users)
   useEffect(() => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
     const handleSeeked = () => {
       seekingRef.current = false;
     };

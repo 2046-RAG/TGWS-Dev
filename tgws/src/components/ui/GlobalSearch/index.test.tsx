@@ -10,7 +10,10 @@ let latestProps: Record<string, unknown> = {};
 
 vi.mock('next-intl', () => {
   const m: Record<string, string> = {
-    searchPlaceholder: 'Search TechGuru...', searchButton: 'Search', close: 'Close',
+    searchPlaceholder: 'Search products, solutions, articles... or paste/drop an image',
+    search: 'Search', searchAction: 'Run search',
+    uploadImage: 'Upload image', uploadedImage: 'Uploaded image', clearImage: 'Clear image',
+    searchButton: 'Search', close: 'Close',
     filters: 'Filters', noResults: 'No results found', leadTitle: 'Tell us more',
     imageHint: 'Paste or drop an image', uploading: 'Analyzing image...',
   };

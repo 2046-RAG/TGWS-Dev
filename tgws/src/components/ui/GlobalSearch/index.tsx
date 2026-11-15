@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { Search, X, Camera, Filter, Sparkles, ArrowRight, Loader2, Package, Building2, FileText, HelpCircle, ExternalLink } from 'lucide-react';
 import { client } from '@/lib/sanity';
 import { logServiceError, trackEvent } from '@/lib/errors';
+import { trapTabKey } from '@/lib/focus-trap';
 import SearchFiltersPanel from './SearchFiltersPanel';
 import SearchResults from './SearchResults';
 
@@ -61,6 +62,7 @@ interface GlobalSearchProps {
 export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations('nav');
   const [query, setQuery] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -79,6 +81,11 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
+  // Keep the latest onClose without making the effect re-run on every render.
+  const onCloseRef = useRef(onClose);
+  useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -169,19 +176,29 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
     fetchSuggestions();
   }, [isOpen, query, locale]);
 
+  // T-080: ESC + body scroll lock were already here. Add a Tab focus trap
+  // and return focus to the trigger when the dialog closes.
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+    if (!isOpen) return;
+    restoreFocusRef.current = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onCloseRef.current();
+        return;
+      }
+      trapTabKey(e, dialogRef.current);
     };
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
-    }
+    document.addEventListener('keydown', handleKeyDown);
+
     return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      restoreFocusRef.current?.focus?.();
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   // 执行搜索
   const handleSearch = useCallback(async () => {
@@ -347,7 +364,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
   if (!isOpen) return null;
 
   return (
-    <div role="dialog" aria-modal="true" aria-label="Search" className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm" onClick={onClose}>
+    <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={t('search')} className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm" onClick={onClose}>
       <div
         className="absolute inset-x-0 top-0 max-h-[90vh] bg-white dark:bg-zinc-900 shadow-2xl flex flex-col"
         onClick={(e) => e.stopPropagation()}
@@ -369,7 +386,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                placeholder="Search products, solutions, articles... or paste/drop an image"
+                placeholder={t('searchPlaceholder')}
                 className="w-full pl-12 pr-32 py-4 text-lg bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 focus:outline-none transition-all"
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 z-10">
@@ -377,7 +394,8 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                   type="button"
                   onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
                   className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-[#00D4FF] hover:bg-[#00D4FF]/10 rounded-lg transition-colors"
-                  title="Upload image"
+                  title={t('uploadImage')}
+                  aria-label={t('uploadImage')}
                 >
                   <Camera size={16} />
                 </button>
@@ -385,13 +403,15 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                   type="button"
                   onClick={(e) => { e.stopPropagation(); setShowFilters(!showFilters); }}
                   className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors ${showFilters ? 'text-[#00D4FF] bg-[#00D4FF]/10' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'}`}
-                  title="Filters"
+                  title={t('filters')}
+                  aria-label={t('filters')}
                 >
                   <Filter size={16} />
                 </button>
                 <button
                   type="button"
                   onClick={handleSearch}
+                  aria-label={t('searchAction')}
                   disabled={isSearching || (!query.trim() && !imageFile)}
                   className="w-8 h-8 flex items-center justify-center bg-[#00D4FF] text-white rounded-lg hover:bg-[#00B8E6] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
@@ -413,12 +433,12 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
             {/* Image Preview */}
             {imagePreview && (
               <div className="mt-3 flex items-center gap-3 p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg">
-                <img src={imagePreview} alt="Uploaded" className="w-12 h-12 object-cover rounded-lg" />
+                <img src={imagePreview} alt={t('uploadedImage')} className="w-12 h-12 object-cover rounded-lg" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-gray-700 dark:text-gray-200 truncate">{imageFile?.name}</p>
                   <p className="text-xs text-gray-500">{imageFile ? `${(imageFile.size / 1024 / 1024).toFixed(2)} MB` : ''}</p>
                 </div>
-                <button onClick={clearImage} className="p-1 text-gray-400 hover:text-red-500 rounded">
+                <button onClick={clearImage} aria-label={t('clearImage')} className="p-1 text-gray-400 hover:text-red-500 rounded">
                   <X size={16} />
                 </button>
               </div>

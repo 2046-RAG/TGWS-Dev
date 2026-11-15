@@ -153,7 +153,7 @@
 | T-066 | Odoo 凭证 + 线索同步 + 客户确认邮件 | `.env.local` 占位；`/api/contact` 仅落库、无客户回执 | Odoo 出现对应 `crm.lead`；客户 5 分钟内收到确认邮件 |
 | T-067 | CSP 🟡**部分完成**：已放行 Umami（script-src + connect-src，线上响应头已核对）；`unsafe-inline` **有意保留**（见 §3.4） | `next.config.ts:68` 未放行 cloud.umami.is | Umami 后台收到数据；若要去 unsafe-inline，需先决定是否放弃静态渲染 |
 | T-068 | 搜索日志落点 ✅**代码完成**：改写入 005 建的 `public.search_logs`（含 user_id、query_type、计数），4 个单测通过；**线上真实搜索写入未验** | 原写 Sanity 未注册的 `searchLog`，等于零落点 | 能查到最近 7 天搜索词（A15） |
-| T-069 | 测试隔离 + CI 门禁 🟡**已推送，Actions 首次挂在 `npm ci`**；本轮已把安装命令改为 `npm ci --legacy-peer-deps`（D2，推断修复，**待下次 Actions 运行确认**）；部署走 Vercel 直推，CI 非前置 | 本地 73 文件全过 | Actions 转绿 |
+| T-069 | 测试隔离 + CI 门禁 🟡**CI 已转绿**（12:14 Actions success）；但 `verify` 未设为 required check，**门禁尚未接线**，CI 失败不阻止上线；部署走 Vercel 直推 | 本地测试全过；`npm ci --legacy-peer-deps` 已实测 | 后台设 required check（需管理员） |
 | T-070 | 依赖声明补全 🟡**声明已补齐**（`framer-motion` 12.42.2、`date-fns` 4.4.0，package.json 与 lock 根一致）；`npm ci` 干净安装未实测（本机不下载） | 原先两包靠 hoist 装载 | 干净环境 `npm ci` 后 build 通过；lockfile 不再依赖 hoist |
 | T-071 | 密码重置页 🟡**代码完成并上线**：新增 `/[locale]/support/reset-password`（PKCE `code` 与 implicit `recovery` 双格式），LoginForm 与服务端 API 的 redirectTo 已改指该页，3 个组件单测通过；**真实邮件端到端未验**（A14） | 邮件链接原指向仅 POST 的 API → 405 | 邮件链接打开设置新密码页并成功改密 |
 | T-073 | 解决方案数据治理 | 17 条只有 6 条可达；`challengesZh/solutionsZh` 0/17；`title` 存繁中 | 6 条（或按行业聚合）；中文痛点/方案齐全；字段语义正确 |
@@ -161,7 +161,7 @@
 | T-075 | 内容运营机制 + 文案单一来源 | 博客停更 18 个月、分类全 technical；FAQ/partner 未入 CMS；产品文案 i18n 与 CMS 双源 | 双周 1 篇；分类真实；FAQ/partner 二选一；产品文案确定唯一来源 |
 | T-076 | 设计令牌落地 | 316 处硬编码 `#00D4FF`，`var(--color-primary)` 0 处；96 处 inline style | 组件内无硬编码主色；改 token 能全站生效；`DESIGN.md` 与实现一致 |
 | T-077 | 登录安全：锁定 + 邮箱验证 | PRD S2.5.1 要求 5 次/15 分钟锁定 + 验证码；当前无实现 | 连续 5 次失败锁定 15 分钟；注册后需验证邮箱才能建单 |
-| T-078 | 双语硬编码清剿 | Navbar 中英三元、移动端 `Search`、UserMenu `Sign In/Out`、alt 英文、`taipei/hongKong` 键名 | `grep` 无 JSX 中文字面量/硬编码英文；ZH 页无英文按钮 |
+| T-078 | 双语硬编码清剿 🟡**部分完成**：Navbar 中英三元、UserMenu 6 处、GlobalSearch 关键文案/aria 已改为 i18n（nav 新增 20 键）；**搜索子组件与其内部提示文案未全量清剿** | 原 Navbar 中英三元、移动端 `Search`、UserMenu `Sign In/Out`、alt 英文、`taipei/hongKong` 键名 | `grep` 无 JSX 中文字面量/硬编码英文；ZH 页无英文按钮 |
 | T-079 | Footer 订阅：接后端或移除 | `Footer.tsx:12-17` 仅 `setSubscribed(true)` | 二选一：接 Resend/表单入库，或删除订阅框 |
 
 ### 3.1 T-062 结果（2026-11-15，**已推生产并线上验证**）
@@ -189,7 +189,7 @@
 
 ---
 
-### 3.3 T-069 阶段结果（2026-11-15，**已推送**，但 Actions 首次失败在 `npm ci`）
+### 3.3 T-069 阶段结果（2026-11-15；Actions 首次失败在 `npm ci`，**12:14 已转绿**）
 
 - **测试全绿**：`npm run test:run` → 69 文件全过、0 失败（修复前 5 失败 / 64 通过）。
 - 修复清单：`api-guard.ts` 暴露 `resetRateLimits()` + `src/test/setup.ts` 每用例重置（消除 429 跨用例污染）；`search/lead` 测试每请求独立 IP（原循环超过 3 次/分配额）；`internal.test.ts` mock 目标由 `@/lib/sanity` 改为实际使用的 `@/lib/sanity.server`；`vitest.config.ts` 注入占位 Sanity env；`performance.test.ts` 时间断言改 5 次中位数 / 50ms、组件数基线 60 对应上限 80；`contact` 畸形 JSON 断言 500→400（与 `parseJsonBody` 实现一致）。未删除任何断言。
@@ -223,21 +223,36 @@
 
 ---
 
+### 3.5 2026-11-15 12:13 批次（用户仍不方便验收）
+
+| 编号 | 处理 | 证据 |
+|------|------|------|
+| T-078 | nav 新增 20 个双语键；Navbar 中英三元、UserMenu 6 处硬编码、GlobalSearch 关键文案/aria 全部改 i18n | 双语键一致、tsc 0 |
+| T-080 | 新增共享 `src/lib/focus-trap.ts`（Tab/Shift+Tab 循环、焦点回位）+ 6 个单测；搜索弹窗与移动抽屉接上滚动锁/ESC/焦点陷阱；Hero reduced-motion 跳过 scrub；图标按钮补可读名 | 6 个新单测；eslint 0 error |
+| T-086 | 删 4 个无生产引用文件（含各自测试）；`sanity.server.ts` 改为 `export { client } from './sanity'` 消除重复配置；**纠正**「重复 Sanity 客户端是死代码」的旧结论——两条路径都有 8/10 个文件在用，不能删 | tsc 0、全量单测 |
+| T-089 | `docs/modules/INDEX.md` 从「11 个模块全 95% 完成」改为三轴口径，数字逐字引用评估报告并标注为历史快照；组件表修正 ThemeToggle / DarkModeToggle | 文档 |
+| E1 | 单次补推成功 `aecb62e..62f1106` | 远程 ref 同步 |
+| D2 | CI 修复随补推触发 Actions | ✅ `62f11061` → `success`（12:14 本地），GitHub Actions runs 列表实测 |
+
+**如实标注**：① GlobalSearch 子组件与其余内部提示文案**未全量 i18n 化**，T-078 仍是部分完成；② 焦点陷阱/焦点回位/reduced-motion 都只在代码层验证，**键盘与真机效果未验**（B3）；③ 删除 2 个死代码测试文件、新增 1 个，测试文件数会变化，不是回归；④ 「搜索无滚动锁」的旧结论**不准确**——原代码已有 `document.body.style.overflow = 'hidden'`，本轮补的是焦点陷阱与焦点回位。
+
+---
+
 ### 4. P2（11 项，品质与可维护性）
 
 | 编号 | 任务 | 依据 | 验收标准 |
 |------|------|------|----------|
 | T-072 | 产品视觉单一来源（原 P1，降级；已有 28 张本地图） | Sanity `image` 0/28，但 `productImages` 本地映射 28/28；线上抽查 4/4 有 Hero 图；两套来源无守护，曾发生工作区图片丢失 | CMS 或本地映射二选一，并写进文档；28 张图全部 200；构建后无缺图；不再出现"无图"误判 |
-| T-080 | 交互与无障碍收口 | 抽屉无滚动锁、搜索无焦点陷阱、Hero 无暂停/reduced-motion；`aria-label` 仅 18 个、表单 aria 不全 | 键盘可完整操作；ESC/焦点回位；图标按钮有可读名；表单 aria 齐全 |
+| T-080 | 交互与无障碍 🟡**代码完成，真机待验**：新增共享 `focus-trap.ts` + 6 个单测；搜索弹窗/移动抽屉均有 ESC、滚动锁、Tab 焦点陷阱、关闭后焦点回位；Hero 视频 scrub 在 reduced-motion 下跳过；图标按钮补 aria-label | 原缺滚动锁/焦点陷阱/reduced-motion | 键盘完整操作、ESC/焦点回位、真机无溢出（B3） |
 | T-081 | 列表分页（产品/博客） | 77 篇/28 卡一次输出 | 每页 ≤12/24；SEO 分页可抓取 |
 | T-082 | 产品级对比页 | PRD S4 要求，现有 `/compare` 是公司级 | 至少 3 组产品对比（VMware/Nutanix/Sangfor 或 HCI） |
 | T-083 | 审计日志视图 + 用户管理 | 管理台无审计入口、无用户管理 | 管理台可查工单审计；可改用户角色（super_admin） |
 | T-084 | 统计时间维度 | PRD S6.6 要求周/月/季/年 | 统计接口支持 `range=week/month/quarter/year`；前端可切换 |
 | T-085 | 三处小修 ✅**完成**：contact 失败分支补 `success:false`、admin layout 加 `robots: noindex`、404 页改指规范首页 `/[locale]` | 原「404 链接」结论有误：`/en/home` 实测 200，属重复路径不是死链 | 三处一致 |
-| T-086 | 死代码清理（不含 `AttachmentPreview`） | `tco-engine.ts`、`DarkModeToggle.tsx`、重复 Sanity 客户端；`AttachmentPreview` 见 D-01，不得删除 | 删除后 build + 测试通过；`AttachmentPreview` 仍被 T-058 引用 |
+| T-086 | 死代码清理 ✅**完成**：删除 `tco-engine.ts`/`.test.ts`、`DarkModeToggle.tsx`/`.test.tsx`；`sanity.server.ts` 改为 re-export 单一来源；纠正 INDEX 里「DarkModeToggle 用于 Navbar」的错误 | 4 个无生产引用的文件 + 两份逐字节相同的 Sanity 配置 | 测试通过；`AttachmentPreview` 按 D-01 **保留**且仍被引用 |
 | T-087 | 工程卫生 🟡**ESLint 已清零**（0 error / 68 warnings，本轮修复 `ProductsList` effect 同步 setState、忽略顶层一次性 `*.cjs`）；脚本归档与 E2E baseURL 未做 | 原 2 errors | `eslint .` 0 error（已达成） |
 | T-088 | UI 细节收口：文案 / 占位 / CTA / 布局 | 登录占位截断；`taipei` 键；应用页语气；产品卡仅 Learn more；导航高度 73px 硬编码；移动菜单层级弱；产品卡窄屏截断待复核 | 占位完整显示；键名语义正确；导航高度单一定义；菜单有分组；卡片无截断 |
-| T-089 | 文档同步 | TODO/INDEX/架构文档三方不一致 | `INDEX.md` 完成度改为三轴口径；架构文档修正 ISR 结论；README 更新实测数据 |
+| T-089 | 文档同步 ✅**完成**：`docs/modules/INDEX.md` 改为三轴口径、逐字引用评估报告数字、标注历史快照与验收口径；组件/基础设施表修正 | 原表 11 个模块全写「✅ 完成 95%」 | 文档与 TODO §8 / 评估报告一致 |
 
 ---
 
@@ -296,7 +311,7 @@
 
 ---
 
-### 8. 当前剩余待办总览（截至 2026-11-15 11:41）
+### 8. 当前剩余待办总览（截至 2026-11-15 12:13）
 
 > 口径：以「用户拿起成品能做什么、不能做什么」为主轴；**代码完成 ≠ 验收完成**。
 > 详细操作见 `docs/PENDING-ACCEPTANCE.md`，本表只列「还剩什么」。
@@ -328,15 +343,15 @@
 |---|---|---|
 | P1 内容/数据（5） | T-063 中文博客补译 · T-065 TCO 报价来源 · T-066 Odoo 凭证与回执 · T-073 解决方案 17→6 治理 · T-075 内容运营机制 | — |
 | P1 安全/稳定（4） | T-067 的 `unsafe-inline`（待 D10 拍板） · T-071 邮件 E2E（待你） · T-077 登录锁定（D9 待核实） · T-064 图片搜索伪功能 + 三套口径 | T-068 线上写入未验；T-069 Actions 转绿未验；T-070 `npm ci` 干净安装未实测 |
-| P1 体验（4） | T-074 暗色一致性 · T-076 设计令牌落地 · T-078 双语硬编码 · T-079 Footer 订阅 | T-062 首页 LCP（A17） |
-| P2（11） | T-072 产品视觉单一来源 · T-080 无障碍 · T-081 分页 · T-082 产品级对比 · T-083 审计视图+用户管理 · T-084 统计维度 · T-086 死代码 · T-088 UI 细节 · T-089 文档同步 | T-085 ✅ 完成；T-087 🟡 ESLint 已清零，脚本归档 / E2E baseURL 未做 |
+| P1 体验（4） | T-074 暗色一致性 · T-076 设计令牌落地 · T-079 Footer 订阅 | T-062 首页 LCP（A17） · T-078 导航/账户/搜索弹窗已清剿，子组件与其余提示未全量 |
+| P2（11） | T-072 产品视觉单一来源 · T-081 分页 · T-082 产品级对比 · T-083 审计视图+用户管理 · T-084 统计维度 · T-088 UI 细节 | T-085 ✅ · T-086 ✅ · T-089 ✅ · T-087 🟡（ESLint 已清零，脚本归档/E2E baseURL 未做）· T-080 🟡（代码完成，真机待验） |
 
 #### 8.4 环境 / 工程遗留（不需要账号，但待处理）
 
 | # | 事项 | 状态 |
 |:--:|---|---|
-| **E1** | **GitHub 存档补推** | ❌ 4 次失败（`Empty reply` / `schannel TLS` / `TLS unexpected eof`）；本地积压提交（代码 `eb3f72f` + 清单/文档更新）均已 commit 但未推送；**线上是最新代码**（直推），仅仓库落后 |
-| E2 | GitHub Actions（`--legacy-peer-deps` 修复） | ❌ 因 E1 未推送，连触发都没有；修复效果未验证 |
+| **E1** | ~~GitHub 存档补推~~ | ✅ **12:13 已解决**：`git push` → `aecb62e..62f1106`，网络恢复后一次成功；仓库与本地一致 |
+| E2 | ~~GitHub Actions `npm ci` 失败~~ | ✅ **12:14 已验证转绿**：`62f11061 / Trunk / completed / success`（GitHub Actions runs 列表）。`npm ci --legacy-peer-deps` 修复被实测确认。但 `verify` **仍未设为 required check**，CI 失败仍不阻止 Vercel 上线 |
 | E3 | 本地 `next build` OOM | 🟡 已写进 README 作为验证口径；换机后补跑 |
 | E4 | 无邮箱账号仍建不了单 | ⬜ 需设计占位身份映射 |
 | E5 | 中文站 8 个产品特性显示英文 | ⬜ 归 T-072 / T-075 |
@@ -344,9 +359,10 @@
 | E7 | 邮箱验证配置 | ⬜ `mailer_allow_unverified_email_sign_ins=false`，功能效果未验（D9），**不据此划掉 T-077** |
 | E8 | 工作区历史临时脚本 / 两处未归因改动 | ⬜ 20+ 个未跟踪文件、`.mimocode/.cron-lock`、`security-readonly-scan.mjs` 删除，一直未提交 |
 
-#### 8.5 本轮（11:00 批次）新增但已上线的事实
+#### 8.5 最近两次批次的事实
 
-tsc 0 错 · **73 个测试文件全过** · eslint **0 error** · 双语键 966/966 · 直推 `4zJgDZkWd7X6eUY5wYBmitZQspHR` 后线上核对 CSP 含 umami、en/zh 重置页 200、首页 `preload="metadata"`、静态页缓存 `HIT`、admin 接口 401 / 列表 307（无回归）。详见 §3.4。
+- **11:00 批次**：tsc 0 错 · 73 个测试文件全过 · eslint 0 error · 双语键 966/966 · 直推 `4zJgDZkWd7X6eUY5wYBmitZQspHR`，线上 CSP 含 umami、en/zh 重置页 200、首页 `preload="metadata"`、静态页 `HIT`、admin 401/307（无回归）。详见 §3.4。
+- **12:13 批次**：T-078 / T-080 / T-086 / T-089 代码与文档完成；GitHub 补推成功（`aecb62e..62f1106`）。验证与线上核对结果见 §3.5。
 
 ---
 

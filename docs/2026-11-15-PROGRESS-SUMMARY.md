@@ -91,3 +91,15 @@ A14 重置邮件全流程 · A15 搜索后 `search_logs` 有记录 · A16 Umami 
 **P0 的 4 笔验收债仍然没还**，本轮没有动任何需要你账号的东西。
 
 > **11:41 更新**：最新、唯一执行依据是 `TODO.md` **§8 当前剩余待办总览**（11:41 快照），含需你本人做的事、P0 状态、剩余工程任务、环境遗留 E1–E8。本文件上文只作过程记录。
+
+---
+
+## 12:13 增量（仍不方便验收，继续做不需要账号的项）
+
+- **E1 存档补推成功**：`aecb62e..62f1106`，GitHub 与本地一致；此前 4 次 TLS 失败是本机代理临时问题。
+- **D2 / T-069 CI 转绿**：`62f11061 / Trunk / completed / success`（12:14 Actions runs 实测），`npm ci --legacy-peer-deps` 修复确认有效。**但 `verify` 未设 required check，门禁仍未接线**——CI 红依然不拦上线。
+- T-078：nav 新增 20 个双语键；Navbar 中英三元、UserMenu 6 处、GlobalSearch 关键文案/aria 改 i18n。GlobalSearch 子组件与内部提示**未全量清剿**，仍标部分完成。
+- T-080：新增共享 `focus-trap.ts` + 6 个单测；搜索弹窗/移动抽屉有 ESC、滚动锁、Tab 焦点陷阱、关闭后焦点回位；Hero reduced-motion 跳过视频 scrub。真机键盘效果待验（B3）。**纠正**：搜索原本就有滚动锁，旧报告说"无滚动锁"不准确。
+- T-086：删 4 个无生产引用文件（含各自测试）；`sanity.server.ts` 改为 re-export 消除重复配置。**纠正**：两份 Sanity 客户端都有 8/10 个文件在用，不能当死代码删。`AttachmentPreview` 按 D-01 保留。
+- T-089：`docs/modules/INDEX.md` 从「11 个模块全 95% 完成」改为三轴口径，数字逐字引用评估报告并标注历史快照；修正 ThemeToggle / DarkModeToggle 错误条目。
+- 最新待办仍以 `TODO.md` §8（12:13 快照）为准；P0 的 4 笔验收债仍然没还。

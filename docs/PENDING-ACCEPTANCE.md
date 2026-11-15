@@ -37,10 +37,11 @@
 |:--:|---|---|---|
 | B1 | 新页面 | 客户对话页、管理员列表/详情在**手机窄屏**下的排版 | 无横向溢出、按钮可点、文字不截断 |
 | B2 | T-074 | 暗色模式下 `support` / `admin` 各页 | 无白字压浅灰底，正文对比度 ≥ 4.5:1 |
-| B3 | T-080 | 移动抽屉、搜索框、Hero 视频 | 滚动锁、ESC/焦点回位、`prefers-reduced-motion` 生效 |
+| B3 | T-080 | 移动抽屉、搜索框、Hero 视频 | 滚动锁、**Tab/Shift+Tab 焦点陷阱**、ESC/焦点回位、`prefers-reduced-motion` 生效（12:13 代码已实现，真机待验） |
 | B4 | T-088 | 登录占位符、产品卡 CTA、导航高度 | 文字完整、层级清晰 |
 | B5 | 全局 | 中英文切换 | ZH 页无英文按钮；无语言串台 |
 | B6 | T-071 | 重置密码页在手机窄屏 | 输入框完整、按钮可点、错误提示可读 |
+| B7 | T-078 | 中文站导航 / 账户菜单 / 搜索弹窗 | 无英文按钮或占位符；`nav` 新增 20 个键生效 |
 
 ## §3 需要你供数 / 拍板（不占工程排期）
 
@@ -93,6 +94,7 @@
 ## §7 11:41 补记（清单同步）
 
 - **GitHub 存档补推失败**：本地 commit `eb3f72f` 与本轮清单更新仍只在本地；`git push origin Trunk` 共 4 次失败（`Empty reply from server` / `schannel TLS 握手` / `TLS unexpected eof`），`api.github.com` 可读但 `github.com` 的 TLS 不通。**线上生产是最新的**（走 Vercel 直推），只是 GitHub 仓库落后。
-- **D2 的 CI 修复因此尚未触发**：`npm ci --legacy-peer-deps` 是否能让 Actions 转绿，仍未验证；网络恢复后补推再单次查结果。
+- **E1 / D2 已于 12:13–12:14 解决**（本段上文为 11:41 的旧状态）：网络恢复后单次 `git push` 成功（`aecb62e..62f1106`）；GitHub Actions 运行 `62f11061 / Trunk / completed / **success**`，`npm ci --legacy-peer-deps` 修复被实测确认。
+- **门禁仍未接线**：`verify` 没被设为 required status check，CI 失败依然不会阻止 Vercel 生产部署；这一步需要仓库管理员在后台设置。
 - 完整剩余待办以 `TODO.md` **§8 当前剩余待办总览（11:41）** 为准；本节只列验收动作。
 

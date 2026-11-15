@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
@@ -10,6 +10,7 @@ import UserMenu from '@/components/ui/UserMenu';
 import GlobalSearch from '@/components/ui/GlobalSearch';
 import MegaMenu from './MegaMenu';
 import { Search } from 'lucide-react';
+import { trapTabKey } from '@/lib/focus-trap';
 
 export default function Navbar() {
   const t = useTranslations('nav');
@@ -18,15 +19,33 @@ export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
 
-  // Close the mobile menu on Escape (AUDIT-160).
+  // T-080: mobile drawer = scroll lock + ESC + Tab trap + focus restore.
   useEffect(() => {
     if (!mobileOpen) return;
+    restoreFocusRef.current = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setMobileOpen(false);
+      if (e.key === 'Escape') {
+        setMobileOpen(false);
+        return;
+      }
+      trapTabKey(e, mobileMenuRef.current);
     };
     document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
+    // Move focus into the drawer so the first Tab stays inside it.
+    const first = mobileMenuRef.current?.querySelector<HTMLElement>('button, a[href]');
+    first?.focus();
+
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = previousOverflow;
+      restoreFocusRef.current?.focus?.();
+    };
   }, [mobileOpen]);
 
   const megaMenuItems = [
@@ -68,9 +87,9 @@ export default function Navbar() {
       label: t('about'),
       href: `/${locale}/about`,
       children: [
-        { label: locale === 'zh' ? '關於我們' : 'About Us', href: `/${locale}/about`, desc: '' },
-        { label: locale === 'zh' ? '發展歷程' : 'Our Journey', href: `/${locale}/about/timeline`, desc: '' },
-        { label: locale === 'zh' ? '為何選擇我們' : 'Why TechGuru', href: `/${locale}/compare`, desc: locale === 'zh' ? '對比與客戶評價' : 'Comparison & client stories' },
+        { label: t('aboutUs'), href: `/${locale}/about`, desc: '' },
+        { label: t('ourJourney'), href: `/${locale}/about/timeline`, desc: '' },
+        { label: t('whyTechGuru'), href: `/${locale}/compare`, desc: t('comparisonStories') },
       ],
     },
     {
@@ -133,7 +152,8 @@ export default function Navbar() {
           <button
             onClick={() => setSearchOpen(true)}
             className="w-9 h-9 rounded-lg flex items-center justify-center border border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors"
-            title="Search"
+            title={t('search')}
+            aria-label={t('search')}
           >
             <Search size={16} className="text-gray-600 dark:text-gray-300" />
           </button>
@@ -148,7 +168,7 @@ export default function Navbar() {
         <button
           className="md:hidden flex flex-col gap-[5px] p-2 w-11 h-11 items-center justify-center"
           onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
+          aria-label={t('toggleMenu')}
           aria-expanded={mobileOpen}
         >
           <span
@@ -170,9 +190,10 @@ export default function Navbar() {
       </div>
 
       <div
+        ref={mobileMenuRef}
         role={mobileOpen ? 'dialog' : undefined}
         aria-modal={mobileOpen ? 'true' : undefined}
-        aria-label={mobileOpen ? t('home') : undefined}
+        aria-label={mobileOpen ? t('navigationMenu') : undefined}
         className={`md:hidden fixed inset-0 top-[73px] glass-nav z-40 transition-opacity duration-300 ${
           mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
@@ -186,7 +207,7 @@ export default function Navbar() {
             className="flex items-center gap-3 text-[32px] font-medium text-black dark:text-white hover:text-[#00D4FF] transition-colors duration-200"
           >
             <Search size={24} />
-            Search
+            {t('search')}
           </button>
           <Link
             href={`/${locale}`}

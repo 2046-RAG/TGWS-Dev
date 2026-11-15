@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { User, LogOut, Headphones, ChevronDown, Settings } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
@@ -9,6 +9,7 @@ import { createClient } from '@/lib/supabase/client';
 export default function UserMenu() {
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations('nav');
   const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -72,6 +73,7 @@ export default function UserMenu() {
         className="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors"
         aria-expanded={isOpen}
         aria-haspopup="true"
+        aria-label={t('navigationMenu')}
       >
         {user ? (
           <div className="w-7 h-7 rounded-full bg-[#00D4FF] flex items-center justify-center">
@@ -92,7 +94,7 @@ export default function UserMenu() {
           {user ? (
             <>
               <div className="px-4 py-3 border-b border-gray-100 dark:border-zinc-700">
-                <p className="text-xs text-gray-400 dark:text-gray-500 mb-1">Signed in as</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mb-1">{t('signedInAs')}</p>
                 <p className="text-sm text-gray-700 dark:text-gray-200 truncate font-medium">{user.email}</p>
               </div>
               <button
@@ -103,7 +105,7 @@ export default function UserMenu() {
                 className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
               >
                 <User size={16} />
-                My Profile
+                {t('myProfile')}
               </button>
               <button
                 onClick={() => {
@@ -113,14 +115,14 @@ export default function UserMenu() {
                 className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
               >
                 <Settings size={16} />
-                Support Center
+                {t('supportCenter')}
               </button>
               <button
                 onClick={handleLogout}
                 className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
               >
                 <LogOut size={16} />
-                Sign Out
+                {t('signOut')}
               </button>
             </>
           ) : (
@@ -133,7 +135,7 @@ export default function UserMenu() {
                 className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[#00D4FF] text-white text-sm font-medium rounded-lg hover:bg-[#00B8E6] transition-colors"
               >
                 <Headphones size={14} />
-                Sign In
+                {t('signIn')}
               </button>
               <button
                 onClick={() => {
@@ -142,7 +144,7 @@ export default function UserMenu() {
                 }}
                 className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-200 dark:border-zinc-600 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
               >
-                Create Account
+                {t('createAccount')}
               </button>
             </div>
           )}

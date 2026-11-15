@@ -16,7 +16,17 @@ vi.mock('@/lib/supabase/client', () => ({
   }),
 }));
 
-vi.mock('next-intl', () => ({ useLocale: () => 'en' }));
+// T-078: UserMenu now reads all labels from the nav namespace. Keep the
+// mock aligned with the real EN copy so existing assertions stay meaningful.
+vi.mock('next-intl', () => {
+  const nav: Record<string, string> = {
+    signIn: 'Sign In', createAccount: 'Create Account',
+    signedInAs: 'Signed in as', myProfile: 'My Profile',
+    supportCenter: 'Support Center', signOut: 'Sign Out',
+    navigationMenu: 'Navigation menu',
+  };
+  return { useLocale: () => 'en', useTranslations: () => (key: string) => nav[key] ?? key };
+});
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: mockPush }),
 }));
