@@ -6,7 +6,7 @@ export default async function NotFoundPage() {
   const locale = await getLocale();
 
   const quickLinks = [
-    { label: t('suggestedHome'), href: `/${locale}/home` },
+    { label: t('suggestedHome'), href: `/${locale}` },
     { label: t('suggestedProducts'), href: `/${locale}/products` },
     { label: t('suggestedContact'), href: `/${locale}/contact` },
     { label: t('suggestedSupport'), href: `/${locale}/support` },
@@ -21,7 +21,7 @@ export default async function NotFoundPage() {
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">{t('notFound')}</h2>
         <p className="text-gray-600 dark:text-gray-300 mb-8">{t('notFoundDesc')}</p>
         <Link
-          href={`/${locale}/home`}
+          href={`/${locale}`}
           className="inline-block px-6 py-3 bg-[#00D4FF] text-white font-medium rounded-full hover:bg-[#00B8DB] hover:shadow-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF] focus-visible:ring-offset-2 mb-8"
         >
           {t('backHome')}

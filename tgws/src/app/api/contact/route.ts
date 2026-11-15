@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       message: { required: true, type: 'string', max: 5000 },
     });
     if (fieldError) {
-      return NextResponse.json({ error: fieldError }, { status: 400 });
+      return NextResponse.json({ success: false, error: fieldError }, { status: 400 });
     }
 
     const { name, email, company, phone, message } = body as {
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 
     if (dbError) {
       logServiceError({ service: 'Contact', operation: 'submit', error: dbError });
-      return NextResponse.json({ error: 'Failed to submit contact form' }, { status: 500 });
+      return NextResponse.json({ success: false, error: 'Failed to submit contact form' }, { status: 500 });
     }
 
     try {
@@ -52,6 +52,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     logServiceError({ service: 'Contact', operation: 'submit', error });
-    return NextResponse.json({ error: 'Failed to submit contact form' }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Failed to submit contact form' }, { status: 500 });
   }
 }

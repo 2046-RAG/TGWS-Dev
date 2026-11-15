@@ -47,7 +47,10 @@ export default function ProductsList({ products }: { products: Product[] }) {
     const next = (['build', 'run', 'protect'] as const).find(
       (k) => k === fromQuery || k === fromHash
     );
-    if (next) setActiveTab(next);
+    // Defer to a microtask: a synchronous setState inside the effect body
+    // triggers cascading renders (react-hooks/set-state-in-effect). The tab
+    // is a URL-derived value, so applying it right after the effect is safe.
+    if (next) queueMicrotask(() => setActiveTab(next));
   }, [searchParams]);
 
   const handleTabChange = useCallback((tab: TabKey) => {

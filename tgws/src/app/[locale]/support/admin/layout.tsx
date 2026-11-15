@@ -1,4 +1,10 @@
 import { requireAdmin } from '@/lib/auth-guard';
+import type { Metadata } from 'next';
+
+// Back-office pages must never be indexed by search engines (T-085).
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default async function AdminLayout({
   children,

@@ -60,7 +60,11 @@ jobs:
 
       - name: Install (clean, reproducible)
         working-directory: tgws
-        run: npm ci
+        # react 19.2.4 is pinned while @portabletext/editor (via sanity)
+        # asks for ^19.2.7. Plain `npm ci` failed on the first Actions run;
+        # npm install tolerates this peer range, so keep ci with the same
+        # resolution behaviour. D2: verify on the next Actions run.
+        run: npm ci --legacy-peer-deps
 
       - name: TypeScript
         working-directory: tgws

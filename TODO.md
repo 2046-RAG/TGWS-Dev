@@ -31,7 +31,7 @@
 | ISR/SSG 实时生效 | 23 条 locale 路由全动态，`revalidate` 与 `/api/revalidate` 对页面无效 | 转 T-062（**已推生产，线上 `PRERENDER`/`HIT` 已验证**） |
 | GlobalSearch 多模态/图片搜索 | 上传图后只把 query 置为 `'image search'`，未进视觉模型 | 转 T-064 |
 | TCO 定价 Sanity 驱动 | 有定价，但 Sangfor 为估算、无来源与有效期 | 转 T-065 |
-| Umami 已接入 | CSP `script-src` 未放行 `cloud.umami.is`，脚本被拒 | 转 T-067 |
+| Umami 已接入 | 原 CSP 未放行 `cloud.umami.is`；本轮已放行且线上响应头已核对，**后台数据待验** | 转 T-067（部分完成） |
 | TODO-029 profile 已可用 | 页面可用，但资料写 `user_metadata`，`users` 表基本未使用 | 并入 T-057/T-078 |
 | TODO-010 附件预览已完成 | `AttachmentPreview` 仅 import 未渲染，列表只显示附件数量 | 转 T-058 + D-01（决定实现） |
 
@@ -40,7 +40,7 @@
 | 必补项 | 任务 | 优先级 | 验收要点 |
 |--------|------|:---:|----------|
 | TCO 价格来源 | T-065 | P1 | 每个价格有来源/日期；Sangfor 明示估算 |
-| `unsafe-inline` CSP | T-067 | P1 | 主题脚本改 nonce/hash；控制台无 CSP 拒绝 |
+| `unsafe-inline` CSP | T-067 | P1 | 已判定与静态渲染互斥：本轮保留并写明取舍；若收紧需先拍板放弃 ISR（见 §3.4） |
 | 搜索日志落点 | T-068 | P1 | Sanity/Supabase 二选一；能查最近 7 天搜索词 |
 | Odoo 凭证 | T-066 | P1 | 表单提交后出现 `crm.lead`；客户收到回执 |
 | Footer 订阅 | T-079 | P1 | 接后端或删订阅框，二选一 |
@@ -144,16 +144,16 @@
 
 | 编号 | 任务 | 依据 | 验收标准 |
 |------|------|------|----------|
-| T-062 | 恢复静态渲染 + 首屏策略 🟡**部分完成**（静态渲染已推生产并线上验证；仅剩首屏策略未做） | 23 条 locale 路由全 Dynamic；无 `setRequestLocale`；首页 `use client` + video `preload=auto` | 构建产物出现 `○`/ISR + **线上部署后**确认缓存命中与 revalidate 生效；首页 LCP 有基线且 video 不抢首屏带宽 |
+| T-062 | 恢复静态渲染 + 首屏策略 🟡**部分完成**（静态渲染已上线；首屏带宽侧 2026-11-15 已处理 `preload=metadata` + `aria-hidden`；**LCP 实测与静态首帧素材仍缺**） | 23 条 locale 路由全 Dynamic；无 `setRequestLocale`；首页 `use client` + video `preload=auto` | 构建产物出现 `○`/ISR + 线上缓存命中；首页 LCP 有真机基线 |
 | T-063 | 中文博客补译或显式回退 + 5 篇空正文补齐 | 72 篇有正文，63 篇 `contentZh` < 英文 10%，中位 6.8%；5 篇 `content` 为空 | 任选 10 篇 ZH，正文 ≥ 英文 60% 或页面明示"英文原文"；空正文清零 |
 | T-064 | 搜索体验收口（图片/口径/摘要） | `api/search/route.ts:19-31` 未使用 `imageData`；全局/产品/FAQ 三套搜索口径；摘要无缓存/超时标识 | 图片搜索接模型或删入口；三套搜索统一为一套；摘要失败有降级标识 |
 | T-065 | TCO 价格来源、有效期、免责口径 | Sanity `tcoCalculator`：Sangfor `isEstimated`，VMware/Nutanix 无来源 | 每个价格有来源/日期；页面显示有效期；Sangfor 明示估算 |
 | T-066 | Odoo 凭证 + 线索同步 + 客户确认邮件 | `.env.local` 占位；`/api/contact` 仅落库、无客户回执 | Odoo 出现对应 `crm.lead`；客户 5 分钟内收到确认邮件 |
-| T-067 | CSP：放行 Umami + 去 `unsafe-inline` | `next.config.ts:68` vs `layout.tsx:132` | 控制台无 CSP 拒绝；Umami 有数据；主题脚本改 nonce/hash |
-| T-068 | 搜索日志落点收敛 | 写 Sanity `searchLog`（未注册）而 `search_logs` 零写入 | 二选一：注册 schema 或改写 Supabase；能查到最近 7 天搜索词 |
-| T-069 | 测试隔离 + CI 门禁 🟡**已推送，但 GitHub Actions 首次失败在 `npm ci`（日志需 admin 权限未取到）**；部署已改走 Vercel 直推，CI 不再是部署前置 | 本地 69 文件全过；workflow 已上线 | `npm run test:run` 干净环境全绿；GitHub Actions 跑 tsc+test+build |
+| T-067 | CSP 🟡**部分完成**：已放行 Umami（script-src + connect-src，线上响应头已核对）；`unsafe-inline` **有意保留**（见 §3.4） | `next.config.ts:68` 未放行 cloud.umami.is | Umami 后台收到数据；若要去 unsafe-inline，需先决定是否放弃静态渲染 |
+| T-068 | 搜索日志落点 ✅**代码完成**：改写入 005 建的 `public.search_logs`（含 user_id、query_type、计数），4 个单测通过；**线上真实搜索写入未验** | 原写 Sanity 未注册的 `searchLog`，等于零落点 | 能查到最近 7 天搜索词（A15） |
+| T-069 | 测试隔离 + CI 门禁 🟡**已推送，Actions 首次挂在 `npm ci`**；本轮已把安装命令改为 `npm ci --legacy-peer-deps`（D2，推断修复，**待下次 Actions 运行确认**）；部署走 Vercel 直推，CI 非前置 | 本地 73 文件全过 | Actions 转绿 |
 | T-070 | 依赖声明补全 🟡**声明已补齐**（`framer-motion` 12.42.2、`date-fns` 4.4.0，package.json 与 lock 根一致）；`npm ci` 干净安装未实测（本机不下载） | 原先两包靠 hoist 装载 | 干净环境 `npm ci` 后 build 通过；lockfile 不再依赖 hoist |
-| T-071 | 密码重置页 | `LoginForm` 的 `redirectTo` 指向仅 POST 的 API，点击得 405 | 邮件链接打开"设置新密码"页并成功改密 |
+| T-071 | 密码重置页 🟡**代码完成并上线**：新增 `/[locale]/support/reset-password`（PKCE `code` 与 implicit `recovery` 双格式），LoginForm 与服务端 API 的 redirectTo 已改指该页，3 个组件单测通过；**真实邮件端到端未验**（A14） | 邮件链接原指向仅 POST 的 API → 405 | 邮件链接打开设置新密码页并成功改密 |
 | T-073 | 解决方案数据治理 | 17 条只有 6 条可达；`challengesZh/solutionsZh` 0/17；`title` 存繁中 | 6 条（或按行业聚合）；中文痛点/方案齐全；字段语义正确 |
 | T-074 | 暗色一致性巡检 | `support/page.tsx:109`、`admin/dashboard/page.tsx:114` 无 `dark:bg`，白字压浅灰 | 全站暗色无对比度 < 4.5:1 的正文；应用页与营销页背景一致 |
 | T-075 | 内容运营机制 + 文案单一来源 | 博客停更 18 个月、分类全 technical；FAQ/partner 未入 CMS；产品文案 i18n 与 CMS 双源 | 双周 1 篇；分类真实；FAQ/partner 二选一；产品文案确定唯一来源 |
@@ -198,6 +198,29 @@
 
 ---
 
+### 3.4 2026-11-15 11:00 批次（用户不在家、不依赖账号）
+
+> 只处理不需要真实账号/真机/外部供数的项；每项状态见上表与本节。
+
+| 编号 | 处理 | 验证 |
+|------|------|------|
+| T-062 尾巴 | Hero 视频 `preload=auto` → `metadata`，加 `aria-hidden`/`tabIndex=-1` | 线上首页 HTML 已核对为 `preload="metadata"`；**LCP 未实测**（无真机） |
+| T-067 | CSP `script-src`/`connect-src` 放行 `https://cloud.umami.is` | 线上响应头两处均命中 |
+| T-068 | 搜索日志改写 Supabase `search_logs`；移除未注册的 Sanity `searchLog` | 4 个单测（字段、image 映射、日志失败不影响响应、空请求不写） |
+| T-071 | 新增重置密码页 + 11 个双语键 + 两处 redirectTo 修正 | 3 个组件单测；线上 en/zh 页面均 200 |
+| T-085 | contact 返回体、admin noindex、404 规范路径 | tsc + 全量单测 |
+| T-087 | ESLint 2 errors → **0** | `npx eslint . -f json` |
+| D1/D7 | README 写入本机构建 OOM 实测与验证口径，纠正「Umami 已接入 / 74.9%」旧结论 | 文档 |
+| D2 | workflow 安装步骤改 `npm ci --legacy-peer-deps` | 待 Actions 运行 |
+
+**关键取舍（必须说明）**：CSP 的 `script-src 'unsafe-inline'` **没有**去掉。Next.js App Router 会注入内联 RSC/flight 脚本，去掉它必须改用每请求 nonce，会让全部 locale 路由退回动态渲染，直接推翻 T-062 刚上线的静态化。这是「保留静态渲染」与「收紧 CSP」之间的架构取舍，**需要你拍板**，不是遗漏。
+
+**本轮统一验证**：tsc 0 错；`npm run test:run` **73 文件全过、退出码 0**；eslint **0 error / 68 warnings**；双语键 966/966 无缺失；本地 `next build` 按 README 口径不作为上线前置（本机 OOM）。直推 deployment `4zJgDZkWd7X6eUY5wYBmitZQspHR`，线上核对：CSP 含 umami、en/zh 重置页 200、首页 `preload="metadata"`、`/en/privacy` `HIT`、`/api/admin/users` 401、admin 列表 307（无回归）。
+
+**仍未验证**：Umami 后台是否收到数据、真实搜索是否写入 `search_logs`、重置邮件链接能否改密、首页真实 LCP。见 `docs/PENDING-ACCEPTANCE.md` A14–A17。
+
+---
+
 ### 4. P2（11 项，品质与可维护性）
 
 | 编号 | 任务 | 依据 | 验收标准 |
@@ -208,9 +231,9 @@
 | T-082 | 产品级对比页 | PRD S4 要求，现有 `/compare` 是公司级 | 至少 3 组产品对比（VMware/Nutanix/Sangfor 或 HCI） |
 | T-083 | 审计日志视图 + 用户管理 | 管理台无审计入口、无用户管理 | 管理台可查工单审计；可改用户角色（super_admin） |
 | T-084 | 统计时间维度 | PRD S6.6 要求周/月/季/年 | 统计接口支持 `range=week/month/quarter/year`；前端可切换 |
-| T-085 | 小修：404 链接 / contact 信封 / 管理台 metadata | `not-found.tsx:24`、`api/contact` 缺 `success:false`、admin 无 metadata | 三处一致；SEO 工具无告警 |
+| T-085 | 三处小修 ✅**完成**：contact 失败分支补 `success:false`、admin layout 加 `robots: noindex`、404 页改指规范首页 `/[locale]` | 原「404 链接」结论有误：`/en/home` 实测 200，属重复路径不是死链 | 三处一致 |
 | T-086 | 死代码清理（不含 `AttachmentPreview`） | `tco-engine.ts`、`DarkModeToggle.tsx`、重复 Sanity 客户端；`AttachmentPreview` 见 D-01，不得删除 | 删除后 build + 测试通过；`AttachmentPreview` 仍被 T-058 引用 |
-| T-087 | 工程卫生：ESLint 清零 / 脚本归档 / E2E baseURL | 2 errors、根目录残留脚本、E2E 打生产 | `eslint .` 0 error；一次性脚本入 `docs/archive`；E2E 默认 localhost |
+| T-087 | 工程卫生 🟡**ESLint 已清零**（0 error / 68 warnings，本轮修复 `ProductsList` effect 同步 setState、忽略顶层一次性 `*.cjs`）；脚本归档与 E2E baseURL 未做 | 原 2 errors | `eslint .` 0 error（已达成） |
 | T-088 | UI 细节收口：文案 / 占位 / CTA / 布局 | 登录占位截断；`taipei` 键；应用页语气；产品卡仅 Learn more；导航高度 73px 硬编码；移动菜单层级弱；产品卡窄屏截断待复核 | 占位完整显示；键名语义正确；导航高度单一定义；菜单有分组；卡片无截断 |
 | T-089 | 文档同步 | TODO/INDEX/架构文档三方不一致 | `INDEX.md` 完成度改为三轴口径；架构文档修正 ISR 结论；README 更新实测数据 |
 

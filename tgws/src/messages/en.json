@@ -1029,6 +1029,17 @@
     "stepLabel": "Step {num}"
   },
   "auth": {
+    "resetTitle": "Set a new password",
+    "resetDesc": "Choose a new password for your account.",
+    "checkingResetLink": "Checking your reset link…",
+    "invalidResetLink": "This reset link is invalid or has expired. Please request a new one.",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "At least 8 characters",
+    "confirmNewPassword": "Confirm new password",
+    "updatePassword": "Update password",
+    "updatingPassword": "Updating…",
+    "passwordUpdated": "Your password has been updated. You can now sign in.",
+    "resetFailed": "Could not update your password. Please try again or request a new link.",
     "signIn": "Sign In",
     "signInSubtitle": "Welcome back! Please sign in to your account.",
     "signingIn": "Signing in...",

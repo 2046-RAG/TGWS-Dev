@@ -24,6 +24,10 @@
 | A11 | T-059 | 管理员在详情页改状态 / 优先级 / 指派并保存 | 保存成功；审计时间线新增记录；客户收到状态变更邮件 | 三项齐全 | 管理员账号 |
 | A12 | T-059 | 列表页点「Export CSV」 | 下载当前筛选页 CSV，含工单号 / 状态 / 类别 / 优先级 / 时间 | 文件可打开、列齐全 | A2 |
 | A13 | T-059 | 客户号访问 `/api/admin/users` | 403，不泄露员工列表 | HTTP 403 | 客户账号 |
+| A14 | T-071 | 用真实邮箱点「忘记密码」→ 打开邮件链接 → 设置新密码 → 用新密码登录 | 邮件链接落到 `/[locale]/support/reset-password`（不再是 405）；改密成功 | 全流程通过 | 真实邮箱；**Supabase `uri_allow_list` 当前为空**，若被拒需加白名单 |
+| A15 | T-068 | 在站内搜索框搜一个词 | `public.search_logs` 新增一行，query/query_type/计数正确 | 能查到该行 | 无需账号 |
+| A16 | T-067 | 打开任意页面后看 Umami 后台 | 有本次访问的 pageview | 后台可见 | Umami 账号 |
+| A17 | T-062 | 用浏览器测首页 LCP（视频 `preload=metadata` 之后） | 有可复现的 LCP 基线数值 | 记录数值与设备 | 真机/浏览器 |
 
 > **建议合并执行**：A1→A2→A3→A5→A6→A7 用「客户号 + 管理员号」一次切换跑完；A4 单独用无痕窗口验。
 
@@ -36,6 +40,7 @@
 | B3 | T-080 | 移动抽屉、搜索框、Hero 视频 | 滚动锁、ESC/焦点回位、`prefers-reduced-motion` 生效 |
 | B4 | T-088 | 登录占位符、产品卡 CTA、导航高度 | 文字完整、层级清晰 |
 | B5 | 全局 | 中英文切换 | ZH 页无英文按钮；无语言串台 |
+| B6 | T-071 | 重置密码页在手机窄屏 | 输入框完整、按钮可点、错误提示可读 |
 
 ## §3 需要你供数 / 拍板（不占工程排期）
 
@@ -54,13 +59,16 @@
 
 | # | 事项 | 现状 | 建议 |
 |:--:|---|---|---|
-| D1 | 本地构建堆上限 | 默认堆下 `next build` 两次 worker OOM；`NODE_OPTIONS=--max-old-space-size=4096` 后通过 | 固化进构建脚本或写进 README（跨平台需谨慎，未擅自改 `package.json`） |
-| D2 | GitHub Actions | 首次运行挂在 `npm ci`，日志需仓库 admin 权限才能读；部署已改走 Vercel 直推，CI 不再是前置 | 修一行让记录转绿，或明确停用 |
+| D1 | 本地构建堆上限 | ✅ 已写进 `README.md`「2026-11-15 实测修正」：4GB 堆与单 worker 均失败，判定本机内存不足，本地 build 不作上线前置，生产以 Vercel 构建为准 | 换机或释放内存后补跑一次 |
+| D2 | GitHub Actions | 首次运行挂在 `npm ci`；本轮已把安装命令改为 `npm ci --legacy-peer-deps`（针对 react 19.2.4 与 `@portabletext/editor` ^19.2.7 的 peer 冲突，**推断修复未确认**） | 下次 push 后单次查 Actions 结果；不要轮询等待 |
 | D3 | Vercel Git 集成 | 仍连着 GitHub，push 会额外触发一次自动部署 | 要不要断开，需你拍板 |
 | D4 | 无邮箱账号边界 | 006 触发器跳过手机 / 不返回邮箱的 OAuth 账号，这类用户仍建不了单 | 需设计占位身份映射 |
 | D5 | 中文站 8 个产品特性 | 显示英文（CMS 无中文字段） | 归入 T-072 / T-075 |
 | D6 | 首页首屏策略 | T-062 剩的一半：`use client` + video `preload=auto` 未处理 | 归入 T-062 |
 | D7 | 本地构建 OOM | 本机连续 5 次 `next build` worker OOM（4GB 堆、单 worker 临时验证均失败，配置已恢复）；云端 Vercel 构建每次 ● Ready | 本地 build 暂不作为上线前置；回来换机或释放内存后再验 |
+| D8 | Supabase 重定向白名单 | 只读查到 `site_url=https://www.techguru-it.asia`、`uri_allow_list=""`（空）。重置邮件的新目标 `/en/support/reset-password` 是否被允许**未实测**；未擅自改生产 auth 配置 | A14 若被拒，在 Supabase Auth → URL Configuration 加该 URL 或通配 |
+| D9 | T-077 的邮箱验证 | 只读查到 `mailer_allow_unverified_email_sign_ins=false`、`disable_signup=false`，说明平台层可能已强制邮箱验证；**功能效果未验证**，不要直接把 T-077 的「邮箱验证」划掉 | 用新注册账号确认是否必须验邮箱才能登录 |
+| D10 | CSP `unsafe-inline` 取舍 | 已放行 Umami，但 `script-src` 仍保留 `'unsafe-inline'`：Next.js App Router 注入内联 RSC 脚本，去掉需每请求 nonce，会把 locale 路由全部打回动态渲染 | **需你拍板**：保静态渲染（现状）还是收紧 CSP |
 
 ## §5 已核对完成、不需要再验
 
@@ -68,13 +76,15 @@
 - 006 用户同步：线上 4 项 PASS，`auth.users=14 / public.users=14 / missing=0`。
 - 007 评论策略：线上 3 项 PASS，并清掉 3 条有安全缺口的遗留策略。
 - T-062 静态渲染：线上响应头 `PRERENDER → HIT`，中英文无串台。
+- 本轮线上核对：CSP 响应头含 `cloud.umami.is`（script-src + connect-src）；`/en` 与 `/zh` 重置密码页均 200；首页视频 `preload="metadata"`；`/api/admin/users` 401、admin 列表 307（无回归）。
+- 本轮本地核对：tsc 0 错、73 个测试文件全过（退出码 0）、eslint 0 error、双语键 966/966 无缺失。
 - T-058 / T-060 的直推部署：`vercel ls` 显示 ● Ready；线上路由核对（管理台 307 / 客户对话页 200 / 评论接口未登录 401）。
 
 ## §6 回来后的建议顺序
 
-1. **先把 §1 跑完**（一次登录切换，约 15–20 分钟），这样 P0 的 3 笔验收债一次还清；
+1. **先把 §1 跑完**（一次登录切换，约 20 分钟），还掉 P0 的验收债，并顺带做 A14–A17（重置邮件、搜索日志、Umami、LCP）；
 2. 顺手看 §2 的手机窄屏与暗色（真机最直观）；
 3. §3 挑能当场拍板的先定，不能定的继续挂 EXT；
-4. §4 的 D1/D2 我可以不等你，直接处理。
+4. §4 的 D1/D2 本轮已处理；D8/D10 需要你拍板，D3/D4/D5/D6 仍未动。
 
 > 期间代码继续推进，新增的待验项会 append 到本文，不另开文档。

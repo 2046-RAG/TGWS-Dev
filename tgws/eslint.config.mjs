@@ -17,7 +17,8 @@ const eslintConfig = defineConfig([
     // Playwright-generated HTML report assets (third-party JS, not project code)
     "tests/functional/functional-report/**",
     "coverage/**",
-    // One-off local migration scripts (require() style, not project code)
+    // One-off local analysis scripts (require() style, not project code)
+    "*.cjs",
     "_*.cjs",
   ]),
 ]);

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { client } from '@/lib/sanity.server';
+import { createClient as createSupabaseClient } from '@/lib/supabase/server';
 import { logServiceError } from '@/lib/errors';
 import type { SearchRequest } from '@/lib/search/types';
 import { searchInternal } from '@/lib/search/internal';
@@ -68,21 +68,30 @@ export async function POST(request: NextRequest) {
       },
     };
 
-    // 记录搜索日志
+    // T-068: searchLog was never a registered Sanity schema, so writes went
+    // nowhere. 005 created public.search_logs with an anonymous INSERT policy;
+    // log there instead. Logging must never fail the user's search response.
     try {
-      await client.create({
-        _type: 'searchLog',
-        query: searchQuery,
-        queryType: type,
-        filters: filters || {},
-        resultsCount: internal.length + external.length,
-        internalCount: internal.length,
-        externalCount: external.length,
-        capabilityGapDetected: capabilityGap.detected,
-        gapDescription: capabilityGap.gapDescription,
+      const supabase = await createSupabaseClient();
+      // Attribute the row when the visitor is signed in; anonymous searches
+      // stay NULL (005 allows anonymous INSERT, admins can read all rows).
+      const { data: authData } = await supabase.auth.getUser();
+      const { error: logWriteError } = await supabase.from('search_logs').insert({
+        user_id: authData?.user?.id ?? null,
+        query: searchQuery || 'image search',
+        query_type: type === 'image' ? 'image' : 'text',
+        filters: filters || null,
+        results_count: internal.length + external.length,
+        internal_count: internal.length,
+        external_count: external.length,
+        capability_gap_detected: capabilityGap.detected,
+        gap_description: capabilityGap.gapDescription || null,
       });
+      if (logWriteError) {
+        logServiceError({ service: 'Supabase', operation: 'logSearch', error: logWriteError });
+      }
     } catch (logError) {
-      logServiceError({ service: 'Sanity', operation: 'logSearch', error: logError });
+      logServiceError({ service: 'Supabase', operation: 'logSearch', error: logError });
     }
 
     return NextResponse.json(response);

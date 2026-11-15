@@ -34,6 +34,7 @@ describe('api/contact POST', () => {
     for (const body of cases) {
       const res = await POST(req(body));
       expect(res.status).toBe(400);
+      expect((await res.json()).success).toBe(false);
     }
   });
 
@@ -65,6 +66,7 @@ describe('api/contact POST', () => {
     mockFrom.mockReturnValue({ insert: async () => ({ error: { message: 'db' } }) });
     const res = await POST(req(VALID));
     expect(res.status).toBe(500);
+    expect((await res.json()).success).toBe(false);
   });
 
   it('still succeeds when Odoo sync fails (non-fatal)', async () => {

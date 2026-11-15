@@ -19,9 +19,16 @@ export async function POST(request: Request) {
     }
     const { email } = body as { email: string };
 
+    // T-071: keep the locale of the page that triggered the request. The
+    // browser-side form calls Supabase directly; this endpoint is the
+    // server-side fallback, so it must send users to the same real page.
+    const referer = request.headers.get('referer') || '';
+    const locale = referer.match(/\/(en|zh)\//)?.[1] || 'en';
+    const origin = new URL(request.url).origin;
+
     const supabase = await createClient();
     const { error } = await supabase.auth.resetPasswordForEmail(email.toLowerCase(), {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/support/login`,
+      redirectTo: `${origin}/${locale}/support/reset-password`,
     });
 
     if (error) {

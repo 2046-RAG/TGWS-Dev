@@ -1177,6 +1177,17 @@
     "ctaPhone": "立即致電"
   },
   "auth": {
+    "resetTitle": "設定新密碼",
+    "resetDesc": "為您的帳號設定一組新密碼。",
+    "checkingResetLink": "正在驗證重設連結…",
+    "invalidResetLink": "此重設連結無效或已過期，請重新申請。",
+    "newPassword": "新密碼",
+    "newPasswordPlaceholder": "至少 8 個字元",
+    "confirmNewPassword": "確認新密碼",
+    "updatePassword": "更新密碼",
+    "updatingPassword": "更新中…",
+    "passwordUpdated": "密碼已更新，現在可以登入了。",
+    "resetFailed": "無法更新密碼，請重試或重新申請重設連結。",
     "signIn": "登入",
     "signInSubtitle": "歡迎回來！請登入您的帳戶。",
     "signingIn": "登入中...",

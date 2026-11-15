@@ -47,7 +47,9 @@ export default function LoginForm() {
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/api/auth/reset-password`,
+        // T-071: /api/auth/reset-password is POST-only; the email link must
+      // open a real page where the user can set a new password.
+      redirectTo: `${window.location.origin}/${locale}/support/reset-password`,
       });
 
       if (error) {

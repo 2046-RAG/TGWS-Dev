@@ -55,3 +55,37 @@
 - **没有主动推送通知到手机的通道**：这份文档和本会话汇总就是给手机版看的；如果你要**邮件**推送，把地址给我，我发一份精简版。
 - 本轮改动已 commit + push 到 GitHub；push 会顺带触发一次 Vercel 自动部署（Git 集成仍连着），但我没等它、也不依赖它。
 - **不宣称 P0 完成**：4 笔线上端到端未验，TODO 里相关项仍标 🟡。
+
+---
+
+## 11:00 增量（你出门期间，本节覆盖上文对应结论）
+
+你说「不方便验收，先处理其他的」，我只做了**不需要账号 / 真机 / 外部供数**的项，按「一个个来」逐个做完再统一汇报。
+
+### 已上线（Vercel 直推，线上核对通过）
+
+| 项 | 改了什么 | 线上证据 |
+|---|---|---|
+| T-062 尾巴 | 首页视频 `preload=auto` → `metadata`，不再抢首屏带宽 | 首页 HTML 已是 `preload="metadata"` |
+| T-067 | CSP 放行 Umami 脚本与上报域名 | 响应头 `cloud.umami.is` 在 script-src 与 connect-src 均命中 |
+| T-068 | 搜索日志从「Sanity 未注册类型」改写到 005 已建的 `search_logs` | 4 个单测；**线上真实写入仍待验 A15** |
+| T-071 | 新增「设置新密码」页（邮件链接原来点开是 405） | `/en`、`/zh` 重置页均 200；3 个组件单测 |
+| T-085 | contact 失败返回体、后台 noindex、404 页规范首页路径 | tsc + 全量单测 |
+| T-087 | ESLint **2 errors → 0** | `npx eslint . -f json` |
+| D1/D2 | README 写清本机构建 OOM 与验证口径、纠正旧结论；CI 安装命令改 `--legacy-peer-deps` | 文档 + workflow（**修复效果待 Actions 确认**） |
+
+### 验证
+
+`tsc` 0 错 · **73 个测试文件全过、退出码 0** · `eslint` **0 error / 68 warnings** · 双语键 966/966 无缺失。本地 `next build` 按 README 口径不作为上线前置（本机 OOM），生产构建以 Vercel 为准。线上无回归：`/api/admin/users` 401、admin 列表 307、`/en/privacy` 缓存 `HIT`。
+
+### 三个必须知道的点
+
+1. **`unsafe-inline` 没有去掉，是有意的**：Next.js 会注入内联 RSC 脚本，去掉它必须每请求 nonce，会把刚上线的静态渲染全部打回动态。这是二选一的架构取舍，等你拍板（清单 D10）。
+2. **「404 链接」这个旧结论不成立**：`/en/home` 实测 200，是重复路径不是死链；本轮只是把链接改成规范首页 `/en`。
+3. **发现两处待核实**：Supabase `uri_allow_list` 为空，重置邮件新目标是否被允许未实测（D8）；`mailer_allow_unverified_email_sign_ins=false` 说明平台可能已强制邮箱验证，但功能效果未验（D9），**没有**据此把 T-077 划掉。
+
+### 回来后新增的验收项
+
+A14 重置邮件全流程 · A15 搜索后 `search_logs` 有记录 · A16 Umami 后台收到数据 · A17 首页 LCP 真机基线 · B6 重置页窄屏。详见 `docs/PENDING-ACCEPTANCE.md`。
+
+**P0 的 4 笔验收债仍然没还**，本轮没有动任何需要你账号的东西。

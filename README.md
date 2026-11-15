@@ -100,3 +100,24 @@ npm run test:e2e     # 端到端测试 (Playwright)
 | P1 | 公开写接口限流 + Origin 校验 | ✅ 已实现并上线（`src/lib/api-guard.ts`，无新依赖） |
 | P0 | About 双语 metadata | ✅ 已修复并上线（page 硬编码 metadata 覆盖 i18n layout 的 bug） |
 | P0 | 生产部署（Vercel Root Directory / next-intl 路径） | ✅ 已上线 2026-09-15（commit `362c07a` → www.techguru-it.asia） |
+
+---
+
+## 2026-11-15 实测修正（以本日报告为准，覆盖上文旧结论）
+
+- 上表「Umami 已接入」需修正：脚本曾被 CSP `script-src` 阻断，本日已放行 `https://cloud.umami.is`（script-src / connect-src）；**Umami 后台是否收到数据仍未验证**。CSP 的 `'unsafe-inline'` 有意保留——Next.js App Router 会注入内联 RSC 脚本，去掉它必须改用每请求 nonce，会让全部 locale 路由退回动态渲染，与 T-062 的静态化冲突。
+- 上表「测试覆盖率 74.9%」是旧口径，不要再用它描述当前状态；本轮验收以「`npm run test:run` 全部测试文件通过」为准，文件数量以最新一次运行输出为准。
+- 上表「已完成」类结论以 `TODO.md` 第五轮与 `docs/TGWS-ASSESSMENT-REPORT.md` 的三轴口径为准，历史章节仅作追溯。
+
+### 本地构建环境（D1 / D7）
+
+本机在 2026-11-15 连续多次 `next build` 出现 worker `Fatal process out of memory: Zone`。已验证：
+
+- `NODE_OPTIONS=--max-old-space-size=4096` 曾在一次构建中通过，之后仍失败；
+- 临时设置 `experimental.cpus = 1`（单 worker）同样失败，配置已恢复原样。
+
+判定为**本机物理内存不足，不是代码问题**；同一份代码在 Vercel 云端每次构建均为 ● Ready。因此：
+
+1. 本地上线前验证以 `npx tsc --noEmit` + `npm run test:run` + `npx eslint .` 为准；
+2. 生产构建证据以 Vercel 部署状态为准；
+3. 本机换机或释放内存后，再补跑一次完整 `next build`。

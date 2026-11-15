@@ -148,7 +148,13 @@ export default function HeroSection() {
         src={VIDEO_SRC}
         muted
         playsInline
-        preload="auto"
+        // T-062: the video is a decorative, scrub-controlled background.
+        // `preload="auto"` downloaded the whole file during first paint and
+        // competed with the LCP text/fonts for bandwidth. Metadata is enough:
+        // scrubbing seeks via range requests once the user moves the pointer.
+        preload="metadata"
+        aria-hidden="true"
+        tabIndex={-1}
       />
 
       {/* Gradient overlay — left dark, right transparent */}
