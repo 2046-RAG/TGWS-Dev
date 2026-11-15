@@ -7,6 +7,23 @@ import type { Metadata } from 'next';
 
 export const revalidate = 3600;
 
+// T-062: prerender post pages; fall back to an empty list if the CMS is
+// unreachable at build time (the route then renders on demand instead of
+// failing the whole build).
+export async function generateStaticParams() {
+  try {
+    const slugs = await client.fetch<{ slug: string }[]>(
+      `*[_type == "post" && defined(slug.current)]{ "slug": slug.current }`
+    );
+    return slugs.filter(
+      (s) => typeof s.slug === 'string' && s.slug.length > 0
+    );
+  } catch (error) {
+    logServiceError({ service: 'Sanity', operation: 'generateStaticParams(post)', error });
+    return [];
+  }
+}
+
 async function getPost(slug: string) {
   try {
     const query = `*[_type == "post" && slug.current == $slug][0] {

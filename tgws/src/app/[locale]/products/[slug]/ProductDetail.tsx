@@ -64,7 +64,17 @@ export default function ProductDetail({ product }: { product: Product }) {
   const slug = product.slug?.current || '';
   const i18nKey = slugToI18n[slug] || '';
   const color = tabColors[product.category as TabKey] || '#00D4FF';
-  const features = t.raw('features.' + slug);
+  const featureKey = 'features.' + slug;
+  // `t.has` is available in next-intl runtime but some unit-test mocks
+  // only implement t()/t.raw(). In that case keep the legacy path so
+  // behaviour is unchanged; in production, skip missing keys instead
+  // of letting next-intl log MISSING_MESSAGE during prerender.
+  const supportsHas = typeof t.has === 'function';
+  // Network-hardware slugs have no localized feature copy in messages;
+  // fall back to the real feature list stored in the CMS.
+  const features = (!supportsHas || t.has(featureKey))
+    ? t.raw(featureKey)
+    : product.features ?? null;
   const isZh = locale === 'zh';
   const description = isZh ? (product.descriptionZh || product.description) : product.description;
   const relatedVendors = product.relatedVendors || [];

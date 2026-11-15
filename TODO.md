@@ -1,11 +1,230 @@
 # TGWS 待办事项清单
 
-> 基于项目分析报告生成 | 最近更新: 2026-07-29（第二轮整体审查，新增 TODO-019 ~ TODO-030）
+> 基于项目分析报告生成 | 最近更新: 2026-11-15（第五轮 · 评估复核落地）；上一版 2026-07-29（第二轮，TODO-019 ~ TODO-030）
 > 优先级说明: P0=必须完成(阻塞上线) | P1=重要(影响用户体验) | P2=优化(提升竞争力)
+
+> **2026-11-15 复核覆盖声明**：本文件此前的"P0 4/4、P1 12/12、P2 10/10""测试 68 文件全绿""覆盖率 74.9%""ISR/SSG 已生效"等结论，已被当日的实跑与交叉核对取代。
+> **执行依据只认本节**；以下旧章节保留为历史记录，不再作为排期依据。
+> 依据文件：`docs/TGWS-ASSESSMENT-REPORT.md`（评估）、`docs/TGWS-REPORT-CROSSCHECK.md`（问题↔行动核对）。
 
 ---
 
-## 优先级总览
+## 第五轮 · 评估复核落地（2026-11-15，最新）
+
+### 0. 本轮实测基线（不是引用历史）
+
+| 检查 | 结果 |
+|------|------|
+| `npx tsc --noEmit` | 通过，0 错误 |
+| `npm run build` | 通过，58 页；23 条 `[locale]` 路由全部 Dynamic，0 条 ISR |
+| `npm run test:run` | 402 例：388 过 / 14 失败 / 5 文件 |
+| `npx eslint .` | 2 errors / 68 warnings |
+| Sanity 实查 | post 77 / product 28（图 0）/ solution 17（中文 0）/ faq 0 / partner 0 |
+
+### 1. 状态校正（先撤回，再排期）
+
+| 旧结论 | 实测 | 处理 |
+|--------|------|------|
+| P0 4/4、P1 12/12、P2 10/10 | 是"任务条目关闭"，不是"功能可用"；82 个问题中 39 个未进任何行动项 | 旧统计作废，按本节重排 |
+| 测试 68 文件全绿 | 402 例中 14 失败（限流器污染、Sanity env 未注入、断言过期） | 转 T-068 |
+| 覆盖率 74.9% | 本轮未复测，无 CI 门禁 | 转 T-068 |
+| ISR/SSG 实时生效 | 23 条 locale 路由全动态，`revalidate` 与 `/api/revalidate` 对页面无效 | 转 T-062（本地已修，**线上未部署**） |
+| GlobalSearch 多模态/图片搜索 | 上传图后只把 query 置为 `'image search'`，未进视觉模型 | 转 T-064 |
+| TCO 定价 Sanity 驱动 | 有定价，但 Sangfor 为估算、无来源与有效期 | 转 T-065 |
+| Umami 已接入 | CSP `script-src` 未放行 `cloud.umami.is`，脚本被拒 | 转 T-067 |
+| TODO-029 profile 已可用 | 页面可用，但资料写 `user_metadata`，`users` 表基本未使用 | 并入 T-057/T-078 |
+| TODO-010 附件预览已完成 | `AttachmentPreview` 仅 import 未渲染，列表只显示附件数量 | 转 T-058 + D-01（决定实现） |
+
+### 1.1 六项必补 → 落点（可审计）
+
+| 必补项 | 任务 | 优先级 | 验收要点 |
+|--------|------|:---:|----------|
+| TCO 价格来源 | T-065 | P1 | 每个价格有来源/日期；Sangfor 明示估算 |
+| `unsafe-inline` CSP | T-067 | P1 | 主题脚本改 nonce/hash；控制台无 CSP 拒绝 |
+| 搜索日志落点 | T-068 | P1 | Sanity/Supabase 二选一；能查最近 7 天搜索词 |
+| Odoo 凭证 | T-066 | P1 | 表单提交后出现 `crm.lead`；客户收到回执 |
+| Footer 订阅 | T-079 | P1 | 接后端或删订阅框，二选一 |
+| 登录锁定 | T-077 | P1 | 5 次/15 分钟锁定；注册后邮箱验证 |
+
+### 1.2 已裁决事项（D-01）：附件预览 = 实现，不删除
+
+- **冲突来源**：评估 §3 M05 判"管理员需要预览附件"（P1），而 §7.3 P2 #17 把 `AttachmentPreview` 当作"未用 import"列入死代码，要求删除。
+- **裁决**：按前者。附件预览是工单处置的必要能力——管理员判断问题不应先下载附件。
+- **落点**：T-058 详情页复用 `AttachmentPreview`；T-060 时间线附件同样复用。
+- **边界**：`TicketList` 的 import 保留并接上入口，不算死代码；T-086 明确排除该组件。
+- **验收**：图片可缩略/全屏、PDF 可内嵌、其他类型显示图标 + 下载；客户与管理员在详情页都能看到。
+
+**验收口径**：本节任务完成 = 代码 + 数据 + 端到端证据（测试/截图/日志）三样齐全。只交代码不算完成。
+
+---
+
+### 2. P0（4 个主题 / 5 个任务，阻塞上线）
+
+> 状态标记：`待开始` / `进行中` / `待执行`（代码完成、等待数据库或外部执行） / `已完成`（验收通过）。
+
+> 判断标准：不修就不能对外说"上线"。原评估的 P0 #5（中文博客）、#6（ISR）已降为 P1，理由：不阻断站点使用。
+
+#### T-057 补 `public.users` 同步触发器并回填
+- **依据**：`supabase/migrations/001:5,21`（`tickets.user_id REFERENCES users(id)`）；全仓无 `handle_new_user`、无 `INSERT INTO users`；`api/tickets/route.ts:65-77` 直接用 `auth.uid()` 建单
+- **交付物**：
+  - `004_add_user_sync.sql`：`auth.users` AFTER INSERT 触发器 → `public.users`（email、role=customer）
+  - 历史用户回填脚本（按 `auth.users` 补 `public.users`）
+  - 注册→建单 E2E：`e2e/journey-a-register.spec.ts` 增加断言
+- **验收**：全新邮箱注册后 5 分钟内可建单，`users` 行存在且 `role='customer'`；工单外键无报错
+- **依赖**：无（先核对线上是否已手工修，再决定是否重复执行）
+- **风险**：线上可能已有触发器，迁移需 `IF NOT EXISTS` 语义
+
+#### T-058 管理员：全部工单列表 + 详情页
+- **依据**：`api/tickets/route.ts:120-125` 恒定 `.eq('user_id', user.id)`；`support/admin/dashboard/page.tsx:64` 只 fetch stats
+- **交付物**：
+  - `GET /api/tickets?scope=all`（仅 admin/super_admin，分页 + 状态/类别/优先级筛选）
+  - `/[locale]/support/admin/tickets`（列表）
+  - `/[locale]/support/admin/tickets/[id]`（详情：正文、附件预览、评论、审计时间线）
+  - 管理台入口链接
+- **验收**：管理员登录后能看到所有客户工单；任一单的附件可预览（图片/PDF 内嵌，其他下载）；普通用户访问返回 403
+- **依赖**：T-057（用户数据完整）
+
+#### T-059 管理员：指派 / 改状态 / 导出
+- **依据**：评估 AD1；`api/tickets/stats/route.ts` 已有批量 PATCH 能力但无 UI
+- **交付物**：
+  - 详情页操作区：指派给（管理员列表）、优先级、状态（open→in_progress→resolved→closed）
+  - 复用/收敛 PATCH 接口，写 `ticket_audit_log`（old/new/performed_by）
+  - 状态变更邮件（`sendTicketStatusEmail`）
+  - CSV 导出（当前筛选结果）
+- **验收**：每次变更都有审计记录、客户收到邮件；导出文件含工单号/状态/负责人/时间
+- **依赖**：T-058
+
+#### T-060 工单对话（客户 ↔ 管理员）
+- **依据**：`ticket_comments` 只读无写入（`api/tickets/[id]/route.ts:52-60`）；`sendTicketReplyEmail` 零调用
+- **交付物**：
+  - `POST /api/tickets/[id]/comments`（归属校验；`is_internal` 仅管理员可写）
+  - 详情页/客户侧时间线（内部备注对客户隐藏）
+  - 回复通知邮件；限流 10/min
+- **验收**：客户与管理员各发一条，双方可见；内部备注客户不可见；双方收到邮件
+- **依赖**：T-058
+
+#### T-061 修 `003` 迁移（leads RLS / search_logs）
+- **依据**：`003_add_search_tables.sql:50-51` 策略引用不存在的 `user_id` 列；`search_logs` 表零写入
+- **状态**：**已完成（2026-11-15 线上执行）**。项目状态 ACTIVE_HEALTHY；005 HTTP 201；6 项检查全 PASS。匿名 INSERT 尚未实测
+- **交付物**：
+  - `supabase/migrations/005_fix_leads_rls.sql`（幂等：补表/索引/策略/触发器，修正 `user_id` 引用）
+  - `supabase/verify/005_verify.sql`（表/列/策略/RLS/触发器 五项核对）
+  - `docs/runbooks/2026-11-15-T-061-leads-rls.md`（执行步骤、期望输出、回滚、本地验证记录）
+  - `supabase/verify/005_pglite_harness.mjs`（本地空库验证，11 项断言）
+- **验收**：Production 执行 005 成功（HTTP 201）；6 项 PASS（表/列/策略/RLS/触发器）；本地空库已验证客户/管理员读取隔离；**匿名 INSERT 待首条真实线索验证**
+- **依赖**：无（需 Supabase SQL Editor 权限）
+
+---
+
+### 3. P1（17 项，影响信任与转化）
+
+| 编号 | 任务 | 依据 | 验收标准 |
+|------|------|------|----------|
+| T-062 | 恢复静态渲染 + 首屏策略 🟡**部分完成**（静态渲染本地已验证；首屏策略、线上部署未做） | 23 条 locale 路由全 Dynamic；无 `setRequestLocale`；首页 `use client` + video `preload=auto` | 构建产物出现 `○`/ISR + **线上部署后**确认缓存命中与 revalidate 生效；首页 LCP 有基线且 video 不抢首屏带宽 |
+| T-063 | 中文博客补译或显式回退 + 5 篇空正文补齐 | 72 篇有正文，63 篇 `contentZh` < 英文 10%，中位 6.8%；5 篇 `content` 为空 | 任选 10 篇 ZH，正文 ≥ 英文 60% 或页面明示"英文原文"；空正文清零 |
+| T-064 | 搜索体验收口（图片/口径/摘要） | `api/search/route.ts:19-31` 未使用 `imageData`；全局/产品/FAQ 三套搜索口径；摘要无缓存/超时标识 | 图片搜索接模型或删入口；三套搜索统一为一套；摘要失败有降级标识 |
+| T-065 | TCO 价格来源、有效期、免责口径 | Sanity `tcoCalculator`：Sangfor `isEstimated`，VMware/Nutanix 无来源 | 每个价格有来源/日期；页面显示有效期；Sangfor 明示估算 |
+| T-066 | Odoo 凭证 + 线索同步 + 客户确认邮件 | `.env.local` 占位；`/api/contact` 仅落库、无客户回执 | Odoo 出现对应 `crm.lead`；客户 5 分钟内收到确认邮件 |
+| T-067 | CSP：放行 Umami + 去 `unsafe-inline` | `next.config.ts:68` vs `layout.tsx:132` | 控制台无 CSP 拒绝；Umami 有数据；主题脚本改 nonce/hash |
+| T-068 | 搜索日志落点收敛 | 写 Sanity `searchLog`（未注册）而 `search_logs` 零写入 | 二选一：注册 schema 或改写 Supabase；能查到最近 7 天搜索词 |
+| T-069 | 测试隔离 + CI 门禁 | 14 例失败；无限流重置、无 env 注入、无 CI | `npm run test:run` 干净环境全绿；GitHub Actions 跑 tsc+test+build |
+| T-070 | 依赖声明补全 | `framer-motion`、`date-fns` 未在 `package.json` | 干净环境 `npm ci` 后 build 通过；lockfile 不再依赖 hoist |
+| T-071 | 密码重置页 | `LoginForm` 的 `redirectTo` 指向仅 POST 的 API，点击得 405 | 邮件链接打开"设置新密码"页并成功改密 |
+| T-073 | 解决方案数据治理 | 17 条只有 6 条可达；`challengesZh/solutionsZh` 0/17；`title` 存繁中 | 6 条（或按行业聚合）；中文痛点/方案齐全；字段语义正确 |
+| T-074 | 暗色一致性巡检 | `support/page.tsx:109`、`admin/dashboard/page.tsx:114` 无 `dark:bg`，白字压浅灰 | 全站暗色无对比度 < 4.5:1 的正文；应用页与营销页背景一致 |
+| T-075 | 内容运营机制 + 文案单一来源 | 博客停更 18 个月、分类全 technical；FAQ/partner 未入 CMS；产品文案 i18n 与 CMS 双源 | 双周 1 篇；分类真实；FAQ/partner 二选一；产品文案确定唯一来源 |
+| T-076 | 设计令牌落地 | 316 处硬编码 `#00D4FF`，`var(--color-primary)` 0 处；96 处 inline style | 组件内无硬编码主色；改 token 能全站生效；`DESIGN.md` 与实现一致 |
+| T-077 | 登录安全：锁定 + 邮箱验证 | PRD S2.5.1 要求 5 次/15 分钟锁定 + 验证码；当前无实现 | 连续 5 次失败锁定 15 分钟；注册后需验证邮箱才能建单 |
+| T-078 | 双语硬编码清剿 | Navbar 中英三元、移动端 `Search`、UserMenu `Sign In/Out`、alt 英文、`taipei/hongKong` 键名 | `grep` 无 JSX 中文字面量/硬编码英文；ZH 页无英文按钮 |
+| T-079 | Footer 订阅：接后端或移除 | `Footer.tsx:12-17` 仅 `setSubscribed(true)` | 二选一：接 Resend/表单入库，或删除订阅框 |
+
+### 3.1 T-062 阶段结果（2026-11-15，代码完成 / 线上未部署）
+
+> 完整记录：`docs/runbooks/2026-11-15-T-062-static-rendering.md`
+
+**已做（本地）**：`[locale]/layout.tsx` 加 `setRequestLocale`；法律页改为从 `params` 取 locale；blog/products 详情页加 `generateStaticParams`；产品列表页因 `useSearchParams()` 显式保留 `force-dynamic`；顺带清掉构建期 80 条 i18n 错误（8 个网络产品特性回退 CMS 真实数据、`faqCounts` 数字改字符串）。共改 11 个文件，未改任何测试文件。
+
+**实跑**：tsc 0 错；build 通过（20 条 `●` ISR / 5 条 `○` / 4 条 locale 页仍 `ƒ`）；247 个预渲染 HTML；构建期 `MISSING_MESSAGE` / `INVALID_MESSAGE` 归零；eslint 2 errors / 68 warnings（与基线一致）；vitest 5 failed / 64 passed（与基线一致，**无新增回归**）。
+
+**未做 / 未验证**：① 从未 `git push`、无 Vercel 凭据 → **线上仍是旧代码，全动态渲染**；② `/api/revalidate` 与缓存命中未在线上验证；③ 首页首屏策略（`use client` + video `preload=auto`）未动；④ 中文站 8 个产品特性显示英文（CMS 无中文字段，归 T-072/T-075）。
+
+**按第五轮验收口径（代码 + 数据 + 端到端证据），T-062 不能标记已完成。**
+
+### 3.2 待授权事项：生产部署（DEP-01）
+
+- 现状：所有代码改动只在工作区；唯一线上变更是 T-061 通过 Supabase Management API 执行的 005 迁移（数据库结构）。
+- 阻塞：无 Vercel token / CLI 登录态，未执行过 `git push`。
+- 二选一：① 授权提交并 push（若 Vercel 连 GitHub 自动构建）；② 提供 Vercel token 或本地 `vercel --prod`。
+- 部署后才执行线上验证清单（见 runbook 第 6 节）。
+
+---
+
+### 4. P2（11 项，品质与可维护性）
+
+| 编号 | 任务 | 依据 | 验收标准 |
+|------|------|------|----------|
+| T-072 | 产品视觉单一来源（原 P1，降级；已有 28 张本地图） | Sanity `image` 0/28，但 `productImages` 本地映射 28/28；线上抽查 4/4 有 Hero 图；两套来源无守护，曾发生工作区图片丢失 | CMS 或本地映射二选一，并写进文档；28 张图全部 200；构建后无缺图；不再出现"无图"误判 |
+| T-080 | 交互与无障碍收口 | 抽屉无滚动锁、搜索无焦点陷阱、Hero 无暂停/reduced-motion；`aria-label` 仅 18 个、表单 aria 不全 | 键盘可完整操作；ESC/焦点回位；图标按钮有可读名；表单 aria 齐全 |
+| T-081 | 列表分页（产品/博客） | 77 篇/28 卡一次输出 | 每页 ≤12/24；SEO 分页可抓取 |
+| T-082 | 产品级对比页 | PRD S4 要求，现有 `/compare` 是公司级 | 至少 3 组产品对比（VMware/Nutanix/Sangfor 或 HCI） |
+| T-083 | 审计日志视图 + 用户管理 | 管理台无审计入口、无用户管理 | 管理台可查工单审计；可改用户角色（super_admin） |
+| T-084 | 统计时间维度 | PRD S6.6 要求周/月/季/年 | 统计接口支持 `range=week/month/quarter/year`；前端可切换 |
+| T-085 | 小修：404 链接 / contact 信封 / 管理台 metadata | `not-found.tsx:24`、`api/contact` 缺 `success:false`、admin 无 metadata | 三处一致；SEO 工具无告警 |
+| T-086 | 死代码清理（不含 `AttachmentPreview`） | `tco-engine.ts`、`DarkModeToggle.tsx`、重复 Sanity 客户端；`AttachmentPreview` 见 D-01，不得删除 | 删除后 build + 测试通过；`AttachmentPreview` 仍被 T-058 引用 |
+| T-087 | 工程卫生：ESLint 清零 / 脚本归档 / E2E baseURL | 2 errors、根目录残留脚本、E2E 打生产 | `eslint .` 0 error；一次性脚本入 `docs/archive`；E2E 默认 localhost |
+| T-088 | UI 细节收口：文案 / 占位 / CTA / 布局 | 登录占位截断；`taipei` 键；应用页语气；产品卡仅 Learn more；导航高度 73px 硬编码；移动菜单层级弱；产品卡窄屏截断待复核 | 占位完整显示；键名语义正确；导航高度单一定义；菜单有分组；卡片无截断 |
+| T-089 | 文档同步 | TODO/INDEX/架构文档三方不一致 | `INDEX.md` 完成度改为三轴口径；架构文档修正 ISR 结论；README 更新实测数据 |
+
+---
+
+### 5. 待外部输入（不排期，但必须标注状态）
+
+| 编号 | 事项 | 阻塞方 | 现状 |
+|------|------|--------|------|
+| EXT-01 | 法律条款法务复核 + 繁中补全 + Cookie 分类 | 法务/翻译 | 未启动；ZH 约为 EN 的 1/3；无 Cookie 分类说明 |
+| EXT-02 | 客户证言授权与来源 | 市场/客户 | 匿名 + 40%/35% 量化，风险未解 |
+| EXT-03 | 团队/资质资料 | 公司 | 团队 3 人、资质 4 项，无证书编号 |
+| EXT-04 | 3D 翻转/灯箱/新闻动态 | 产品取舍 | PRD S14 要求，未实现 |
+| EXT-05 | 案例/成果段 | 市场 | 需可公开案例 |
+| EXT-06 | "12+ 年"口径 | 公司 | 2020 成立 vs 12+ 年行业经验 |
+| EXT-07 | design-v2 UI 提案 | 你审批（T-036） | 6 项决策未批 |
+| EXT-08 | Battlecard / VMware 对照品牌 | 你拍板 | 草稿在 `docs/eval/2026-09-16-vendor-battlecard-draft.md` |
+
+---
+
+### 6. 旧编号 → 新编号映射
+
+| 旧编号 | 新编号 | 说明 |
+|--------|--------|------|
+| T-035 Odoo 凭证 | T-066 | 升级为 P1（线索不进 CRM） |
+| T-036 design-v2 | EXT-07 | 保持"待审批" |
+| T-045 solutions 中文 | T-073 | 与 17→6 治理合并 |
+| T-046 partner 迁 Sanity | T-075 | 并入内容运营机制 |
+| T-053 组件硬编码迁 i18n | T-078 | 扩为双语硬编码清剿 |
+| T-054 ZH 法律对齐 | EXT-01 | 需法务，不排工程期 |
+| T-055 测试执行 | T-069 | 与 CI 门禁合并 |
+| T-056 TCO 定价录入 | T-065 | 升级为 P1（含来源/有效期） |
+| TODO-005 覆盖率 | T-069 | 旧 74.9% 不再引用 |
+| TODO-029 profile | T-057 / T-078 | 页面可用，但数据模型与文案未收口 |
+
+---
+
+### 7. 建议执行顺序
+
+```
+第 1 批（P0，可并行）: T-061（迁移，独立） → T-057（触发器） → T-058（列表/详情） → T-060（对话） → T-059（处置）
+第 2 批（P1 工程，7 项）: T-062 ISR → T-070 依赖 → T-069 测试/CI → T-067 CSP → T-068 搜索日志 → T-064 搜索收口 → T-071 密码重置
+第 3 批（P1 内容/数据，5 项）: T-063 中文博客 → T-073 方案治理 → T-075 内容运营 → T-065 TCO → T-066 Odoo
+第 4 批（P1 体验，5 项）: T-074 暗色 → T-076 令牌 → T-077 登录安全 → T-078 双语 → T-079 订阅
+第 5 批（P2）: T-072、T-080 起
+待拍板: EXT-01 ~ EXT-08（不占工程排期）
+```
+
+---
+
+## 历史记录（2026-07 至 2026-09，仅追溯，不执行）
+
+### 优先级总览（历史）
 
 ```
 P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
@@ -20,7 +239,7 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
 
 ---
 
-## P0 - 必须完成 (阻塞上线)
+## P0 - 必须完成 (阻塞上线)（历史，勿执行）
 
 ### TODO-001: 完善关于我们模块 - 发展历程时间轴 ✅ 已完成
 - **模块**: M5 About
@@ -119,7 +338,7 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
 
 ---
 
-## P1 - 重要 (影响用户体验)
+## P1 - 重要 (影响用户体验)（历史，勿执行）
 
 ### TODO-005: 提升测试覆盖率至70% ✅ 已完成
 - **模块**: T9 测试系统
@@ -243,7 +462,7 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
 
 ---
 
-## P2 - 优化 (提升竞争力)
+## P2 - 优化 (提升竞争力)（历史，勿执行）
 
 ### TODO-011: 产品模块 - 搜索功能 ✅ 已完成
 - **模块**: M2 Products
@@ -372,7 +591,7 @@ P0 (必须完成) ✅ ──→ P1 (重要) 🔄 ──→ P2 (优化) ⬜
 
 ---
 
-## 第二轮审查新增任务 (2026-07-29)
+## 第二轮审查新增任务 (2026-07-29)（历史）
 
 ### TODO-019: 仓库治理与杂乱清理 ✅ 已完成
 - **模块**: 仓库工程化
@@ -637,7 +856,7 @@ TODO-030 (AI 稿归档)  独立
 
 ---
 
-## 统计
+## 统计（历史）
 
 | 优先级 | 任务数 | 预估总工时 | 完成状态 |
 |--------|--------|------------|----------|
@@ -648,11 +867,13 @@ TODO-030 (AI 稿归档)  独立
 | **第四轮 · 内容/导航/厂商树** | 多项 | — | ✅ 大部分代码项已上线；剩余见「当前待办」 |
 | **总计** | — | — | 工程+多数内容已收口；开放项见下表 |
 
-**最新更新**: 2026-09-16 — 第四轮多批次已上线并 push `Trunk`（含法律键/hreflang/年份/Learn more/title/About/日期/Compare 证言/VendorLogo/Run 内 VMware 卡/导航修复）。产品图工作区文件曾被误删后已从 git 恢复并部署。git push 已成功（`6e3d836`）。
+> 上表统计的是"任务条目关闭"，不是"功能可用"。2026-11-15 实测基线见「第五轮」§0；82 个问题中 39 个未进任何行动项，详见 `docs/TGWS-REPORT-CROSSCHECK.md`。
+
+**最新更新（历史，已被 2026-11-15 复核取代）**: 2026-09-16 — 第四轮多批次已上线并 push `Trunk`（含法律键/hreflang/年份/Learn more/title/About/日期/Compare 证言/VendorLogo/Run 内 VMware 卡/导航修复）。产品图工作区文件曾被误删后已从 git 恢复并部署。git push 已成功（`6e3d836`）。
 
 ---
 
-## 当前待办总表（2026-09-16 终态）
+## 当前待办总表（2026-09-16 终态，历史记录，勿再作为执行依据）
 
 ### A. 需你拍板 / 供数（阻塞）
 
@@ -707,7 +928,7 @@ TODO-030 (AI 稿归档)  独立
 
 ---
 
-## 建议下一步
+## 建议下一步（2026-09-16，历史，已被第五轮执行顺序取代）
 
 1. 批 Battlecard 草稿 + 确认 VMware 对照品牌  
 2. Studio：HCI 补 Sangfor；无线补 Sundray/Aruba；（可选）solutions 中文、partner 导入  
@@ -729,7 +950,7 @@ TODO-030 (AI 稿归档)  独立
 
 ---
 
-## 第四轮 · 内容质量待办（九轮校准 2026-09-15）
+## 第四轮 · 内容质量待办（九轮校准 2026-09-15，历史；开放项已映射至第五轮）
 
 > **唯一依据**: `docs/eval/2026-09-15-nine-round-verification.md`（覆盖六轮/三轮/初版）  
 > **证据方法**: N1 键图 · N2 可见文本 · N3 Sanity CDN · N4 EN/ZH · N5 资产 · N6 SEO · N7 硬编码行号 · N8 链路 · N9 对抗  
@@ -794,7 +1015,7 @@ TODO-030 (AI 稿归档)  独立
 
 ---
 
-## 已完成任务
+## 已完成任务（历史）
 
 | 任务 | 完成时间 | 实际工时 | 实现要点 |
 |------|----------|----------|----------|

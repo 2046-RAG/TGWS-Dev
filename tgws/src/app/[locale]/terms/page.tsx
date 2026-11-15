@@ -1,4 +1,4 @@
-import { getTranslations, getLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import Breadcrumb from '@/components/ui/Breadcrumb';
 import type { Metadata } from 'next';
@@ -20,9 +20,14 @@ export async function generateMetadata({
   };
 }
 
-export default async function TermsPage() {
+export default async function TermsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations('terms');
-  const locale = await getLocale();
 
   return (
     <>

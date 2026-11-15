@@ -1487,11 +1487,11 @@
     "ctaContact": "Contact Us",
     "ctaTicket": "Submit a Ticket",
     "faqCounts": {
-      "product": 5,
-      "technical": 5,
-      "account": 5,
-      "billing": 5
-    },
+    "product": "5",
+    "technical": "5",
+    "account": "5",
+    "billing": "5"
+  },
     "faq": {
       "product": [
         {

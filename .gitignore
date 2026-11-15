@@ -22,3 +22,6 @@ audit-results.json
 
 # vercel
 .vercel
+
+# one-time credentials (never commit)
+.secrets/

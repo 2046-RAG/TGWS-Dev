@@ -5,7 +5,10 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 
-export const revalidate = 3600;
+// This route renders ProductsList, which reads ?category= via
+// useSearchParams(). Prerendering it would drop the filtered HTML and
+// requires a Suspense boundary. Keep it explicitly dynamic (T-062).
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
   params,

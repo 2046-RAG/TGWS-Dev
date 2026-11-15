@@ -1,5 +1,5 @@
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { locales, defaultLocale } from '@/i18n/config';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -74,6 +74,9 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  // T-062: without this call next-intl resolves the locale from request
+  // headers, which forces every route under /[locale] into dynamic SSR.
+  setRequestLocale(locale);
   const messages = await getMessages();
 
   return (

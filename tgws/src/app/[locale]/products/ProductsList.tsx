@@ -87,7 +87,10 @@ export default function ProductsList({ products }: { products: Product[] }) {
   const renderProductCard = (product: Product, index: number) => {
     const slug = product.slug?.current || '';
     const i18nKey = slugToI18n[slug] || '';
-    const features = slug ? t.raw('features.' + slug) : null;
+    const featureKey = 'features.' + slug;
+    const supportsHas = typeof t.has === 'function';
+    const features =
+      slug && (!supportsHas || t.has(featureKey)) ? t.raw(featureKey) : null;
     const imageSrc = productImages[slug];
 
     return (

@@ -1,4 +1,4 @@
-import { getProductBySlug } from '../product-data';
+import { getAllProducts, getProductBySlug } from '../product-data';
 import { notFound } from 'next/navigation';
 import Breadcrumb from '@/components/ui/Breadcrumb';
 import { getTranslations } from 'next-intl/server';
@@ -7,6 +7,20 @@ import ProductDetail from './ProductDetail';
 import { ProductJsonLd } from '@/components/ui/JsonLd';
 
 export const revalidate = 3600;
+
+// T-062: prerender product pages from the CMS slug list.
+export async function generateStaticParams() {
+  try {
+    const products = await getAllProducts();
+    return products
+      .map((p) => ({ slug: p.slug?.current }))
+      .filter((p): p is { slug: string } =>
+        typeof p.slug === 'string' && p.slug.length > 0
+      );
+  } catch {
+    return [];
+  }
+}
 
 export async function generateMetadata({
   params,

@@ -1486,11 +1486,11 @@
     "ctaContact": "聯絡我們",
     "ctaTicket": "提交工單",
     "faqCounts": {
-      "product": 5,
-      "technical": 5,
-      "account": 5,
-      "billing": 5
-    },
+    "product": "5",
+    "technical": "5",
+    "account": "5",
+    "billing": "5"
+  },
     "faq": {
       "product": [
         {
