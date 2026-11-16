@@ -289,6 +289,27 @@
 
 ---
 
+### 3.9 2026-11-16 22:20 附件上传失败诊断（A19 复验中发现）
+
+用户复验反馈：建单成功（TG-20261116-C3FC38「测试1」14:12:07），但详情页显示「此工單沒有附件」。
+
+**只读查生产库确认**（Supabase PAT）：`ticket_attachments` **0 行**、`storage.objects`（ticket-attachments 桶）**0 对象** → 上传请求确实失败，不是"读不出来"。建单本身成功。
+
+**根因未最终定位**（服务端日志被安全策略拦：Supabase logs 端点 410/404、Vercel token 读取被拒），改从"让错误可见"入手：
+
+| 改动 | 内容 | 落点 |
+|---|---|---|
+| 错误具体化 | upload 返回 `Storage upload failed` / `Metadata insert failed` 两种文案，替代笼统的 `Upload failed` | `api/upload/route.ts` |
+| 失败不跳转 | `TicketForm` 仅在**所有文件上传成功**时才 `onSuccess` 跳详情页；有失败则停留在成功页并显示每个文件名 + 原因 | `TicketForm.tsx` |
+
+**排除项**：文件选择框无 `accept` 限制（zip/mp3 可先）；上传时序正确（先建单→传文件→再跳转）；桶名常量 `ticket-attachments` 与 009 迁移一致；前端文件收集逻辑（`fileInputRef.files` + `pastedImages`）无缺失。
+
+**验证**：定向测试通过；CI `77eb625d success`；部署 chunk `b4651a6a → efe58b43` 切流完成，详情页 chunk 也更新。
+
+**下一步**：用户硬刷新后重测一次"带附件建单"——成功则 A19 完成；若显示红字 `Storage upload failed`/`Metadata insert failed`，按该错误定位存储层或表写入。**仍不确定用户首次提交是否真的选了文件**（若没选，则无附件属正常）。
+
+---
+
 ### 4. P2（11 项，品质与可维护性）
 
 | 编号 | 任务 | 依据 | 验收标准 |
