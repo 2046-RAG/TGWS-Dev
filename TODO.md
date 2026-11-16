@@ -380,7 +380,7 @@
 
 ---
 
-### 8. 当前剩余待办总览（截至 2026-11-16 21:56 核对）
+### 8. 当前剩余待办总览（截至 2026-11-16 22:10 核对）
 
 > 口径：以「用户拿起成品能做什么、不能做什么」为主轴；**代码完成 ≠ 验收完成**。
 > 详细操作见 `docs/PENDING-ACCEPTANCE.md`，本表只列「还剩什么」。
@@ -421,15 +421,15 @@
 
 | # | 事项 | 状态 |
 |:--:|---|---|
-| **E1** | ~~GitHub 存档补推~~ | ✅ 12:13 曾成功一次；**21:56 复核：本地领先 `origin/Trunk` 6 个提交未推送**（今天的工单修复与清单更新）。代码与线上不受影响，是否 push 待你授权 |
-| E2 | ~~GitHub Actions `npm ci` 失败~~ | ✅ **12:14 已验证转绿**：`62f11061 / Trunk / completed / success`（GitHub Actions runs 列表）。`npm ci --legacy-peer-deps` 修复被实测确认。但 `verify` **仍未设为 required check**，CI 失败仍不阻止 Vercel 上线 |
+| **E1** | ~~GitHub 存档补推~~ | ✅ **22:02 已推送** `67a5528..2a9efac`（7 个提交），GitHub 与本地一致 |
+| E2 | ~~GitHub Actions `npm ci` 失败~~ | ✅ 12:14 转绿；**22:10 CI 门禁已接线**：`scripts/deploy-vercel.mjs` 部署前查 HEAD 的 `verify` 结论，failure/timed_out/cancelled 直接拒绝部署（可用 `SKIP_CI_GATE=1` 显式跳过）。`2a9efac2` 实测 CI success，脚本实跑输出 `CI gate: HEAD 2a9efac2 verify = success`。**GitHub 分支保护仍由安全策略拦着，需你网页手动设**（见 §8.5） |
 | E3 | 本地 `next build` OOM | 🟡 已写进 README 作为验证口径；换机后补跑 |
 | E4 | 无邮箱账号仍建不了单 | ⬜ 需设计占位身份映射 |
 | E5 | 中文站 8 个产品特性显示英文 | ⬜ 归 T-072 / T-075 |
 | E6 | Supabase `uri_allow_list` 为空 | ⬜ 重置邮件目标是否被允许未实测（A14 / D8），未擅自改生产配置 |
 | E7 | 邮箱验证配置 | ⬜ `mailer_allow_unverified_email_sign_ins=false`，功能效果未验（D9），**不据此划掉 T-077** |
 | E8 | 工作区历史临时脚本 / 两处未归因改动 | ⬜ 20+ 个未跟踪文件、`.mimocode/.cron-lock`、`security-readonly-scan.mjs` 删除，一直未提交 |
-| **E9** | **本地积压提交未推送** | 🟡 21:56 实测 **本地领先远程 6 个提交**（`5b3b037` → `88c6148`，全为今天的工单修复与文档）。工作区仅 E8 历史遗留；代码与线上不受影响。**是否 push 需你授权** |
+| **E9** | ~~本地积压提交未推送~~ | ✅ 22:02 已随 E1 一并推送，积压清零 |
 
 #### 8.5 最近批次与核对记录
 
@@ -440,6 +440,7 @@
 - **2026-11-16 10:10 工单模块加固 + 10:36/10:39 迁移已执行**：G1 由「审计表无 RLS」**修正为**「RLS 已启用但可伪造 performed_by」（中危）；G2 由「附件表无 INSERT 策略」**修正为**「表策略本来就对，真因是 storage.objects 0 条策略」。`008`/`009` 已在生产库执行并验证通过，详见 §3.6 与评估报告 §6.0。
 - **2026-11-16 10:55–16:14 用户实测驱动修复**：F1 建单后跳详情页、F2 客户侧附件可见、F3 详情页补状态/分类/时间；随后修详情页卡死（超时 + 并行查询）、上传格式（音频/视频/压缩包）、失败可见。详见 §3.7 / §3.8。
 - **21:56 核对**：线上 4 页 200、support chunk `b4651a6a`（已切流）；本地领先远程 6 提交未推；A18–A23 真实链路仍待复验。
+- **22:02–22:10 存档与门禁**：7 个积压提交已 push；HEAD `2a9efac2` 的 Actions `completed/success`；**部署脚本加 CI gate 并实跑验证**。GitHub 分支保护 API 被安全策略拒绝（判定"变更仓库访问控制配置"），要你在网页设：repo → Settings → Branches → Add rule → `Trunk` → Require status checks → 选 `verify` → Save。
 - **01:42 复核（跨日，仍无新工作）**：距 20:08 约 5.5 小时，无新增代码或验收动作。核对：① 复核时（commit 前）本地 HEAD 与远程同为 `67a5528`、无未推送提交，工作区 4 个文档改动 + E8 遗留；做纯本地 commit 后本地为最新提交、**领先远程 1 个提交且未推送**，工作区仅剩 E8 遗留；② 线上 `/en`、`/zh`、重置页、`/en/privacy` 全 200，CSP `script-src`/`connect-src` 均含 `cloud.umami.is`；③ **最新提交 `67a5528` 的 GitHub Actions = `completed / success`**（此前只记录 `62f11061`）。本轮修正清单内部 6 处过时/矛盾表述（见下），并新增 E9。**P0 的 4 笔 E2E 债、B1–B7 真机、EXT-01~08 供数、D3/D10 拍板均未动。**
 
 

@@ -15,7 +15,7 @@
 // Vercel dashboard or with `vercel ls` afterwards.
 
 import { existsSync, readFileSync } from 'node:fs';
-import { spawn } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -37,6 +37,45 @@ const extra = process.argv.slice(2);
 if (extra.some((a) => a.includes('token'))) {
   console.error('Do not pass token flags; the token is read from .secrets/.');
   process.exit(2);
+}
+
+// ---------------------------------------------------------------------------
+// CI gate. GitHub branch protection cannot guard this path: `vercel deploy`
+// uploads the workspace directly and never goes through a GitHub check run.
+// Refuse to push production if the HEAD commit's `verify` job failed.
+// A missing / still-running run is reported but does not block, because a
+// just-pushed commit has no result yet.
+// ---------------------------------------------------------------------------
+const ALLOW_SKIP_CI = process.env.SKIP_CI_GATE === '1';
+if (!ALLOW_SKIP_CI) {
+  try {
+    const sha = execFileSync('git', ['rev-parse', 'HEAD'], {
+      cwd: root,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+
+    const conclusion = execFileSync(
+      'gh',
+      [
+        'api',
+        `repos/2046-RAG/TGWS-Dev/actions/runs?head_sha=${sha}&per_page=1`,
+        '--jq',
+        '.workflow_runs[0].conclusion // "none"',
+      ],
+      { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
+    ).trim();
+
+    console.log(`CI gate: HEAD ${sha.slice(0, 8)} verify = ${conclusion}`);
+
+    if (conclusion === 'failure' || conclusion === 'timed_out' || conclusion === 'cancelled') {
+      console.error('CI failed for this commit. Deployment blocked.');
+      console.error('Fix the failure, or set SKIP_CI_GATE=1 to override deliberately.');
+      process.exit(3);
+    }
+  } catch {
+    console.warn('CI gate: could not query GitHub (gh missing/offline). Continuing without gate.');
+  }
 }
 
 const args = ['deploy', '--prod', '--yes', '--no-wait', ...extra];
