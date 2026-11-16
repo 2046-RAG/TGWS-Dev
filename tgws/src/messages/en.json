@@ -1131,6 +1131,8 @@
     "resendEmail": "Resend verification email"
   },
   "support": {
+    "loadFailed": "Failed to load ticket",
+    "retry": "Retry",
     "attachments": "Attachments",
     "conversation": "Conversation",
     "reply": "Reply",

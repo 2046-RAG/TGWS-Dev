@@ -1279,6 +1279,8 @@
     "resendEmail": "重新發送驗證信"
   },
   "support": {
+    "loadFailed": "載入工單失敗",
+    "retry": "重試",
     "attachments": "附件",
     "conversation": "對話紀要",
     "reply": "回覆",

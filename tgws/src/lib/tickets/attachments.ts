@@ -79,12 +79,17 @@ export async function signedAttachmentUrl(
   const path = storagePathFrom(fileUrl);
   if (!path) return fallback;
 
-  const { data, error } = await supabase.storage
-    .from(ATTACHMENT_BUCKET)
-    .createSignedUrl(path, SIGNED_URL_TTL_SECONDS);
+  // A hanging Storage call must never block the whole ticket detail response.
+  // Give signing a bounded window, then fall back to the stored value.
+  const signed = await Promise.race([
+    supabase.storage
+      .from(ATTACHMENT_BUCKET)
+      .createSignedUrl(path, SIGNED_URL_TTL_SECONDS),
+    new Promise<null>((resolve) => setTimeout(() => resolve(null), 3_000)),
+  ]).catch(() => null);
 
-  if (error || !data?.signedUrl) return fallback;
-  return data.signedUrl;
+  if (!signed || signed.error || !signed.data?.signedUrl) return fallback;
+  return signed.data.signedUrl;
 }
 
 /** Map a list of attachment rows into the same rows with a signed `file_url`. */

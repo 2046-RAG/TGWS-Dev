@@ -287,7 +287,20 @@ export default function TicketList({ tickets, isAdmin = false, onBatchStatusUpda
                       {categoryLabels[ticket.category] || ticket.category}
                     </span>
                   </div>
-                  <h3 className="text-gray-900 dark:text-white font-medium truncate">{ticket.subject}</h3>
+                  <h3 className="text-gray-900 dark:text-white font-medium truncate">
+                    {onOpen ? (
+                      <button
+                        type="button"
+                        onClick={() => onOpen(ticket.id)}
+                        className="text-left hover:text-[#00D4FF] hover:underline"
+                        title={openLabel}
+                      >
+                        {ticket.subject}
+                      </button>
+                    ) : (
+                      ticket.subject
+                    )}
+                  </h3>
                   <div className="flex items-center gap-3 mt-1">
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                       {format(new Date(ticket.created_at), 'MMM d, yyyy HH:mm')} PHT

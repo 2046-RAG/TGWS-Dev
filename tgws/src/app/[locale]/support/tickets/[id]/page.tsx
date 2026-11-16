@@ -50,13 +50,19 @@ export default function CustomerTicketConversationPage() {
   const [text, setText] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
+  const [loadError, setLoadError] = useState('');
   const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
-    fetch(`/api/tickets/${id}`)
+    setLoadError('');
+    const controller = new AbortController();
+    // Never leave the page spinning forever. If the API hangs, surface it.
+    const timer = setTimeout(() => controller.abort(), 10_000);
+
+    fetch(`/api/tickets/${id}`, { signal: controller.signal, cache: 'no-store' })
       .then((r) => {
-        if (!r.ok) throw new Error(String(r.status));
+        if (!r.ok) throw new Error('HTTP ' + r.status);
         return r.json();
       })
       .then((j) => {
@@ -65,11 +71,19 @@ export default function CustomerTicketConversationPage() {
           setLoading(false);
         }
       })
-      .catch(() => {
-        if (!cancelled) setLoading(false);
-      });
+      .catch((e: unknown) => {
+        if (!cancelled) {
+          const aborted = e instanceof DOMException && e.name === 'AbortError';
+          setLoadError(aborted ? 'Request timed out' : e instanceof Error ? e.message : 'Load failed');
+          setLoading(false);
+        }
+      })
+      .finally(() => clearTimeout(timer));
+
     return () => {
       cancelled = true;
+      controller.abort();
+      clearTimeout(timer);
     };
   }, [id, reloadKey]);
 
@@ -137,7 +151,20 @@ export default function CustomerTicketConversationPage() {
 
         {loading && <div className={`${card} text-gray-500`}>…</div>}
 
-        {!loading && ticket && (
+        {!loading && loadError && (
+          <div className={`${card} text-sm text-red-600 dark:text-red-400`}>
+            <p>{s('loadFailed')}: {loadError}</p>
+            <button
+              type="button"
+              onClick={() => setReloadKey((k) => k + 1)}
+              className="mt-3 px-3 py-1.5 rounded-lg bg-[#00D4FF] text-white text-xs"
+            >
+              {s('retry')}
+            </button>
+          </div>
+        )}
+
+        {!loading && !loadError && ticket && (
           <div className="space-y-6">
             <section className={card}>
               <div className="flex flex-wrap items-center gap-2">
