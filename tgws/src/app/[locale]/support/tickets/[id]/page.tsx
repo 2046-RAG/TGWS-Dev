@@ -58,7 +58,7 @@ export default function CustomerTicketConversationPage() {
     setLoadError('');
     const controller = new AbortController();
     // Never leave the page spinning forever. If the API hangs, surface it.
-    const timer = setTimeout(() => controller.abort(), 10_000);
+    const timer = setTimeout(() => controller.abort(), 5_000);
 
     fetch(`/api/tickets/${id}`, { signal: controller.signal, cache: 'no-store' })
       .then((r) => {
@@ -149,7 +149,12 @@ export default function CustomerTicketConversationPage() {
           <ArrowLeft size={16} /> {s('backToTickets')}
         </Link>
 
-        {loading && <div className={`${card} text-gray-500`}>…</div>}
+        {loading && (
+          <div className={`${card} text-sm text-gray-500 dark:text-gray-400`}>
+            <span className="inline-block w-3 h-3 mr-2 rounded-full border-2 border-[#00D4FF] border-t-transparent animate-spin" />
+            {s('loadingTicket')}
+          </div>
+        )}
 
         {!loading && loadError && (
           <div className={`${card} text-sm text-red-600 dark:text-red-400`}>
@@ -190,12 +195,19 @@ export default function CustomerTicketConversationPage() {
                 {ticket.description || '—'}
               </p>
 
-              {attachments.length > 0 && (
+              {attachments.length > 0 ? (
                 <div className="mt-6 pt-6 border-t border-gray-100 dark:border-zinc-700">
                   <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
                     {s('attachments')} ({attachments.length})
                   </h2>
                   <AttachmentPreview attachments={attachments} />
+                </div>
+              ) : (
+                <div className="mt-6 pt-6 border-t border-gray-100 dark:border-zinc-700">
+                  <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                    {s('attachments')}
+                  </h2>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{s('noAttachments')}</p>
                 </div>
               )}
             </section>

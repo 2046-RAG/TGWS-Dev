@@ -43,6 +43,7 @@ export default function TicketForm({ onSuccess }: TicketFormProps = {}) {
   const [ticketId, setTicketId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [uploadError, setUploadError] = useState('');
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const pasteAreaRef = useRef<HTMLDivElement>(null);
@@ -116,15 +117,23 @@ export default function TicketForm({ onSuccess }: TicketFormProps = {}) {
         const form = new FormData();
         form.append('file', file);
         form.append('ticketId', ticketId);
-        const res = await fetch('/api/upload', { method: 'POST', body: form });
-        if (res.ok) {
-          const data = await res.json();
-          return data.data as UploadedFile;
+        try {
+          const res = await fetch('/api/upload', { method: 'POST', body: form });
+          if (res.ok) {
+            const data = await res.json();
+            return { ok: true as const, file: data.data as UploadedFile };
+          }
+          const body = await res.json().catch(() => ({}));
+          return { ok: false as const, name: file.name, reason: String(body.error || res.status) };
+        } catch (e) {
+          return { ok: false as const, name: file.name, reason: e instanceof Error ? e.message : 'network error' };
         }
-        return null;
       })
     );
-    return results.filter((r): r is UploadedFile => r !== null);
+    return {
+      uploaded: results.filter((r): r is Extract<typeof r, { ok: true }> => r.ok).map((r) => r.file),
+      failed: results.filter((r): r is Extract<typeof r, { ok: false }> => !r.ok),
+    };
   };
 
   const getProductValue = () => {
@@ -170,8 +179,12 @@ export default function TicketForm({ onSuccess }: TicketFormProps = {}) {
 
     if (allFiles.length > 0 && newTicketId) {
       setUploading(true);
-      const uploaded = await uploadFiles(newTicketId, allFiles);
+      setUploadError('');
+      const { uploaded, failed } = await uploadFiles(newTicketId, allFiles);
       setUploadedFiles(uploaded);
+      if (failed.length > 0) {
+        setUploadError(`${t('uploadFailed')}: ${failed.map((f) => f.name + ' (' + f.reason + ')').join(', ')}`);
+      }
       setUploading(false);
     }
 
@@ -192,6 +205,9 @@ export default function TicketForm({ onSuccess }: TicketFormProps = {}) {
         <p className="text-gray-600 dark:text-gray-300">{t('ticketSubmittedDesc')}</p>
         {ticketId && (
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">{t('ticketNumber')}: {ticketId.slice(0, 8)}</p>
+        )}
+        {uploadError && (
+          <p className="mt-3 text-sm text-red-600 dark:text-red-400">{uploadError}</p>
         )}
         {uploadedFiles.length > 0 && (
           <div className="mt-4 text-left">

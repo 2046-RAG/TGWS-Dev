@@ -915,7 +915,6 @@
     "title": "Privacy Policy",
     "lastUpdated": "Last Updated",
     "lastUpdatedDate": "July 1, 2026",
-    "lastUpdatedDate": "July 1, 2026",
     "intro": "TechGuru Network & Data Solutions Inc. (&quot;TechGuru,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.",
     "section1Title": "1. Information We Collect",
     "section1Body": "We may collect information about you in various ways, including:",
@@ -1090,7 +1089,7 @@
     "productService": "Product/Service",
     "subject": "Subject",
     "description": "Description",
-    "attachments": "Attachments (max 50MB)",
+    "attachments": "Attachments — any file (max 50MB)",
     "submitTicket": "Submit Ticket",
     "submitting": "Submitting...",
     "ticketSubmitted": "Ticket Submitted!",
@@ -1111,12 +1110,12 @@
     "sending": "Sending...",
     "occurredAt": "Problem Occurrence Time",
     "occurredAtPlaceholder": "When did the problem occur?",
-    "screenshots": "Screenshots",
+    "screenshots": "Quick: paste screenshot",
     "pasteScreenshot": "Paste screenshot here (Ctrl+V)",
     "orClickToUpload": "or click to upload",
     "charCount": "{count}/800",
     "otherSpecify": "Other (please specify)",
-    "maxFileSize": "Max 50MB per file. Any format accepted.",
+    "maxFileSize": "Documents, images, audio, video and archives. Max 50MB per file.",
     "productOtherPlaceholder": "Please specify the product or service",
     "subjectPlaceholder": "Brief description of your issue",
     "descriptionPlaceholder": "Detailed description of your issue...",
@@ -1128,7 +1127,8 @@
     "checkEmail": "Check Your Email",
     "verificationSent": "We sent a verification link to",
     "noEmail": "Didn receive the email?",
-    "resendEmail": "Resend verification email"
+    "resendEmail": "Resend verification email",
+    "uploadFailed": "Some attachments failed to upload"
   },
   "support": {
     "loadFailed": "Failed to load ticket",
@@ -1174,7 +1174,9 @@
     "newTicketDesc": "Submit a new support request and our team will assist you.",
     "myTicketsDesc": "View and track all your support requests.",
     "created": "Created",
-    "submitTicketHint": "Submit a ticket to get started"
+    "submitTicketHint": "Submit a ticket to get started",
+    "loadingTicket": "Loading ticket…",
+    "noAttachments": "No attachments on this ticket."
   },
   "admin": {
     "actions": "Actions",
@@ -1578,11 +1580,11 @@
     "ctaContact": "Contact Us",
     "ctaTicket": "Submit a Ticket",
     "faqCounts": {
-    "product": "5",
-    "technical": "5",
-    "account": "5",
-    "billing": "5"
-  },
+      "product": "5",
+      "technical": "5",
+      "account": "5",
+      "billing": "5"
+    },
     "faq": {
       "product": [
         {

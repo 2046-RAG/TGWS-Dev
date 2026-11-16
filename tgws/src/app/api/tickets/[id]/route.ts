@@ -59,54 +59,48 @@ export async function GET(
 
     const { id } = await params;
 
-    const { data: ticket, error } = await supabase
-      .from('tickets')
-      .select('*')
-      .eq('id', id)
-      .is('deleted_at', null)
-      .single();
+    // D) Run the independent reads concurrently. Four sequential round-trips
+    // were the main reason the detail page took seconds to open.
+    const [ticketRes, admin] = await Promise.all([
+      supabase.from('tickets').select('*').eq('id', id).is('deleted_at', null).single(),
+      isAdminUser(supabase, user.id),
+    ]);
+    const { data: ticket, error } = ticketRes;
 
     if (error || !ticket) {
       return NextResponse.json({ error: 'Ticket not found' }, { status: 404 });
     }
 
-    const admin = await isAdminUser(supabase, user.id);
     const record = ticket as { user_id?: string };
     if (!admin && record.user_id !== user.id) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const { data: attachments } = await supabase
-      .from('ticket_attachments')
-      .select('*')
-      .eq('ticket_id', id);
+    const [attachmentsRes, commentsRes, auditRes] = await Promise.all([
+      supabase.from('ticket_attachments').select('*').eq('ticket_id', id),
+      supabase.from('ticket_comments').select('*').eq('ticket_id', id).order('created_at', { ascending: true }),
+      admin
+        ? supabase.from('ticket_audit_log').select('*').eq('ticket_id', id).order('performed_at', { ascending: false })
+        : Promise.resolve(null),
+    ]);
 
     // P0-3: the bucket is private; swap stored paths for short-lived signed
     // URLs so the browser never receives a permanent link.
     const signedAttachments = await withSignedAttachments(
       supabase,
-      (attachments || []) as { file_url: string | null }[],
+      ((attachmentsRes.data || []) as { file_url: string | null }[]),
     );
 
-    const { data: comments } = await supabase
-      .from('ticket_comments')
-      .select('*')
-      .eq('ticket_id', id)
-      .order('created_at', { ascending: true });
+    const comments = commentsRes.data;
 
     // T-058: admins also get the audit trail for the detail timeline.
     // Customers never receive it (and the query is skipped entirely).
     let audit: unknown[] = [];
-    if (admin) {
-      const { data: logs, error: auditError } = await supabase
-        .from('ticket_audit_log')
-        .select('*')
-        .eq('ticket_id', id)
-        .order('performed_at', { ascending: false });
-      if (auditError) {
-        logServiceError({ service: 'Tickets', operation: 'auditList', error: auditError });
+    if (admin && auditRes) {
+      if (auditRes.error) {
+        logServiceError({ service: 'Tickets', operation: 'auditList', error: auditRes.error });
       }
-      audit = logs || [];
+      audit = auditRes.data || [];
     }
 
     // T-060: internal notes must never reach a customer, even if RLS is

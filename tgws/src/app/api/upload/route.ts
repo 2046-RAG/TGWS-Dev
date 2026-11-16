@@ -7,14 +7,29 @@ import { ATTACHMENT_BUCKET, signedAttachmentUrl } from '@/lib/tickets/attachment
 const MAX_SIZE = 50 * 1024 * 1024;
 // SVG removed: it can carry <script>/onload= XSS if served inline (AUDIT-016).
 const ALLOWED_TYPES = [
+  // images
   'image/jpeg', 'image/png', 'image/gif', 'image/webp',
-  'application/pdf',
-  'text/plain', 'text/csv',
+  // documents
+  'application/pdf', 'text/plain', 'text/csv',
   'application/msword',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'application/vnd.ms-excel',
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  // audio
+  'audio/mpeg', 'audio/mp4', 'audio/wav', 'audio/x-wav', 'audio/webm',
+  'audio/ogg', 'audio/aac', 'audio/flac', 'audio/x-m4a',
+  // video
+  'video/mp4', 'video/webm', 'video/quicktime', 'video/x-msvideo',
+  'video/x-matroska',
+  // archives
+  'application/zip', 'application/x-7z-compressed',
+  'application/x-rar-compressed', 'application/gzip', 'application/x-tar',
 ];
+
+// Browsers sometimes send an empty or generic MIME type (e.g. .7z, .rar).
+// Fall back to the extension so "any format" in the UI is truthful.
+const ALLOWED_EXT = /\.(pdf|png|jpe?g|gif|webp|txt|csv|docx?|xlsx?|pptx?|mp3|wav|ogg|m4a|aac|flac|mp4|mov|webm|avi|mkv|zip|7z|rar|gz|tar)$/i;
 
 // Strip path separators and cap length so file.name can't traverse the
 // bucket or exceed object-key limits (AUDIT-013).
@@ -51,7 +66,7 @@ export async function POST(request: Request) {
 
     // Reject empty MIME types — the whitelist must not be bypassable by
     // omitting Content-Type (AUDIT-012).
-    if (!file.type || !ALLOWED_TYPES.includes(file.type)) {
+    if ((!file.type || !ALLOWED_TYPES.includes(file.type)) && !ALLOWED_EXT.test(file.name)) {
       return NextResponse.json({ error: 'File type not allowed' }, { status: 400 });
     }
 

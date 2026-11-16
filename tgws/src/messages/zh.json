@@ -1238,7 +1238,7 @@
     "productService": "產品/服務",
     "subject": "主旨",
     "description": "問題描述",
-    "attachments": "附件（最大50MB）",
+    "attachments": "附件 — 任意檔案（最大50MB）",
     "submitTicket": "提交工單",
     "submitting": "提交中...",
     "ticketSubmitted": "工單已提交！",
@@ -1259,12 +1259,12 @@
     "sending": "發送中...",
     "occurredAt": "問題發生時間",
     "occurredAtPlaceholder": "問題何時發生？",
-    "screenshots": "截圖",
+    "screenshots": "快速貼上截圖",
     "pasteScreenshot": "在此貼上截圖（Ctrl+V）",
     "orClickToUpload": "或點擊上傳",
     "charCount": "{count}/800",
     "otherSpecify": "其他（請說明）",
-    "maxFileSize": "單檔最大50MB，接受任何格式。",
+    "maxFileSize": "支援文件、圖片、音訊、影片、壓縮檔；單檔最大50MB。",
     "productOtherPlaceholder": "請說明產品或服務名稱",
     "subjectPlaceholder": "簡要描述您的問題",
     "descriptionPlaceholder": "詳細描述您的問題...",
@@ -1276,7 +1276,8 @@
     "checkEmail": "檢查你的信箱",
     "verificationSent": "我們已發送驗證連結至",
     "noEmail": "沒有收到驗證信？",
-    "resendEmail": "重新發送驗證信"
+    "resendEmail": "重新發送驗證信",
+    "uploadFailed": "部分附件上傳失敗"
   },
   "support": {
     "loadFailed": "載入工單失敗",
@@ -1322,7 +1323,9 @@
     "newTicketDesc": "提交新的支援請求，我們的團隊將為您提供協助。",
     "myTicketsDesc": "查看並追蹤所有支援請求。",
     "created": "建立於",
-    "submitTicketHint": "提交工單以開始使用"
+    "submitTicketHint": "提交工單以開始使用",
+    "loadingTicket": "正在載入工單…",
+    "noAttachments": "此工單沒有附件。"
   },
   "admin": {
     "actions": "操作",
@@ -1577,11 +1580,11 @@
     "ctaContact": "聯絡我們",
     "ctaTicket": "提交工單",
     "faqCounts": {
-    "product": "5",
-    "technical": "5",
-    "account": "5",
-    "billing": "5"
-  },
+      "product": "5",
+      "technical": "5",
+      "account": "5",
+      "billing": "5"
+    },
     "faq": {
       "product": [
         {
