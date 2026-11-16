@@ -277,7 +277,7 @@
 
 | 编号 | 问题 | 修法 | 落点 |
 |---|---|---|---|
-| **F1** | 建单成功后列表不更新，必须手动刷新整页 | `TicketForm` 新增 `onSuccess(ticketId)`；父页面抽出 `loadTickets()` 复用，成功后重拉列表并自动切到「我的工单」 | `TicketForm.tsx`、`support/page.tsx` |
+| **F1** | 建单成功后列表不更新，必须手动刷新整页 | `TicketForm` 新增 `onSuccess(ticketId)`；父页面抽出 `loadTickets()` 复用，成功后**直接 `router.push` 到该工单详情页**（首版是切「我的工单」tab，用户实测期望是进入工单界面）；列表请求加 `cache: no-store` | `TicketForm.tsx`、`support/page.tsx` |
 | **F2** | 客户侧详情页**完全不显示附件**（`AttachmentPreview` 只接在管理员页） | 详情页接入 `AttachmentPreview`，接口已返回签名 URL | `support/tickets/[id]/page.tsx` |
 | **F3** | 详情页比列表页信息更少：缺状态、分类、创建时间 | 详情页顶部补元信息行（编号 + 状态徽章 + 分类 + 时间） | 同上 |
 

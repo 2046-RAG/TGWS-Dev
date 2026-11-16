@@ -44,7 +44,8 @@ export default function SupportPage() {
   // F1: shared loader so a successful submission can refresh the list without
   // a full page reload.
   const loadTickets = useCallback(async () => {
-    const response = await fetch('/api/tickets');
+    // no-store: a cached list would hide a ticket that was just created.
+    const response = await fetch('/api/tickets', { cache: 'no-store' });
     if (response.ok) {
       const result = await response.json();
       setTickets(result.data || []);
@@ -291,9 +292,12 @@ export default function SupportPage() {
               </div>
               <div className="max-w-2xl">
                 <TicketForm
-                  onSuccess={() => {
+                  onSuccess={(ticketId) => {
+                    // Jump straight to the ticket the user just created, so the
+                    // confirmation, attachments and conversation are all on one
+                    // screen instead of requiring a list refresh.
                     void loadTickets();
-                    setActiveTab('my-tickets');
+                    router.push(`/${locale}/support/tickets/${ticketId}`);
                   }}
                 />
               </div>
