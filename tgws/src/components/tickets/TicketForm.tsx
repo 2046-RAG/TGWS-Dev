@@ -177,18 +177,22 @@ export default function TicketForm({ onSuccess }: TicketFormProps = {}) {
     }
     pastedImages.forEach((img) => allFiles.push(img.file));
 
+    let uploadFailed = false;
     if (allFiles.length > 0 && newTicketId) {
       setUploading(true);
       setUploadError('');
       const { uploaded, failed } = await uploadFiles(newTicketId, allFiles);
       setUploadedFiles(uploaded);
       if (failed.length > 0) {
+        uploadFailed = true;
         setUploadError(`${t('uploadFailed')}: ${failed.map((f) => f.name + ' (' + f.reason + ')').join(', ')}`);
       }
       setUploading(false);
     }
 
-    if (newTicketId) {
+    // Only navigate away when every attachment made it. Otherwise the error
+    // message below would never be seen (the user lands on the detail page).
+    if (newTicketId && !uploadFailed) {
       onSuccess?.(newTicketId);
     }
 

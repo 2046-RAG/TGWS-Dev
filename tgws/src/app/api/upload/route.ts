@@ -101,7 +101,7 @@ export async function POST(request: Request) {
 
     if (uploadError) {
       logServiceError({ service: 'Upload', operation: 'storageUpload', error: uploadError });
-      return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+      return NextResponse.json({ error: 'Storage upload failed' }, { status: 500 });
     }
 
     // P0-3 (G3): the bucket is private, so we store the object path instead of
@@ -119,7 +119,7 @@ export async function POST(request: Request) {
       // Roll back the orphaned storage object so the DB and bucket stay in sync.
       await supabase.storage.from(ATTACHMENT_BUCKET).remove([filePath]);
       logServiceError({ service: 'Upload', operation: 'metadataInsert', error: insertError });
-      return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+      return NextResponse.json({ error: 'Metadata insert failed' }, { status: 500 });
     }
 
     // Hand back a signed URL for the success-state thumbnail only.
