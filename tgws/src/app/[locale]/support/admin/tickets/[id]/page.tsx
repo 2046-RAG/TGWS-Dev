@@ -127,6 +127,11 @@ export default function AdminTicketDetailPage() {
           assignedTo: assignee || null,
         }),
       });
+      if (r.status === 409) {
+        // Optimistic lock lost: another agent saved first.
+        setSaveMsg(t('saveConflict'));
+        return;
+      }
       if (!r.ok) throw new Error(String(r.status));
       setSaveMsg(t('saved'));
       setReloadKey((k) => k + 1);

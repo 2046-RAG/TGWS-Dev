@@ -28,6 +28,12 @@
 | A15 | T-068 | 在站内搜索框搜一个词 | `public.search_logs` 新增一行，query/query_type/计数正确 | 能查到该行 | 无需账号 |
 | A16 | T-067 | 打开任意页面后看 Umami 后台 | 有本次访问的 pageview | 后台可见 | Umami 账号 |
 | A17 | T-062 | 用浏览器测首页 LCP（视频 `preload=metadata` 之后） | 有可复现的 LCP 基线数值 | 记录数值与设备 | 真机/浏览器 |
+| A18 | 工单 G1 | 执行 008 后：anon key / 客户 token / admin token 分别 `GET /rest/v1/ticket_audit_log?select=*` | 前两者空或 4xx；admin 可读可见工单的日志 | 三种身份各一次 | **需 008 已执行** |
+| A19 | 工单 G2 | 客户对自有工单上传 1 个 PDF；再尝试对他人工单上传 | 前者 201 且 `ticket_attachments` 新增 1 行；后者 403 且无存储残留 | 两条均符合 | **需 008 已执行** |
+| A20 | 工单 G3 | 打开附件预览，复制签名 URL 去掉 `?token=` 后直接访问 | 带 token 可打开；去掉 token 后 400/403 | URL 行为符合 | 私有桶已生效 |
+| A21 | 工单 G7 | 客户在 `resolved` 工单下回复 | 状态变 `in_progress`、`resolved_at` 变 `null`、后台列表可见该工单 | 三项均变 | **需 008 函数** |
+| A22 | 工单 G8 | 客户发一条公开回复 | 至少 1 名 admin 邮箱收到通知；内部备注不触发任何邮件 | 收到 | **需 008 函数** |
+| A23 | 工单 G4 | 详情页与批量各把一张 `open` 改为 `resolved` | 两单 `resolved_at` 均非空、均有 `status_changed` 审计、客户均收邮件；批量返回真实 `updated` 数 | 三项一致 | — |
 
 > **建议合并执行**：A1→A2→A3→A5→A6→A7 用「客户号 + 管理员号」一次切换跑完；A4 单独用无痕窗口验。
 
@@ -70,6 +76,7 @@
 | D8 | Supabase 重定向白名单 | 只读查到 `site_url=https://www.techguru-it.asia`、`uri_allow_list=""`（空）。重置邮件的新目标 `/en/support/reset-password` 是否被允许**未实测**；未擅自改生产 auth 配置 | A14 若被拒，在 Supabase Auth → URL Configuration 加该 URL 或通配 |
 | D9 | T-077 的邮箱验证 | 只读查到 `mailer_allow_unverified_email_sign_ins=false`、`disable_signup=false`，说明平台层可能已强制邮箱验证；**功能效果未验证**，不要直接把 T-077 的「邮箱验证」划掉 | 用新注册账号确认是否必须验邮箱才能登录 |
 | D10 | CSP `unsafe-inline` 取舍 | 已放行 Umami，但 `script-src` 仍保留 `'unsafe-inline'`：Next.js App Router 注入内联 RSC 脚本，去掉需每请求 nonce，会把 locale 路由全部打回动态渲染 | **需你拍板**：保静态渲染（现状）还是收紧 CSP |
+| D11 | ~~008/009 迁移未执行~~ | ✅ **10:36 / 10:39 已执行并验证通过**：7 项策略检查全 PASS、桶已 private、4 个函数为 SECURITY DEFINER；数据未动 | 剩 A19/A21/A22 的真实链路验证 |
 
 ## §5 已核对完成、不需要再验
 

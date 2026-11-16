@@ -2,17 +2,19 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { GET, PATCH, POST } from './route';
 
 // --- mocks ---
-const { mockFrom, mockGetUser, mockSendEmail, mockLogError } = vi.hoisted(() => ({
+const { mockFrom, mockGetUser, mockSendEmail, mockLogError, mockRpc } = vi.hoisted(() => ({
   mockFrom: vi.fn(),
   mockGetUser: vi.fn(),
   mockSendEmail: vi.fn(),
   mockLogError: vi.fn(),
+  mockRpc: vi.fn(),
 }));
 
 vi.mock('@/lib/supabase/server', () => ({
   createClient: async () => ({
     auth: { getUser: mockGetUser },
     from: mockFrom,
+    rpc: mockRpc,
   }),
 }));
 
@@ -48,6 +50,17 @@ function chain(over: Partial<Chain> = {}): Chain {
     ...over,
   };
 }
+
+const STAFF_ID = '11111111-1111-4111-8111-111111111111';
+
+beforeEach(() => {
+  mockRpc.mockReset();
+  mockRpc.mockImplementation(async (fn: string) => {
+    if (fn === 'is_staff_user') return { data: true, error: null };
+    if (fn === 'get_ticket_owner_email') return { data: 'owner@x.com', error: null };
+    return { data: null, error: null };
+  });
+});
 
 const ctx = { params: Promise.resolve({ id: "t1" }) };
 const TICKET = {
@@ -170,6 +183,61 @@ describe('tickets/[id] PATCH', () => {
     expect(mockSendEmail).toHaveBeenCalledWith('owner@x.com', 'T-001', 'open', 'resolved');
   });
 
+  it('returns 409 when the optimistic lock is lost', async () => {
+    mockFrom.mockImplementation((table: string) => {
+      if (table === 'tickets') {
+        return chain({
+          single: async () => ({ data: TICKET, error: null }),
+          update: () => chain({ eq: () => chain({ eq: () => chain({ select: () => chain({ single: async () => ({ data: null, error: { code: 'PGRST116', message: 'no rows' } }) }) }) }) }),
+        });
+      }
+      if (table === 'users') return chain({ single: async () => ({ data: { role: 'admin' }, error: null }) });
+      return chain();
+    });
+    const res = await PATCH(jsonReq({ status: 'closed' }), ctx);
+    expect(res.status).toBe(409);
+  });
+
+  it('clears resolved_at when a resolved ticket is reopened (G5)', async () => {
+    let updatePayload: Record<string, unknown> | null = null;
+    const resolvedTicket = { ...TICKET, status: 'resolved', version: 3 };
+    mockFrom.mockImplementation((table: string) => {
+      if (table === 'tickets') {
+        return chain({
+          single: async () => ({ data: resolvedTicket, error: null }),
+          update: (payload: unknown) => {
+            updatePayload = payload as Record<string, unknown>;
+            return chain({
+              eq: () => chain({
+                eq: () => chain({
+                  select: () => chain({
+                    single: async () => ({ data: { ...resolvedTicket, status: 'open' }, error: null }),
+                  }),
+                }),
+              }),
+            });
+          },
+        });
+      }
+      if (table === 'users') return chain({ single: async () => ({ data: { role: 'admin' }, error: null }) });
+      return chain();
+    });
+    const res = await PATCH(jsonReq({ status: 'open' }), ctx);
+    expect(res.status).toBe(200);
+    expect(updatePayload).not.toBeNull();
+    expect(updatePayload!.resolved_at).toBeNull();
+    expect(updatePayload!.status).toBe('open');
+  });
+
+  it('returns 403 when a customer tries to change their own ticket (G6)', async () => {
+    mockFrom.mockImplementation((table: string) => {
+      if (table === 'users') return chain({ single: async () => ({ data: { role: 'customer' }, error: null }) });
+      return chain();
+    });
+    const res = await PATCH(jsonReq({ status: 'closed' }), ctx);
+    expect(res.status).toBe(403);
+  });
+
   it('returns 500 when update fails', async () => {
     mockFrom.mockImplementation((table: string) => {
       if (table === 'tickets') {
@@ -231,7 +299,7 @@ describe('tickets/[id] POST (assign)', () => {
       }
       return chain();
     });
-    const res = await POST(jsonReq({ assignedTo: 'agent1' }), ctx);
+    const res = await POST(jsonReq({ assignedTo: STAFF_ID }), ctx);
     const body = await res.json();
     expect(res.status).toBe(200);
     expect(body.success).toBe(true);

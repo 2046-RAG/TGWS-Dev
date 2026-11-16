@@ -39,7 +39,7 @@ export async function POST(
 
     const { data: ticket, error: ticketError } = await supabase
       .from('tickets')
-      .select('id, user_id, ticket_number, subject')
+      .select('id, user_id, ticket_number, subject, status')
       .eq('id', id)
       .is('deleted_at', null)
       .single();
@@ -76,6 +76,19 @@ export async function POST(
       return NextResponse.json({ error: 'Failed to add reply' }, { status: 500 });
     }
 
+    // G7: a customer reply must put the ticket back in the queue. Customers
+    // have no UPDATE policy on `tickets` (001 only grants admins), so this is
+    // a SECURITY DEFINER helper that can only touch the caller's own ticket.
+    // A failure here must not lose the reply that was just stored.
+    if (!isAdmin) {
+      const { error: reopenError } = await supabase.rpc('reopen_ticket_on_customer_reply', {
+        p_ticket_id: id,
+      });
+      if (reopenError) {
+        logServiceError({ service: 'Tickets', operation: 'reopenOnReply', error: reopenError });
+      }
+    }
+
     // Best-effort audit entry; a failure here must not lose the reply.
     const { error: auditError } = await supabase.from('ticket_audit_log').insert({
       ticket_id: id,
@@ -95,19 +108,32 @@ export async function POST(
         );
 
       if (isAdmin) {
-        const { data: owner } = await supabase
-          .from('users')
-          .select('email')
-          .eq('id', ticket.user_id)
-          .single();
-        if (owner?.email) void notify(owner.email, 'Support Team');
+        // Reading the owner row directly is blocked by the "view own profile"
+        // policy; the helper returns it only for tickets the caller can see.
+        const { data: ownerEmail, error: ownerError } = await supabase.rpc(
+          'get_ticket_owner_email',
+          { p_ticket_id: id },
+        );
+        if (ownerError) {
+          logServiceError({ service: 'Tickets', operation: 'ownerEmailLookup', error: ownerError });
+        } else if (ownerEmail) {
+          void notify(String(ownerEmail), 'Support Team');
+        }
       } else {
-        const { data: admins } = await supabase
-          .from('users')
-          .select('email')
-          .in('role', ['admin', 'super_admin']);
-        for (const admin of admins || []) {
-          if (admin.email) void notify(admin.email, user.email || 'Customer');
+        // G8: querying `users` as a customer returned an empty array under RLS,
+        // so admins were never notified. The helper exposes staff emails only.
+        const { data: staff, error: staffError } = await supabase.rpc('get_staff_emails');
+        if (staffError) {
+          logServiceError({ service: 'Tickets', operation: 'staffEmails', error: staffError });
+        } else {
+          const emails = (Array.isArray(staff) ? staff : [])
+            .map((row) =>
+              typeof row === 'string' ? row : (row as { email?: string })?.email,
+            )
+            .filter((email): email is string => Boolean(email));
+          for (const email of emails) {
+            void notify(email, user.email || 'Customer');
+          }
         }
       }
     }

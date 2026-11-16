@@ -59,6 +59,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Product must be a string up to 100 characters' }, { status: 400 });
     }
 
+    // G16: an unparseable timestamp used to reach Postgres and surface as a
+    // 500. Validate the shape and a sane range here instead.
+    let occurredAtValue: string | null = null;
+    if (occurredAt !== undefined && occurredAt !== null && occurredAt !== '') {
+      const parsedAt = Date.parse(String(occurredAt));
+      const earliest = Date.UTC(2000, 0, 1);
+      const latest = Date.now() + 24 * 60 * 60 * 1000; // tolerate clock skew
+      if (!Number.isFinite(parsedAt) || parsedAt < earliest || parsedAt > latest) {
+        return NextResponse.json({ error: 'Invalid occurredAt' }, { status: 400 });
+      }
+      occurredAtValue = new Date(parsedAt).toISOString();
+    }
+
     // Cryptographically-random suffix instead of Math.random() (AUDIT-025).
     const ticketNumber = `TG-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${randomUUID().slice(0, 6).toUpperCase()}`;
 
@@ -71,7 +84,7 @@ export async function POST(request: Request) {
         product_service: productService,
         subject,
         description,
-        occurred_at: occurredAt || null,
+        occurred_at: occurredAtValue,
       })
       .select()
       .single();

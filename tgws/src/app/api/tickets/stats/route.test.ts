@@ -2,14 +2,23 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { PATCH, GET } from './route';
 
 // --- mocks ---
-const mockFrom = vi.fn();
-const mockGetUser = vi.fn();
+const { mockFrom, mockGetUser, mockRpc, mockSendEmail } = vi.hoisted(() => ({
+  mockFrom: vi.fn(),
+  mockGetUser: vi.fn(),
+  mockRpc: vi.fn(),
+  mockSendEmail: vi.fn(),
+}));
 
 vi.mock('@/lib/supabase/server', () => ({
   createClient: async () => ({
     auth: { getUser: mockGetUser },
     from: mockFrom,
+    rpc: mockRpc,
   }),
+}));
+
+vi.mock('@/lib/resend', () => ({
+  sendTicketStatusEmail: (...args: unknown[]) => mockSendEmail(...args) as Promise<unknown>,
 }));
 
 vi.mock('@/lib/errors', () => ({
@@ -53,84 +62,133 @@ async function readBody(res: Response) {
   return res.json();
 }
 
+const ID_A = '11111111-1111-4111-8111-111111111111';
+const ID_B = '22222222-2222-4222-8222-222222222222';
+
+function bulkReq(body: unknown) {
+  return new Request('http://x/api/tickets/stats', {
+    method: 'PATCH',
+    body: JSON.stringify(body),
+  });
+}
+
+/**
+ * Mirrors what one `applyStatusChange` call hits: select the ticket, update it
+ * with a version guard, then read the updated row. Deliberately free of shared
+ * mutable state so concurrent calls (mapLimit) cannot interfere.
+ */
+function ticketTable(updateError: unknown = null) {
+  return {
+    select: () => ({
+      eq: () => ({
+        is: () => ({
+          single: async () => ({
+            data: { id: 't', ticket_number: 'T-1', user_id: 'u1', status: 'open', version: 1 },
+            error: null,
+          }),
+        }),
+      }),
+    }),
+    update: (payload: Record<string, unknown>) => ({
+      eq: () => ({
+        eq: () => ({
+          select: () => ({
+            single: async () =>
+              updateError
+                ? { data: null, error: updateError }
+                : { data: { id: 't', status: payload.status }, error: null },
+          }),
+        }),
+      }),
+    }),
+  };
+}
+
 describe('tickets/stats PATCH (bulk status)', () => {
   beforeEach(() => {
     mockFrom.mockReset();
     mockGetUser.mockReset();
+    mockRpc.mockReset();
+    mockSendEmail.mockReset();
     mockGetUser.mockResolvedValue({ data: { user: { id: 'u1' } } });
+    mockRpc.mockResolvedValue({ data: 'owner@x.com', error: null });
+    mockSendEmail.mockResolvedValue(undefined);
   });
 
   it('rejects unauthenticated requests with 401', async () => {
     mockGetUser.mockResolvedValue({ data: { user: null } });
-    const res = await PATCH(new Request('http://x/api/tickets/stats', { method: 'PATCH', body: JSON.stringify({ ids: ['a'], status: 'resolved' }) }));
+    const res = await PATCH(bulkReq({ ids: [ID_A], status: 'resolved' }));
     expect(res.status).toBe(401);
   });
 
   it('rejects non-admin users with 403', async () => {
-    mockFrom.mockReturnValue(chain({ single: async () => ({ data: { role: 'customer' }, error: null }) }));
-    const res = await PATCH(new Request('http://x/api/tickets/stats', { method: 'PATCH', body: JSON.stringify({ ids: ['a'], status: 'resolved' }) }));
+    mockFrom.mockReturnValue(
+      chain({ single: async () => ({ data: { role: 'customer' }, error: null }) }),
+    );
+    const res = await PATCH(bulkReq({ ids: [ID_A], status: 'resolved' }));
     expect(res.status).toBe(403);
   });
 
   it('rejects invalid payloads with 400', async () => {
-    mockFrom.mockReturnValue(chain({ single: async () => ({ data: { role: 'admin' }, error: null }) }));
-    const cases = [
+    mockFrom.mockImplementation((table: string) => {
+      if (table === 'users') {
+        return chain({ single: async () => ({ data: { role: 'admin' }, error: null }) });
+      }
+      return chain();
+    });
+
+    for (const body of [
       {},
       { ids: [], status: 'resolved' },
-      { ids: 'nope', status: 'resolved' },
-      { ids: Array.from({ length: 101 }, (_, i) => String(i)), status: 'resolved' },
-      { ids: ['a'], status: 'invalid_status' },
-    ];
-    for (const body of cases) {
-      const res = await PATCH(new Request('http://x/api/tickets/stats', { method: 'PATCH', body: JSON.stringify(body) }));
+      { ids: [ID_A], status: 'bogus' },
+      { ids: ['not-a-uuid'], status: 'resolved' },
+    ]) {
+      const res = await PATCH(bulkReq(body));
       expect(res.status).toBe(400);
     }
   });
 
-  it('updates tickets and writes audit log for status changes', async () => {
+  it('applies the same transition to every ticket and reports real counts', async () => {
+    let auditInserts = 0;
     mockFrom.mockImplementation((table: string) => {
-      if (table === 'users') return chain({ single: async () => ({ data: { role: 'admin' }, error: null }) });
-      if (table === 'tickets') {
-        // first from('tickets') call = select current statuses; second = update
-        let fromCall = 0;
-        return chain({
-          select: () => {
-            fromCall++;
-            return chain({ in: () => chain({ is: async () => ({ data: [{ id: 't1', status: 'open' }], error: null }) }) });
-          },
-          update: () => chain({ in: () => chain({ is: async () => ({ data: null, error: null }) }) }),
-        });
+      if (table === 'users') {
+        return chain({ single: async () => ({ data: { role: 'admin' }, error: null }) });
       }
+      if (table === 'tickets') return ticketTable();
       if (table === 'ticket_audit_log') {
-        return chain({
-          insert: async (data: unknown) => {
-            expect(Array.isArray(data)).toBe(true);
-            expect(data).toHaveLength(1); // only t1 changes status
+        return {
+          insert: async () => {
+            auditInserts += 1;
             return { error: null };
           },
-        });
+        };
       }
       return chain();
     });
-    const res = await PATCH(new Request('http://x/api/tickets/stats', { method: 'PATCH', body: JSON.stringify({ ids: ['t1', 't2'], status: 'resolved' }) }));
+
+    const res = await PATCH(bulkReq({ ids: [ID_A, ID_B], status: 'resolved' }));
     const body = await readBody(res);
+
     expect(res.status).toBe(200);
-    expect(body.success).toBe(true);
+    expect(body.updated).toBe(2);
+    expect(body.unchanged).toBe(0);
+    expect(body.failed).toEqual([]);
+    // G4: the bulk path must write the same audit trail as the single path.
+    expect(auditInserts).toBe(2);
+    // G4: and must notify the owner, which the old bulk path never did.
+    expect(mockSendEmail).toHaveBeenCalledTimes(2);
   });
 
-  it('returns 500 when the update fails', async () => {
+  it('returns 500 when every ticket fails', async () => {
     mockFrom.mockImplementation((table: string) => {
-      if (table === 'users') return chain({ single: async () => ({ data: { role: 'admin' }, error: null }) });
-      if (table === 'tickets') {
-        return chain({
-          select: () => chain({ in: () => chain({ is: async () => ({ data: [{ id: 't1', status: 'open' }], error: null }) }) }),
-          // update path: update().in().is() → error
-          update: () => chain({ in: () => chain({ is: async () => ({ data: null, error: { message: 'db down' } }) }) }),
-        });
+      if (table === 'users') {
+        return chain({ single: async () => ({ data: { role: 'admin' }, error: null }) });
       }
+      if (table === 'tickets') return ticketTable({ code: '42501', message: 'db down' });
       return chain();
     });
-    const res = await PATCH(new Request('http://x/api/tickets/stats', { method: 'PATCH', body: JSON.stringify({ ids: ['t1'], status: 'resolved' }) }));
+
+    const res = await PATCH(bulkReq({ ids: [ID_A], status: 'resolved' }));
     expect(res.status).toBe(500);
   });
 });

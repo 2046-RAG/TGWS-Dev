@@ -1327,6 +1327,7 @@
     "saving": "儲存中…",
     "saved": "已儲存",
     "saveFailed": "儲存失敗",
+    "saveConflict": "此工單已被他人修改，請重新載入後再試。",
     "selectAssignee": "選擇指派對象",
     "exportCsv": "匯出 CSV",
     "changeStatus": "變更狀態",

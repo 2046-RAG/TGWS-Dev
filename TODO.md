@@ -238,6 +238,39 @@
 
 ---
 
+### 3.6 2026-11-16 工单模块加固（P0 三项 + P1 五项代码完成，**迁移待执行**）
+
+依据 `docs/TICKET-MODULE-ASSESSMENT.md`（逐文件读码得出，非历史汇报）：
+
+| 项 | 修复 | 落点 |
+|---|---|---|
+| G1 | 审计表启用 RLS + admin 读 + 受限写（`performed_by = auth.uid()` 且对工单有访问权），不建 UPDATE/DELETE | `008_ticket_hardening.sql` + `verify/008_verify.sql` |
+| G2 | 附件表补客户/admin INSERT；**另补 admin SELECT**（此前客服读不到客户附件） | 同上 |
+| G3 | 桶改 private + storage 四条策略（拆到 **009** 单独执行）；代码存**对象路径**、读取用 1h 签名 URL，兼容历史公开 URL | `009_attachment_private_bucket.sql` + `lib/tickets/attachments.ts` + `api/upload` + `api/tickets/[id]` |
+| G4/G13 | 单条与批量共用 `applyStatusChange()`：`resolved_at`/审计/乐观锁/邮件/真实计数统一 | `lib/tickets/status-change.ts` |
+| G5 | 离开 resolved 时清 `resolved_at` | 同上 |
+| G6 | 客户 PATCH 一律 403（原被 RLS 拦成 500） | `api/tickets/[id]` |
+| G7 | 客户回复重开工单（resolved/closed → in_progress、清 resolved_at、刷新 updated_at、写审计） | 008 RPC + comments |
+| G8 | 通知改用 SECURITY DEFINER（`get_staff_emails` / `get_ticket_owner_email`）；**同时修好「状态变更邮件也发不出」的同源问题** | 008 + comments + status-change |
+| G14 | 三处写接口补同源 + 限流 | 三个 route |
+| G15 | 指派校验 UUID + `is_staff_user()` 员工身份 | 008 + `[id]` |
+| G16 | `occurredAt` 格式与区间校验（2000 年至今+1 天） | `api/tickets/route.ts` |
+| 409 | 仅 `PGRST116` 视为乐观锁冲突；admin 详情页提示「已被他人修改」 | status-change + 详情页 + `admin.saveConflict` 双语键 |
+
+**验证（实测）**：`tsc` 0 错；`vitest run --maxWorkers=2` **74 文件全过、exit 0**；工单用例 **73 → 98**；`eslint` **0 error / 67 warnings**。首次默认并发跑出现 13 个 worker **OOM**（断言 0 失败），降并发后全过，属本机内存限制。
+
+**已上线**：Vercel `5SD89ecQ3b5T1fAiPHV4WbyAoPWe` → `tgws-ma5ugemnu` **READY**；线上 6 页 200、工单接口未登录 401（PATCH 由 500 改 401）、admin 页 307 —— 无回归。
+
+**数据库已执行**：`008`（10:36）与 `009`（10:39）均已在生产库跑通并验证 —— 7 项策略检查全 PASS、桶已 private、4 个函数为 SECURITY DEFINER；数据未动（tickets=1、audit=0）。**原 G1/G2 结论按实测修正**，见评估报告 §6.0。
+
+**未完成**：① 附件真实上传链路、邮件送达、客户回复重开的**端到端**效果未验（A19/A21/A22）；② P2 十三项未动；③ A18/A20/A23 仍需账号侧验证。
+
+---
+
+
+
+---
+
 ### 4. P2（11 项，品质与可维护性）
 
 | 编号 | 任务 | 依据 | 验收标准 |
@@ -339,6 +372,8 @@
 
 **结论：P0 代码主线写完并上线，但 5 项里只有 T-061 按验收口径完成，其余 4 项仍标 🟡。**
 
+> 2026-11-16 补充：本轮修复了工单模块 8 项缺陷（G1–G8）与 4 项防护，**新增 A18–A23 六项验收**；`008`/`009` 迁移未执行前，G1/G2/G3 与四个新 RPC 的能力尚未生效（代码已做无回归降级）。
+
 #### 8.3 剩余工程任务（我可以继续做）
 
 | 组 | 未动 | 部分完成 |
@@ -368,6 +403,7 @@
 - **12:13 批次**：T-078 / T-080 / T-086 / T-089 代码与文档完成；GitHub 补推成功（`aecb62e..62f1106`）。验证与线上核对结果见 §3.5。
 - **20:08 核对（无新工作）**：距 12:54 收尾约 7 小时，其间没有新增代码或验收动作，任务状态**无实质变化**。核对：仓库代码本地与远程一致（`67a5528`）；线上 4 个关键页全 200；三份文档指针统一到 20:08。**注意**：该句当时称「工作区仅 E8 遗留」不够准确——本次清单更新本身也漂在工作区未提交，见 E9。
 - **01:42 落地动作**：本轮文档更新做**纯本地 commit**（明确不含 `git push`）——上次整条 `commit + push` 被安全策略拦截，导致 `git add` 一并未执行；本次拆分后只做本地提交，避免再次触发拦截。提交后本地领先 `origin/Trunk` 1 个提交。
+- **2026-11-16 10:10 工单模块加固**：P0 三项（G1 审计表 RLS / G2 附件写入策略 / G3 附件私有化）+ P1 五项（G4 批量一致性、G5 resolved_at、G6 客户 PATCH 403、G7 回复重开、G8 通知断链）+ 防护四项（G14–G16、409 语义）代码完成，详见 §3.6。**`008`/`009` 迁移尚未在线上执行**（008 表级、009 桶级，按 §3.6 顺序），G1–G3 与新 RPC 的线上效果待验（A18–A23）；P2 十三项未动。
 - **01:42 复核（跨日，仍无新工作）**：距 20:08 约 5.5 小时，无新增代码或验收动作。核对：① 复核时（commit 前）本地 HEAD 与远程同为 `67a5528`、无未推送提交，工作区 4 个文档改动 + E8 遗留；做纯本地 commit 后本地为最新提交、**领先远程 1 个提交且未推送**，工作区仅剩 E8 遗留；② 线上 `/en`、`/zh`、重置页、`/en/privacy` 全 200，CSP `script-src`/`connect-src` 均含 `cloud.umami.is`；③ **最新提交 `67a5528` 的 GitHub Actions = `completed / success`**（此前只记录 `62f11061`）。本轮修正清单内部 6 处过时/矛盾表述（见下），并新增 E9。**P0 的 4 笔 E2E 债、B1–B7 真机、EXT-01~08 供数、D3/D10 拍板均未动。**
 
 

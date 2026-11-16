@@ -1,15 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { POST } from './route';
 
-const { mockFrom, mockGetUser, mockSendEmail, mockLogError } = vi.hoisted(() => ({
+const { mockFrom, mockGetUser, mockSendEmail, mockLogError, mockRpc } = vi.hoisted(() => ({
   mockFrom: vi.fn(),
   mockGetUser: vi.fn(),
   mockSendEmail: vi.fn(),
   mockLogError: vi.fn(),
+  mockRpc: vi.fn(),
 }));
 
 vi.mock('@/lib/supabase/server', () => ({
-  createClient: async () => ({ auth: { getUser: mockGetUser }, from: mockFrom }),
+  createClient: async () => ({ auth: { getUser: mockGetUser }, from: mockFrom, rpc: mockRpc }),
 }));
 vi.mock('@/lib/resend', () => ({
   sendTicketReplyEmail: (...args: unknown[]) => mockSendEmail(...args) as Promise<unknown>,
@@ -64,6 +65,13 @@ describe('POST /api/tickets/[id]/comments (T-060)', () => {
     mockLogError.mockReset();
     mockGetUser.mockResolvedValue({ data: { user: { id: 'u1', email: 'cust@example.com' } } });
     mockSendEmail.mockResolvedValue(undefined);
+    mockRpc.mockReset();
+    mockRpc.mockImplementation(async (fn: string) => {
+      if (fn === 'reopen_ticket_on_customer_reply') return { data: null, error: null };
+      if (fn === 'get_staff_emails') return { data: [{ email: 'admin@x.com' }], error: null };
+      if (fn === 'get_ticket_owner_email') return { data: 'owner@x.com', error: null };
+      return { data: null, error: null };
+    });
   });
 
   it('returns 401 unauthenticated', async () => {

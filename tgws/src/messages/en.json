@@ -1179,6 +1179,7 @@
     "saving": "Saving…",
     "saved": "Saved",
     "saveFailed": "Failed to save",
+    "saveConflict": "Someone else changed this ticket. Reload and try again.",
     "selectAssignee": "Select assignee",
     "exportCsv": "Export CSV",
     "changeStatus": "Change status",

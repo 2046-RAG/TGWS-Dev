@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { logServiceError } from '@/lib/errors';
 import { rateLimit, requireSameOrigin } from '@/lib/api-guard';
+import { ATTACHMENT_BUCKET, signedAttachmentUrl } from '@/lib/tickets/attachments';
 
 const MAX_SIZE = 50 * 1024 * 1024;
 // SVG removed: it can carry <script>/onload= XSS if served inline (AUDIT-016).
@@ -80,7 +81,7 @@ export async function POST(request: Request) {
     const filePath = `${user.id}/${Date.now()}-${safeName}`;
 
     const { error: uploadError } = await supabase.storage
-      .from('ticket-attachments')
+      .from(ATTACHMENT_BUCKET)
       .upload(filePath, file);
 
     if (uploadError) {
@@ -88,28 +89,30 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
     }
 
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from('ticket-attachments').getPublicUrl(filePath);
-
+    // P0-3 (G3): the bucket is private, so we store the object path instead of
+    // a permanent public URL. Readers get a short-lived signed URL generated
+    // on demand (see lib/tickets/attachments.ts).
     const { error: insertError } = await supabase.from('ticket_attachments').insert({
       ticket_id: ticketId,
       file_name: safeName,
-      file_url: publicUrl,
+      file_url: filePath,
       file_size: file.size,
       file_type: file.type,
     });
 
     if (insertError) {
       // Roll back the orphaned storage object so the DB and bucket stay in sync.
-      await supabase.storage.from('ticket-attachments').remove([filePath]);
+      await supabase.storage.from(ATTACHMENT_BUCKET).remove([filePath]);
       logServiceError({ service: 'Upload', operation: 'metadataInsert', error: insertError });
       return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
     }
 
+    // Hand back a signed URL for the success-state thumbnail only.
+    const signedUrl = await signedAttachmentUrl(supabase, filePath);
+
     return NextResponse.json({
       success: true,
-      data: { url: publicUrl, name: safeName, size: file.size, type: file.type },
+      data: { url: signedUrl, path: filePath, name: safeName, size: file.size, type: file.type },
     });
   } catch (error) {
     logServiceError({ service: 'Upload', operation: 'upload', error });
