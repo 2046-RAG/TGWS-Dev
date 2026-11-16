@@ -67,7 +67,7 @@
 | # | 事项 | 现状 | 建议 |
 |:--:|---|---|---|
 | D1 | 本地构建堆上限 | ✅ 已写进 `README.md`「2026-11-15 实测修正」：4GB 堆与单 worker 均失败，判定本机内存不足，本地 build 不作上线前置，生产以 Vercel 构建为准 | 换机或释放内存后补跑一次 |
-| D2 | GitHub Actions | ✅ **已实测转绿**：`npm ci --legacy-peer-deps` 修复后，`62f11061`（12:14）与 `67a5528`（11-16 01:42 复核）两次 Actions 均 `completed / success` | 剩 `verify` 未设 required check（需仓库管理员），CI 红仍不拦上线 |
+| D2 | GitHub Actions | ✅ 已多次实测转绿（`62f11061`、`67a5528`、`2a9efac2`）；**22:10 门禁已接线到 `scripts/deploy-vercel.mjs`**：CI failure 直接拒绝生产部署，pending 放行，`SKIP_CI_GATE=1` 可显式跳过 | GitHub 网页 required check 需管理员手动设（API 被安全策略拒） |
 | D3 | Vercel Git 集成 | 仍连着 GitHub，push 会额外触发一次自动部署 | 要不要断开，需你拍板 |
 | D4 | 无邮箱账号边界 | 006 触发器跳过手机 / 不返回邮箱的 OAuth 账号，这类用户仍建不了单 | 需设计占位身份映射 |
 | D5 | 中文站 8 个产品特性 | 显示英文（CMS 无中文字段） | 归入 T-072 / T-075 |
