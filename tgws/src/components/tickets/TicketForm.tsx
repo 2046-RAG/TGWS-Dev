@@ -27,7 +27,16 @@ interface PastedImage {
 
 const DESCRIPTION_MAX = 800;
 
-export default function TicketForm() {
+interface TicketFormProps {
+  /**
+   * F1: fired after the ticket row exists (attachments may still be uploading).
+   * The parent uses this to refresh its list and switch tabs, so a new ticket
+   * shows up without a full page reload.
+   */
+  onSuccess?: (ticketId: string) => void;
+}
+
+export default function TicketForm({ onSuccess }: TicketFormProps = {}) {
   const t = useTranslations('auth');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -166,8 +175,11 @@ export default function TicketForm() {
       setUploading(false);
     }
 
+    if (newTicketId) {
+      onSuccess?.(newTicketId);
+    }
+
     setSuccess(true);
-    trackEvent('ticket_created', { category: formData.category });
     clear();
     setLoading(false);
   };

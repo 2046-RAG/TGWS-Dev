@@ -114,6 +114,24 @@ describe('TicketForm', () => {
     });
   });
 
+  it('calls onSuccess with the new ticket id (F1)', async () => {
+    fetchMock.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ success: true, data: { id: 'new-ticket-1' } }) });
+    const onSuccess = vi.fn();
+
+    render(<TicketForm onSuccess={onSuccess} />);
+
+    fireEvent.change(screen.getByLabelText('Category *'), { target: { value: 'build' } });
+    fireEvent.change(screen.getByLabelText('Product *'), { target: { value: 'Other Product' } });
+    fireEvent.change(screen.getByLabelText('Subject *'), { target: { value: 'Test Subject' } });
+    fireEvent.change(screen.getByLabelText('Description *'), { target: { value: 'Test Description' } });
+
+    fireEvent.submit(screen.getByRole('button', { name: 'Submit' }));
+
+    await waitFor(() => {
+      expect(onSuccess).toHaveBeenCalledWith('new-ticket-1');
+    });
+  });
+
   it('shows success state after successful submission', async () => {
     fetchMock.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ success: true, data: { id: 'test-ticket-id' } }) });
 

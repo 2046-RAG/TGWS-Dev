@@ -271,6 +271,24 @@
 
 ---
 
+### 3.7 2026-11-16 10:55 工单体验修复（用户实测反馈）
+
+用户在真实使用中提出三点，已全部修复并上线：
+
+| 编号 | 问题 | 修法 | 落点 |
+|---|---|---|---|
+| **F1** | 建单成功后列表不更新，必须手动刷新整页 | `TicketForm` 新增 `onSuccess(ticketId)`；父页面抽出 `loadTickets()` 复用，成功后重拉列表并自动切到「我的工单」 | `TicketForm.tsx`、`support/page.tsx` |
+| **F2** | 客户侧详情页**完全不显示附件**（`AttachmentPreview` 只接在管理员页） | 详情页接入 `AttachmentPreview`，接口已返回签名 URL | `support/tickets/[id]/page.tsx` |
+| **F3** | 详情页比列表页信息更少：缺状态、分类、创建时间 | 详情页顶部补元信息行（编号 + 状态徽章 + 分类 + 时间） | 同上 |
+
+**顺带确认的两个事实**（用户提问触发）：
+- 系统**没有独立「支持人员」角色**，只有 `customer` / `admin` / `super_admin`；能处理工单的就是所有 admin 账号。管理员在工单详情的「指派」下拉里可直接看到全部 staff。
+- 客户详情页此前只有「主题 + 描述 + 对话」，状态/分类/时间/附件都在跳转后丢失，属信息倒挂。
+
+**验证**：`tsc` 0 错（需 `--max-old-space-size=4096`，本机默认堆会 OOM）；`vitest --maxWorkers=2` **74 文件全过 exit 0**；新增 F1 用例（`onSuccess` 被调用且带新工单 id）；`eslint` 0 error / 68 warnings。部署 `67E4y1FtKttZwzZqmzTmu4sjibrx` → **READY**；线上 5 页 200、详情页壳 200、`/api/tickets` 401、中文站无裸露 i18n 键。
+
+---
+
 ### 4. P2（11 项，品质与可维护性）
 
 | 编号 | 任务 | 依据 | 验收标准 |

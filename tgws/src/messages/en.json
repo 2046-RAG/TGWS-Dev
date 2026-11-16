@@ -1131,6 +1131,7 @@
     "resendEmail": "Resend verification email"
   },
   "support": {
+    "attachments": "Attachments",
     "conversation": "Conversation",
     "reply": "Reply",
     "replyPlaceholder": "Type your reply…",

@@ -1279,6 +1279,7 @@
     "resendEmail": "重新發送驗證信"
   },
   "support": {
+    "attachments": "附件",
     "conversation": "對話紀要",
     "reply": "回覆",
     "replyPlaceholder": "輸入回覆內容…",

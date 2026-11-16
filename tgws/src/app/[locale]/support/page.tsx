@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter, useParams } from 'next/navigation';
@@ -41,6 +41,16 @@ export default function SupportPage() {
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const supabase = useMemo(() => createClient(), []);
 
+  // F1: shared loader so a successful submission can refresh the list without
+  // a full page reload.
+  const loadTickets = useCallback(async () => {
+    const response = await fetch('/api/tickets');
+    if (response.ok) {
+      const result = await response.json();
+      setTickets(result.data || []);
+    }
+  }, []);
+
   useEffect(() => {
     const checkUser = async () => {
       const { data: { user: authUser } } = await supabase.auth.getUser();
@@ -63,17 +73,13 @@ export default function SupportPage() {
         setIsAdmin(isAdminUser);
         setUser({ ...authUser, role: userRole?.role || 'user' });
 
-        const response = await fetch('/api/tickets');
-        if (response.ok) {
-          const result = await response.json();
-          setTickets(result.data || []);
-        }
+        await loadTickets();
       }
       setLoading(false);
     };
 
     checkUser();
-  }, [supabase, router, locale]);
+  }, [supabase, router, locale, loadTickets]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -284,7 +290,12 @@ export default function SupportPage() {
                 <p className="text-gray-500 dark:text-gray-300">{s('newTicketDesc')}</p>
               </div>
               <div className="max-w-2xl">
-                <TicketForm />
+                <TicketForm
+                  onSuccess={() => {
+                    void loadTickets();
+                    setActiveTab('my-tickets');
+                  }}
+                />
               </div>
             </div>
           )}

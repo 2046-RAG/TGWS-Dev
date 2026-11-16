@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import AttachmentPreview from '@/components/tickets/AttachmentPreview';
 import { ArrowLeft, Send, Clock, MessageSquare } from 'lucide-react';
 
 interface Comment {
@@ -14,13 +15,22 @@ interface Comment {
   created_at: string;
   user_id: string;
 }
+interface Attachment {
+  id?: string;
+  file_name: string;
+  file_url: string;
+  file_size: number;
+  file_type: string;
+}
 interface TicketDetail {
   id: string;
   ticket_number: string;
   subject: string;
   description: string;
   status: string;
+  category: string;
   created_at: string;
+  attachments?: Attachment[];
   comments?: Comment[];
 }
 
@@ -30,6 +40,7 @@ const fmt = (v: string, locale: string) =>
 
 export default function CustomerTicketConversationPage() {
   const s = useTranslations('support');
+  const t = useTranslations('auth');
   const params = useParams();
   const locale = (params?.locale as string) || 'en';
   const id = String(params?.id || '');
@@ -85,6 +96,27 @@ export default function CustomerTicketConversationPage() {
   };
 
   const comments = ticket?.comments || [];
+  const attachments = ticket?.attachments || [];
+
+  // F3: the list page already showed status/category/time; the detail page
+  // used to drop them, which made the detail page less informative than the list.
+  const statusLabels: Record<string, string> = {
+    open: t('ticketOpen'),
+    in_progress: t('ticketInProgress'),
+    resolved: t('ticketResolved'),
+    closed: t('ticketClosed'),
+  };
+  const statusClasses: Record<string, string> = {
+    open: 'bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-300 dark:border-yellow-800',
+    in_progress: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800',
+    resolved: 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800',
+    closed: 'bg-gray-100 text-gray-600 border-gray-200 dark:bg-zinc-700 dark:text-gray-300 dark:border-zinc-600',
+  };
+  const categoryLabels: Record<string, string> = {
+    build: 'Build',
+    run: 'Run',
+    protect: 'Protect',
+  };
 
   return (
     <div className="min-h-screen bg-[#F4F4F5] dark:bg-[#09090B] py-10 px-5 sm:px-8">
@@ -108,11 +140,37 @@ export default function CustomerTicketConversationPage() {
         {!loading && ticket && (
           <div className="space-y-6">
             <section className={card}>
-              <p className="font-mono text-xs text-gray-500 dark:text-gray-400">{ticket.ticket_number}</p>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{ticket.subject}</h1>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-mono text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-zinc-700 px-2 py-0.5 rounded">
+                  {ticket.ticket_number}
+                </span>
+                <span
+                  className={`text-xs font-medium px-2 py-0.5 rounded-full border ${
+                    statusClasses[ticket.status] || statusClasses.open
+                  }`}
+                >
+                  {statusLabels[ticket.status] || ticket.status}
+                </span>
+                <span className="text-xs px-2 py-0.5 rounded border bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-zinc-600">
+                  {categoryLabels[ticket.category] || ticket.category}
+                </span>
+                <span className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                  <Clock size={12} /> {fmt(ticket.created_at, locale)}
+                </span>
+              </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mt-3">{ticket.subject}</h1>
               <p className="mt-4 text-gray-800 dark:text-gray-100 whitespace-pre-wrap leading-relaxed">
                 {ticket.description || '—'}
               </p>
+
+              {attachments.length > 0 && (
+                <div className="mt-6 pt-6 border-t border-gray-100 dark:border-zinc-700">
+                  <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+                    {s('attachments')} ({attachments.length})
+                  </h2>
+                  <AttachmentPreview attachments={attachments} />
+                </div>
+              )}
             </section>
 
             <section className={card}>
