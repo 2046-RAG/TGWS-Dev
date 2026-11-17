@@ -310,6 +310,20 @@
 
 ---
 
+### 3.10 2026-11-17 10:20 附件格式问题彻底修复（A19 根因定位）
+
+用户提供截图拿到真实错误：`Sangfor_HCI_vs_Nutanix_Sales_One_Pager_EN_v2.md (File type not allowed)` —— **`.md` Markdown 文件被白名单拒绝**。
+
+**根因**：upload 路由用 ALLOWED_TYPES/ALLOWED_EXT 白名单，只列了图片/PDF/Office/音视频/压缩包，漏了 Markdown 等大量文档格式。UI 却承诺"任意格式"——白名单与文案不符，必然不断漏格式。
+
+**修法**：白名单 → **黑名单**（`744b743`）。只拒绝可执行脚本类（svg/html/xhtml/xml、js/ts/php/asp/jsp、exe/bat/ps1/jar 等），其余全部放行，含 `.md`、空 MIME。扩展名与 MIME 双检，保留 AUDIT-012/016 安全约束。
+
+**验证**：tsc 0 错；全量 **75 测试文件全过**（新增 `upload/route.test.ts` 13 用例：md/空MIME/office/音视频/压缩包放行、svg/html/js 拒绝、两种失败文案）；CI `744b743 success`；部署 `tgws-85tsfme6c`，新 deployment 探活就绪。
+
+**注意**：本次改的是**服务端 API**，`support/page` 的 chunk 哈希不会变（不是前端改动），不能用 chunk 判断切流。Vercel token 读取被安全策略拒，无法用 API 确认生产指向；以用户重测 `.md` 上传为准。
+
+---
+
 ### 4. P2（11 项，品质与可维护性）
 
 | 编号 | 任务 | 依据 | 验收标准 |
