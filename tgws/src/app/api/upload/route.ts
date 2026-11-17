@@ -5,31 +5,21 @@ import { rateLimit, requireSameOrigin } from '@/lib/api-guard';
 import { ATTACHMENT_BUCKET, signedAttachmentUrl } from '@/lib/tickets/attachments';
 
 const MAX_SIZE = 50 * 1024 * 1024;
-// SVG removed: it can carry <script>/onload= XSS if served inline (AUDIT-016).
-const ALLOWED_TYPES = [
-  // images
-  'image/jpeg', 'image/png', 'image/gif', 'image/webp',
-  // documents
-  'application/pdf', 'text/plain', 'text/csv',
-  'application/msword',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'application/vnd.ms-excel',
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-  // audio
-  'audio/mpeg', 'audio/mp4', 'audio/wav', 'audio/x-wav', 'audio/webm',
-  'audio/ogg', 'audio/aac', 'audio/flac', 'audio/x-m4a',
-  // video
-  'video/mp4', 'video/webm', 'video/quicktime', 'video/x-msvideo',
-  'video/x-matroska',
-  // archives
-  'application/zip', 'application/x-7z-compressed',
-  'application/x-rar-compressed', 'application/gzip', 'application/x-tar',
-];
 
-// Browsers sometimes send an empty or generic MIME type (e.g. .7z, .rar).
-// Fall back to the extension so "any format" in the UI is truthful.
-const ALLOWED_EXT = /\.(pdf|png|jpe?g|gif|webp|txt|csv|docx?|xlsx?|pptx?|mp3|wav|ogg|m4a|aac|flac|mp4|mov|webm|avi|mkv|zip|7z|rar|gz|tar)$/i;
+// The UI promises "any file" (documents, images, audio, video, archives, etc.),
+// so use a DENY-list instead of an ever-growing allow-list. Only formats that
+// can execute script or code when opened inline are blocked; everything else
+// is accepted. (A whitelist kept rejecting legitimate files such as .md.)
+const BLOCKED_EXT = /\.(svg|html?|xhtml|xml|js|mjs|cjs|jsx|ts|tsx|php|phtml|asp|aspx|jsp|jspx|exe|bat|cmd|sh|bash|zsh|ps1|vbs|vbscript|scr|com|dll|msi|msp|jar|war|app|apk|hta|reg)$/i;
+const BLOCKED_MIME = /^(image\/svg\+xml|text\/html|application\/xhtml\+xml|application\/(javascript|x-javascript|ecmascript)|text\/javascript|text\/ecmascript|application\/x-shockwave-flash)$/i;
+
+function isBlockedFile(name: string, mime: string): boolean {
+  // Check both signals: a harmless extension with a script MIME (or vice
+  // versa) must still be rejected. Empty MIME is fine — the extension decides.
+  if (BLOCKED_EXT.test(name)) return true;
+  if (mime && BLOCKED_MIME.test(mime)) return true;
+  return false;
+}
 
 // Strip path separators and cap length so file.name can't traverse the
 // bucket or exceed object-key limits (AUDIT-013).
@@ -64,9 +54,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'File too large (max 50MB)' }, { status: 400 });
     }
 
-    // Reject empty MIME types — the whitelist must not be bypassable by
-    // omitting Content-Type (AUDIT-012).
-    if ((!file.type || !ALLOWED_TYPES.includes(file.type)) && !ALLOWED_EXT.test(file.name)) {
+    // Deny only script/executable formats (XSS + code execution). A missing
+    // MIME type is fine: the extension is checked too, so it cannot bypass
+    // the block (AUDIT-012).
+    if (isBlockedFile(file.name, file.type)) {
       return NextResponse.json({ error: 'File type not allowed' }, { status: 400 });
     }
 
