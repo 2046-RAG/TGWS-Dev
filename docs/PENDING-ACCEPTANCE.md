@@ -29,7 +29,7 @@
 | A16 | T-067 | 打开任意页面后看 Umami 后台 | 有本次访问的 pageview | 后台可见 | Umami 账号 |
 | A17 | T-062 | 用浏览器测首页 LCP（视频 `preload=metadata` 之后） | 有可复现的 LCP 基线数值 | 记录数值与设备 | 真机/浏览器 |
 | A18 | 工单 G1 | ~~执行 008 后核对审计表~~ **策略层已验证 PASS**（10:36：RLS 启用、策略数 2、无 UPDATE/DELETE、写入校验 `performed_by`） | 剩余：用真实客户/admin 身份各查一次 | 待复验 | 策略层已完成 |
-| A19 | 工单 G2 | 客户对自有工单上传 1 个 PDF / 音频 / 压缩包；再尝试对他人工单上传 | 前者 201 且 `ticket_attachments` 新增 1 行；后者 403 且无存储残留 | 两条均符合 | **策略层已完成；真实上传用户反馈过"看不到附件"，最终修复已切流待复验** |
+| A19 | 工单 G2 | 客户对自有工单上传 1 个 PDF / 音频 / 压缩包 / **Markdown(.md)**；再尝试对他人工单上传 | 前者 201 且 `ticket_attachments` 新增 1 行、详情页可见附件；后者 403 且无存储残留 | 两条均符合 | **11-17 已根治 `.md File type not allowed`（白名单→黑名单，`744b743`），用户尚未回报最终成功** |
 | A20 | 工单 G3 | 打开附件预览，复制签名 URL 去掉 `?token=` 后直接访问 | 带 token 可打开；去掉 token 后 400/403 | URL 行为符合 | 私有桶已生效 |
 | A21 | 工单 G7 | 客户在 `resolved` 工单下回复 | 状态变 `in_progress`、`resolved_at` 变 `null`、后台列表可见该工单 | 三项均变 | **需 008 函数** |
 | A22 | 工单 G8 | 客户发一条公开回复 | 至少 1 名 admin 邮箱收到通知；内部备注不触发任何邮件 | 收到 | **需 008 函数** |
@@ -103,6 +103,6 @@
 - **GitHub 存档补推失败**：本地 commit `eb3f72f` 与本轮清单更新仍只在本地；`git push origin Trunk` 共 4 次失败（`Empty reply from server` / `schannel TLS 握手` / `TLS unexpected eof`），`api.github.com` 可读但 `github.com` 的 TLS 不通。**线上生产是最新的**（走 Vercel 直推），只是 GitHub 仓库落后。
 - **E1 / D2 已于 12:13–12:14 解决**（本段上文为 11:41 的旧状态）：网络恢复后单次 `git push` 成功（`aecb62e..62f1106`）；GitHub Actions 运行 `62f11061 / Trunk / completed / **success**`，`npm ci --legacy-peer-deps` 修复被实测确认。
 - **门禁仍未接线**：`verify` 没被设为 required status check，CI 失败依然不会阻止 Vercel 生产部署；这一步需要仓库管理员在后台设置。
-- 完整剩余待办以 `TODO.md` **§8 当前剩余待办总览（11-16 01:42 核对）** 为准；本节只列验收动作。
+- 完整剩余待办以 `TODO.md` **§8 当前剩余待办总览（11-17 16:04 核对）** 为准；本节只列验收动作。
 - **01:42 一致性修正**：① D2 从「推断修复未确认」改为两次 Actions 实测 success；② D6 从「`preload=auto` 未处理」改为「preload 已改 `metadata`，仍缺 `use client` 与 LCP 基线」；③ `TODO.md` §8.1 真机观察由 6 项修正为 **B1–B7 共 7 项**（12:13 新增 B7 后漏同步）；④ §8.3 的「T-069 Actions 转绿未验」与 E2 矛盾，改为已转绿、剩 required check。A1–A17 / B1–B7 / C1–C8 的**验收动作本身状态不变**。
 
