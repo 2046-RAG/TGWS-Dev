@@ -53,6 +53,7 @@ const dateFmt = (v: string | null | undefined, locale: string) =>
 
 export default function AdminTicketDetailPage() {
   const t = useTranslations('admin');
+  const tAuth = useTranslations('auth');
   const params = useParams();
   const locale = (params?.locale as string) || 'en';
   const id = String(params?.id || '');
@@ -72,12 +73,39 @@ export default function AdminTicketDetailPage() {
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
 
+  // Audit rows store raw codes (status_changed, open, medium...). Render them
+  // as human-readable sentences so the timeline is useful to support staff.
+  const auditActionLabel: Record<string, string> = {
+    created: t('auditCreated'),
+    status_changed: t('auditStatusChanged'),
+    updated: t('auditUpdated'),
+    comment_added: t('auditCommentAdded'),
+    assigned: t('auditAssigned'),
+  };
+  const humanAuditValue = (v: string | null): string => {
+    if (!v) return '—';
+    const statusMap: Record<string, string> = {
+      open: tAuth('ticketOpen'), in_progress: tAuth('ticketInProgress'),
+      resolved: tAuth('ticketResolved'), closed: tAuth('ticketClosed'),
+    };
+    const priorityMap: Record<string, string> = {
+      low: t('low'), medium: t('medium'), high: t('high'),
+    };
+    return statusMap[v] || priorityMap[v] || v;
+  };
+
   useEffect(() => {
     if (!id) return;
     let cancelled = false;
-    fetch(`/api/tickets/${id}`)
+    // Error is cleared on success below; avoid a synchronous setState here
+    // (react-hooks/set-state-in-effect).
+    const controller = new AbortController();
+    // Never leave the admin detail page spinning forever (same fix as the
+    // customer detail page). A hanging request shows a visible error + retry.
+    const timer = setTimeout(() => controller.abort(), 8_000);
+    fetch(`/api/tickets/${id}`, { signal: controller.signal, cache: 'no-store' })
       .then((r) => {
-        if (!r.ok) throw new Error(String(r.status));
+        if (!r.ok) throw new Error('HTTP ' + r.status);
         return r.json();
       })
       .then((j) => {
@@ -91,13 +119,20 @@ export default function AdminTicketDetailPage() {
         }
         setError('');
       })
-      .catch(() => {
-        if (!cancelled) setError(t('loadError'));
+      .catch((e: unknown) => {
+        if (!cancelled) {
+          const aborted = e instanceof DOMException && e.name === 'AbortError';
+          setError(aborted ? (t('loadError') + ' (timeout)') : t('loadError'));
+        }
       })
       .finally(() => {
+        clearTimeout(timer);
         if (!cancelled) setLoading(false);
       });
     return () => {
+      cancelled = true;
+      controller.abort();
+      clearTimeout(timer);
       cancelled = true;
     };
   }, [id, t, reloadKey]);
@@ -195,10 +230,24 @@ export default function AdminTicketDetailPage() {
           <ArrowLeft size={16} /> {t('backToList')}
         </Link>
 
-        {loading && <div className={`${card} text-gray-500 dark:text-gray-400`}>…</div>}
+        {loading && (
+          <div className={`${card} text-sm text-gray-500 dark:text-gray-400`}>
+            <span className="inline-block w-3 h-3 mr-2 rounded-full border-2 border-[#00D4FF] border-t-transparent animate-spin" />
+            {t('loadingTicket')}
+          </div>
+        )}
 
         {!loading && error && (
-          <div className="p-4 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 text-sm">{error}</div>
+          <div className="p-4 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 text-sm">
+            <p>{error}</p>
+            <button
+              type="button"
+              onClick={() => { setLoading(true); setReloadKey((k) => k + 1); }}
+              className="mt-3 px-3 py-1.5 rounded-lg bg-[#00D4FF] text-white text-xs"
+            >
+              {t('retry')}
+            </button>
+          </div>
         )}
 
         {!loading && !error && !ticket && (
@@ -355,12 +404,14 @@ export default function AdminTicketDetailPage() {
                   {(ticket.audit || []).map((a) => (
                     <li key={a.id} className="border-l-2 border-[#00D4FF] pl-4 text-sm">
                       <div className="flex flex-wrap items-center justify-between gap-2">
-                        <span className="font-medium text-gray-900 dark:text-white">{a.action}</span>
+                        <span className="font-medium text-gray-900 dark:text-white">
+                          {auditActionLabel[a.action] || a.action}
+                        </span>
                         <span className="text-xs text-gray-500 dark:text-gray-400">{dateFmt(a.performed_at, locale)}</span>
                       </div>
                       {(a.old_value || a.new_value) && (
-                        <p className="mt-1 font-mono text-xs text-gray-500 dark:text-gray-400 break-all">
-                          {a.old_value || '—'} → {a.new_value || '—'}
+                        <p className="mt-1 text-xs text-gray-600 dark:text-gray-300 break-all">
+                          {humanAuditValue(a.old_value)} → {humanAuditValue(a.new_value)}
                         </p>
                       )}
                     </li>

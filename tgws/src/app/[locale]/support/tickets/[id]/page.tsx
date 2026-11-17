@@ -55,7 +55,8 @@ export default function CustomerTicketConversationPage() {
 
   useEffect(() => {
     let cancelled = false;
-    setLoadError('');
+    // Error is cleared on success below; avoid a synchronous setState here
+    // (react-hooks/set-state-in-effect).
     const controller = new AbortController();
     // Never leave the page spinning forever. If the API hangs, surface it.
     const timer = setTimeout(() => controller.abort(), 5_000);

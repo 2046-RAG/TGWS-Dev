@@ -1404,7 +1404,22 @@
     "status": "狀態",
     "priority": "優先級",
     "created": "建立時間",
-    "noTickets": "暫無工單"
+    "noTickets": "暫無工單",
+    "loadingTicket": "正在載入工單…",
+    "auditCreated": "建立了工單",
+    "auditStatusChanged": "變更了狀態",
+    "auditUpdated": "更新了工單",
+    "auditCommentAdded": "新增了回覆",
+    "auditAssigned": "指派了工單",
+    "colTicketNumber": "工單編號",
+    "colSubject": "主題",
+    "colCategory": "類別",
+    "colPriority": "優先級",
+    "colProduct": "產品／服務",
+    "colUpdated": "更新時間",
+    "colResolvedAt": "解決時間",
+    "colVersion": "版本",
+    "colDescription": "描述"
   },
   "error": {
     "title": "發生錯誤",

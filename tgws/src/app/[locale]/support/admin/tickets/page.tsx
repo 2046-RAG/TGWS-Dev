@@ -11,12 +11,17 @@ interface TicketRow {
   id: string;
   ticket_number: string;
   subject: string;
+  description?: string | null;
+  product_service?: string | null;
   status: string;
   category: string;
   priority: string;
-  created_at: string;
   assigned_to: string | null;
   user_id: string;
+  version?: number;
+  created_at: string;
+  updated_at?: string;
+  resolved_at?: string | null;
 }
 
 const PAGE_SIZE = 20;
@@ -30,6 +35,7 @@ const statusClass: Record<string, string> = {
 
 export default function AdminTicketsPage() {
   const t = useTranslations('admin');
+  const tAuth = useTranslations('auth');
   const params = useParams();
   const locale = (params?.locale as string) || 'en';
 
@@ -91,12 +97,43 @@ export default function AdminTicketsPage() {
 
   // T-059: export the rows currently visible (this page of the current filter).
   const exportCsv = () => {
-    const header = ['Ticket #', 'Subject', 'Status', 'Category', 'Priority', 'Created'];
+    // Export a genuinely useful snapshot, not just the six list columns.
+    // Status/priority are localized so the file reads like a report, not code.
+    const statusMap: Record<string, string> = {
+      open: t('statusOpen'), in_progress: t('statusInProgress'),
+      resolved: t('statusResolved'), closed: t('statusClosed'),
+    };
+    const priorityMap: Record<string, string> = {
+      low: t('low'), medium: t('medium'), high: t('high'), critical: t('critical'),
+    };
+    const categoryMap: Record<string, string> = {
+      build: tAuth('build'), run: tAuth('run'), protect: tAuth('protect'),
+    };
+    const header = [
+      t('colTicketNumber'), t('colSubject'), t('status'), t('colCategory'),
+      t('colPriority'), t('colProduct'), t('assignedTo'), t('customer'),
+      t('colDescription'), t('created'), t('colUpdated'), t('colResolvedAt'), t('colVersion'),
+    ];
     const rows = visible.map((r) => [
-      r.ticket_number, r.subject, r.status, r.category, r.priority, r.created_at,
+      r.ticket_number, r.subject,
+      statusMap[r.status] || r.status,
+      categoryMap[r.category] || r.category,
+      priorityMap[r.priority] || r.priority,
+      r.product_service || '',
+      r.assigned_to || t('unassigned'),
+      r.user_id,
+      (r.description || '').replace(/\s+/g, ' ').trim(),
+      r.created_at, r.updated_at || '', r.resolved_at || '', r.version ?? '',
     ]);
+    // Escape quotes; prefix a single quote on formula-leading cells so
+    // Excel/Sheets cannot execute injected formulas (CSV injection defense).
+    const cell = (v: unknown): string => {
+      let text = String(v ?? '');
+      if (/^[=+\-@]/.test(text)) text = "'" + text;
+      return '"' + text.replace(/"/g, '""') + '"';
+    };
     const csv = [header, ...rows]
-      .map((cols) => cols.map((c) => `"${String(c ?? '').replace(/"/g, '""')}"`).join(','))
+      .map((cols) => cols.map(cell).join(','))
       .join('\r\n');
     const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(blob);

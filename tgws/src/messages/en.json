@@ -1255,7 +1255,22 @@
     "status": "Status",
     "priority": "Priority",
     "created": "Created",
-    "noTickets": "No tickets found"
+    "noTickets": "No tickets found",
+    "loadingTicket": "Loading ticket…",
+    "auditCreated": "Created the ticket",
+    "auditStatusChanged": "Changed status",
+    "auditUpdated": "Updated the ticket",
+    "auditCommentAdded": "Added a reply",
+    "auditAssigned": "Assigned the ticket",
+    "colTicketNumber": "Ticket #",
+    "colSubject": "Subject",
+    "colCategory": "Category",
+    "colPriority": "Priority",
+    "colProduct": "Product / Service",
+    "colUpdated": "Updated",
+    "colResolvedAt": "Resolved At",
+    "colVersion": "Version",
+    "colDescription": "Description"
   },
   "error": {
     "title": "Something went wrong",
