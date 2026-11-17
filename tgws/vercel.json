@@ -2,5 +2,11 @@
   "framework": "nextjs",
   "buildCommand": "npx next build --webpack",
   "outputDirectory": ".next",
-  "installCommand": "npm ci --registry https://registry.npmmirror.com"
+  "installCommand": "npm ci --registry https://registry.npmmirror.com",
+  "crons": [
+    {
+      "path": "/api/cron/keepalive",
+      "schedule": "0 3 * * *"
+    }
+  ]
 }
