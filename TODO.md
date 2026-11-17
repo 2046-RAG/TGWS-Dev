@@ -468,6 +468,8 @@
 
 #### 8.5 最近批次与核对记录
 
+- **2026-11-17 18:40 Supabase 保活落地**：免费版项目 7 天无足够数据库活动会被暂停（官方：每天几次 DB 查询即够，不保证）。用 Vercel Cron（Hobby 只能每天 1 次，足够）每天 UTC 03:00 打 `/api/cron/keepalive`，做一次真实 DB 查询（`ticket_audit_log select id limit 1`）。鉴权：接受 Vercel 自带 `x-vercel-cron: 1` 头（零配置），可选 `CRON_SECRET` bearer 加强。4 个单测；全量 76 文件过；提交 `37043a1b`；生产实测：无 header 401、带 header 返回 `{"ok":true}`。**注意**：`.env.local.example` 被 gitignore 忽略，CRON_SECRET 说明只在代码注释里。
+
 - **2026-11-17 16:04–18:30 用户实测验收（23 项通过 9 项）**：用户用 Google 客户号 + `syed.ong@techguru-it.asia`(super_admin) 双账号实测。通过：A2 后台看全部单、A3 详情四项齐全、A4 客户越权被挡、A5 双向对话、A6 内部备注隔离、A10 缓存 HIT、A12 CSV（13列本地化修复后）、A13 API 403、A19前半 `.md` 附件上传成功。
 - **验收中发现并当场修复的 4 个体验缺陷**：① admin 详情页 loading 从 `...` 改为转圈+文字+8s超时；② 审计值从 JSON 原文改为本地化摘要；③ CSV 从 6 列英文码改为 13 列本地化+公式注入防护；④ `.md` 上传格式白名单→黑名单根治。Google 客户号确认可用（006 触发器自动建 users 行、role=customer）；管理员首次登录显示 Customer 是旧会话缓存，彻底登出重登后正常。
 - **容量评估（18:20）**：三家全免费版。Vercel Hobby 100万函数调用/月+4 CPU小时/月；Supabase Free 60直连/200池化连接+500MB；Resend Free 3000封/月+**100封/天（最紧瓶颈）**。代码限流是内存级 Map，多实例下失效。结论：撑小团队内部用，撑不住公开获客。**Vercel Hobby 限商业用途，techguru-it.asia 属商业门面有合规风险**。
