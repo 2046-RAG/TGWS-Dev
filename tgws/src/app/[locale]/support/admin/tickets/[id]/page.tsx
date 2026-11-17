@@ -82,16 +82,43 @@ export default function AdminTicketDetailPage() {
     comment_added: t('auditCommentAdded'),
     assigned: t('auditAssigned'),
   };
-  const humanAuditValue = (v: string | null): string => {
-    if (!v) return '—';
-    const statusMap: Record<string, string> = {
+  const humanField: Record<string, string> = {
+    status: t('status'), priority: t('colPriority'), assigned_to: t('assignedTo'),
+    is_internal: t('colInternal'), product_service: t('colProduct'),
+  };
+  const statusLabelLocal = (v: unknown): string => {
+    const map: Record<string, string> = {
       open: tAuth('ticketOpen'), in_progress: tAuth('ticketInProgress'),
       resolved: tAuth('ticketResolved'), closed: tAuth('ticketClosed'),
     };
-    const priorityMap: Record<string, string> = {
-      low: t('low'), medium: t('medium'), high: t('high'),
+    return typeof v === 'string' ? (map[v] || '') : '';
+  };
+  const priorityLabelLocal = (v: unknown): string => {
+    const map: Record<string, string> = {
+      low: t('low'), medium: t('medium'), high: t('high'), critical: t('critical'),
     };
-    return statusMap[v] || priorityMap[v] || v;
+    return typeof v === 'string' ? (map[v] || '') : '';
+  };
+  const humanAuditValue = (v: string | null): string => {
+    if (!v) return '—';
+    // Audit rows store JSON objects like {"status":"open"} or
+    // {"is_internal":true}. Summarise them instead of dumping raw JSON.
+    try {
+      const parsed = JSON.parse(v) as Record<string, unknown>;
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        const parts = Object.entries(parsed).map(([key, val]) => {
+          const label = humanField[key] || key;
+          const value = typeof val === 'boolean'
+            ? (val ? t('yes') : t('no'))
+            : (statusLabelLocal(val) || priorityLabelLocal(val) || String(val));
+          return `${label}: ${value}`;
+        });
+        return parts.join(', ');
+      }
+    } catch {
+      /* not JSON — fall through */
+    }
+    return statusLabelLocal(v) || priorityLabelLocal(v) || v;
   };
 
   useEffect(() => {

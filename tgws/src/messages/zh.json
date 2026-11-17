@@ -1419,7 +1419,11 @@
     "colUpdated": "更新時間",
     "colResolvedAt": "解決時間",
     "colVersion": "版本",
-    "colDescription": "描述"
+    "colDescription": "描述",
+    "colInternal": "內部",
+    "yes": "是",
+    "no": "否",
+    "loadingTickets": "正在載入工單列表…"
   },
   "error": {
     "title": "發生錯誤",

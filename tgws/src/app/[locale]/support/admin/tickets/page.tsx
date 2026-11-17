@@ -61,7 +61,9 @@ export default function AdminTicketsPage() {
     if (category) sp.set('category', category);
     if (priority) sp.set('priority', priority);
 
-    fetch(`/api/tickets?${sp.toString()}`)
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8_000);
+    fetch(`/api/tickets?${sp.toString()}`, { signal: controller.signal, cache: 'no-store' })
       .then((r) => {
         if (!r.ok) throw new Error(String(r.status));
         return r.json();
@@ -72,14 +74,20 @@ export default function AdminTicketsPage() {
         setTotal(Number(j.total) || 0);
         setError('');
       })
-      .catch(() => {
-        if (!cancelled) setError(t('loadError'));
+      .catch((e: unknown) => {
+        if (!cancelled) {
+          const aborted = e instanceof DOMException && e.name === 'AbortError';
+          setError(aborted ? t('loadError') + ' (timeout)' : t('loadError'));
+        }
       })
       .finally(() => {
+        clearTimeout(timer);
         if (!cancelled) setLoading(false);
       });
     return () => {
       cancelled = true;
+      controller.abort();
+      clearTimeout(timer);
     };
   }, [page, status, category, priority, reloadKey, t]);
 
@@ -249,7 +257,10 @@ export default function AdminTicketsPage() {
               </thead>
               <tbody>
                 {loading && (
-                  <tr><td colSpan={7} className="px-5 py-10 text-center text-gray-500">…</td></tr>
+                  <tr><td colSpan={7} className="px-5 py-10 text-center text-sm text-gray-500 dark:text-gray-400">
+                    <span className="inline-block w-3 h-3 mr-2 rounded-full border-2 border-[#00D4FF] border-t-transparent animate-spin" />
+                    {t('loadingTickets')}
+                  </td></tr>
                 )}
                 {!loading && visible.length === 0 && (
                   <tr><td colSpan={7} className="px-5 py-10 text-center text-gray-500 dark:text-gray-400">{t('noResults')}</td></tr>

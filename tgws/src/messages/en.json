@@ -1270,7 +1270,11 @@
     "colUpdated": "Updated",
     "colResolvedAt": "Resolved At",
     "colVersion": "Version",
-    "colDescription": "Description"
+    "colDescription": "Description",
+    "colInternal": "Internal",
+    "yes": "Yes",
+    "no": "No",
+    "loadingTickets": "Loading tickets…"
   },
   "error": {
     "title": "Something went wrong",
